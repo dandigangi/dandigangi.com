@@ -1,15 +1,28 @@
 ---
-import PageMeta from "../components/PageMeta.astro";
-import PageLayout from "../layouts/PageLayout.astro";
-import Intro from "../components/Intro.astro";
-import AboutTheTheme from "../components/AboutTheTheme.astro";
-import { SITE_TITLE } from "../config";
----
+export const prerender = true
 
-<PageLayout>
-  <PageMeta title={`${SITE_TITLE}`} slot="meta" />
-  <Fragment slot="main">
-    <Intro />
-    <AboutTheTheme />
-  </Fragment>
-</PageLayout>
+import { getCollection, getEntryBySlug } from 'astro:content'
+import DefaultPageLayout from '$/layouts/default.astro'
+import PostPreviewList from '$/components/PostPreviewList.astro'
+
+
+const title = 'Home'
+const description = 'Astro-Ink is a crisp, minimal, personal blog theme for Astro'
+
+const posts = await getCollection('blog')
+---
+<DefaultPageLayout content={{ title, description }} showPageHeader={false}>
+    <PostPreviewList posts={posts} />
+    <div class="page__actions">
+        <a class="action__go-to-blog" href="/blog" title="All Posts">All Posts &rarr;</a>
+    </div>
+</DefaultPageLayout>
+
+<style>
+    .page__actions {
+        @apply flex justify-center md:justify-end py-6
+    }
+    .action__go-to-blog {
+        @apply text-base uppercase text-gray-500 dark:text-gray-400 hover:underline
+    }
+</style>

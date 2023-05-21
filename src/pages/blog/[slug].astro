@@ -1,52 +1,30 @@
 ---
-import { readOne, readAll } from "../../lib/markdoc/read";
-import { blog } from "../../lib/markdoc/frontmatter.schema";
-import Renderer from "../../components/Renderer.astro";
-import BlogPostMeta from "../../components/BlogPostMeta.astro";
-import ContentLayout from "../../layouts/ContentLayout.astro";
-import { SITE_URL } from "../../config";
+import { getEntryBySlug } from "astro:content";
+import PostLayout from '$/layouts/post.astro';
 
-export async function getStaticPaths() {
-  const posts = await readAll({
-    directory: "blog",
-    frontmatterSchema: blog,
-  });
+import Callout from "../../components/mdoc/Callout.astro";
+import Link from "../../components/mdoc/Link.astro";
+import TweetEmbed from "../../components/mdoc/TweetEmbed.astro";
+import YTVideoEmbed from "../../components/mdoc/YTVideoEmbed.astro";
+import Tabs from "../../components/mdoc/Tabs/Tabs.astro";
 
-  // we don't want to generate pages for posts that link to external websites
-  const filteredPosts = posts
-    .filter((p) => p.frontmatter.draft !== true)
-    .filter(({ frontmatter }) => !frontmatter.external);
+// get the views count
+// get the likes count
 
-  return filteredPosts.map((post) => {
-    return { params: { slug: post.slug } };
-  });
-}
+const { slug } = Astro.params
+const entry = await getEntryBySlug('blog', slug!)
 
-const { slug } = Astro.params;
-if (typeof slug !== "string") {
-  throw Error(`slug should be string. Received: ${slug}`);
-}
+const resp = await fetch(`${import.meta.env.SITE_URI}/api/blog/views/${slug}`)
+const stats = await resp.json()
 
-const { content, frontmatter } = await readOne({
-  directory: "blog",
-  slug,
-  frontmatterSchema: blog,
-});
-
-const ogImageAbsoluteUrl =
-  frontmatter.external !== true && frontmatter.ogImagePath
-    ? new URL(frontmatter.ogImagePath, SITE_URL).toString()
-    : undefined;
+const { Content } = await entry.render()
 ---
-
-<ContentLayout title={frontmatter.title} date={frontmatter.date}>
-  <BlogPostMeta
-    title={frontmatter.title}
-    description={frontmatter.external ? undefined : frontmatter.description}
-    publishDate={frontmatter.date.toISOString()}
-    pagePath={`/blog/${slug}`}
-    ogImageAbsoluteUrl={ogImageAbsoluteUrl}
-    slot="meta"
-  />
-  <Renderer content={content} slot="content" />
-</ContentLayout>
+<PostLayout content={entry.data} stats={stats}>
+    <Content components={{
+        Callout,
+        Link,
+        TweetEmbed,
+        YTVideoEmbed,
+        Tabs
+    }}/>
+</PostLayout>

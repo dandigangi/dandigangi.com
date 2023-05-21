@@ -1,24 +1,17 @@
 ---
+    import { SITE } from '$/config'
+    import ModeLabel from './ModeLabel.svelte'
+    import NetlifyIdentity from './NetlifyIdentity.svelte'
 ---
-
-<footer>
-  <div>
-    This blog is built with 
-    <a class="animated" href={"https://github.com/flexdinesh/blogster"} target="_blank"> Blogster</a> 
-    and hosted in
-    <a class="animated" href={"https://www.netlify.com"}> Netlify</a>.
-  </div>
+<footer class="footer">
+    <nav class="nav">
+        <div>2021  &copy; Copyright notice |  <a href={ SITE.githubUrl } title={`${ SITE.name }'s Github URL'`}>{ SITE.name }</a>
+        <ModeLabel client:load/> theme on <a href="https://astro.build/">Astro</a></div>
+        <NetlifyIdentity client:load/>
+    </nav>
 </footer>
-
 <style>
-  footer {
-    grid-area: footer;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem;
-    margin-top: 1rem;
-    line-height: 1.75;
-  }
+    .footer {
+        @apply py-6 border-t
+    }
 </style>

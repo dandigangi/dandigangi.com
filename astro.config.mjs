@@ -1,32 +1,56 @@
-/* eslint-disable turbo/no-undeclared-env-vars */
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import svelte from '@astrojs/svelte';
+import tailwind from '@astrojs/tailwind';
+import sitemap from '@astrojs/sitemap';
+import mdx from '@astrojs/mdx';
 import { defineConfig } from "astro/config";
-import sitemap from "@astrojs/sitemap";
+import vercel from "@astrojs/vercel/serverless";
+import markdoc from "@astrojs/markdoc";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-/* 
-  We are doing some URL mumbo jumbo here to tell Astro what the URL of your website will be.
-  In local development, your SEO meta tags will have localhost URL.
-  In built production websites, your SEO meta tags should have your website URL.
-  So we give our website URL here and the template will know what URL to use 
-  for meta tags during build.
-  If you don't know your website URL yet, don't worry about this
-  and leave it empty or use localhost URL. It won't break anything.
-*/
+// Full Astro Configuration API Documentation:
+// https://docs.astro.build/reference/configuration-reference
 
-const SERVER_PORT = 3000;
-// the url to access your blog during local development
-const LOCALHOST_URL = `http://localhost:${SERVER_PORT}`;
-// the url to access your blog after deploying it somewhere (Eg. Netlify)
-const LIVE_URL = "https://yourwebsiteurl.com";
-// this is the astro command your npm script runs
-const SCRIPT = process.env.npm_lifecycle_script || "";
-const isBuild = SCRIPT.includes("astro build");
-let BASE_URL = LOCALHOST_URL;
-// When you're building your site in local or in CI, you could just set your URL manually
-if (isBuild) {
-  BASE_URL = LIVE_URL;
-}
-export default defineConfig({
-  server: { port: SERVER_PORT },
-  site: BASE_URL,
-  integrations: [sitemap()],
+// @type-check enabled!
+// VSCode and other TypeScript-enabled text editors will provide auto-completion,
+// helpful tooltips, and warnings if your exported object is invalid.
+// You can disable this by removing "@ts-check" and `@type` comments below.
+
+// @ts-check
+
+
+// https://astro.build/config
+
+// https://astro.build/config
+export default defineConfig( /** @type {import('astro').AstroUserConfig} */{
+  // root: '.',     // Where to resolve all URLs relative to. Useful if you have a monorepo project.
+  // outDir: './dist',       // When running `astro build`, path to final static output
+  // publicDir: './public',   // A folder of static files Astro will copy to the root. Useful for favicons, images, and other files that don’t need processing.
+  output: 'server',
+  site: 'https://astro-ink.vercel.app',
+  // Your public domain, e.g.: https://my-site.dev/. Used to generate sitemaps and canonical URLs.
+  server: {
+    // port: 3000,         // The port to run the dev server on.
+  },
+  integrations: [mdx(),
+    // markdoc(), // disabled now due to an issue with Vercel builds
+    svelte(), tailwind({
+    config: {
+      applyBaseStyles: false
+    }
+  }), sitemap()],
+  vite: {
+    plugins: [],
+    resolve: {
+      alias: {
+        '$': path.resolve(__dirname, './src')
+      }
+    },
+    optimizeDeps: {
+      allowNodeBuiltins: true
+    }
+  },
+  adapter: vercel()
 });

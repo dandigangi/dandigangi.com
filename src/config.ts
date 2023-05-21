@@ -1,12 +1,54 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
+import type{ NavItems } from './types'
 
-export const SITE_TITLE = "Dan DiGangi | Engineering Manager, Tech Mentor";
-export const SITE_DESCRIPTION =
-  "Dan DiGangi is a Chicago based software engineering manager, tech mentor, and the organizer of the React Loop conference.";
-export const TWITTER_HANDLE = "@dandigangi";
-export const MY_NAME = "Dan DiGangi";
+export const NAV_ITEMS: NavItems = {
+    home: {
+        path: '/',
+        title: 'home'
+    },
+    blog: {
+        path: '/blog',
+        title: 'blog'
+    },
+    tags: {
+        path: '/tags',
+        title: 'tags'
+    },
+    media: {
+        path: '/media',
+        title: 'media'
+    },
+    about: {
+        path: '/about',
+        title: 'about'
+    }
+}
 
-// setup in astro.config.mjs
-const BASE_URL = new URL(import.meta.env.SITE);
-export const SITE_URL = BASE_URL.origin;
+export const SITE = {
+    // Your site's detail?
+    name: 'Ink',
+    title: 'Astro - Ink',
+    description: 'Crisp, minimal, personal blog theme for Astro',
+    url: 'https://astro-ink.vercel.app',
+    githubUrl: 'https://github.com/one-aalam/astro-ink',
+    listDrafts: true,
+    image: 'https://raw.githubusercontent.com/one-aalam/astro-ink/main/public/astro-banner.png',
+    // YT video channel Id (used in media.astro)
+    ytChannelId: '',
+    // Optional, user/author settings (example)
+    // Author: name
+    author: '', // Example: Fred K. Schott
+    // Author: Twitter handler
+    authorTwitter: '', // Example: FredKSchott
+    // Author: Image external source
+    authorImage: '', // Example: https://pbs.twimg.com/profile_images/1272979356529221632/sxvncugt_400x400.jpg, https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png
+    // Author: Bio
+    authorBio: 'Crisp, minimal, personal blog theme for Astro. Crisp, minimal, personal blog theme for Astro. Crisp, minimal, personal blog theme for Astro'
+}
+
+// Ink - Theme configuration
+export const PAGE_SIZE = 8
+export const USE_POST_IMG_OVERLAY = false
+export const USE_MEDIA_THUMBNAIL = true
+
+export const USE_AUTHOR_CARD = true
+export const USE_SUBSCRIPTION = false /* works only when USE_AUTHOR_CARD is true */
