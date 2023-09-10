@@ -1,13 +1,28 @@
-# Personal Website
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleerob%2Fleerob.io)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/3945f5ab-dc2d-49b7-b767-3ed1893da302/deploy-status)](https://app.netlify.com/sites/dandigangi/deploys)
+# leerob.io
 
-### TODO
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Database**: [PlanetScale](https://planetscale.com)
+- **Authentication**: [NextAuth.js](https://next-auth.js.org)
+- **Deployment**: [Vercel](https://vercel.com)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com)
+- **Analytics**: [Vercel Analytics](https://vercel.com/analytics)
 
-- Design theme customization
-- Transfer content from previous site
-- Write 2 new articles (em leadership, mental health?)
-- Setup Heap (analytics), Sentry (errors), Lighthouse (perf/seo/a11y) integrations
-- Research SEO continuity
-- Reindex site and review G search console
-- Launch on dandigangi.com domain
+## Running Locally
+
+This application requires Node.js v16.13+.
+
+```bash
+git clone https://github.com/leerob/leerob.io.git
+cd leerob.io
+pnpm install
+pnpm run setup # Remove all of my personal information
+pnpm dev
+```
+
+Create a `.env` file similar to [`.env.example`](https://github.com/leerob/leerob.io/blob/main/.env.example).
+
+## Cloning / Forking
+
+Please review the [license](https://github.com/leerob/leerob.io/blob/main/LICENSE.txt) and remove all of my personal information (resume, blog posts, images, etc.) by running `pnpm run setup`.
