@@ -1,11 +1,13 @@
-export default function robots() {
+import { MetadataRoute } from 'next'
+import siteMetadata from '@/data/siteMetadata'
+
+export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: '*',
-      },
-    ],
-    sitemap: 'https://leerob.io/sitemap.xml',
-    host: 'https://leerob.io',
-  };
+    rules: {
+      userAgent: '*',
+      allow: '/',
+    },
+    sitemap: `${siteMetadata.siteUrl}/sitemap.xml`,
+    host: siteMetadata.siteUrl,
+  }
 }
