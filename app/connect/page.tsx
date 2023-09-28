@@ -10,13 +10,9 @@ export default function Connect() {
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Connect
           </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">Get in touch with me</p>
-          <div>
-            <form>
-              Fields
-              <input type="text"></input>
-            </form>
-          </div>
+        </div>
+        <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
+          <div className="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2">Form</div>
         </div>
       </div>
     </>
