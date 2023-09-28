@@ -1,15 +1,18 @@
+'use client'
+
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
-// import Logo from '@/data/logo.svg'
-import LogoDark from '/public/static/images/dan-digangi-logo-dark.png'
 import LogoLight from '/public/static/images/dan-digangi-logo-light.png'
 import Image from '@/components/Image'
 import Link from './Link'
 import MobileNav from './MobileNav'
-import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
+import { usePathname } from 'next/navigation'
+import link from 'next/link'
 
 const Header = () => {
+  console.log(usePathname())
+
   return (
     <header className="flex items-center justify-between py-10">
       <div>
