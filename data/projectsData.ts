@@ -4,7 +4,7 @@ const projectsData = [
   {
     title: 'React Loop',
     description: `Co-organizer of React Loop (RL), Chicago's first and only ReactJS conference. Single day w/ diverse group of speakers presenting their expertise. Our goal is to learn, network, and grow together as front end engineers using React. Coming back in 2024.`,
-    imgSrc: '/static/images/google.png',
+    imgSrc: '/static/images/projects-react-loop-chicago-conference.png',
     href: 'https://www.reactloop.com/2019',
     status: 'active',
   },

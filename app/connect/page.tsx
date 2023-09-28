@@ -20,12 +20,12 @@ export default function Connect() {
               </a>
             </p>
             <p className="pb-2">
-              Currently looking for a new software engineering manager role opportunity after an
-              unfortunate layoff. Check out the <a href="/about">About page</a> and my{' '}
+              Looking for a new software engineering management opportunity after an unlucky layoff.
+              Check out the <a href="/about">About page</a> and my{' '}
               <a target="_blank" href="https://linkedin.com/in/dandigangi">
                 LinkedIn
               </a>{' '}
-              for more info.
+              to get to know me.
             </p>
             <p className="text-base">
               <em>Resume and references available on request.</em>

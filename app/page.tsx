@@ -7,7 +7,21 @@ export default async function Page() {
   const posts = allCoreContent(sortedPosts)
 
   const getRandomQuote = () => {
-    const quotes = ['Build experiences, not software', 'Lift others before yourself']
+    const quotes = [
+      'Build experiences, not software',
+      'Lift others before yourself',
+      'Your success is making your team successful',
+      'The best teams are diverse in thought, background, and experience',
+      'Code is always ones and zeroes but people are dynamic and change often',
+      'Build the best experiences with customer first thinking and add value through impact',
+      'Always consider context in your actions and decisions',
+      'Dogma is a dangerous style of thinking in technology',
+      'Use the right tools for the right problem',
+      'Build and enable a team of superheroes, not just your best engineers',
+      'Ownership is ensuring the success from A-Z, not doing all the work yourself',
+      'Mentoring can flow in any direction, not just downward',
+    ]
+
     return quotes[Math.floor(Math.random() * quotes.length)]
   }
 
@@ -27,7 +41,7 @@ export default async function Page() {
         </div>
         <br />
         <div className="mt-8">
-          <p className="mb-2">Looking for new engineering management opportunities</p>
+          <p className="mb-2">Looking for new engineering management opportunities (Laid Off)</p>
           <p>
             <a
               target="_blank"
