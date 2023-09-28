@@ -7,7 +7,7 @@ export default async function Page() {
   const posts = allCoreContent(sortedPosts)
 
   const getRandomQuote = () => {
-    const quotes = [
+    const DANS_QUOTES = [
       'Build experiences, not software',
       'Lift others before yourself',
       'Your success is making your team successful',
@@ -20,9 +20,13 @@ export default async function Page() {
       'Build and enable a team of superheroes, not just your best engineers',
       'Ownership is ensuring the success from A-Z, not doing all the work yourself',
       'Mentoring can flow in any direction, not just downward',
+      'Be a leader, not a manager',
     ]
 
-    return quotes[Math.floor(Math.random() * quotes.length)]
+    const newQuote = DANS_QUOTES[Math.floor(Math.random() * DANS_QUOTES.length)]
+    console.log(newQuote)
+
+    return newQuote
   }
 
   return (
