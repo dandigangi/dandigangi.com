@@ -23,9 +23,8 @@ export default async function Page() {
       'Be a leader, not a manager',
     ]
 
+    // Not 100% sure why React isn't rerunning this on a hard page reload. Maybe Next is caching?
     const newQuote = DANS_QUOTES[Math.floor(Math.random() * DANS_QUOTES.length)]
-    console.log(newQuote)
-
     return newQuote
   }
 
