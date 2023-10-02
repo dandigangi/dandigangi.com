@@ -34,7 +34,7 @@ export default function Connect() {
             <div className="text-lg">
               <h3>Speaking, Writing, and Related</h3>
               <p>
-                More speaking, conferences, podcasts, and writing are high interest. Technical
+                I'm interested in more speaking, conferences, podcasts, and writing. Technical
                 leadership, management, building teams, hiring, and coaching are my typical topics.
               </p>
               <p>

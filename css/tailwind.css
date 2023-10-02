@@ -29,3 +29,13 @@ input:-webkit-autofill:focus {
     background-color 600000s 0s,
     color 600000s 0s;
 }
+
+::-moz-selection {
+  color: white;
+  background: rgb(139, 92, 246);
+}
+
+::selection {
+  color: white;
+  background: rgb(139, 92, 246);
+}
