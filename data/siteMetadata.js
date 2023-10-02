@@ -11,7 +11,7 @@ const siteMetadata = {
   siteRepo: 'https://github.com/dandigangi/dandigangi.com',
   siteLogo: '/static/images/dan-digangi-logo.png',
   socialBanner: '/static/images/twitter-card.png',
-  email: 'me@dandigangi.com',
+  email: 'dandigangi@proton.me',
   linkedin: 'https://www.linkedin.com/in/dandigangi',
   twitter: 'https://twitter.com/dandigangi',
   github: 'https://github.com/dandigangi',
