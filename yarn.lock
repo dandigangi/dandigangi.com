@@ -3129,10 +3129,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdx@npm:^2.0.0, @types/mdx@npm:^2.0.5":
+"@types/mdx@npm:^2.0.0":
   version: 2.0.5
   resolution: "@types/mdx@npm:2.0.5"
   checksum: 1069baff0b2d0fb0bc724748e2386af626cc30f8ef99e680afb4dee566ed0aeabd31cea774212a7033f491e594a0acc234116078b252cba94ac413f91eb585a3
+  languageName: node
+  linkType: hard
+
+"@types/mdx@npm:^2.0.5":
+  version: 2.0.8
+  resolution: "@types/mdx@npm:2.0.8"
+  checksum: 4a7c2241c37e87aaab044c561f24874fabcd5cd2d6feb28dc665e2c80562afa7ddf94391a3b8ab3f76041199c8bafcff9131acf6d060f1aca45d763b171bbc29
   languageName: node
   linkType: hard
 

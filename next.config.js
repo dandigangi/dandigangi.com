@@ -10,10 +10,10 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
-  media-src *.s3.amazonaws.com;
+  media-src *.s3.amazonaws.com *.youtube.com youtube.com *.soundcloud.com soundcloud.com;
   connect-src *;
   font-src 'self';
-  frame-src giscus.app
+  frame-src giscus.app *.youtube.com *.soundcloud.com soundcloud.com;
 `
 
 const securityHeaders = [
@@ -57,7 +57,7 @@ const securityHeaders = [
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
-module.exports = () => {
+const nextConfig = () => {
   const plugins = [withContentlayer, withBundleAnalyzer]
   return plugins.reduce((acc, next) => next(acc), {
     reactStrictMode: true,
@@ -86,3 +86,5 @@ module.exports = () => {
     },
   })
 }
+
+module.exports = nextConfig

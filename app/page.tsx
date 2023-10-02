@@ -2,6 +2,7 @@ import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import Main from './Main'
 
+// Page: Home
 export default async function Page() {
   const sortedPosts = sortPosts(allBlogs)
   const posts = allCoreContent(sortedPosts)
@@ -10,22 +11,30 @@ export default async function Page() {
     const DANS_QUOTES = [
       'Build experiences, not software',
       'Lift others before yourself',
-      'Your success is making your team successful',
+      "A leader's success is making their team successful",
       'The best teams are diverse in thought, background, and experience',
-      'Code is always ones and zeroes but people are dynamic and change often',
-      'Build the best experiences with customer first thinking and add value through impact',
+      'Code is ones/zeroes but people are dynamic and change often',
+      'Build the best experiences with customer first thinking',
+      'True impact pushes the needle forward',
+      'Perfect code does not exist',
+      'Complex problems are made simpler by compartmentalizing',
       'Always consider context in your actions and decisions',
-      'Dogma is a dangerous style of thinking in technology',
+      'Dogma is in technology',
+      'Absolutes are rarely true',
       'Use the right tools for the right problem',
-      'Build and enable a team of superheroes, not just your best engineers',
-      'Ownership is ensuring the success from A-Z, not doing all the work yourself',
+      'Enable a team of superheroes vs one or two of your best',
+      'Ownership is ensuring success from A-Z, not doing all the work yourself',
+      'Leaders scale teams, people, and themselves',
+      'All roles on a team matter and can offer value/impact',
+      'Support every level of engineer',
       'Mentoring can flow in any direction, not just downward',
       'Be a leader, not a manager',
     ]
 
-    // Not 100% sure why React isn't rerunning this on a hard page reload. Maybe Next is caching?
-    const newQuote = DANS_QUOTES[Math.floor(Math.random() * DANS_QUOTES.length)]
-    return newQuote
+    // TODO: Timeout to rotate and check localStorage for prev quote but Next SSR so need to ensure window.localStorage is available to call
+    // Will return same quote again and again without checking prev val
+    // Maybe just useState but in async fx need different impl, will do later so site can go live
+    return DANS_QUOTES[Math.floor(Math.random() * DANS_QUOTES.length)]
   }
 
   return (
@@ -47,18 +56,25 @@ export default async function Page() {
           <p className="mb-2">Looking for new engineering management opportunities (Laid Off)</p>
           <p>
             <a
+              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+              href="/about"
+            >
+              About Me &rarr;
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a
+              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+              href="/connect"
+            >
+              Connect &rarr;
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a
               target="_blank"
               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
               href="https://linkedin.com/in/dandigangi"
             >
               LinkedIn &rarr;
-            </a>
-            &nbsp;&nbsp;&nbsp;
-            <a
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              href="/connect"
-            >
-              Contact Me &rarr;
             </a>
           </p>
         </div>
