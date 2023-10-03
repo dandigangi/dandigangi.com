@@ -49,7 +49,7 @@ export default async function Page() {
         </h2>
         <div className="mt-6">
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            <em>{getRandomQuote()}</em>
+            <em>Build experiences, not software</em>
           </p>
         </div>
         <br />
