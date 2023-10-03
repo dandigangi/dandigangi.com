@@ -17,7 +17,7 @@ export default async function Page() {
       'Build the best experiences with customer first thinking',
       'True impact pushes the needle forward',
       'Perfect code does not exist',
-      'Complex problems are made simpler by compartmentalizing',
+      'Complex problems are made simpler by compartmentalization',
       'Always consider context in your actions and decisions',
       'Dogma is in technology',
       'Absolutes are rarely true',
@@ -28,7 +28,8 @@ export default async function Page() {
       'All roles on a team matter and can offer value/impact',
       'Support every level of engineer',
       'Mentoring can flow in any direction, not just downward',
-      'Be a leader, not a manager',
+      'Be a leader before a manager',
+      'Never forget the importance of relationships with cross functional partners',
     ]
 
     // TODO: Timeout to rotate and check localStorage for prev quote but Next SSR so need to ensure window.localStorage is available to call
