@@ -4,7 +4,8 @@ const siteMetadata = {
     'Dan DiGangi - Senior Software Engineering Manager, Tech Mentor, Conference Organizer, UX/UI Fanatic',
   author: 'Dan DiGangi',
   headerTitle: false,
-  description: 'Something goes here about blog I think',
+  description:
+    'Dan is a senior software engineering manager focused on building diverse, high performance teams.',
   language: 'en-us',
   theme: 'dark',
   siteUrl: 'https://dandigangi.com',
