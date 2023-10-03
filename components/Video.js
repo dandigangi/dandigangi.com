@@ -1,4 +1,5 @@
-const Video = ({ url }) => {
+// Technically you can't use percentages vs explicit vals on iframes
+const Video = ({ src, videoType, url }) => {
   return (
     <div style={{ width: '100%', maxWidth: '100%' }}>
       <iframe
