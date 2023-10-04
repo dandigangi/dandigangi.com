@@ -20,8 +20,8 @@ export default function Connect() {
               </a>
             </p>
             <p className="pb-2">
-              Looking for a new software engineering management opportunity after an unlucky layoff.
-              Check out the <a href="/about">About page</a> and my{' '}
+              Looking for a new software engineering management opportunities after an unlucky
+              layoff. Check out the <a href="/about">About page</a> and my{' '}
               <a target="_blank" href="https://linkedin.com/in/dandigangi">
                 LinkedIn
               </a>{' '}
