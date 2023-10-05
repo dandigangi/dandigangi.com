@@ -54,11 +54,11 @@ export default async function Page() {
         </div>
         <br />
         <div
-          class="flex items-center p-4 mb-4 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+          className="flex items-center p-4 mb-4 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
           role="alert"
         >
           <svg
-            class="flex-shrink-0 inline w-4 h-4 mr-3"
+            className="flex-shrink-0 inline w-4 h-4 mr-3"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
