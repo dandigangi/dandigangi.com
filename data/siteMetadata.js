@@ -16,6 +16,7 @@ const siteMetadata = {
   linkedin: 'https://www.linkedin.com/in/dandigangi',
   twitter: 'https://twitter.com/dandigangi',
   github: 'https://github.com/dandigangi',
+  web: 'https://dandigangi.com',
   locale: 'en-US',
   analytics: {
     umamiAnalytics: {
