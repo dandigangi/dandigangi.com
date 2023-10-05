@@ -3,7 +3,8 @@ import SocialIcon from '@/components/social-icons'
 import siteMetadata from '@/data/siteMetadata'
 import Experience from '@/components/Resume'
 import resumeXp from '@/data/resumeXp'
-import Layout from 'app/layout'
+import Image from '@/components/Image'
+import LogoLight from '/public/static/images/dan-digangi-logo-light.png'
 
 export const metadata = genPageMetadata({ title: 'Resume' })
 
@@ -12,7 +13,7 @@ export default function Resume() {
     <>
       <div>
         {/* Header */}
-        <div className="mb-14">
+        <div className="pt-8 mb-14">
           <div className="flex">
             <div className="basis-1/2">
               <h1 className="mb-6 text-5xl font-bold leading-none tracking-tight">Dan DiGangi</h1>
@@ -27,7 +28,7 @@ export default function Resume() {
             <div className="basis-1/2">
               <div className="mb-3 italic text-lg text-right">Build experiences, not software</div>
               <div className="flex justify-end gap-3">
-                <SocialIcon kind="web" href={siteMetadata.web} size={6} />
+                <SocialIcon kind="web" href={siteMetadata.web} size={7} />
                 <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
                 <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
               </div>
@@ -57,9 +58,9 @@ export default function Resume() {
             ))}
           </div>
 
-          <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+          <hr className="h-px my-12 bg-gray-200 border-0 dark:bg-gray-700" />
 
-          <div className="flex">
+          <div className="flex gap-16 mb-16">
             {/* Education */}
             <div className="mb-10">
               <div className="mb-4 text-lg font-bold">Education</div>
@@ -74,13 +75,58 @@ export default function Resume() {
             </div>
 
             {/* Volunteering/Other */}
-            <div>
-              <div className="mb-1 font-bold">Volunteering/Other</div>
+            <div className="pl-12">
+              <div className="font-bold text-lg mb-4">Volunteering/Other</div>
               <div>
                 <ul>
-                  <li>Some thing here</li>
-                  <li>Some thing here</li>
-                  <li>Some thing here</li>
+                  <li className="mb-1">
+                    <a
+                      className="font-semibold underline"
+                      target="_blank"
+                      href="https://2019.reactloop.com"
+                    >
+                      React Loop
+                    </a>{' '}
+                    Conference Organizer
+                  </li>
+                  <li className="mb-1">
+                    <a
+                      className="font-semibold underline"
+                      target="_blank"
+                      href="https://platohq.com"
+                    >
+                      Plato
+                    </a>
+                    ,{' '}
+                    <a
+                      className="font-semibold underline"
+                      target="_blank"
+                      href="https://mentorcruise.com"
+                    >
+                      MentorCruise
+                    </a>
+                    , and Private Mentoring
+                  </li>
+                  <li className="mb-1">
+                    <a
+                      className="font-semibold underline"
+                      target="_blank"
+                      href="https://chicagojs.org"
+                    >
+                      Chicago JS Camp
+                    </a>{' '}
+                    Staff
+                  </li>
+                  <li>
+                    <a
+                      className="font-semibold underline"
+                      target="_blank"
+                      href="https://www.startupinstitute.com/"
+                    >
+                      Startup Institute
+                    </a>{' '}
+                    Javascript Teacher
+                  </li>
                 </ul>
               </div>
             </div>

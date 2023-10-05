@@ -20,7 +20,7 @@ export default function Experience({ bullets, company, dates, title, url }) {
         <ul className="list-outside md:list-disc ml-5 mb-7">
           {bullets.map((bullet, key) => {
             return (
-              <li className="mb-2 opacity-80" key={key}>
+              <li className="mb-3 opacity-80" key={key}>
                 {bullet}
               </li>
             )
