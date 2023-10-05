@@ -71,6 +71,24 @@ const resumeXp = [
       'Trained associate to mid-level engineers on Javascript (pre-ES6) architecture, patterns, and best practices.',
     ],
   },
+  {
+    company: 'Fusion92',
+    url: 'https://fusion92.com',
+    jobTitle: 'Web Developer',
+    dates: 'May 2011 - Dec 2012',
+    bullets: [
+      'Developed pixel-perfect, responsive interfaces in HTML, CSS, and Javascript to meet design specs for multiple large scale clients including McDonalds, AT&T, Buddig, H&R Block, and Bosch.',
+    ],
+  },
+  {
+    company: 'GTHAUS',
+    url: 'https://gthaus.com',
+    jobTitle: 'Web Developer & Technical Manager',
+    dates: 'Apr 2009 - Dec 2010',
+    bullets: [
+      'Designed and developed the core e-commerce website and product micro-sites. The architecture was built to enable rapid development and deployment to rival competing brands and better position the Meisterschaft brand in an aggressively growing mid-market.',
+    ],
+  },
 ]
 
 export default resumeXp
