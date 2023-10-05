@@ -17,7 +17,7 @@ export default function Resume() {
               <h1 className="mb-6 text-5xl font-bold leading-none tracking-tight">Dan DiGangi</h1>
               <h2 className="mb-2 text-xl">Senior Software Engineering Manager, Tech Mentor</h2>
               <div className="text-sm opacity-80">
-                Chicago, IL (Remote, Hybrid)&nbsp;&nbsp;&nbsp; |&nbsp; &nbsp; &nbsp;
+                Chicago, IL (Remote, Hybrid)&nbsp;&nbsp;&nbsp;|&nbsp; &nbsp; &nbsp;
                 <a href="tel:6304144184">630-414-4184</a>
                 &nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;&nbsp;
                 <a href="mailto:me@dandigangi.com">me@dandigangi.com</a>

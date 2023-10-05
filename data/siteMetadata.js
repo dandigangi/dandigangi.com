@@ -5,7 +5,7 @@ const siteMetadata = {
   author: 'Dan DiGangi',
   headerTitle: false,
   description:
-    'Dan is a senior software engineering manager focused on building diverse, high performance teams.',
+    'Senior software engineering manager and technical mentor focused on building diverse, high performance teams. Located in Chicago, IL and searching for new remote/hybrid career opportunities.',
   language: 'en-us',
   theme: 'dark',
   siteUrl: 'https://dandigangi.com',
