@@ -3,8 +3,6 @@ import SocialIcon from '@/components/social-icons'
 import siteMetadata from '@/data/siteMetadata'
 import Experience from '@/components/Resume'
 import resumeXp from '@/data/resumeXp'
-import Image from '@/components/Image'
-import LogoLight from '/public/static/images/dan-digangi-logo-light.png'
 
 export const metadata = genPageMetadata({ title: 'Resume' })
 
@@ -150,9 +148,4 @@ export default function Resume() {
       </div>
     </>
   )
-}
-
-Resume.getLayout = function getLayout(page) {
-  console.log('page')
-  return <div className="derp">{page}</div>
 }
