@@ -133,7 +133,7 @@ export default function Resume() {
           {/* Misc */}
           <div className="italic">
             <div className="mb-2">
-              More information including additional software engineering positions available on{' '}
+              Detailed work history and additional information available on{' '}
               <a
                 target="_blank"
                 href="https://linkedin.com/in/dandigangi"
