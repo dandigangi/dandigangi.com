@@ -1,6 +1,7 @@
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import Main from './Main'
+import random from 'lodash/random'
 
 // Page: Home
 export default async function Page() {
@@ -30,12 +31,10 @@ export default async function Page() {
       'Mentoring can flow in any direction, not just downward',
       'Be a leader before a manager',
       'Never forget the importance of relationships with cross functional partners',
+      'Good solutions come from understanding the pros and cons of different approaches',
     ]
 
-    // TODO: Timeout to rotate and check localStorage for prev quote but Next SSR so need to ensure window.localStorage is available to call
-    // Will return same quote again and again without checking prev val
-    // Maybe just useState but in async fx need different impl, will do later so site can go live
-    return DANS_QUOTES[Math.floor(Math.random() * DANS_QUOTES.length)]
+    return DANS_QUOTES[random(0, DANS_QUOTES.length)]
   }
 
   return (
@@ -49,7 +48,7 @@ export default async function Page() {
         </h2>
         <div className="mt-6">
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            <em>Build experiences, not software</em>
+            <em>{getRandomQuote()}</em>
           </p>
         </div>
         <br />
