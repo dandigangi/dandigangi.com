@@ -174,7 +174,7 @@ export default function Resume() {
               </a>
               &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
               <a
-                href="https://drive.google.com/file/d/1KOY_eorzQWpl4hP_EocH4LAZ8N4qGViN/view?usp=sharing"
+                href="https://drive.google.com/file/d/1LPaXd5DiTp1zsaoKRLDmkG8A2VvvBOdO/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold underline"
