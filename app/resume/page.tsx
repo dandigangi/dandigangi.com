@@ -14,7 +14,7 @@ export default function Resume() {
         <div className="pt-8 mb-14">
           <div className="flex">
             <div className="basis-1/2">
-              <h1 className="mb-6 text-5xl font-bold leading-none tracking-tight">Dan DiGangi</h1>
+              <h1 className="mb-4 text-5xl font-bold leading-none tracking-tight">Dan DiGangi</h1>
               <h2 className="mb-2 text-xl">Senior Software Engineering Manager, Tech Mentor</h2>
               <div className="opacity-80">
                 Chicago, IL (Remote, Hybrid)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -34,7 +34,7 @@ export default function Resume() {
           </div>
         </div>
 
-        {/* { Alert } */}
+        {/* Alert */}
         <div
           className="flex items-center p-4 mb-8 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
           role="alert"
@@ -49,7 +49,7 @@ export default function Resume() {
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
           </svg>
           <div>
-            Detailed work history and additional information available on{' '}
+            Complete work history and additional information available on{' '}
             <a
               target="_blank"
               href="https://linkedin.com/in/dandigangi"
@@ -68,15 +68,16 @@ export default function Resume() {
             </h1>
           </div>
           <div>
-            {resumeXp.map((xp, key) => (
+            {/* TODO: This was so poorly done, cringe, data model needs to be fixed too */}
+            {resumeXp.map(({ jobTitle, company, descriptions, positions, dates, url }, key) => (
               <div key={key}>
                 <Experience
-                  key={key}
-                  title={xp.jobTitle}
-                  company={xp.company}
-                  bullets={xp.bullets}
-                  dates={xp.dates}
-                  url={xp.url}
+                  title={jobTitle}
+                  company={company}
+                  descriptions={descriptions}
+                  positions={positions}
+                  dates={dates}
+                  url={url}
                 />
               </div>
             ))}
@@ -157,9 +158,9 @@ export default function Resume() {
           </div>
 
           {/* Misc */}
-          <div className="italic">
+          <div className="italic pt-4 pb-6 text-center">
             <div className="mb-2">
-              Detailed work history and additional information available on{' '}
+              Complete work history and additional information available on{' '}
               <a
                 target="_blank"
                 href="https://linkedin.com/in/dandigangi"
@@ -168,7 +169,7 @@ export default function Resume() {
                 LinkedIn
               </a>
             </div>
-            References available upon request
+            PDF resume and references available upon request
           </div>
         </div>
       </div>
