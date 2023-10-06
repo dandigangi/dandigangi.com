@@ -1,6 +1,6 @@
 import { genPageMetadata } from 'app/seo'
 import SocialIcon from '@/components/social-icons'
-import siteMetadata from '@/data/siteMetadata'
+import siteMetadata, { email } from '@/data/siteMetadata'
 import Experience from '@/components/Resume'
 import resumeXp from '@/data/resumeXp'
 
@@ -27,6 +27,7 @@ export default function Resume() {
               <div className="mb-3 italic text-lg text-right">Build experiences, not software</div>
               <div className="flex justify-end gap-3">
                 <SocialIcon kind="web" href={siteMetadata.web} size={7} />
+                <SocialIcon kind="mail" href={`mailto:${email}`} size={6} />
                 <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
                 <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
               </div>
