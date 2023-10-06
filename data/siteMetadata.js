@@ -1,7 +1,6 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title:
-    'Dan DiGangi - Senior Software Engineering Manager, Tech Mentor, Conference Organizer, UX/UI Fanatic',
+  title: 'Dan DiGangi - Senior Software Engineering Manager & Technical Mentor',
   author: 'Dan DiGangi',
   headerTitle: false,
   description:

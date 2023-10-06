@@ -101,7 +101,7 @@ export default function Resume() {
             </div>
 
             {/* Volunteering/Other */}
-            <div className="pl-12">
+            <div className="md:pl-12">
               <div className="font-bold text-lg mb-4">Volunteering/Other</div>
               <div>
                 <ul>

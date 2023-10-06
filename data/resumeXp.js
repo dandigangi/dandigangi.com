@@ -9,7 +9,8 @@ const resumeXp = [
       'Led and hired the Velocity team (3 reports) delivering special projects, features, and applications/tooling supporting the BTS org., finance, growth, and internal services teams.',
       'Coached engineers across BTS growing their technical, product, user experience, and business skill sets.',
       'Collaborated closely w/ cross functional partners and business stakeholders developing cross team product/technical roadmaps.',
-      'Redesigned agile/SDLC processes from ideation to delivery and adopted across all BTS teams. Analyzed and reduced defect rates (~16%) leveraging new SDLC processes and testing requirements including reintroduction of Playwright E2E testing suites.',
+      'Redesigned agile/SDLC processes from ideation to delivery and adopted across all BTS teams.',
+      'Analyzed and reduced defect rates (~16 %) leveraging new SDLC processes and testing requirements including reintroduction of Playwright E2E testing suites.',
     ],
   },
   {
