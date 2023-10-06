@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { slug } from 'github-slugger'
 interface Props {
   text: string
-  fontSize: string
+  fontSize?: string
 }
 
 const Tag = ({ text, fontSize = '' }: Props) => {
