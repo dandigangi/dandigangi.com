@@ -4,7 +4,10 @@ import siteMetadata, { email } from '@/data/siteMetadata'
 import Experience from '@/components/Resume'
 import resumeXp from '@/data/resumeXp'
 
-export const metadata = genPageMetadata({ title: 'Resume' })
+export const metadata = genPageMetadata({
+  title: 'Resume',
+  description: 'Dan DiGangi - Senior Software Engineering Manager Resume 2023',
+})
 
 export default function Resume() {
   return (
@@ -159,9 +162,9 @@ export default function Resume() {
           </div>
 
           {/* Misc */}
-          <div className="italic pt-4 pb-6 text-center">
+          <div className="pt-5 pb-6 text-center">
             <div className="mb-2">
-              Complete work history and additional information available on{' '}
+              Complete work history available on{' '}
               <a
                 target="_blank"
                 href="https://linkedin.com/in/dandigangi"
@@ -169,8 +172,16 @@ export default function Resume() {
               >
                 LinkedIn
               </a>
+              &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+              <a
+                href="https://drive.google.com/file/d/1KOY_eorzQWpl4hP_EocH4LAZ8N4qGViN/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold underline"
+              >
+                Download Resume
+              </a>
             </div>
-            PDF resume and references available upon request
           </div>
         </div>
       </div>
