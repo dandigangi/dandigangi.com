@@ -10,7 +10,7 @@ export default function Experience({ bullets, company, dates, title, url }) {
               </a>{' '}
               - <span className="opacity-80">{title}</span>
               <span className="text-sm">
-                &nbsp;&nbsp;&nbsp;<span className="opacity-50">|&nbsp;&nbsp;&nbsp;{dates}</span>
+                &nbsp;&nbsp;&nbsp;<span className="opacity-60">|&nbsp;&nbsp;&nbsp;{dates}</span>
               </span>
             </div>
           </div>
