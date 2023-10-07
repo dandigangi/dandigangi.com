@@ -67,7 +67,7 @@ thisisa64pluscharstringthisisa64pluscharstringthisisa64pluscharstring@thisisa64p
 
 #### Our First Expression
 
-This expression will be written using [Regex101](https://regex101.com).
+This expression will be written on [Regex101](https://regex101.com) to help guide us towards success.
 
 ```
 .*@.*.gov
@@ -111,19 +111,25 @@ Now that's starting to look solid. We added `0-9` for numbers and `-_.` for punc
 
 ![Regex101 Basic Email Expression Asterisks w/ Escapes](/static/images/blog/regex-101-basic-email-expression-part-asterisks-escapes.png)
 
-**Broken**. We introduced a character `\` that means something to the regex engine when it's encountered so it bombed. There is a simple way out of this which is using an escape. We can simply add a back slash before the back slash we want as part of our expression. It tells regex to literally match that character.
+**Broken**. We introduced a character `\` but that means something to the regex engine when it's encountered so it bombed. There is a simple way out of this which is using an escape. We can simply add a back slash before the back slash we want as part of our expression. It tells regex to literally match that character.
 
-Great example you may have run into is a string in quotes but you also need quotes inside of it. Same solution works.
+Great example you may have run into is a string in quotes but you also need quotes inside of it. Same solution works. You could just do single quotes but if a requirement called for double quotes (realistic requirement) you need to make it happen.
+
+```
+const someString = "My name is Dan and I like to say \"build experiences, not software\""
+```
+
+The escape is added below per requirements.
 
 ```
 [a-zA-Z0-9-_.\\]*@[a-zA-Z0-9-_.]*.gov
 ```
 
-This is a weird requirement and not part of emails so we'll push back on product. We trust our developers so that requirement goes away.
+But... this is a weird requirement and not part of email formatting so we'll push back on product. We trust developers so that requirement goes away. Bye-bye!
 
 ### Expression Version 4
 
-Last but not least we need to ensure the string is the proper length. There is a case to be made that you could use your language to check the length after matches are returned but regex can too.
+Last but not least we need to ensure the string is the proper length. There is a case to be made that you could use your coding language to check the length after matches are returned but regex can too.
 
 ```
 [a-zA-Z0-9-_.]*@[a-zA-Z0-9-_.]*.gov{0,64}
@@ -135,7 +141,7 @@ After our expression we'll append `{0,64}` telling it the lower bound of the len
 
 ---
 
-## Wrapup
+## Wrap-up
 
 If you're a developer you can guess that the depths and abilities of your expression needs to be stronger than this. We were just covering a basic example with an introduction to the concepts. When I ran into something like this in the past it was not about the perfect solution but enabling my productivity.
 
