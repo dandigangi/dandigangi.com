@@ -153,13 +153,13 @@ The real world use that came up in management was dumping around 10k emails from
 
 Huge problem in massive data sets when you need to look through it. I took this on to support a product owner needing to email specific customers about an outage earlier in the week.
 
-The last step after returning successful searches was manipulating the strings to be valid emails. Here's an updated version showing a capture `()`. You can see `$1` is the captured match of the first part of each email. `,look i changed this string` is added on and now we have our final output. Think of it as a code based find & replace.
+The last step after returning successful searches was manipulating the strings to be valid emails. Here's an updated version showing a capture `()`. You can see `$1` is the captured match of the first part of each email. `,look i changed this string` is added on. You can think of it as a code based find & replace.
 
 ![Regex101 Basic Email Expression Part 1](/static/images/blog/regex-101-basic-email-expression-part-5.png)
 
 If we had added multiple parentheses (capture groups) the count would ascend `$1 $2 $3` and so on. It works from left to right, outward to inward with nesting taking priority.
 
-All in all we ended w/ a clean list that was handed over to product and they we're good to go!
+All in all we ended w/ a clean list that was handed over to product and they were good to go!
 
 ### Final Result
 
