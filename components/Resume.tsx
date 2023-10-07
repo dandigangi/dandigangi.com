@@ -6,15 +6,20 @@ export default function Experience({ positions, descriptions, company, dates, ti
           <div className="text-xl">
             <div className="mb-4">
               <a className="font-bold underline" target="_blank" href={url}>
-                {company} -{' '}
+                {company}
               </a>
+
               {dates && (
-                <span>
-                  <span className="opacity-80">{title}</span>
-                  <span className="text-sm">
-                    &nbsp;&nbsp;&nbsp;<span className="opacity-60">|&nbsp;&nbsp;&nbsp;{dates}</span>
+                <>
+                  -{' '}
+                  <span>
+                    <span className="opacity-80">{title}</span>
+                    <span className="text-sm">
+                      &nbsp;&nbsp;&nbsp;
+                      <span className="opacity-60">|&nbsp;&nbsp;&nbsp;{dates}</span>
+                    </span>
                   </span>
-                </span>
+                </>
               )}
             </div>
           </div>
