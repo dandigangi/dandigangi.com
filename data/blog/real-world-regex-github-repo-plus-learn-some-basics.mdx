@@ -1,0 +1,195 @@
+---
+title: 'Real World Regex (Regular Expressions) Github Repo + Learn Some Basics'
+date: '2023-10-07'
+lastmod: '2023-10-07'
+tags: ['code', 'repos']
+draft: false
+summary: 'Collection of regex (regular expressions) including explanations that come up during my work to make life easier so you can learn them too.'
+images: ['/static/images/twitter-card.png']
+---
+
+Once upon a time regex aka [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) absolutely alluded me how the hell it worked. If you're not familiar with regex it's a powerful string search/matching algorithm. I've used it countless times over the years since learning it and it's an invaluable tool as both a developer and manager. How I learned was installing SSL security certificates on Wordpress sites as far back as 2011 on [Digital Ocean](https://digitalocean.com).
+
+I won't be covering in-depth learning regex in this post. The content I typically share is around engineering management and leadership. Once in awhile I'll share some more coding based posts though!
+
+What I do want to share is a learning example along w/ a helpful [Github repository](https://github.com/dandigangi/regex). It has real world use cases that I will add as they come up. It's made my life easier and it can help you too.
+
+The real world use cases can be found in [expressions.md](https://github.com/dandigangi/regex/blob/main/expressions.md) (1).
+
+### When You May Need Regex
+
+Finding and manipulating strings will come up often in your career. It is slightly different in some ways as a manager but the overlap is still high. First we'll look at a basic email example followed by the real world example I encountered.
+
+---
+
+## Practice Use Case
+
+**Case**:
+- Government agency developer job building a contact form for internal employees only
+
+This case's focus is client side so we'll be thinking as a front end developer using vanilla Javascript. I mean the government is pretty out of date so loads of vanilla and jQuery is probably not to far off from real world. In our form we have common fields like name, email, phone, and message.
+
+When it comes to the email or phone input field they would need to validate everything is good to go. That could mean not only general email syntax but prevent malicious input or specifics to the use case & requirements. The basic email example below will speak to this.
+
+You can extend even further considering that the backend should also validate server side before any type of processing or operations go forward.
+
+Phone and email expressions are complex to be fair but I still wrote basic versions early on. Later I learned that people far smarter than I will ever be wrote versions that can cover an inordinate amount of use cases. You should still write them to learn the power of regex even if you grab say a copy/paste from an email regex RFC like this:
+
+```
+(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])
+```
+
+Crazy, right? I can read portions of that at best. Tracking all the pieces is difficult but more than likely this was machine generated combining numerous expressions written by a developer. Plenty of learning opportunities to be had reading it once you get down the basics either way. There will be cases where you don't need something this extensive and it's safe to write your own.
+
+There's an even more ridiculous version here w/ [RFC 822](https://www.ex-parrot.com/~pdw/Mail-RFC822-Address.html). This is a basic one found in the [Lodash utility library](https://github.com/lodash/lodash/blob/aa18212085c52fc106d075319637b8729e0f179f/src/.internal/unicodeToArray.ts#L30).
+
+**Tip**: If you're learning Javascript fundamentals Lodash is an excellent library to read source code.
+
+---
+
+## Basic Email Regex
+
+Keeping our use case in mind let's get requirements set and start building. I'll be your product manager.
+
+**Validation Requirements**:
+
+- Alpha, numeric, and basic punctuation before and after a single `@` symbol
+- Includes `.gov` domain extension and no other at end of strings after `@`
+- Max overall string length of 64 characters
+
+**Test strings**:
+```
+john@president.gov
+john1@president.gov
+john-1@president.gov
+
+betty@vicepres.com
+dan-4@vicepres.net
+
+thisisa64pluscharstringthisisa64pluscharstringthisisa64pluscharstring@thisisa64pluscharstring.com
+```
+
+#### Our First Expression
+
+This expression will be written using [Regex101](https://regex101.com).
+
+```
+.*@.*.gov
+```
+
+This is the first version I'll throw in Regex101 w/ an any character, unlimited match. It's usually my goto starting point.
+
+The period `.` represents any single character and the asterisk `*` will match until there is none left. Because of the `@` symbol the expression knows to stop there on the first part after the any, unlimited completes. We write the same thing after again followed by our `.gov` requirement.
+
+![Regex101 Basic Email Expression Part 1](/static/images/blog/regex-101-basic-email-expression-part-1.png)
+
+We've already eliminated multiple bad strings we don't want. Let's build out the first part further to meet requirements.
+
+**Tip**: You'll often hear the word "greedy" in regex with refers to how many matches the engine will or won't take in.
+
+### Expression Version 2
+
+```
+[a-zA-Z]*@.*.gov
+```
+
+- Brackets `[]` denote a set of allowed characters to match on
+- `a-z` and `A-Z` within the set allows alpha characters of any case
+- `*` keeps our unlimited matching on this set's allowed characters
+
+![Regex101 Basic Email Expression Part 1](/static/images/blog/regex-101-basic-email-expression-part-2.png)
+
+We're still missing numbers and basic punctuation. Since our product manager (aka me) didn't explicitly say which characters we have two choices. The better choice is to not accept this work as ready for development. It needs to be groomed further with more in-depth requirements as a team collaboration effort. Turns out I'm on a vacation though so the developer can use their expertise and best judgement here.
+
+We'll say that dashes, underscores, and periods are valid input.
+
+### Expression Version 3
+
+```
+[a-zA-Z0-9-_.]*@.*.gov
+```
+
+![Regex101 Basic Email Expression Part 1](/static/images/blog/regex-101-basic-email-expression-part-3.png)
+
+Now that's starting to look solid. We added `0-9` for numbers and `-_.` for punctuation to the same set as the alpha characters. But what if product came back from vacation and said we need backward slashes! Odd but let's run with it.
+
+![Regex101 Basic Email Expression Asterisks w/ Escapes](/static/images/blog/regex-101-basic-email-expression-part-asterisks-escapes.png)
+
+**Broken**. We introduced a character `\` that means something to the regex engine when it's encountered so it bombed. There is a simple way out of this which is using an escape. We can simply add a back slash before the back slash we want as part of our expression. It tells regex to literally match that character.
+
+Great example you may have run into is a string in quotes but you also need quotes inside of it. Same solution works.
+
+```
+[a-zA-Z0-9-_.\\]*@[a-zA-Z0-9-_.]*.gov
+```
+
+This is a weird requirement and not part of emails so we'll push back on product. We trust our developers so that requirement goes away.
+
+### Expression Version 4
+
+Last but not least we need to ensure the string is the proper length. There is a case to be made that you could use your language to check the length after matches are returned but regex can too.
+
+```
+[a-zA-Z0-9-_.]*@[a-zA-Z0-9-_.]*.gov{0,64}
+```
+
+After our expression we'll append `{0,64}` telling it the lower bound of the length is `0` and upper bound of `64`. Looking on Regex101 again with our final expression we are meeting all requirements and each test string is passing. This solution is barebones but it's great for a basic implementation. **Great success**.
+
+![Regex101 Basic Email Expression Part 1](/static/images/blog/regex-101-basic-email-expression-part-4.png)
+
+---
+
+## Wrapup
+
+If you're a developer you can guess that the depths and abilities of your expression needs to be stronger than this. We were just covering a basic example with an introduction to the concepts. When I ran into something like this in the past it was not about the perfect solution but enabling my productivity.
+
+There is many ways you could pull off what I did here. A more experienced developer reading this is likely already seeing faults in my design. Imagine how quickly a bad expression traversing massive data sets would matter in a real world application.
+
+Did I skip a ton of concepts and details? Of course. Originally I hadn't planned on writing a tutorial of sorts. Towards the end of the first version I realized these specific concepts come up often and might be helpful to hit on.
+
+### Real World Example & Substitution
+
+The real world use that came up in management was dumping around 10k emails from a PSQL table stored as JSON. We had to identify around 250 customers by email but the JSON was not valid and/or had inconsistencies. JSON as a string w/ [escapes](https://www.google.com/search?q=escape+characters&oq=escape+characters&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTINCAEQABiDARixAxiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABNIBCDIzODhqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8) everywhere is painful. The ETL dumping this data from a 3rd party did not fix or validate the JSON.
+
+Huge problem in massive data sets when you need to look through it. I took this on to support a product owner needing to email specific customers about an outage earlier in the week.
+
+The last step after returning successful searches was manipulating the strings to be valid emails. Here's an updated version showing a capture `()`. You can see `$1` is the captured match of the first part of each email. `,look i changed this string` is added on and now we have our final output. Think of it as a code based find & replace.
+
+![Regex101 Basic Email Expression Part 1](/static/images/blog/regex-101-basic-email-expression-part-5.png)
+
+If we had added multiple parentheses (capture groups) the count would ascend `$1 $2 $3` and so on. It works from left to right, outward to inward with nesting taking priority.
+
+All in all we ended w/ a clean list that was handed over to product and they we're good to go!
+
+### Final Result
+
+The example expression we wrote and a detailed explanation is available on [Regex101](https://regex101.com/r/blAEgc/1). I hope you found this helpful and I'll be adding more real world regex work that I do to the [Github repository](https://github.com/dandigangi/regex).
+
+Absolutely feel free to let me know on [Twitter](https://twitter.com/dandigangi) or [email](dandigangi@proton.me) if I got something wrong.
+
+**Bonus**: If you really want to push what you can do with strings I suggest checking out [Bash](https://www.gnu.org/software/bash/), [sed](https://www.gnu.org/software/sed/manual/sed.html), and [awk](https://www.gnu.org/software/gawk/manual/gawk.html). It was painful to learn but combined w/ regex you wouldn't believe what you can do. DevOps/platform/infrastructure engineers are excellent people to learn from. They are absolutely bonkers in the command line doing this stuff.
+
+---
+
+## Learning Resources
+
+There are great websites like [Regex101](https://regex101.com) we used above that provide an interactive way to build, learn, and test. Take advantage of the dictionary of rules found on the lower right and try searching for some basics like "alpha" or "num".
+
+While you're writing it will tell you exactly what your expression is doing and yell when it isn't working. The substitution feature (if I'm not doing it directly in VS Code**) is beyond helpful. Sometimes you may just be searching large sets of data or text but more frequently I would need to manipulate strings to be something else.
+
+** VS Code has some small-ish differences in how it expects characters from what you may write on a site like Regex101. Other IDEs as well even if you are running on the same engine.
+
+![Regex101 Real Time Example](/static/images/blog/regex-101-realtime-example.gif)
+
+**Additional learning resources**:
+- [Mozilla MDN Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
+- [Regex Learn](https://regexlearn.com/)
+- [Learn Regex The Easy Way](https://github.com/ziishaned/learn-regex)
+- [Bash](https://www.gnu.org/software/bash/)
+- [sed](https://www.gnu.org/software/sed/manual/sed.html)
+- [awk](https://www.gnu.org/software/gawk/manual/gawk.html)
+
+**Other terms**:
+- [PSQL Postgres Database](https://www.postgresql.org)
+- [ETL](https://www.ibm.com/topics/etl)
+- [Escape Characters](https://www.w3schools.com/r/r_strings_esc.asp#:~:text=To%20insert%20characters%20that%20are,character%20you%20want%20to%20insert.)
