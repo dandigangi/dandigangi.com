@@ -14,7 +14,7 @@ const projectsData = [
       "Organized Chicago's first and only ReactJS conference. Single day track bringing together a diverse group of speakers, developers, and enthusiasts.",
     imgSrc: '/static/images/projects/react-loop-chicago-conference.png',
     altText: "React Loop. Chicago's first and only ReactJS conference.",
-    href: 'https://www.reactloop.com/2019',
+    href: 'https://2019.reactloop.com',
   },
 ]
 
