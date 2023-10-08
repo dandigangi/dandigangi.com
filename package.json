@@ -1,7 +1,9 @@
 {
-  "name": "tailwind-nextjs-starter-blog",
-  "version": "2.0.2",
-  "private": true,
+  "name": "dandigangi.com",
+  "description": "Personal website built w/ NextJS",
+  "homepage": "https://github.com/dandigangi/dandigangi.com",
+  "version": "1.0.0",
+  "private": false,
   "scripts": {
     "start": "next dev",
     "dev": "cross-env INIT_CWD=$PWD next dev",

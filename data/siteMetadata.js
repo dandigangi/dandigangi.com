@@ -19,7 +19,7 @@ const siteMetadata = {
   locale: 'en-US',
   analytics: {
     umamiAnalytics: {
-      umamiWebsiteId: process.env.NEXT_UMAMI_ID,
+      umamiWebsiteId: process.env.NEXT_ANALYTICS_UMAMI_ID,
     },
   },
   newsletter: {
