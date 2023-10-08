@@ -26,7 +26,7 @@ export default async function Page() {
               <div key={tag} className="mb-2 mr-5 mt-2">
                 <Tag text={tag} fontSize="text-lg" />
                 <Link
-                  href={`/tags/${slug(tag)}`}
+                  href={`/blog/tags/${slug(tag)}`}
                   className="-ml-2 text-lg font-semibold uppercase text-gray-600 dark:text-gray-300"
                   aria-label={`View posts tagged ${tag}`}
                 >

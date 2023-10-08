@@ -58,6 +58,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  console.log(process.env.NODE_ENV === 'production')
   return (
     <html
       lang={siteMetadata.language}
@@ -91,9 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           async
           src="https://analytics.eu.umami.is/script.js"
-          data-website-id={
-            process.env.NODE_ENV === 'production' ? process.env.NEXT_ANALYTICS_UMAMI_ID : '123'
-          }
+          data-website-id="baae615d-8492-4d6f-abc6-b7dd992bdb2d"
         ></script>
       </head>
       <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">

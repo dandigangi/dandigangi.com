@@ -1,10 +1,10 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Dan DiGangi - Senior Software Engineering Manager & Technical Mentor',
+  title: 'Dan DiGangi - Senior Software Engineering Manager, Technical Mentor',
   author: 'Dan DiGangi',
   headerTitle: false,
   description:
-    'Senior software engineering manager and technical mentor focused on building diverse, high performance teams. Located in Chicago, IL and searching for new remote/hybrid career opportunities.',
+    'Senior software engineering manager and tech mentor building diverse, high performance teams delivering the best software and experiences.',
   language: 'en-us',
   theme: 'dark',
   siteUrl: 'https://dandigangi.com',

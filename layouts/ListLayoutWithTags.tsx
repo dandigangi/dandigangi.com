@@ -100,13 +100,13 @@ export default function ListLayoutWithTags({
                 {sortedTags.map((t) => {
                   return (
                     <li key={t} className="my-3">
-                      {pathname.split('/tags/')[1] === slug(t) ? (
+                      {pathname.split('/blog/tags/')[1] === slug(t) ? (
                         <h3 className="inline py-2 px-3 uppercase text-sm font-bold text-primary-500">
                           {`${t} (${tagCounts[t]})`}
                         </h3>
                       ) : (
                         <Link
-                          href={`/tags/${slug(t)}`}
+                          href={`/blog/tags/${slug(t)}`}
                           className="py-2 px-3 uppercase text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
                           aria-label={`View posts tagged ${t}`}
                         >
