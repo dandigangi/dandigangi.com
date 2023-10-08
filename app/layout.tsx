@@ -58,7 +58,6 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  console.log(process.env.NODE_ENV === 'production')
   return (
     <html
       lang={siteMetadata.language}
