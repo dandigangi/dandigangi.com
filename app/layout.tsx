@@ -91,7 +91,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           async
           src="https://analytics.eu.umami.is/script.js"
-          data-website-id={process.env.NEXT_ANALYTICS_UMAMI_ID}
+          data-website-id={
+            process.env.NODE_ENV === 'production' ? process.env.NEXT_ANALYTICS_UMAMI_ID : '123'
+          }
         ></script>
       </head>
       <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
