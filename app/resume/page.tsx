@@ -2,7 +2,7 @@ import { genPageMetadata } from 'app/seo'
 import SocialIcon from '@/components/social-icons'
 import siteMetadata, { email } from '@/data/siteMetadata'
 import Experience from '@/components/Resume'
-import resumeXp from '@/data/resumeXp'
+import resumeXp from '@/data/resume'
 
 export const metadata = genPageMetadata({
   title: 'Resume',

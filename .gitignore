@@ -44,3 +44,7 @@ yarn-error.log*
 
 # Contentlayer
 .contentlayer
+
+# blog temp while writing even draft state
+looking-back-at-react-loop-chicagos-only-reactjs-conference.mdx
+react-loop-2019-conference-speakers-and-presentations.mdx

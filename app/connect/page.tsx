@@ -28,14 +28,25 @@ export default function Connect() {
               to get to know me.
             </p>
             <p className="text-lg">
-              <em>Resume and references available on request.</em>
+              <em>
+                <a
+                  href="https://drive.google.com/file/d/1LPaXd5DiTp1zsaoKRLDmkG8A2VvvBOdO/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold underline"
+                >
+                  Download resume
+                </a>{' '}
+                and references are available on request.
+              </em>
             </p>
             <hr className="h-px my-12 bg-gray-200 border-0 dark:bg-gray-700" />
             <div className="text-lg">
               <h3>Speaking, Writing, and Related</h3>
               <p>
-                I'm interested in more speaking, conferences, podcasts, and writing. Technical
-                leadership, management, building teams, hiring, and coaching are my typical topics.
+                I'm interested in doing more speaking, writing, videocasts, and podcasts. Technical
+                leadership, management, building high performance teams, hiring/interviews, and DEI
+                are my typical topics.
               </p>
               <p>
                 <a href="/blog">Examples of what I've done in the past</a> are posted on my blog.
@@ -45,13 +56,6 @@ export default function Connect() {
               <p>
                 If you're a software engineer, product owner, or designer at any level of
                 experience/role I'd be happy to connect on coaching.
-              </p>
-              <p>
-                Last thing! Looking for new collaborators and partners for{' '}
-                <a target="_blank" href="https://2019.reactloop.com">
-                  React Loop
-                </a>{' '}
-                2024. It's Chicago's only ReactJS conference.
               </p>
               <p>
                 Look forward to hearing from you soon -{' '}
