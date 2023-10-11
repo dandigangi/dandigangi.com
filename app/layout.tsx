@@ -91,11 +91,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           async
           src="https://analytics.eu.umami.is/script.js"
-          data-website-id={process.env.NEXT_PUBLIC_ANALYTICS_UMAMI}
-          data-env={process.env.NODE_ENV}
+          data-website-id={process.env.NEXT_PUBLIC_ANALYTICS_UMAMI_ID}
         ></script>
       </head>
-      <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
+      <body className="dark:bg-gray-950 dark:text-white">
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
