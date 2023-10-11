@@ -61,6 +61,10 @@ export default function Resume() {
             >
               LinkedIn.
             </a>
+            <br />
+            <span className="text-white font-normal">
+              20+ years software engineering, 5+ years engineering management
+            </span>
           </div>
         </div>
 
