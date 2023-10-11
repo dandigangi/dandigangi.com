@@ -91,7 +91,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           async
           src="https://analytics.eu.umami.is/script.js"
-          data-website-id="baae615d-8492-4d6f-abc6-b7dd992bdb2d"
+          data-website-id={process.env.NEXT_PUBLIC_ANALYTICS_UMAMI}
+          data-env={process.env.NODE_ENV}
         ></script>
       </head>
       <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
