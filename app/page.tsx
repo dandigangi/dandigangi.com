@@ -8,45 +8,17 @@ export default async function Page() {
   const sortedPosts = sortPosts(allBlogs)
   const posts = allCoreContent(sortedPosts)
 
-  const getRandomQuote = () => {
-    const DANS_QUOTES = [
-      'Build experiences, not software',
-      'Lift others before yourself',
-      "A leader's success is making their team successful",
-      'The best teams are diverse in thought, background, and experience',
-      'Code is ones/zeroes but people are dynamic and change often',
-      'Build the best experiences with customer first thinking',
-      'True impact pushes the needle forward',
-      'Perfect code does not exist',
-      'Complex problems are made simpler by compartmentalization',
-      'Always consider context in your actions and decisions',
-      'Dogma is in technology',
-      'Absolutes are rarely true',
-      'Use the right tools for the right problem',
-      'Enable a team of superheroes vs one or two of your best',
-      'Ownership is ensuring success from A-Z, not doing all the work yourself',
-      'Leaders scale teams, people, and themselves',
-      'All roles on a team matter and can offer value/impact',
-      'Support every level of engineer',
-      'Mentoring can flow in any direction, not just downward',
-      'Be a leader before a manager',
-      'Never forget the importance of relationships with cross functional partners',
-      'Good solutions come from understanding the pros and cons of different approaches',
-    ]
-
-    return DANS_QUOTES[random(0, DANS_QUOTES.length)]
-  }
-
   return (
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
       <div className="space-y-2 pb-8 pt-6 md:space-y-5">
         <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
           Dan DiGangi
         </h1>
-        <h2 className="text-2xl md:text-2xl">Senior Software Engineering Manager, Tech Mentor</h2>
+        <h2 className="text-2xl md:text-2xl">
+          Software Engineering Manager, Tech Instructor/Mentor
+        </h2>
         <div className="mt-6">
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {/* <em>{getRandomQuote()}</em> */}
             <em>Build experiences, not software</em>
           </p>
         </div>
