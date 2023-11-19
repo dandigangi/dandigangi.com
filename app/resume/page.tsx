@@ -33,6 +33,7 @@ export default function Resume() {
                 <SocialIcon kind="mail" href={`mailto:${email}`} size={6} />
                 <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
                 <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
+                <SocialIcon kind="github" href={siteMetadata.github} size={6} />
               </div>
             </div>
           </div>

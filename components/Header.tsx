@@ -1,5 +1,5 @@
 import siteMetadata from '@/data/siteMetadata'
-import headerNavLinks from '@/data/headerNavLinks'
+import navLinks from '@/data/navLinks'
 import LogoLight from '/public/static/images/dan-digangi-logo-light.png'
 import Image from '@/components/Image'
 import Link from './Link'
@@ -31,7 +31,7 @@ const Header = () => {
         </Link>
       </div>
       <div className="flex items-center leading-5 space-x-4 sm:space-x-6">
-        {headerNavLinks
+        {navLinks
           .filter((link) => link.href !== '/')
           .map((link) => (
             <Link

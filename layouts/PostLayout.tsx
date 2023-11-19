@@ -41,9 +41,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
           <header className="pt-6 xl:pb-6">
             <div className="space-y-1 text-center">
               <dl className="space-y-10">
-                <div>
+                <div className="mb-6">
                   <dt className="sr-only">Published on</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                  <dd className="text-lg font-light leading-6 text-gray-500 dark:text-gray-400">
                     <time dateTime={date}>
                       {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
                     </time>
@@ -92,7 +92,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </dd>
             </dl>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">
+              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert leading-9 text-xl">
                 {children}
                 <br />
                 {' - '}DD
