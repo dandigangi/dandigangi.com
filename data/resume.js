@@ -1,5 +1,15 @@
 const resumeXp = [
   {
+    id: 0,
+    company: 'Upright Education',
+    url: 'https://uprighted.com',
+    jobTitle: 'Part Time Instructor',
+    dates: 'Nov 2023 - Current',
+    descriptions: [
+      'Teaching 10-20 student cohorts software development and the MERN (MongoDB, Express, React, and Node) stack. My goal as an instructor is to teach end-to-end how to work successfully in the software industry paired with technical, professional, and leadership skills.',
+    ],
+  },
+  {
     id: 1,
     company: 'Active Campaign',
     url: 'https://activecampaign.com',

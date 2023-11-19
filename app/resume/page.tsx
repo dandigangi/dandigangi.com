@@ -18,7 +18,7 @@ export default function Resume() {
           <div className="flex">
             <div className="basis-1/2">
               <h1 className="mb-4 text-5xl font-bold leading-none tracking-tight">Dan DiGangi</h1>
-              <h2 className="mb-2 text-xl">Senior Software Engineering Manager, Tech Mentor</h2>
+              <h2 className="mb-2 text-xl">Software Engineering Manager, Tech Instructor/Mentor</h2>
               <div className="opacity-80">
                 Chicago, IL (Remote, Hybrid)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                 <a href="mail&#116;o&#58;d&#37;61nd%69%67a%6E&#103;i&#64;pr&#111;t&#111;n&#46;&#37;6D&#101;">
