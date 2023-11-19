@@ -27,7 +27,7 @@ export default function Footer() {
             &hearts;
           </div>
         </div>
-        <div className="text-xs opacity-20 uppercase">~Sun Nov 19 15:50:48 2023 -0600</div>
+        <div className="text-xs opacity-20 uppercase">~Sat Aug 21 00:25:45 CDT 2010</div>
       </div>
     </footer>
   )
