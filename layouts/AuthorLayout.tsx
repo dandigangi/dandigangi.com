@@ -56,10 +56,10 @@ export default function AuthorLayout({ children, content }: Props) {
               onClick={() => toggleAvatar(!avatarDisplay)}
               className="text-sm uppercase underline font-semibold color text-violet-600"
             >
-              {!avatarDisplay ? 'My Alter Ego' : 'Back to Dan'}
+              {!avatarDisplay ? 'My Alter Ego' : 'Back to Me'}
             </button>
           </div>
-          <div className="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2">
+          <div className="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 text-lg leading-8">
             {children}
           </div>
         </div>
