@@ -14,7 +14,7 @@ const Header = () => {
           <div className="flex items-center justify-between">
             <div className="mr-3">
               <Image
-                alt="Dan DiGangi - Software Engineering Manager"
+                alt="Dan DiGangi - Software Engineering Manager, Tech Instructor/Mentor"
                 src={LogoLight}
                 width="39"
                 height="39"
