@@ -27,9 +27,7 @@ export default function Footer() {
             &hearts;
           </div>
         </div>
-        <div className="last-commit-timestamp text-xs opacity-20 uppercase">
-          ~Sun Nov 19 21:21:26 2023 -0600
-        </div>
+        <div className="text-xs opacity-20 uppercase">~Mon Nov 20 08:05:55 2023 -0600</div>
       </div>
     </footer>
   )
