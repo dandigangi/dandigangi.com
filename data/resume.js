@@ -18,7 +18,7 @@ const resumeXp = [
     descriptions: [
       'Led and hired the Velocity team (3 reports) delivering special projects, features, and applications/tooling supporting the BTS org., finance, growth, and internal services teams.',
       'Coached engineers across BTS growing their technical, product, user experience, and business skill sets.',
-      'Collaborated closely w/ cross functional partners and business stakeholders developing cross team product/technical roadmaps.',
+      'Collaborated closely with cross functional partners and business stakeholders developing cross team product/technical roadmaps.',
       'Redesigned agile/SDLC processes from ideation to delivery and adopted across all BTS teams.',
       'Analyzed and reduced defect rates (~16 %) leveraging new SDLC processes and testing requirements including reintroduction of Playwright E2E testing suites.',
     ],
@@ -69,7 +69,7 @@ const resumeXp = [
         dates: 'July 2017 - June 2018',
         descriptions: [
           'Led the Web and OTS teams development strategy along with coaching engineers/contractors ranging from junior to senior.',
-          'Delivered multiple enterprise applications in React/Webpack/Node w/ supporting Java APIs to production across product and engineering teams.',
+          'Delivered multiple enterprise applications in React/Webpack/Node with supporting Java APIs to production across product and engineering teams.',
           'Designed front end standards of practice including software design, reviews, documentation, testing, and overall architecture.',
           'Maintained legacy applications refactoring highly coupled code, increased testing coverage (~42%), reduced defects (~21%), and stabilized release processes.',
         ],
@@ -83,9 +83,9 @@ const resumeXp = [
     jobTitle: 'UX Software Engineer',
     dates: 'Sep 2014 - May 2015',
     descriptions: [
-      'Collaborated w/ the Chief UX Architect using LucidChart and Sketch creating wireframes/UI for complex interaction flows and custom visualizations for enterprise customers.',
+      'Collaborated with the Chief UX Architect using LucidChart and Sketch creating wireframes/UI for complex interaction flows and custom visualizations for enterprise customers.',
       'Developed a large scale data ingestion, management, and BI tool using React, Backbone, and D3.',
-      'Tested w/ Mocha, Jasmine, Casper and Selenium (E2E) including visual regression testing.',
+      'Tested with Mocha, Jasmine, Casper and Selenium (E2E) including visual regression testing.',
       'Delivered data ingestion UI and proxy service steaming custom data sources from enterprise customers such as APIs, CSV, SQL/PSQL databases, and Aurora/Snowflake warehouses.',
     ],
   },
@@ -96,9 +96,9 @@ const resumeXp = [
     jobTitle: 'Lead Front End Engineer',
     dates: 'Dec 2012 - Aug 2014',
     descriptions: [
-      'Led 3 front end developers to build a content management, advertising, and MLS product w/ Angular 1 replacing custom Knockout implementation.',
-      'Maintained and sunset legacy applications post Angular release and testing w/ customers over 4.5 months.',
-      'Developed and successfully delivered a PPC advertising platform ($7MM ARR) for marketing and a site-wide API for engineers w/ Javascript and Google Ads.',
+      'Led 3 front end developers to build a content management, advertising, and MLS product with Angular 1 replacing custom Knockout implementation.',
+      'Maintained and sunset legacy applications post Angular release and testing with customers over 4.5 months.',
+      'Developed and successfully delivered a PPC advertising platform ($7MM ARR) for marketing and a site-wide API for engineers with Javascript and Google Ads.',
       'Trained associate to mid-level engineers on Javascript (pre-ES6) architecture, patterns, and best practices.',
     ],
   },

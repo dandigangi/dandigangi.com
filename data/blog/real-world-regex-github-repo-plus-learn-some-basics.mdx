@@ -9,14 +9,15 @@ images: ['/static/images/twitter-card.png']
 ---
 
 **11/19/23 Updates**:
+
 - Original regex repo converted to a general code repository including [other snippets and lessons found here](https://github.com/dandigangi/misc-code-things).
-- Encountered an [interview problem](https://github.com/dandigangi/misc-code-things/blob/main/my-car-collection/problem.html) requiring some regex and found that asterisk (*) greedy is to aggressive. Plus (+) works a lot of better in most of my cases.
+- Encountered an [interview problem](https://github.com/dandigangi/misc-code-things/blob/main/my-car-collection/problem.html) requiring some regex and found that asterisk (\*) greedy is to aggressive. Plus (+) works a lot of better in most of my cases.
 
 Once upon a time regex aka [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) absolutely alluded me how the hell it worked. If you're not familiar with regex it's a powerful string search/matching algorithm. I've used it countless times over the years since learning it and it's an invaluable tool as both a developer and manager. How I learned was installing SSL security certificates on Wordpress sites as far back as 2011 on [Digital Ocean](https://digitalocean.com).
 
 I won't be covering in-depth learning regex in this post. The content I typically share is around engineering management and leadership. Once in awhile I'll share some more coding based posts though!
 
-What I do want to share is a learning example along w/ a helpful [Github repository](https://github.com/dandigangi/misc-code-things/blob/main/regex.md). It has real world use cases that I will add as they come up. It's made my life easier and it can help you too. Awareness of how much I used it started to show up when I was managing at [DocuSign](https://docusign.com) and [OpenLane](https://openlane.com) where scale is a thing.
+What I do want to share is a learning example along with a helpful [Github repository](https://github.com/dandigangi/misc-code-things/blob/main/regex.md). It has real world use cases that I will add as they come up. It's made my life easier and it can help you too. Awareness of how much I used it started to show up when I was managing at [DocuSign](https://docusign.com) and [OpenLane](https://openlane.com) where scale is a thing.
 
 The real world use cases can be found in [expressions.md](https://github.com/dandigangi/regex/blob/main/expressions.md)(1).
 
@@ -25,6 +26,7 @@ The real world use cases can be found in [expressions.md](https://github.com/dan
 ## Practice Use Case
 
 **Case**:
+
 - Government agency developer job building a contact form for internal employees only
 
 This case's focus is client side so we'll be thinking as a front end developer using vanilla Javascript. I mean the government is pretty out of date so loads of vanilla and jQuery is probably not to far off from real world. In our form we have common fields like name, email, phone, and message.
@@ -41,7 +43,7 @@ Phone and email expressions are complex to be fair but I still wrote basic versi
 
 Crazy, right? I can read portions of that at best. Tracking all the pieces is difficult but more than likely this was machine generated combining numerous expressions written by a developer. Plenty of learning opportunities to be had reading it once you get down the basics either way. There will be cases where you don't need something this extensive and it's safe to write your own.
 
-There's an even more ridiculous version here w/ [RFC 822](https://www.ex-parrot.com/~pdw/Mail-RFC822-Address.html). This is a basic one found in the [Lodash utility library](https://github.com/lodash/lodash/blob/aa18212085c52fc106d075319637b8729e0f179f/src/.internal/unicodeToArray.ts#L30).
+There's an even more ridiculous version here with [RFC 822](https://www.ex-parrot.com/~pdwithMail-RFC822-Address.html). This is a basic one found in the [Lodash utility library](https://github.com/lodash/lodash/blob/aa18212085c52fc106d075319637b8729e0f179f/src/.internal/unicodeToArray.ts#L30).
 
 **Tip**: If you're learning Javascript fundamentals Lodash is an excellent library to read source code.
 
@@ -58,6 +60,7 @@ Keeping our use case in mind let's get requirements set and start building. I'll
 - Max overall string length of 64 characters
 
 **Test strings**:
+
 ```
 john@president.gov
 john1@president.gov
@@ -77,7 +80,7 @@ This expression will be written on [Regex101](https://regex101.com) to help guid
 .*@.*.gov
 ```
 
-This is the first version I'll throw in Regex101 w/ an any character, unlimited match. It's usually my goto starting point.
+This is the first version I'll throw in Regex101 with an any character, unlimited match. It's usually my goto starting point.
 
 The period `.` represents any single character and the asterisk `*` will match until there is none left. Because of the `@` symbol the expression knows to stop there on the first part after the any, unlimited completes. We write the same thing after again followed by our `.gov` requirement.
 
@@ -113,7 +116,7 @@ We'll say that dashes, underscores, and periods are valid input.
 
 Now that's starting to look solid. We added `0-9` for numbers and `-_.` for punctuation to the same set as the alpha characters. But what if product came back from vacation and said "we need backward slashes!"? Odd but let's run with it.
 
-![Regex101 Basic Email Expression Asterisks w/ Escapes](/static/images/blog/regex-101-basic-email-expression-part-asterisks-escapes.png)
+![Regex101 Basic Email Expression Asterisks with Escapes](/static/images/blog/regex-101-basic-email-expression-part-asterisks-escapes.png)
 
 **Broken**. We introduced a character `\` but that means something to the regex engine when it's encountered so it bombed. There is a simple way out of this which is using an escape. We can simply add a back slash before the back slash we want as part of our expression. It tells regex to literally match that character.
 
@@ -155,7 +158,7 @@ Did I skip a ton of concepts and details? Of course. Originally I hadn't planned
 
 ### Real World Example & Substitution
 
-The real world use that came up in management was dumping around 10k emails from a PSQL table stored as JSON. We had to identify around 250 customers by email but the JSON was not valid and/or had inconsistencies. JSON as a string w/ [escapes](https://www.google.com/search?q=escape+characters&oq=escape+characters&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTINCAEQABiDARixAxiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABNIBCDIzODhqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8) everywhere is painful. The ETL dumping this data from a 3rd party did not fix or validate the JSON.
+The real world use that came up in management was dumping around 10k emails from a PSQL table stored as JSON. We had to identify around 250 customers by email but the JSON was not valid and/or had inconsistencies. JSON as a string with [escapes](https://www.google.com/search?q=escape+characters&oq=escape+characters&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTINCAEQABiDARixAxiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABNIBCDIzODhqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8) everywhere is painful. The ETL dumping this data from a 3rd party did not fix or validate the JSON.
 
 Huge problem in massive data sets when you need to look through it. I took this on to support a product owner needing to email specific customers about an outage earlier in the week.
 
@@ -165,7 +168,7 @@ The last step after returning successful searches was manipulating the strings t
 
 If we had added multiple parentheses (capture groups) the count would ascend `$1 $2 $3` and so on. It works from left to right, outward to inward with nesting taking priority.
 
-All in all we ended w/ a clean list that was handed over to product and they were good to go!
+All in all we ended with a clean list that was handed over to product and they were good to go!
 
 ### Final Result
 
@@ -173,9 +176,9 @@ The example expression we wrote and a detailed explanation is available on [Rege
 
 Absolutely feel free to let me know on [Twitter](https://twitter.com/dandigangi) or [email](dandigangi@proton.me) if I got something wrong.
 
-**Bonus**: If you really want to push what you can do with strings I suggest checking out [Bash](https://www.gnu.org/software/bash/), [sed](https://www.gnu.org/software/sed/manual/sed.html), and [awk](https://www.gnu.org/software/gawk/manual/gawk.html). It was painful to learn but combined w/ regex you wouldn't believe what you can do. DevOps/platform/infrastructure engineers are excellent people to learn from. They are absolutely bonkers in the command line doing this stuff.
+**Bonus**: If you really want to push what you can do with strings I suggest checking out [Bash](https://www.gnu.org/software/bash/), [sed](https://www.gnu.org/software/sed/manual/sed.html), and [awk](https://www.gnu.org/software/gawk/manual/gawk.html). It was painful to learn but combined with regex you wouldn't believe what you can do. DevOps/platform/infrastructure engineers are excellent people to learn from. They are absolutely bonkers in the command line doing this stuff.
 
-_Shoutout to Ken A. for helping me learn `awk`+`sed` and sparking my passion for DevOps and cloud things.
+\_Shoutout to Ken A. for helping me learn `awk`+`sed` and sparking my passion for DevOps and cloud things.
 
 ---
 
@@ -183,13 +186,14 @@ _Shoutout to Ken A. for helping me learn `awk`+`sed` and sparking my passion for
 
 There are great websites like [Regex101](https://regex101.com) we used above that provide an interactive way to build, learn, and test. Take advantage of the dictionary of rules found on the lower right and try searching for some basics like "alpha" or "num".
 
-While you're writing expressions will tell you exactly what your expression is doing and yell when it isn't working. The substitution feature (if I'm not doing it directly in VS Code**) is beyond helpful. Sometimes you may just be searching large sets of data or text but more frequently I would need to manipulate strings to be something else.
+While you're writing expressions will tell you exactly what your expression is doing and yell when it isn't working. The substitution feature (if I'm not doing it directly in VS Code\*\*) is beyond helpful. Sometimes you may just be searching large sets of data or text but more frequently I would need to manipulate strings to be something else.
 
-** VS Code has some small-ish differences in how it expects characters from what you may write on a site like Regex101. Other IDEs as well even if you are running on the same engine.
+\*\* VS Code has some small-ish differences in how it expects characters from what you may write on a site like Regex101. Other IDEs as well even if you are running on the same engine.
 
 ![Regex101 Real Time Example](/static/images/blog/regex-101-realtime-example.gif)
 
 **Additional learning resources**:
+
 - [Mozilla MDN Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
 - [Regex Learn](https://regexlearn.com/)
 - [Learn Regex The Easy Way](https://github.com/ziishaned/learn-regex)
@@ -198,6 +202,7 @@ While you're writing expressions will tell you exactly what your expression is d
 - [awk](https://www.gnu.org/software/gawk/manual/gawk.html)
 
 **Other terms**:
+
 - [PSQL Postgres Database](https://www.postgresql.org)
 - [ETL](https://www.ibm.com/topics/etl)
 - [Escape Characters](https://www.w3schools.com/r/r_strings_esc.asp#:~:text=To%20insert%20characters%20that%20are,character%20you%20want%20to%20insert.)

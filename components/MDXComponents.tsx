@@ -7,10 +7,10 @@ import CustomLink from './Link'
 import Video from './Video'
 
 export const components: MDXComponents = {
-  Image,
-  TOCInline,
   a: CustomLink,
-  pre: Pre,
   BlogNewsletterForm,
+  Image,
+  pre: Pre,
+  TOCInline,
   Video,
 }

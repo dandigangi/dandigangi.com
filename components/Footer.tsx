@@ -16,7 +16,7 @@ export default function Footer() {
           <div>{siteMetadata.author}</div>
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>
-            {` • `}Built w/{' '}
+            {` • `}Built with{' '}
             <a className="underline" target="_blank" rel="nofollow" href="https://nextjs.com">
               NextJS
             </a>{' '}
@@ -27,7 +27,9 @@ export default function Footer() {
             &hearts;
           </div>
         </div>
-        <div className="text-xs opacity-20 uppercase">~Sat Aug 21 00:25:45 CDT 2010</div>
+        <div className="last-commit-timestamp text-xs opacity-20 uppercase">
+          ~Sat Aug 21 00:25:45 CDT 2010
+        </div>
       </div>
     </footer>
   )

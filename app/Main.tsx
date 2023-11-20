@@ -16,9 +16,15 @@ export default function Home({ posts }) {
           </h3>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700 !border-t-0">
-          {!posts.length && "There's nothing here yet!"}
+          {!posts.length && 'No posts yet!'}
           {posts.slice(0, MAX_DISPLAY).map((post) => {
-            const { slug, date, title, summary, tags } = post
+            const { slug, date, title, summary, tags, draft } = post
+            {
+              if (draft) {
+                return false
+              }
+            }
+
             return (
               <li key={slug} className="py-10 first:pt-8">
                 <article>

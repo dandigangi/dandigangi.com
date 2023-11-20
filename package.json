@@ -1,6 +1,6 @@
 {
   "name": "dandigangi.com",
-  "description": "Personal website built w/ NextJS",
+  "description": "Personal website built with NextJS",
   "homepage": "https://github.com/dandigangi/dandigangi.com",
   "version": "1.0.0",
   "private": true,
@@ -11,8 +11,7 @@
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
-    "timestamp": "date -r 1282368345",
-    "pre-push": "echo test"
+    "timestamp": "date -r 1282368345"
   },
   "dependencies": {
     "@next/bundle-analyzer": "13.5.3",
