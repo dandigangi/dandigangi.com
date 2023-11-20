@@ -17,11 +17,6 @@ const siteMetadata = {
   github: 'https://github.com/dandigangi',
   web: 'https://dandigangi.com',
   locale: 'en-US',
-  analytics: {
-    umamiAnalytics: {
-      umamiWebsiteId: process.env.NEXT_ANALYTICS_UMAMI_ID,
-    },
-  },
   newsletter: {
     provider: 'buttondown',
   },
