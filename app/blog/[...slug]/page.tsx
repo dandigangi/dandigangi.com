@@ -12,7 +12,6 @@ import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
-import Link from 'next/link'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -89,23 +88,10 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
     return (
       <div className="mt-24 text-center">
         <PageTitle>
-          <div className="flex flex-col items-start justify-start md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6">
-            <div className="max-w-md">
-              <h2 className="text-3xl mb-6 leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-                Oops...
-              </h2>
-              <p className="mb-14 text-xl leading-normal md:text-2xl">
-                This page doesn't seem to be here right now or you can't access it. I'll pretend to
-                check the error logs and fix it.
-              </p>
-              <Link
-                href="/"
-                className="focus:shadow-outline-blue inline rounded-lg border border-transparent bg-violet-600 px-8 py-2 text-lg font-medium leading-5 text-white shadow transition-colors duration-150 hover:bg-blue-700 focus:outline-none dark:hover:bg-violet-700"
-              >
-                Take me home, country roads
-              </Link>
-            </div>
-          </div>
+          Under Construction{' '}
+          <span role="img" aria-label="roadwork sign">
+            🚧
+          </span>
         </PageTitle>
       </div>
     )
