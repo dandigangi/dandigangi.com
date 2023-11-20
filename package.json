@@ -10,7 +10,9 @@
     "build": "cross-env INIT_CWD=$PWD next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",
-    "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts"
+    "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
+    "timestamp": "date -r 1282368345",
+    "pre-commit": "echo 'test'"
   },
   "dependencies": {
     "@next/bundle-analyzer": "13.5.3",
@@ -22,7 +24,6 @@
     "github-slugger": "^1.4.0",
     "gray-matter": "^4.0.2",
     "image-size": "1.0.0",
-    "lodash": "^4.17.21",
     "next": "latest",
     "next-contentlayer": "0.3.4",
     "next-themes": "^0.2.1",
@@ -54,7 +55,7 @@
     "eslint-config-next": "13.5.3",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "husky": "^8.0.0",
+    "husky": "^8.0.3",
     "lint-staged": "^13.0.0",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.1",
