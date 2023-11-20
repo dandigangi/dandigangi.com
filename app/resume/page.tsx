@@ -6,7 +6,7 @@ import resumeXp from '@/data/resume'
 
 export const metadata = genPageMetadata({
   title: 'Resume',
-  description: 'Dan DiGangi - Senior Software Engineering Manager Resume 2023',
+  description: 'Dan DiGangi - Software Engineering Manager Resume 2023',
 })
 
 export default function Resume() {
