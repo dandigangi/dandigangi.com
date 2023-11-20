@@ -17,6 +17,7 @@ const siteMetadata = {
   github: 'https://github.com/dandigangi',
   web: 'https://dandigangi.com',
   locale: 'en-US',
+  analytics: {},
   newsletter: {
     provider: 'buttondown',
   },
