@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="last-commit-timestamp text-xs opacity-20 uppercase">
-          ~Sat Aug 21 00:25:45 CDT 2010
+          ~Sun Nov 19 21:21:26 2023 -0600
         </div>
       </div>
     </footer>
