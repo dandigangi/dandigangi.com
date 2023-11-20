@@ -10,11 +10,11 @@ export default function NotFound() {
       </div>
       <div className="max-w-md">
         <h2 className="text-3xl mb-6 leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-          Oops...
+          Oops..
         </h2>
         <p className="mb-14 text-xl leading-normal md:text-2xl">
-          This page doesn't seem to be here right now. I'll pretend to check the error logs and fix
-          it.
+          This page doesn't seem to be here right now or you don't have access to it. I'll pretend
+          to check the error logs and fix it.
         </p>
         <Link
           href="/"
