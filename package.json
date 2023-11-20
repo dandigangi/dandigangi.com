@@ -11,7 +11,8 @@
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
-    "timestamp": "date -r 1282368345"
+    "timestamp": "date -r 1282368345",
+    "pre-push": "echo test"
   },
   "dependencies": {
     "@next/bundle-analyzer": "13.5.3",
