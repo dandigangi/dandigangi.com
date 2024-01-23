@@ -5,6 +5,7 @@ import type { MDXComponents } from 'mdx/types'
 import Image from './Image'
 import CustomLink from './Link'
 import Video from './Video'
+import Spotify from './Spotify'
 
 export const components: MDXComponents = {
   a: CustomLink,
@@ -13,4 +14,5 @@ export const components: MDXComponents = {
   pre: Pre,
   TOCInline,
   Video,
+  Spotify,
 }

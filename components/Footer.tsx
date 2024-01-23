@@ -16,18 +16,23 @@ export default function Footer() {
           <div>{siteMetadata.author}</div>
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>
-            {` • `}Built with{' '}
-            <a className="underline" target="_blank" rel="nofollow" href="https://nextjs.com">
+            {` • `}Built with{` `}
+            <a className="underline" target="_blank" rel="noopener" href="https://nextjs.com">
               NextJS
             </a>{' '}
             &{' '}
-            <a className="underline" target="_blank" rel="nofollow" href="https://vercel.com">
+            <a className="underline" target="_blank" rel="noopener" href="https://vercel.com">
               Vercel
             </a>{' '}
             &hearts;
           </div>
         </div>
-        <div className="text-xs opacity-20 uppercase">~Mon Nov 20 08:05:55 2023 -0600</div>
+        <div className="text-xs opacity-40 uppercase">
+          Last Commit ~ Mon Nov 20 08:05:55 2023 -0600&nbsp;&nbsp;&nbsp;
+          <a href="https://github.com/dandigangi/dandigangi.com" target="_blank" rel="noopener">
+            [Source Code]
+          </a>
+        </div>
       </div>
     </footer>
   )
