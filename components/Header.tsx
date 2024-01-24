@@ -19,7 +19,7 @@ const Header = () => {
                 src={LogoLight}
                 width="39"
                 height="39"
-                style={{ boxShadow: '0 !important' }}
+                style={{ boxShadow: '0 !important', borderRadius: '0 !important', border: 0 }}
               />
             </div>
             {typeof siteMetadata.headerTitle === 'string' ? (
