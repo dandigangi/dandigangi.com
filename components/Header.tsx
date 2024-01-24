@@ -5,6 +5,7 @@ import Image from '@/components/Image'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import SearchButton from './SearchButton'
+import { boxShadow } from 'tailwindcss/defaultTheme'
 
 const Header = () => {
   return (
@@ -18,6 +19,7 @@ const Header = () => {
                 src={LogoLight}
                 width="39"
                 height="39"
+                style={{ boxShadow: '0 !important' }}
               />
             </div>
             {typeof siteMetadata.headerTitle === 'string' ? (

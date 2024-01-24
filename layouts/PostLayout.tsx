@@ -69,6 +69,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                           height={38}
                           alt="avatar"
                           className="h-10 w-10 rounded-full"
+                          style={{ boxShadow: '0px 0px 12px #4817b0' }}
                         />
                       )}
                       <dl className="whitespace-nowrap text-sm font-medium leading-5">
