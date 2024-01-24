@@ -1,0 +1,180 @@
+---
+title: 'Personal MacBook Work & Developer Setup (2024)'
+date: '2024-1-24'
+lastmod: '2024-1-24'
+tags: ['code', 'workflow']
+draft: false
+summary: 'Overview of how my personal computer is setup for work and development.'
+images: ['/static/images/twitter-card.png']
+---
+
+## Overview
+
+Computer setup is essential for an effective workflow. It takes time to develop and hopefully you've discovered what works for you over time. This is an E2E overview of my setup for just about anything I do. It will cover hardware, applications, tools, tech, shortcuts/commands, VS extensions, and setup customization.
+
+**Why is it important?** Productivity. Plain and simple. You shouldn't get tripped up (much like in development) with friction or side steps to achieve your work goals. I've seen it too often undervaluing efficiency. You should make your workflow work for you!
+
+**Warning**: I'm hardcore Apple hardware besides gaming. PC almost ALWAYS takes extra work which is frustrating. It dominates the consumer market but Linux runs the world. MacOS is built on it.
+
+I follow these guides for 80% dev setup. They work well and cover most of my needs minus non-dev work and additional customization:
+
+- <a href="https://www.robinwieruch.de/mac-setup-web-development/" target="_blank">
+    Mac Setup for Web Development [2023]
+  </a>
+- <a
+    href="https://rathoreaparna678.medium.com/my-macbook-setup-for-development-2023-73ace9e95ca6"
+    target="_blank"
+  >
+    My MacBook Setup for Development (2023)
+  </a>
+
+## Hardware
+
+- MacBook Pro 16" M2 Max 32gb on MacOS Sonoma 14.2.1
+- Samsung G8 34" Odyseey Curved Ultra Wide 175hz
+- Apple Trackpad (Onboard & External), Magic Mouse
+- Comcast Gigabit Internet, Deco Home Mesh Network
+- iBuyPower Custom PC (Upgraded) - AMD Ryzen 5600, AMD Radeon 6800, 2x NVMe 1tb, Corsair iCUE H150i Elite LCD XT 120mm Fans/360mm Radiator
+
+Got lucky when I was laid off from Active Campaign. They let me keep the MacBook above to replace the 14" I bought a few months before. Neck issues made me switch off 2x LG 27in monitors in favor of one. It helped the stiffness but losing the secondary monitor had _some_ impact on my productivity.
+
+The external Apple Trackpad serves only one purpose - zoom and scrolling across diagrams or designs. Simple gesture that keeps me moving. It's most useful when designing. One thing you run into with high resolution displays is at 100% zoom files can feel zoomed out.
+
+If you game and don't like the "gamer" look of displays but need the performance the G8 is a great investment. It's very expensive but I've been happy with the purchase. It even has cool RGB lights on the back built-in.
+
+These aren't exactly "hardware" but they were valuable, albeit expensive, investments. Just make sure before you get a chair that you make sure the lumbar is adjustable and aligns to your height/body style. 👴🏻
+
+- Tempurpedic Bed Soft (hard is better if you have back problems)
+- Steelcase Leap Ergonomic Office Chair
+- LASIK Eye Surgery
+- Blue Light Reading Glasses
+
+Since I'm on a roll here I also have an XBOX One, Playstation PS4, Nintendo Switch along w/ my PC if you want to game together!
+
+## Applications
+
+- **Dev**: VS Code, Postman
+- **Database Explorer**: DBeaver, Mongo Compass
+- **Command Line**: iTerm, VS Code Integrated
+- **Containerization**: Docker
+- **Design/Photos**: Figma, Adobe Photoshop, Illustrator, Lightroom
+- **Diagrams**: Excalidraw, Miro, Lucid Chart
+- **Web Browsing**: Chrome, Firefox, Safari
+- **Password Manager**: 1Password (<a href="https://www.google.com/search?q=lastpass+security+breach&oq=lastpass+security+&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBwgBEAAYgAQyBggCEEUYOTIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABKgCALACAA&sourceid=chrome&ie=UTF-8">Don't use LastPass!!</a>)
+- **Messaging**: Discord, Slack, WhatsApp, Signal
+- **No Sleep**: Keeping You Awake (Caffiene is no longer supported)
+- **Notes**: Notion, Obsidian, Apple Notes
+- **Video**: Zoom, Google Meet
+- **Video/Music**: Spotify, Soundcloud, MixClooud
+- **Streaming**: Netflix, HBO Max, Disney+, Prime, YouTube
+
+I'm adding streaming because music isn't my only background noise. While working I'll put on shows I've seen many times. Without looking (for the most part) I can see in my head clearly what's going on with just dialogue. I'll switch off frequently but this all depends on how much critical thinking is required.
+
+## Tools
+
+Splitting out tools that are lower level or not installed.
+
+- **Package Manager**: Homebrew
+- **Version Control**: Git, Github
+- **Shell/Scripting**: ZSH, Bash (+ last bullet)
+- **File Management**: Google Drive, Calendar, Docs, Sheets, Slides, Forms
+- **SSH Tunnel**: NGROK
+- **Pattern Matching/Strings**: Regex, AWK, SED
+
+## Tech Stack
+
+This section is loose because it varies greatly by the need but there is a few that are _usually_ in there. After this list I'll share some new or different technologies that I'm exploring.
+
+#### Current
+
+- **Web**: Typescript, Javascript, React
+- **Web Packages**: Yarn, NPM, PNPM, NPX
+- **Server**: Node, Express, Nodemon
+- **Data**: Postgres, GraphQL, MongoDB, Mongoose
+- **Testing**: Jest, Playwright
+- **CI/CD**: Nothing in particular
+- **Infra/Cloud**: Docker, K8S, AWS, Terraform
+- **Security**: Vault, Snyk
+- **Observability**: Sentry, PagerDuty
+
+#### Exploring
+
+In the past I worked with or managed teams using C# and Java but it never stuck. Just didn't enjoy it as much. If you can't tell I love Javascript.
+
+- Fastify, Bun, Deno, NextJS, Vercel, Remix, Go, Kotlin, SQLite, Rust
+
+## Useful Things
+
+These are not earth shattering but they make a huge impact on my day-to-day. Some are from the guides up top but calling out a few special ones. Make sure if you are using Homebrew you run `brew update && brew upgrade` at least every 1-2 weeks.
+
+#### Mac System
+
+All of these are a must. Note that you can't completely hide .DS_Store once hidden files are shown. Best thing is to make sure its in your `.gitignore` everytime.
+
+```bash
+# screenshots as jpg (usually smaller size) and not png
+defaults write com.apple.screencapture type jpg
+
+# change screenshot destination (desktop works fine also)
+defaults write com.apple.screencapture location "~/Screenshots"
+
+# do not open prev. file previews
+defaults write com.apple.Preview ApplePersistenceIgnoreState YES
+
+# show Library folder
+chflags nohidden ~/Library
+
+# show hidden files
+defaults write com.apple.finder AppleShowAllFiles YES
+
+# show path bar
+defaults write com.apple.finder ShowPathbar -bool true
+
+# show status bar
+defaults write com.apple.finder ShowStatusBar -bool true
+
+killall Finder;
+```
+
+<a href="https://www.robinwieruch.de/mac-setup-web-development/">[source]</a>
+
+#### Shortcuts
+
+It doesn't take a lot of fancy shortcuts to be efficient.
+
+- **Cut, Copy, Paste**: Control/⌘ + X/C/V
+- **New Tab**: Control/⌘ + T
+- **New File**: Control/⌘ + N
+- **New Folder**: Control/⌘ + Shift + N
+- **Capture Screen**: Control/⌘ + Shift + 3
+- **Capture Screen Partial**: Control/⌘ + Shift + 4
+- **VS Code File Finder**: Control/⌘ + P
+- **VS Command Palette**: Control/⌘ + Shift + P
+
+#### Alias Commands (via ~/.zshrc)
+
+Change your command line to open previous session path. Example usage is running your server in one tab and then open another to do other things. Commonly I'll do git things in that second tab w/ iTerm.
+
+```bash
+alias zcon="code ~/.zshrc"
+alias zsrc="source ~/.zshrc"
+alias omz="cd ~/.oh-my-zsh"
+alias ssh="cd ~/.ssh"
+alias sshcon="code ~/.ssh/config"
+alias gitcon="vim ~/.gitconfig"
+alias gits="git status"
+alias gitd="git diff"
+alias gitl="git lg"
+alias gita="git add ."
+alias gitc="cz commit"
+```
+
+## VS Code
+
+There's tons of IDEs out there but VS Code has served me well for a long time now. A long, long time ago in a galaxy far away we used things like Dreamweaver, Sublime, Atom, and Notepad++. Some IDEs are better aligned to a particular language.
+
+The extensions below may not all be relevant to you.
+
+![Dan's VS Code Extensions](/static/images/blog/dans-vs-code-extensions.png)
+
+[[source]](https://drive.google.com/file/d/165lmWVL5WzQgNSbKJvOXnA1wfI7p8fLh/view?usp=sharing)

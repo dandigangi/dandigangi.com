@@ -12,7 +12,7 @@ export default function Projects() {
         <PageHeader title="Projects" />
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
-            {projects.map(({ title, description, imgSrc, altText, href }) => (
+            {projects.map(({ title, description, imgSrc, altText, href, linkText }) => (
               <Card
                 key={title}
                 title={title}
@@ -20,6 +20,7 @@ export default function Projects() {
                 imgSrc={imgSrc}
                 alt={altText}
                 href={href}
+                linkText={linkText}
               />
             ))}
           </div>
