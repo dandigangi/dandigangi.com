@@ -2,10 +2,10 @@ const projectsData = [
   {
     title: 'Misc. Code Things',
     description:
-      'Code snippets, minor projects, interview problems, lessons to aid both myself and others.',
+      'Code snippets, minor projects, interview problems, lessons that supports my work to support the dev community.',
     imgSrc: '/static/images/projects/misc-code-things-github.png',
     altText:
-      'Code snippets, minor projects, interview problems, lessons to aid both myself and others hosted on Github.com.',
+      'Code snippets, minor projects, interview problems, lessons that supports my work to support the dev community.',
     href: 'https://github.com/dandigangi/misc-code-things',
     linkText: 'See the code',
   },
