@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-xs opacity-40 uppercase">
-          Last Commit ~ Wed Jan 24 07:58:13 2024 -0600&nbsp;&nbsp;&nbsp;
+          Last Commit ~ Wed Jan 24 08:03:46 2024 -0600&nbsp;&nbsp;&nbsp;
           <a href="https://github.com/dandigangi/dandigangi.com" target="_blank" rel="noopener">
             [Source Code]
           </a>
