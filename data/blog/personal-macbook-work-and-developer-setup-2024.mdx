@@ -236,6 +236,94 @@ The extensions below may not all be relevant to you.
 
 ![VS Code Theme Example 2](/static/images/blog/vs-code-theme-example-2.png)
 
+#### Config
+
+```json
+{
+  "security.workspace.trust.untrustedFiles": "open",
+  "files.trimTrailingWhitespace": true,
+  "explorer.confirmDelete": false,
+  "explorer.compactFolders": false,
+  "workbench.startupEditor": "none",
+  "workbench.statusBar.visible": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.restoreViewState": true,
+  "terminal.integrated.fontFamily": "Hack Nerd Font Mono",
+  "editor.fontFamily": "Hack Nerd Font Mono",
+  "editor.fontSize": 13,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.renderWhitespace": "none",
+  "editor.scrollBeyondLastLine": true,
+  "editor.minimap.enabled": false,
+  "editor.lineNumbers": "on",
+  "editor.find.seedSearchStringFromSelection": "never",
+  // line highlight
+  "editor.renderLineHighlight": "all",
+  "workbench.colorCustomizations": {
+    "editor.lineHighlightBackground": "#223851"
+  },
+  // syntax highlighting
+  "files.associations": {
+    ".env*": "makefile"
+  },
+  // prettier
+  "prettier.singleQuote": true,
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.addMissingImports": "explicit"
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "javascript.validate.enable": false,
+  "javascript.updateImportsOnFileMove.enabled": "prompt",
+  // auto generated
+  "explorer.confirmDragAndDrop": false,
+  "js/ts.implicitProjectConfig.checkJs": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "extensions.ignoreRecommendations": true,
+  "editor.inlineSuggest.enabled": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.wordWrap": "on",
+  "cSpell.enableFiletypes": ["mdx"],
+  "cSpell.userWords": ["Fastify", "instiinct", "roadmaps", "runtimes", "videocast"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.trailingComma": "all",
+  "prettier.jsxSingleQuote": true,
+  "trailing-spaces.trimOnSave": true,
+  "workbench.colorTheme": "Dracula",
+  "auto-close-tag.insertSpaceBeforeSelfClosingTag": true,
+  "prettier.semi": false,
+  "window.zoomLevel": 1
+}
+```
+
 ## Chrome Extensions
 
 Don't use a ton of these anymore but the key ones are 1Password, React Dev Tools, GraphQL Dev Tools, Replay.io, and Screeny.
