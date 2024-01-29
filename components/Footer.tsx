@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-xs opacity-40 uppercase">
-          Last Commit ~ <span className="commit-timestamp">Sat Jan 27 16:19:37 2024 -0600</span>
+          Last Commit ~ <span className="commit-timestamp">Mon Jan 29 15:01:01 2024 -0600</span>
           &nbsp;&nbsp;&nbsp;
           <a href="https://github.com/dandigangi/dandigangi.com" target="_blank" rel="noopener">
             [Source Code]
