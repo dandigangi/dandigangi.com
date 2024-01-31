@@ -1,6 +1,6 @@
 const projectsData = [
   {
-    title: 'Engineering Management Learning Resources',
+    title: 'Engineering Manager Learning Resources',
     description:
       'A large collection of resources for engineering leaders and managers to grow their professional and technical skills.',
     imgSrc: '/static/images/projects/engineering-management-learning-resources.png',
