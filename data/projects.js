@@ -9,13 +9,13 @@ const projectsData = [
     linkText: 'Coming soon',
   },
   {
-    title: 'React Loop',
+    title: 'Engineering Management Learning Resources',
     description:
-      "Organized Chicago's first and only ReactJS conference. Single day track bringing together a diverse group of speakers, developers, and enthusiasts.",
-    imgSrc: '/static/images/projects/react-loop-chicago-conference.png',
-    altText: "React Loop Project - Chicago's first and only ReactJS conference",
-    href: 'https://2019.reactloop.com',
-    linkText: null,
+      'A large collection of resources for engineering leaders and managers to grow their professional and technical skills.',
+    imgSrc: '/static/images/projects/engineering-management-learning-resources.png',
+    altText: 'Engineering Manager Learning Resources Project',
+    href: '/blog/engineering-manager-learning-resources',
+    linkText: 'View resources',
   },
   {
     title: 'Misc. Code Things',
@@ -26,6 +26,15 @@ const projectsData = [
       'Code snippets, minor projects, interview problems, lessons that supports my work to support the dev community.',
     href: 'https://github.com/dandigangi/misc-code-things',
     linkText: 'See the code',
+  },
+  {
+    title: 'React Loop',
+    description:
+      "Organized Chicago's first and only ReactJS conference. Single day track bringing together a diverse group of speakers, developers, and enthusiasts.",
+    imgSrc: '/static/images/projects/react-loop-chicago-conference.png',
+    altText: "React Loop Project - Chicago's first and only ReactJS conference",
+    href: 'https://2019.reactloop.com',
+    linkText: null,
   },
 ]
 
