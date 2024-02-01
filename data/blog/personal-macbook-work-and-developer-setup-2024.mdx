@@ -95,6 +95,12 @@ Splitting out tools that are lower level or not installed.
 - **SSH Tunnel**: NGROK
 - **Pattern Matching/Strings**: Regex, AWK, SED
 
+#### Homebrew Formulas
+
+```text
+awscli, brotli, c-ares, ca-certificates, cabextract, cairo, capstone, cask, cffi, coreutils, docutils, dtc, emacs, exa, fontconfig, freetype, gettext, giflib, git, glib, gmp, gnupg, gnutls, go, graphite2, harfbuzz, htop, icu4c, jansson, jpeg-turbo, kotlin, libassuan, libevent, libgcrypt, libgit2, libgpg-error, libidn2, libksba, libnghttp2, libpng, libslirp, libssh, libssh2, libtasn1, libtiff, libunistring, libusb, libuv, libx11, libxau, libxcb, libxdmcp, libxext, libxrender, little-cms2, lz4, lzo, mongodb-atlas-cli, mongosh, mpdecimal, ncurses, neofetch, nettle, node, npth, nvm, openjdk, openldap, openssl@3, p11-kit, p7zip, pcre2, pinentry, pixman, pnpm, podman, prettier, pycparser, python-setuptools, python@3.11, qemu, readline, screenresolution, six, snappy, speedtest-cli, sqlite, terraform, tmux, tree, tree-sitter, typescript, unbound, unzip, utf8proc, vault, vde, wget, winetricks, xorgproto, xz, yarn, zstd, dopplerhq/cli/doppler, mongodb/brew/mongodb-community, mongodb/brew/mongodb-database-tools, dbeaver-community, discord, docker, figma, firefox, gstreamer-runtime, miro, rectangle, signal, wine-stable, zoom
+```
+
 ## Tech Stack
 
 This section is loose because it varies greatly by the need but there is a few that are _usually_ in there. After this list I'll share some new or different technologies that I'm exploring.
@@ -123,31 +129,25 @@ These are not earth shattering but they make a huge impact on my day-to-day. Som
 
 #### Mac System
 
-All of these are a must. Note that you can't completely hide .DS_Store once hidden files are shown. Best thing is to make sure its in your `.gitignore` everytime.
+All of these are a must. Note that you can't completely hide .DS_Store once hidden files are shown. Best thing you can do is make your `.gitignore` includes it.
 
 ```bash
 # screenshots as jpg (usually smaller size) and not png
 defaults write com.apple.screencapture type jpg
-
 # change screenshot destination (desktop works fine also)
 defaults write com.apple.screencapture location "~/Screenshots"
-
 # do not open prev. file previews
 defaults write com.apple.Preview ApplePersistenceIgnoreState YES
-
 # show Library folder
 chflags nohidden ~/Library
-
 # show hidden files
 defaults write com.apple.finder AppleShowAllFiles YES
-
 # show path bar
 defaults write com.apple.finder ShowPathbar -bool true
-
 # show status bar
 defaults write com.apple.finder ShowStatusBar -bool true
-
-killall Finder;
+# open a new one after this for the changes to take effect
+killall Finder
 ```
 
 <a href="https://www.robinwieruch.de/mac-setup-web-development/">[source]</a>
@@ -157,13 +157,20 @@ killall Finder;
 It doesn't take a lot of fancy shortcuts to be efficient.
 
 - **Cut, Copy, Paste**: Control/⌘ + X/C/V
+- **Save**: Control/⌘ + S
 - **New Tab**: Control/⌘ + T
 - **New File**: Control/⌘ + N
 - **New Folder**: Control/⌘ + Shift + N
+- **Find in File**: Control/⌘ + F
+- **Find in Project**: Control/⌘ + Shift + F
+- **Select Current Line**: Control/⌘ + L
+- **Select Selected Occurrence**: Control/⌘ + D
 - **Capture Screen**: Control/⌘ + Shift + 3
 - **Capture Screen Partial**: Control/⌘ + Shift + 4
 - **VS Code File Finder**: Control/⌘ + P
 - **VS Command Palette**: Control/⌘ + Shift + P
+
+[[macos shortcuts]](https://support.apple.com/en-us/HT201236) [[pc shortcuts]](https://support.microsoft.com/en-us/windows/windows-keyboard-shortcuts-3d444b08-3a00-abd6-67da-ecfc07e86b98) [[vscode shortcuts]](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
 
 #### Alias Commands (via ~/.zshrc)
 
@@ -238,7 +245,63 @@ The extensions below may not all be relevant to you.
 
 ![Dan's VS Code Extensions](/static/images/blog/dans-vs-code-extensions.png)
 
-[[source]](https://drive.google.com/file/d/165lmWVL5WzQgNSbKJvOXnA1wfI7p8fLh/view?usp=sharing)
+[[source image]](https://drive.google.com/file/d/165lmWVL5WzQgNSbKJvOXnA1wfI7p8fLh/view?usp=sharing)
+
+#### Extensions
+
+```text
+Auto Close Tag
+Auto Rename Tag
+AWS Toolkit
+Better Comments
+Code Spell Checker
+Color Highlight
+Colorful Comments
+Docker
+dotenv
+Edge Devtools
+ES Lint
+ES7 React JS Snippets
+Firefox Debug
+Git Graph
+Gitlens
+Go
+HTML CSS
+Html CSS Class Completion
+Icons
+Indent Rainbow
+Kotlin
+Kubernetes Tools
+Language Babel
+Liveshare
+Markdown All in One
+Material Icon Theme
+Material Theme
+MDX
+Mongodb
+Npm Intellisense
+Path Intellisense
+Pdf
+Prettier
+Pull Request Github
+Pylance
+Python
+Rainbow Csv
+Rose Pine
+Sort Lines
+Svg
+Tailwind CSS
+Terraform
+Theme Dracula
+Theme OneDark
+TODO Highlight
+TODO Tree
+Tokyo Night
+Turbo Console Log
+Typescript Next
+Webpack
+YAML
+```
 
 **Dracula Theme + VS Code Icons**
 
@@ -246,9 +309,15 @@ The extensions below may not all be relevant to you.
 
 ![VS Code Theme Example 2](/static/images/blog/vs-code-theme-example-2.png)
 
+#### Find & Replace (incl. regex)
+
+While I use [Regex101](https://regex101.com) frequently to develop expressions the built-in find and replace is exceedingly useful. There are some minor differences but generally it's a standard regex engine. You can find it in the global or local search by clicking the `.*` button located to the right of the text search box.
+
+It supports both my management and code work. Here's a [repo that has some expressions I've written recently](https://github.com/dandigangi/misc-code-things/blob/main/regex.md).
+
 #### Formatting
 
-Keep things simple with Prettier. _Some_ of their styles are not my favorite but overall its a clean configuration by default applied to just about any language. The config below will get everything work right away on save if used after installing their extension.
+Keep things simple with Prettier. _Some_ of their styles are not my favorite but overall its a clean configuration by default applied to just about any language. The config below will get everything work right away on save if used after installing their extension. See the JSON config below.
 
 #### Config
 
@@ -337,3 +406,184 @@ Keep things simple with Prettier. _Some_ of their styles are not my favorite but
   "window.zoomLevel": 1
 }
 ```
+
+#### Git
+
+Default `.gitignore` I use for most projects and then remove as needed.
+
+```shell
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+# Local History for <a href="https://www.jcchouinard.com/python-with-vscode/">Visual Studio Code</a>
+.history/
+
+# Common credential files
+**/credentials.json
+**/client_secrets.json
+**/client_secret.json
+*creds*
+*.dat
+*password*
+*.httr-oauth*
+
+# Private Node Modules
+node_modules/
+creds.js
+
+# Private Files
+*.json
+*.csv
+*.csv.gz
+*.tsv
+*.tsv.gz
+*.xlsx
+
+# Mac/OSX
+.DS_Store
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a <a href="https://www.jcchouinard.com/learn-python/">python</a> script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# <a href="https://www.jcchouinard.com/how-to-use-jupyter-notebook/">Jupyter Notebook</a>
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+# .python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in <a href="https://www.jcchouinard.com/version-control/">version control.</a>
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# <a href="https://www.jcchouinard.com/python-with-spyder-ide/">Spyder</a> project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+```
+
+[[source]](https://www.jcchouinard.com/gitignore-template/)
