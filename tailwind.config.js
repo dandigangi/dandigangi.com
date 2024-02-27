@@ -15,7 +15,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      screns: {
+      backgroundImage: {
+        'page-pattern': "url('/static/images/bg-pattern.png')",
+      },
+      screens: {
         print: { raw: 'print' },
       },
       lineHeight: {

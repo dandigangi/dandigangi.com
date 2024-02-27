@@ -96,7 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="dark:bg-gray-950 dark:text-white">
+      <body className="dark:bg-gray-950 dark:text-white bg-page-pattern bg-hero bg-repeat-x bg-bottom bg-fixed">
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>

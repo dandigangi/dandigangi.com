@@ -81,18 +81,18 @@ export const generateStaticParams = async () => {
 
 export default async function Page({ params }: { params: { slug: string[] } }) {
   const slug = decodeURI(params.slug.join('/'))
-  // Filter out drafts in production
   const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
+
   if (postIndex === -1) {
     return (
       <div className="mt-24 text-center">
-        <PageTitle>
-          Under Construction{' '}
-          <span role="img" aria-label="roadwork sign">
-            🚧
-          </span>
-        </PageTitle>
+        <PageTitle>Oops. This isn't here.</PageTitle>
+        <br />
+        <h2>
+          Looks like this content isn't here right now. Head back to my <a href="/blog">blog</a> for
+          other things & stuff.
+        </h2>
       </div>
     )
   }
@@ -107,6 +107,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   })
   const mainContent = coreContent(post)
   const jsonLd = post.structuredData
+
   jsonLd['author'] = authorDetails.map((author) => {
     return {
       '@type': 'Person',
