@@ -36,6 +36,7 @@ export default async function Page() {
           </p>
           <p>
             <a
+              rel="noopener"
               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
               href="/about"
             >
@@ -43,18 +44,20 @@ export default async function Page() {
             </a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              href="/connect"
-            >
-              Connect &rarr;
-            </a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a
+              rel="noopener"
               target="_blank"
               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
               href="https://linkedin.com/in/dandigangi"
             >
               LinkedIn &rarr;
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a
+              rel="noopener"
+              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+              href="/connect"
+            >
+              Connect &rarr;
             </a>
           </p>
         </div>

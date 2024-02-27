@@ -5,7 +5,7 @@ import SocialIcon from '@/components/social-icons'
 export default function Footer() {
   return (
     <footer className="pb-10">
-      <div className="mt-10 flex flex-col items-center">
+      <div className="mt-16 flex flex-col items-center">
         <div className="mb-3 flex space-x-4">
           <SocialIcon kind="mail" href={`mailto:${email}`} size={6} />
           <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
@@ -16,7 +16,7 @@ export default function Footer() {
           <div>{siteMetadata.author}</div>
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>
-            {` • `}Built with{` `}
+            {` • `}Built w/{` `}
             <a className="underline" target="_blank" rel="noopener" href="https://nextjs.com">
               NextJS
             </a>{' '}
