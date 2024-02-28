@@ -10,8 +10,8 @@ export default function Home({ posts }) {
   return (
     <>
       <div id="layout-main" className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-14 !pb-4 md:space-y-5">
-          <h3 className="text-sm font-extrabold leading-9 tracking-tight text-grey-900 dark:text-grey-100 sm:text-4xl sm:leading-10 md:text-3xl md:leading-9">
+        <div className="space-y-2 pt-7 lg:pt-14 md:space-y-5">
+          <h3 className="text-lg font-extrabold leading-9 tracking-tight text-grey-900 dark:text-grey-100 sm:text-4xl sm:leading-10 md:text-3xl md:leading-9">
             Latest Posts
           </h3>
         </div>

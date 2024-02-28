@@ -4,12 +4,12 @@ import Main from './Main'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import DocuSignLogo from '/public/static/images/xp/docusign.png'
+import DocuSignLogoLeft from '/public/static/images/xp/docusign-left.png'
+import DocuSignLogoCenter from '/public/static/images/xp/docusign-center.png'
 import ApartmentsComLogo from '/public/static/images/xp/apartmentscom.png'
 import ArriveLogisticsLogo from '/public/static/images/xp/arrivelogistics.png'
 import ActiveCampaignLogo from '/public/static/images/xp/activecampaign.png'
 import OpenLaneLogo from '/public/static/images/xp/openlane.png'
-import { height } from 'tailwindcss/defaultTheme'
 
 // Page: Home
 export default async function Page() {
@@ -25,7 +25,7 @@ export default async function Page() {
         <h2 className="text-2xl md:text-2xl">
           Software Engineering Manager, Tech Instructor/Mentor
         </h2>
-        <div className="mt-6">
+        <div className="mt-7">
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             <em>Build experiences, not software</em>
           </p>
@@ -62,21 +62,37 @@ export default async function Page() {
           </p>
         </div>
         <div className="pb-4">
-          <h2 className="pt-8 mb-4 text-sm text-gray-900 dark:text-white sm:text-sm sm:text-sm">
-            [ PREVIOUSLY ]
-          </h2>
-          <div className="grid grid-cols-5 gap-6">
+          <h2 className="pt-8 mb-4 text-md text-gray-900 dark:text-white md:sm">[ PREVIOUSLY ]</h2>
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-3 xl:grid xl:grid-cols-5 xl:gap-6">
             <div>
-              <Link href="https://docusign.com" aria-label="Link to DocuSign" target="_blank">
+              <Link
+                className="hidden xl:inline-block"
+                href="https://docusign.com"
+                aria-label="Link to DocuSign"
+                target="_blank"
+              >
                 <Image
                   alt={'Previously worked at DocuSign'}
-                  src={DocuSignLogo}
+                  src={DocuSignLogoLeft}
+                  width={544}
+                  height={306}
+                />
+              </Link>
+              <Link
+                href="https://docusign.com"
+                aria-label="Link to DocuSign"
+                target="_blank"
+                className="xl:hidden"
+              >
+                <Image
+                  alt={'Previously worked at DocuSign'}
+                  src={DocuSignLogoCenter}
                   width={544}
                   height={306}
                 />
               </Link>
             </div>
-            <div className="relative right-12">
+            <div className="relative xl:right-12">
               <Link
                 href="https://apartments.com"
                 aria-label="Link to Apartments.com"
@@ -90,7 +106,7 @@ export default async function Page() {
                 />
               </Link>
             </div>
-            <div className="relative right-8">
+            <div className="relative xl:right-8">
               <Link
                 href="https://activecampaign.com"
                 aria-label="Link to Active Campaign"
@@ -104,7 +120,7 @@ export default async function Page() {
                 />
               </Link>
             </div>
-            <div className="relative right-2">
+            <div className="relative xl:right-2">
               <Link
                 href="https://arrivelogistics.com"
                 aria-label="Link to DocuSign"
