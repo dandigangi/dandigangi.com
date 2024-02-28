@@ -16,7 +16,7 @@ export default function Footer() {
           <div>{siteMetadata.author}</div>
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>
-            {` • `}Built w/{` `}
+            &nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;Built w/{` `}
             <a className="underline" target="_blank" rel="noopener" href="https://nextjs.com">
               NextJS
             </a>{' '}

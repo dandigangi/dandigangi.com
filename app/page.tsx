@@ -62,7 +62,7 @@ export default async function Page() {
           </p>
         </div>
         <div className="pb-4">
-          <h2 className="pt-8 mb-4 text-md text-gray-900 dark:text-white md:sm">[ PREVIOUSLY ]</h2>
+          <h2 className="pt-8 mb-6 text-md text-gray-900 dark:text-white md:sm">[ PREVIOUSLY ]</h2>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-3 xl:grid xl:grid-cols-5 xl:gap-6">
             <div>
               <Link
@@ -134,8 +134,13 @@ export default async function Page() {
                 />
               </Link>
             </div>
-            <div>
-              <Link href="https://openlane.com" aria-label="Link to OpenLane" target="_blank">
+            <div className="hidden sm:inline-block md:inline-block">
+              <Link
+                className="hidden sm:inline-block md:inline-block"
+                href="https://openlane.com"
+                aria-label="Link to OpenLane"
+                target="_blank"
+              >
                 <Image
                   alt={'Previously worked at OpenLane'}
                   src={OpenLaneLogo}
