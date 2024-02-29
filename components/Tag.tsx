@@ -11,7 +11,7 @@ const Tag = ({ text, fontSize = '' }: Props) => {
       href={`/blog/tags/${slug(text)}`}
       className={`mr-3 ${
         fontSize || 'text-sm'
-      } font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400`}
+      } font-light uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400`}
       aria-label={`Link to posts tagged with ${text}`}
     >
       {text.split(' ').join('-')}

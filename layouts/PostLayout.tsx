@@ -105,10 +105,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
             <footer>
-              <div className="divide-gray-200 text-base font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
+              <div className="divide-gray-200 text-base leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
                 {tags && (
                   <div className="py-4 xl:py-8">
-                    <h2 className="text-base uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    <h2 className="pb-2 text-base uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
                       Tags
                     </h2>
                     <div className="flex flex-wrap">
@@ -122,21 +122,31 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
                     {prev && prev.path && (
                       <div>
-                        <h2 className="text-base uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        <h2 className="pb-2 text-base uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
                           Previous Article
                         </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${prev.path}`}>{prev.title}</Link>
+                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light">
+                          <Link
+                            href={`/${prev.path}`}
+                            aria-label={`Read previous article ${prev.title}`}
+                          >
+                            {prev.title}
+                          </Link>
                         </div>
                       </div>
                     )}
                     {next && next.path && (
                       <div>
-                        <h2 className="text-base uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        <h2 className="pb-2 text-base uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
                           Next Article
                         </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${next.path}`}>{next.title}</Link>
+                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light">
+                          <Link
+                            href={`/${next.path}`}
+                            aria-label={`Read previous article ${next.title}`}
+                          >
+                            {next.title}
+                          </Link>
                         </div>
                       </div>
                     )}
@@ -146,7 +156,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               <div className="pt-4 xl:pt-8">
                 <Link
                   href={`/${basePath}`}
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light"
                   aria-label="Back to the blog"
                 >
                   &larr; Back to the blog
