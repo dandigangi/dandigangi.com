@@ -38,10 +38,11 @@ export default function Home({ posts }) {
                     <div className="space-y-5 xl:col-span-3">
                       <div className="space-y-6">
                         <div>
-                          <h2 className="mb-1 text-2xl font-bold leading-8 tracking-tight">
+                          <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
                             <Link
                               href={`/blog/${slug}`}
                               className="text-gray-900 dark:text-gray-100"
+                              aria-label={`Blog post "${title}"`}
                             >
                               {title}
                             </Link>
@@ -52,15 +53,15 @@ export default function Home({ posts }) {
                             ))}
                           </div>
                         </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                        <div className="prose max-w-none md:text-lg text-gray-500 dark:text-gray-400">
                           {summary}
                         </div>
                       </div>
-                      <div className="text-base font-medium leading-6">
+                      <div className="pt-4 text-base font-medium leading-6">
                         <Link
                           href={`/blog/${slug}`}
                           className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read "${title}"`}
+                          aria-label={`Read blog post "${title}"`}
                         >
                           Read more &rarr;
                         </Link>
@@ -78,9 +79,9 @@ export default function Home({ posts }) {
           <Link
             href="/blog"
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label="All posts"
+            aria-label="View all blog posts"
           >
-            All Posts ({posts.length})&rarr;
+            All Posts ({posts.length}) &rarr;
           </Link>
         </div>
       )}

@@ -19,6 +19,7 @@ export default function NotFound() {
         <Link
           href="/"
           className="focus:shadow-outline-blue inline rounded-lg border border-transparent bg-violet-600 px-8 py-2 text-lg font-medium leading-5 text-white shadow transition-colors duration-150 hover:bg-blue-700 focus:outline-none dark:hover:bg-violet-700"
+          aria-label="Link to home page"
         >
           Take me home, country roads
         </Link>

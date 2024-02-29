@@ -68,7 +68,7 @@ export default async function Page() {
               <Link
                 className="hidden xl:inline-block"
                 href="https://docusign.com"
-                aria-label="Link to DocuSign"
+                aria-label="Link to DocuSign.com"
                 target="_blank"
               >
                 <Image
@@ -80,7 +80,7 @@ export default async function Page() {
               </Link>
               <Link
                 href="https://docusign.com"
-                aria-label="Link to DocuSign"
+                aria-label="Link to DocuSign.com"
                 target="_blank"
                 className="xl:hidden"
               >
@@ -109,7 +109,7 @@ export default async function Page() {
             <div className="relative xl:right-8">
               <Link
                 href="https://activecampaign.com"
-                aria-label="Link to Active Campaign"
+                aria-label="Link to ActiveCampaign.com"
                 target="_blank"
               >
                 <Image
@@ -123,7 +123,7 @@ export default async function Page() {
             <div className="relative xl:right-2">
               <Link
                 href="https://arrivelogistics.com"
-                aria-label="Link to DocuSign"
+                aria-label="Link to ArriveLogistics.com"
                 target="_blank"
               >
                 <Image
@@ -138,7 +138,7 @@ export default async function Page() {
               <Link
                 className="hidden sm:inline-block md:inline-block"
                 href="https://openlane.com"
-                aria-label="Link to OpenLane"
+                aria-label="Link to OpenLane.com"
                 target="_blank"
               >
                 <Image

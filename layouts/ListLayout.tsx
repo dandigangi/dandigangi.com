@@ -38,6 +38,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
           <Link
             href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
             rel="prev"
+            aria-label={`Link to previous blog posts page`}
           >
             Previous
           </Link>
@@ -51,7 +52,11 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
           </button>
         )}
         {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
+          <Link
+            href={`/${basePath}/page/${currentPage + 1}`}
+            rel="next"
+            aria-label={`Link to next blog posts page`}
+          >
             Next
           </Link>
         )}
@@ -126,7 +131,11 @@ export default function ListLayout({
                   <div className="space-y-3 xl:col-span-3">
                     <div>
                       <h3 className="text-2xl font-bold leading-8 tracking-tight">
-                        <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
+                        <Link
+                          href={`/${path}`}
+                          className="text-gray-900 dark:text-gray-100"
+                          aria-label={`Link to blog post ${title}`}
+                        >
                           {title}
                         </Link>
                       </h3>

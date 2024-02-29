@@ -8,15 +8,15 @@ const projectsData = [
     href: '/blog/engineering-manager-learning-resources',
     linkText: 'View resources',
   },
-  {
-    title: 'Not Just UX',
-    description:
-      'Bite size collection of the good and bad UX found in our favorite products. Build a customer first mindset and create better experiences.',
-    imgSrc: '/static/images/projects/not-just-ux.png',
-    altText: "Not Just UX Project - Bite Size Reviews of Your Favorite Product's User Experience",
-    href: null,
-    linkText: 'Coming soon',
-  },
+  // {
+  //   title: 'Not Just UX',
+  //   description:
+  //     'Bite size collection of the good and bad UX found in our favorite products. Build a customer first mindset and create better experiences.',
+  //   imgSrc: '/static/images/projects/not-just-ux.png',
+  //   altText: "Not Just UX Project - Bite Size Reviews of Your Favorite Product's User Experience",
+  //   href: null,
+  //   linkText: 'Coming soon',
+  // },
   {
     title: 'React Loop',
     description:
