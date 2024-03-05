@@ -16,7 +16,8 @@ export default function Home({ posts }) {
           </h3>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700 !border-t-0">
-          {!posts.length && 'No posts yet!'}
+          {!posts.length && 'No blog posts just yet but they are coming.'}
+
           {posts.slice(0, MAX_DISPLAY).map((post) => {
             const { slug, date, title, summary, tags, draft } = post
             {

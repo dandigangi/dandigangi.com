@@ -47,3 +47,4 @@ yarn-error.log*
 
 # blog temp while writing even draft state
 *.draft.mdx
+*.hide.mdx

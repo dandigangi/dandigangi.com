@@ -1,11 +1,5 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "cSpell.words": [
-    "Desseyn",
-    "lastmod",
-    "livestream",
-    "Livestream",
-    "tdesseyn"
-  ]
+  "cSpell.words": ["Desseyn", "lastmod", "livestream", "Livestream", "standups", "tdesseyn"]
 }
