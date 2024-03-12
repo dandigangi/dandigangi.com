@@ -1,13 +1,13 @@
 const projectsData = [
-  {
-    title: 'Engineering Manager Learning Resources',
-    description:
-      'A large collection of resources for engineering leaders and managers to grow their professional and technical skills.',
-    imgSrc: '/static/images/projects/engineering-management-learning-resources.png',
-    altText: 'Engineering Manager Learning Resources Project',
-    href: '/blog/engineering-manager-learning-resources',
-    linkText: 'View resources',
-  },
+  // {
+  //   title: 'Engineering Manager Learning Resources',
+  //   description:
+  //     'A large collection of resources for engineering leaders and managers to grow their professional and technical skills.',
+  //   imgSrc: '/static/images/projects/engineering-management-learning-resources.png',
+  //   altText: 'Engineering Manager Learning Resources Project',
+  //   href: '/blog/engineering-manager-learning-resources',
+  //   linkText: 'View resources',
+  // },
   // {
   //   title: 'Not Just UX',
   //   description:
@@ -32,7 +32,7 @@ const projectsData = [
       'Code snippets, minor projects, interview problems, lessons that supports my work to support the dev community.',
     imgSrc: '/static/images/projects/misc-code-things-github.png',
     altText:
-      'Code snippets, minor projects, interview problems, lessons that supports my work to support the dev community.',
+      'Code snippets, minor projects, interview problems, and lessons developed and provided to the dev community.',
     href: 'https://github.com/dandigangi/misc-code-things',
     linkText: 'See the code',
   },
