@@ -27,8 +27,16 @@ export default function Footer() {
             &hearts;
           </div>
         </div>
-        <div className="text-xs opacity-40 uppercase">
-          Last Commit ~ <span className="commit-timestamp">Thu Feb 29 08:15:58 2024 -0600</span>
+        <div className="text-xs opacity-40 uppercase text-center">
+          Last Update ~ Tue Mar 12 18:20:15 2024 -0500
+          <br />
+          <a
+            href="https://github.com/dandigangi/dandigangi.com/commit/5410db3868795922f557182858dfe7c89e8d83e0"
+            target="_blank"
+            rel="noopener"
+          >
+            [Commit 5410db3]
+          </a>
           &nbsp;&nbsp;&nbsp;
           <a href="https://github.com/dandigangi/dandigangi.com" target="_blank" rel="noopener">
             [Source Code]
