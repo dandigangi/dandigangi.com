@@ -8,10 +8,10 @@ export default function Experience({ positions, descriptions, company, dates, ti
               <a className="font-bold underline" target="_blank" href={url}>
                 {company}
               </a>
-
+              &nbsp;&nbsp;
               {dates && (
                 <>
-                  -{' '}
+                  -&nbsp;&nbsp;
                   <span>
                     <span className="opacity-80">{title}</span>
                     <span className="text-sm">

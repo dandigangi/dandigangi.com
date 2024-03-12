@@ -99,7 +99,7 @@ const resumeXp = [
       'Led 3 front end developers to build a content management, advertising, and MLS product with Angular 1 replacing custom Knockout implementation.',
       'Maintained and sunset legacy applications post Angular release and testing with customers over 4.5 months.',
       'Developed and successfully delivered a PPC advertising platform ($7MM ARR) for marketing and a site-wide API for engineers with Javascript and Google Ads.',
-      'Trained associate to mid-level engineers on Javascript (pre-ES6) architecture, patterns, and best practices.',
+      'Trained associate to mid-level engineers on Javascript architecture, patterns, and best practices.',
     ],
   },
   {
@@ -109,7 +109,7 @@ const resumeXp = [
     jobTitle: 'Web Developer',
     dates: 'May 2011 - Dec 2012',
     descriptions: [
-      'Developed pixel-perfect, responsive interfaces in HTML, CSS, and Javascript to meet design specs for multiple large scale clients including McDonalds, AT&T, Buddig, H&R Block, and Bosch.',
+      'Developed pixel-perfect, responsive interfaces in HTML, CSS, and Javascript to meet design specs for multiple large scale clients including AT&T, Bosch, H&R Block, and Mazda.',
     ],
   },
   {
@@ -120,6 +120,16 @@ const resumeXp = [
     dates: 'Apr 2009 - Dec 2010',
     descriptions: [
       'Designed and developed the core e-commerce website and product micro-sites. The architecture was built to enable rapid development and deployment to rival competing brands and better position the Meisterschaft brand in an aggressively growing mid-market.',
+    ],
+  },
+  {
+    id: 8,
+    company: 'Adexa Media',
+    url: '#',
+    jobTitle: 'Owner',
+    dates: 'Oct 2004 - Oct 2019',
+    descriptions: [
+      'Personal freelance agency specializing in mid-to-large scale web development and design projects. Self taught and serviced over 70+ customers starting at the age of 14.',
     ],
   },
 ]
