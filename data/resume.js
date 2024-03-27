@@ -125,11 +125,11 @@ const resumeXp = [
   {
     id: 8,
     company: 'Adexa Media',
-    url: '#',
+    url: 'https://www.linkedin.com/company/adexa-digital-media-inc-/',
     jobTitle: 'Owner',
-    dates: 'Oct 2004 - Oct 2019',
+    dates: 'Oct 2004 - Oct 2009',
     descriptions: [
-      'Personal freelance agency specializing in mid-to-large scale web development and design projects. Self taught and serviced over 70+ customers starting at the age of 14.',
+      'Personal freelance agency specializing in mid-to-large scale web development and design projects. Self taught and serviced over 30+ clients starting starting at the age of 14.',
     ],
   },
 ]

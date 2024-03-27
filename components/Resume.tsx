@@ -5,7 +5,7 @@ export default function Experience({ positions, descriptions, company, dates, ti
         <h2 className="mb-0 leading-none tracking-tight text-gray-900 dark:text-white">
           <div className="text-xl">
             <div className="mb-4">
-              <a className="font-bold underline" target="_blank" href={url}>
+              <a className=" text-xl font-bold underline" target="_blank" href={url}>
                 {company}
               </a>
               &nbsp;&nbsp;
@@ -32,10 +32,10 @@ export default function Experience({ positions, descriptions, company, dates, ti
 
 function SinglePosition(descriptions) {
   return (
-    <ul className="list-outside md:list-disc ml-5 mb-9">
+    <ul className="list-outside md:list-disc ml-5 mb-14">
       {descriptions.map((desc, key) => {
         return (
-          <li className="mb-3 opacity-80" key={key}>
+          <li className="mb-3 opacity-80 text-lg leading-8" key={key}>
             {desc}
           </li>
         )
@@ -56,10 +56,10 @@ function MultiplePositions(positions) {
                 &nbsp;&nbsp;&nbsp;<span className="opacity-60">|&nbsp;&nbsp;&nbsp;{dates}</span>
               </span>
             </div>
-            <ul className="list-outside md:list-disc ml-5 mb-7">
+            <ul className="list-outside md:list-disc ml-5 mb-14">
               {descriptions.map((desc, key) => {
                 return (
-                  <li className="mb-3 opacity-80" key={key}>
+                  <li className="mb-3 opacity-80 text-lg leading-8" key={key}>
                     <span key={key}>{desc}</span>
                   </li>
                 )

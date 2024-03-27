@@ -2,11 +2,12 @@ import { genPageMetadata } from 'app/seo'
 import SocialIcon from '@/components/social-icons'
 import siteMetadata, { email } from '@/data/siteMetadata'
 import Experience from '@/components/Resume'
+import Button from '@/components/Button'
 import resumeXp from '@/data/resume'
 
 export const metadata = genPageMetadata({
   title: 'Resume',
-  description: 'Dan DiGangi - Software Engineering Manager Resume 2023',
+  description: "Download Dan DiGangi's 2024 engineering management and software engineer resume.",
 })
 
 export default function Resume() {
@@ -18,18 +19,20 @@ export default function Resume() {
           <div className="flex">
             <div className="basis-1/2">
               <h1 className="mb-4 text-5xl font-bold leading-none tracking-tight">Dan DiGangi</h1>
-              <h2 className="mb-2 text-xl">Software Engineering Manager, Tech Instructor/Mentor</h2>
+              <h2 className="mb-2 text-xl">Software Engineering Manager</h2>
               <div className="opacity-80">
-                Chicago, IL (Remote, Hybrid)&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                Chicago, IL&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                 <a href="mail&#116;o&#58;d&#37;61nd%69%67a%6E&#103;i&#64;pr&#111;t&#111;n&#46;&#37;6D&#101;">
                   da&#110;d&#105;gangi&#64;pr&#111;&#116;on&#46;m&#101;
                 </a>
               </div>
             </div>
             <div className="basis-1/2">
-              <div className="mb-3 italic text-lg text-right">Build experiences, not software</div>
+              <div className="mb-3 italic text-lg text-right">
+                <em>"Build experiences, not software."</em>
+              </div>
               <div className="flex justify-end gap-3">
-                <SocialIcon kind="web" href={siteMetadata.web} size={7} />
+                {/* <SocialIcon kind="web" href={siteMetadata.web} size={7} /> */}
                 <SocialIcon kind="mail" href={`mailto:${email}`} size={6} />
                 <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
                 <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
@@ -41,13 +44,12 @@ export default function Resume() {
 
         {/* Alert */}
         <div
-          className="flex items-center p-4 mb-8 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+          className="flex items-center p-4 mb-12 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
           role="alert"
         >
           <svg
             className="flex-shrink-0 inline w-4 h-4 mr-3"
             aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -60,11 +62,12 @@ export default function Resume() {
               href="https://linkedin.com/in/dandigangi"
               className="font-semibold underline hover:no-underline"
             >
-              LinkedIn.
+              LinkedIn
             </a>
+            .
             <br />
             <span className="text-white font-normal">
-              20+ years software engineering, 5+ years engineering management
+              5+ years managing software engineering teams and 20+ years software engineering.
             </span>
           </div>
         </div>
@@ -72,7 +75,7 @@ export default function Resume() {
         {/* Experience */}
         <div className="mb-2">
           <div>
-            <h1 className="mb-6  font-bold leading-none tracking-tight text-gray-900 text-3xl dark:text-white">
+            <h1 className="mb-7 font-medium leading-none tracking-tight text-gray-900 text-4xl dark:text-white">
               Experience
             </h1>
           </div>
@@ -97,7 +100,7 @@ export default function Resume() {
           <div className="flex gap-16 mb-16">
             {/* Education */}
             <div className="mb-10">
-              <div className="mb-4 text-lg font-bold">Education</div>
+              <div className="mb-7 text-xl font-bold">Education</div>
               <div className="mb-1 font-bold">
                 The Art Institutes - IL Institute of Art{' '}
                 <span className="text-sm">
@@ -110,7 +113,7 @@ export default function Resume() {
 
             {/* Volunteering/Other */}
             <div className="md:pl-12">
-              <div className="font-bold text-lg mb-4">Volunteering/Other</div>
+              <div className="font-bold text-xl mb-7">Volunteering/Other</div>
               <div>
                 <ul>
                   <li className="mb-1">
@@ -169,7 +172,7 @@ export default function Resume() {
           {/* Misc */}
           <div className="pt-5 pb-6 text-center">
             <div className="mb-2">
-              Complete work history available on{' '}
+              Complete work history and additional information available on{' '}
               <a
                 target="_blank"
                 href="https://linkedin.com/in/dandigangi"
@@ -177,15 +180,14 @@ export default function Resume() {
               >
                 LinkedIn
               </a>
-              &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-              <a
-                href="https://drive.google.com/file/d/1LPaXd5DiTp1zsaoKRLDmkG8A2VvvBOdO/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold underline"
-              >
-                Download Resume
-              </a>
+              .
+              <br />
+              <Button
+                text={'Download Resume'}
+                href={
+                  'https://drive.google.com/file/d/1LPaXd5DiTp1zsaoKRLDmkG8A2VvvBOdO/view?usp=sharing'
+                }
+              />
             </div>
           </div>
         </div>

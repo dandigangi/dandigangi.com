@@ -1,3 +1,4 @@
+import Button from '@/components/Button'
 import PageHeader from '@/components/PageHeader'
 import { genPageMetadata } from 'app/seo'
 
@@ -16,7 +17,7 @@ export default function Connect() {
                 da&#110;d&#105;gangi&#64;pr&#111;&#116;on&#46;m&#101;
               </a>
             </p>
-            <p className="pb-2">
+            <p className="">
               Looking for a new software engineering management opportunity after an unlucky layoff.
               Check out the <a href="/about">About</a> and <a href="/resume">Resume</a> pages + my{' '}
               <a target="_blank" href="https://linkedin.com/in/dandigangi">
@@ -24,19 +25,12 @@ export default function Connect() {
               </a>{' '}
               to get to know me.
             </p>
-            <p className="text-lg">
-              <em>
-                <a
-                  href="https://drive.google.com/file/d/1LPaXd5DiTp1zsaoKRLDmkG8A2VvvBOdO/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold underline"
-                >
-                  Download resume
-                </a>{' '}
-                and references are available on request.
-              </em>
-            </p>
+            <Button
+              text={'Download Resume'}
+              href={
+                'https://drive.google.com/file/d/1LPaXd5DiTp1zsaoKRLDmkG8A2VvvBOdO/view?usp=sharing'
+              }
+            />
             <hr className="h-px my-12 bg-gray-200 border-0 dark:bg-gray-700" />
             <div className="text-lg">
               <h3>Speaking, Writing, and Related</h3>

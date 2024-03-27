@@ -1,4 +1,3 @@
-import Link from './Link'
 import siteMetadata, { email } from '@/data/siteMetadata'
 import SocialIcon from '@/components/social-icons'
 
@@ -16,7 +15,7 @@ export default function Footer() {
           <div>{siteMetadata.author}</div>
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>
-            &nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;Built w/{` `}
+            &nbsp;|&nbsp;&nbsp;Built w/{` `}
             <a className="underline" target="_blank" rel="noopener" href="https://nextjs.com">
               NextJS
             </a>{' '}
