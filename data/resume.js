@@ -28,7 +28,7 @@ const resumeXp = [
     company: 'Arrive Logistics',
     url: 'https://arrivelogistics.com',
     jobTitle: 'Senior Software Engineering Manager',
-    dates: 'Jul 2022 - Apr 2023',
+    dates: 'July 2022 - Apr 2023',
     descriptions: [
       'Responsible for the TSO (3 reports), finance/accounting (8 reports), and load service (9 reports) teams responsible for core business operations from shipping to financial transactions.',
       'Worked closely with cross functional partners and teams to deliver on highly coupled organization wide applications including a Docker to Kubernetes migration.',
@@ -41,7 +41,7 @@ const resumeXp = [
     company: 'DocuSign',
     url: 'https://docusign.com',
     jobTitle: 'Software Engineering Manager',
-    dates: 'May 2020 - Jun 2022',
+    dates: 'May 2020 - June 2022',
     descriptions: [
       "Built and led CLM's Buy/Sell team hiring 7 full stack engineers responsible for developing buy/sell contracts and party management, global user experience, and accessibility.",
       'Coached team on our mission, values, SDLC processes, and implementation of measured performance metrics sprint-over-sprint.',
@@ -78,10 +78,22 @@ const resumeXp = [
   },
   {
     id: 5,
+    company: 'StarterPak',
+    url: 'https://www.linkedin.com/company/9410008/',
+    jobTitle: 'Technical Co-founder',
+    dates: 'June 2015 - July 2017',
+    descriptions: [
+      'Co-founded startup company (dba Get20) deploying native mobile applications to enable real-time connections and communication between professionals.',
+      'Led product and technical strategy over mobile application development with 3rd party app development company.',
+      'Raised $75k seed funding from multiple investors.',
+    ],
+  },
+  {
+    id: 5,
     company: 'ClearStory Data',
     url: 'https://www.prnewswire.com/news-releases/alteryx-acquires-clearstory-data-to-accelerate-innovation-in-data-science-and-analytics-300825146.html',
     jobTitle: 'UX Software Engineer',
-    dates: 'Sep 2014 - May 2015',
+    dates: 'Sept 2014 - May 2015',
     descriptions: [
       'Collaborated with the Chief UX Architect using LucidChart and Sketch creating wireframes/UI for complex interaction flows and custom visualizations for enterprise customers.',
       'Developed a large scale data ingestion, management, and BI tool using React, Backbone, and D3.',

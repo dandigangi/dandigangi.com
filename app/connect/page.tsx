@@ -28,7 +28,7 @@ export default function Connect() {
             <Button
               text={'Download Resume'}
               href={
-                'https://drive.google.com/file/d/1LPaXd5DiTp1zsaoKRLDmkG8A2VvvBOdO/view?usp=sharing'
+                'https://drive.google.com/file/d/11-rvQ2_RwaGHVLORNI5Vv-A4f8Llyy0s/view?usp=sharing'
               }
             />
             <hr className="h-px my-12 bg-gray-200 border-0 dark:bg-gray-700" />

@@ -185,7 +185,7 @@ export default function Resume() {
               <Button
                 text={'Download Resume'}
                 href={
-                  'https://drive.google.com/file/d/1LPaXd5DiTp1zsaoKRLDmkG8A2VvvBOdO/view?usp=sharing'
+                  'https://drive.google.com/file/d/11-rvQ2_RwaGHVLORNI5Vv-A4f8Llyy0s/view?usp=sharing'
                 }
               />
             </div>
