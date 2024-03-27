@@ -75,7 +75,7 @@ export default function Resume() {
         {/* Experience */}
         <div className="mb-2">
           <div>
-            <h1 className="mb-7 font-medium leading-none tracking-tight text-gray-900 text-4xl dark:text-white">
+            <h1 className="mb-8 font-light leading-none tracking-tight text-gray-900 text-4xl dark:text-white">
               Experience
             </h1>
           </div>
@@ -100,7 +100,7 @@ export default function Resume() {
           <div className="flex gap-16 mb-16">
             {/* Education */}
             <div className="mb-10">
-              <div className="mb-7 text-xl font-bold">Education</div>
+              <div className="mb-7 text-2xl font-light">Education</div>
               <div className="mb-1 font-bold">
                 The Art Institutes - IL Institute of Art{' '}
                 <span className="text-sm">
@@ -113,7 +113,7 @@ export default function Resume() {
 
             {/* Volunteering/Other */}
             <div className="md:pl-12">
-              <div className="font-bold text-xl mb-7">Volunteering/Other</div>
+              <div className="font-light text-2xl mb-7">Volunteering/Other</div>
               <div>
                 <ul>
                   <li className="mb-1">
