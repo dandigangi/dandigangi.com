@@ -34,7 +34,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener"
           >
-            [Commit 5410db3]
+            [Commit 88fada25]
           </a>
           &nbsp;&nbsp;&nbsp;
           <a href="https://github.com/dandigangi/dandigangi.com" target="_blank" rel="noopener">
