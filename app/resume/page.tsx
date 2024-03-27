@@ -113,7 +113,7 @@ export default function Resume() {
 
             {/* Volunteering/Other */}
             <div className="md:pl-12">
-              <div className="font-light text-2xl mb-7">Volunteering/Other</div>
+              <div className="font-light text-2xl mb-7">Other</div>
               <div>
                 <ul>
                   <li className="mb-1">
@@ -125,6 +125,16 @@ export default function Resume() {
                       React Loop
                     </a>{' '}
                     Conference Organizer
+                  </li>
+                  <li className="mb-1">
+                    <a
+                      className="font-semibold underline"
+                      target="_blank"
+                      href="https://chicagojs.org"
+                    >
+                      Chicago JS Camp
+                    </a>{' '}
+                    Volunteer Staff
                   </li>
                   <li className="mb-1">
                     <a
@@ -144,15 +154,20 @@ export default function Resume() {
                     </a>
                     , and Private Mentoring
                   </li>
-                  <li className="mb-1">
+                  <li>
+                    <a className="font-semibold underline" target="_blank" href="/blog">
+                      Technical Leadership Content Creator
+                    </a>
+                  </li>
+                  <li>
                     <a
                       className="font-semibold underline"
                       target="_blank"
-                      href="https://chicagojs.org"
+                      href="https://www.uprighted.com"
                     >
-                      Chicago JS Camp
+                      Upright Education
                     </a>{' '}
-                    Staff
+                    Software Instructor
                   </li>
                   <li>
                     <a
