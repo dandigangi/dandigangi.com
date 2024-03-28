@@ -99,9 +99,9 @@ export default function Resume() {
 
           <div className="flex gap-16 mb-16">
             {/* Education */}
-            <div className="mb-10">
+            <div className="mb-10 text-xl">
               <div className="mb-7 text-2xl font-light">Education</div>
-              <div className="mb-1 font-bold">
+              <div className="mb-2 font-bold">
                 The Art Institutes - IL Institute of Art{' '}
                 <span className="text-sm">
                   &nbsp;&nbsp;
@@ -116,8 +116,9 @@ export default function Resume() {
               <div className="font-light text-2xl mb-7">Other</div>
               <div>
                 <ul>
-                  <li className="mb-1">
+                  <li className="mb-2 text-lg">
                     <a
+                      rel="noopener"
                       className="font-semibold underline"
                       target="_blank"
                       href="https://2019.reactloop.com"
@@ -126,8 +127,9 @@ export default function Resume() {
                     </a>{' '}
                     Conference Organizer
                   </li>
-                  <li className="mb-1">
+                  <li className="mb-2 text-lg">
                     <a
+                      rel="noopener"
                       className="font-semibold underline"
                       target="_blank"
                       href="https://chicagojs.org"
@@ -136,8 +138,9 @@ export default function Resume() {
                     </a>{' '}
                     Volunteer Staff
                   </li>
-                  <li className="mb-1">
+                  <li className="mb-2 text-lg">
                     <a
+                      rel="noopener"
                       className="font-semibold underline"
                       target="_blank"
                       href="https://platohq.com"
@@ -146,6 +149,7 @@ export default function Resume() {
                     </a>
                     ,{' '}
                     <a
+                      rel="noopener"
                       className="font-semibold underline"
                       target="_blank"
                       href="https://mentorcruise.com"
@@ -154,13 +158,19 @@ export default function Resume() {
                     </a>
                     , and Private Mentoring
                   </li>
-                  <li>
-                    <a className="font-semibold underline" target="_blank" href="/blog">
+                  <li className="mb-2 text-lg">
+                    <a
+                      rel="noopener"
+                      className="font-semibold underline"
+                      target="_blank"
+                      href="/blog"
+                    >
                       Technical Leadership Content Creator
                     </a>
                   </li>
-                  <li>
+                  <li className="mb-2 text-lg">
                     <a
+                      rel="noopener"
                       className="font-semibold underline"
                       target="_blank"
                       href="https://www.uprighted.com"
@@ -169,8 +179,9 @@ export default function Resume() {
                     </a>{' '}
                     Software Instructor
                   </li>
-                  <li>
+                  <li className="mb-2 text-lg">
                     <a
+                      rel="noopener"
                       className="font-semibold underline"
                       target="_blank"
                       href="https://www.startupinstitute.com/"
