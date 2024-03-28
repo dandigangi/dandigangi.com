@@ -65,7 +65,7 @@ const resumeXp = [
         ],
       },
       {
-        jobTitle: 'Lead Front End Engineer',
+        jobTitle: 'Lead Engineer',
         dates: 'July 2017 - June 2018',
         descriptions: [
           'Led the Web and OTS teams development strategy along with coaching engineers/contractors ranging from junior to senior.',
