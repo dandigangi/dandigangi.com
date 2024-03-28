@@ -27,14 +27,14 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-xs opacity-40 uppercase text-center">
-          Wed Mar 27 18:47:16 2024 -0500
+          Wed Mar 27 19:11:51 2024 -0500
           <br />
           <a
-            href="https://github.com/dandigangi/dandigangi.com/commit/5410db3868795922f557182858dfe7c89e8d83e0"
+            href="https://github.com/dandigangi/dandigangi.com/commit/a597fceca624b855c0349b124b0c9ba8cf923745"
             target="_blank"
             rel="noopener"
           >
-            [Commit 680cb6]
+            [Commit a597fc]
           </a>
           &nbsp;&nbsp;&nbsp;
           <a href="https://github.com/dandigangi/dandigangi.com" target="_blank" rel="noopener">
