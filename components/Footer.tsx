@@ -27,7 +27,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-xs opacity-40 uppercase text-center">
-          Thu Mar 28 11:34:56 2024 -0500
+          Wed Apr 10 14:32:41 2024 -0500
           <br />
           <a
             href="https://github.com/dandigangi/dandigangi.com/commit/57abb22c57df73a8ed135989c21c9da29289ae3b"
