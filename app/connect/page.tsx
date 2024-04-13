@@ -17,21 +17,6 @@ export default function Connect() {
                 da&#110;d&#105;gangi&#64;pr&#111;&#116;on&#46;m&#101;
               </a>
             </p>
-            <p className="">
-              Looking for a new software engineering management opportunity after an unlucky layoff.
-              Check out the <a href="/about">About</a> and <a href="/resume">Resume</a> pages + my{' '}
-              <a target="_blank" href="https://linkedin.com/in/dandigangi">
-                LinkedIn
-              </a>{' '}
-              to get to know me.
-            </p>
-            <Button
-              text={'Download Resume'}
-              href={
-                'https://drive.google.com/file/d/11-rvQ2_RwaGHVLORNI5Vv-A4f8Llyy0s/view?usp=sharing'
-              }
-            />
-            <hr className="h-px my-12 bg-gray-200 border-0 dark:bg-gray-700" />
             <div className="text-lg">
               <h3>Speaking, Writing, and Related</h3>
               <p>

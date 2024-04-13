@@ -31,9 +31,6 @@ export default async function Page() {
           </p>
         </div>
         <div className="mt-8 pt-4">
-          <p className="mb-2 pt-3">
-            Looking for new engineering management opportunities (Laid Off)
-          </p>
           <p>
             <a
               rel="noopener"
