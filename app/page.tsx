@@ -30,34 +30,6 @@ export default async function Page() {
             <em>Build experiences, not software</em>
           </p>
         </div>
-        <div className="mt-8 pt-4">
-          <p>
-            <a
-              rel="noopener"
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              href="/about"
-            >
-              About Me &rarr;
-            </a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a
-              rel="noopener"
-              target="_blank"
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              href="https://linkedin.com/in/dandigangi"
-            >
-              LinkedIn &rarr;
-            </a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a
-              rel="noopener"
-              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-              href="/connect"
-            >
-              Connect &rarr;
-            </a>
-          </p>
-        </div>
         <div className="pb-4">
           <h2 className="pt-8 mb-6 text-md text-gray-900 dark:text-white md:sm">[ PREVIOUSLY ]</h2>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-3 xl:grid xl:grid-cols-5 xl:gap-6">
