@@ -1,10 +1,31 @@
 const resumeXp = [
   {
+    id: 1,
+    company: 'Postmark (under Active Campaign)',
+    url: 'https://postmark.com',
+    jobTitle: 'Software Engineering Manager',
+    dates: 'April 2024 - Current',
+    descriptions: [
+      "Leading Postmark's transactional email and delivery product engineering."
+    ],
+  },
+  {
+    id: 0,
+    company: "Let's Colab",
+    url: 'https://letscolab.online',
+    jobTitle: 'Software Instructor & Curriculm Director',
+    dates: 'Jan 2024 - Current',
+    descriptions: [
+      'Online education programs for a variety of skillsets with a unique take on micro-interships to help early career professionals build their future.',
+      'Leading the development for software engineering and MERN stack curriculums. We provide end-to-end education beyond writing code.'
+    ],
+  },
+  {
     id: 0,
     company: 'Upright Education',
     url: 'https://uprighted.com',
     jobTitle: 'Part Time Software Instructor',
-    dates: 'Nov 2023 - Current',
+    dates: 'Nov 2023 - April 2024',
     descriptions: [
       'Teaching 10-20 student cohorts software development and the MERN (MongoDB, Express, React, and Node) stack. My goal as an instructor is to teach end-to-end how to work successfully in the software industry paired with technical, professional, and leadership skills.',
     ],
