@@ -13,7 +13,7 @@ const siteMetadata = {
   socialBanner: '/static/images/twitter-card.png',
   email: 'dandigangi@proton.me',
   linkedin: 'https://www.linkedin.com/in/dandigangi',
-  twitter: 'https://twitter.com/dandigangi',
+  twitter: 'https://x.com/dandigangi',
   github: 'https://github.com/dandigangi',
   web: 'https://dandigangi.com',
   locale: 'en-US',

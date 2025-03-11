@@ -82,7 +82,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                               href={author.twitter}
                               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                             >
-                              {author.twitter.replace('https://twitter.com/', '@')}
+                              {author.twitter.replace('https://x.com/', '@')}
                             </Link>
                           )}
                         </dd>
@@ -99,7 +99,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 {' - '}DD
               </div>
               <div className="pb-6 pt-6 text-m text-gray-700 dark:text-gray-300">
-                <Link target="_blank" href="https://twitter.com/dandigangi" rel="nofollow">
+                <Link target="_blank" href="https://x.com/dandigangi" rel="nofollow">
                   Tweet @dandigangi
                 </Link>
               </div>
