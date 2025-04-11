@@ -1,7 +1,7 @@
 const resumeXp = [
   {
     id: 1,
-    company: 'Postmark (under Active Campaign)',
+    company: 'ActiveCampaign - Postmark',
     url: 'https://postmark.com',
     jobTitle: 'Software Engineering Manager',
     dates: 'April 2024 - Current',
@@ -11,7 +11,7 @@ const resumeXp = [
   },
   {
     id: 0,
-    company: "Let's Colab",
+    company: "Colab",
     url: 'https://letscolab.online',
     jobTitle: 'Software Instructor & Curriculm Director',
     dates: 'Jan 2024 - Current',
@@ -32,7 +32,7 @@ const resumeXp = [
   },
   {
     id: 1,
-    company: 'Active Campaign',
+    company: 'ActiveCampaign - Velocity',
     url: 'https://activecampaign.com',
     jobTitle: 'Software Engineering Manager',
     dates: 'May 2023 - Aug 2023 (Layoff)',

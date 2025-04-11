@@ -67,7 +67,7 @@ export default function Resume() {
             .
             <br />
             <span className="text-white font-normal">
-              5+ years managing software engineering teams and 20+ years software engineering.
+              8+ years managing software engineering teams and 20+ years software engineering.
             </span>
           </div>
         </div>
