@@ -14,7 +14,7 @@ const resumeXp = [
     company: "Colab",
     url: 'https://letscolab.online',
     jobTitle: 'Software Instructor & Curriculm Director',
-    dates: 'Jan 2024 - Current',
+    dates: 'Jan 2024 - Nov 2024',
     descriptions: [
       'Online education programs for a variety of skillsets with a unique take on micro-interships to help early career professionals build their future.',
       'Leading the development for software engineering and MERN stack curriculums. We provide end-to-end education beyond writing code.'
