@@ -1,6 +1,6 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Dan DiGangi - Software Engineering Manager, Tech Instructor/Mentor',
+  title: 'Dan DiGangi - Senior Software Engineering Manager',
   author: 'Dan DiGangi',
   headerTitle: false,
   description:

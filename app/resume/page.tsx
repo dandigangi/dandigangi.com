@@ -29,7 +29,7 @@ export default function Resume() {
             </div>
             <div className="basis-1/2">
               <div className="mb-3 italic text-lg text-right">
-                <em>"Build experiences, not software."</em>
+                <em>build experiences, not software</em>
               </div>
               <div className="flex justify-end gap-3">
                 {/* <SocialIcon kind="web" href={siteMetadata.web} size={7} /> */}

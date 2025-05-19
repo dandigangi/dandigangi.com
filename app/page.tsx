@@ -22,12 +22,10 @@ export default async function Page() {
         <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
           Dan DiGangi
         </h1>
-        <h2 className="text-2xl md:text-2xl">
-          Software Engineering Manager, Tech Instructor/Mentor
-        </h2>
+        <h2 className="text-2xl md:text-2xl">Senior Software Engineering Manager</h2>
         <div className="mt-7">
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            <em>Build experiences, not software</em>
+            <em>build experiences, not software</em>
           </p>
         </div>
         <div className="pb-4">
