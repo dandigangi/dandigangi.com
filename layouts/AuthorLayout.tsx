@@ -27,19 +27,19 @@ export default function AuthorLayout({ children, content }: Props) {
               <Image
                 src={avatar}
                 alt="avatar"
-                width={192}
-                height={192}
-                className="h-48 w-48 rounded-full"
-                style={{ boxShadow: '0px 0px 12px #4817b0' }}
+                width={250}
+                height={250}
+                className="h-48 w-48"
+                style={{ boxShadow: '0px 0px 12px #4817b0', borderRadius: 10 }}
               />
             ) : (
               <Image
                 src={AvatarPikachu}
                 alt="avatar"
-                width={192}
-                height={192}
-                className="h-48 w-48 rounded-full"
-                style={{ boxShadow: '0px 0px 12px #4817b0' }}
+                width={250}
+                height={250}
+                className="h-48 w-48"
+                style={{ boxShadow: '0px 0px 12px #4817b0', borderRadius: 10 }}
               />
             )}
             <h3 className="pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight">{name}</h3>
