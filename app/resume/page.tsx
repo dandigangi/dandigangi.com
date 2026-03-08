@@ -208,12 +208,12 @@ export default function Resume() {
               </a>
               .
               <br />
-              <Button
+              {/* <Button
                 text={'Download Resume'}
                 href={
                   'https://drive.google.com/file/d/11-rvQ2_RwaGHVLORNI5Vv-A4f8Llyy0s/view?usp=sharing'
                 }
-              />
+              /> */}
             </div>
           </div>
         </div>
