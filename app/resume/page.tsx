@@ -3,7 +3,7 @@ import SocialIcon from '@/components/social-icons'
 import siteMetadata, { email } from '@/data/siteMetadata'
 import Experience from '@/components/Resume'
 import Button from '@/components/Button'
-import resumeXp from '@/data/resume'
+import { resumeXp } from '@/data/resume'
 
 export const metadata = genPageMetadata({
   title: 'Resume',
@@ -208,12 +208,12 @@ export default function Resume() {
               </a>
               .
               <br />
-              {/* <Button
-                text={'Download Resume'}
+              <Button
+                text={'Download Dan DiGangi 2026 Resume'}
                 href={
                   'https://drive.google.com/file/d/11-rvQ2_RwaGHVLORNI5Vv-A4f8Llyy0s/view?usp=sharing'
                 }
-              /> */}
+              />
             </div>
           </div>
         </div>
