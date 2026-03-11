@@ -36,10 +36,6 @@ export default function Footer() {
           >
             [Commit 494126d]
           </a>
-          &nbsp;&nbsp;&nbsp;
-          <a href="https://github.com/dandigangi/dandigangi.com" target="_blank" rel="noopener">
-            [Source Code]
-          </a>
         </div>
       </div>
     </footer>
