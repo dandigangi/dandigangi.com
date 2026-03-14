@@ -1,73 +1,69 @@
-export default function Experience({ positions, descriptions, company, dates, title, url }) {
-  return (
-    <div className="experience mb-10">
-      <div>
-        <h2 className="mb-0 leading-none tracking-tight text-gray-900 dark:text-white">
-          <div className="text-xl">
-            <div className="mb-6">
-              <a className=" text-xl font-bold underline" target="_blank" href={url}>
-                {company}
-              </a>
-              &nbsp;&nbsp;
-              {dates && (
-                <>
-                  -&nbsp;&nbsp;
-                  <span>
-                    <span className="opacity-80">{title}</span>
-                    <span className="text-sm">
-                      &nbsp;&nbsp;&nbsp;
-                      <span className="opacity-60">|&nbsp;&nbsp;&nbsp;{dates}</span>
-                    </span>
-                  </span>
-                </>
-              )}
-            </div>
+interface ExperienceProps {
+  title?: string
+  company: string
+  descriptions?: string[]
+  positions?: Array<{ jobTitle: string; dates: string; descriptions: string[] }>
+  dates?: string
+  url?: string
+}
+
+export default function Experience({
+  title,
+  company,
+  descriptions,
+  positions,
+  dates,
+  url,
+}: ExperienceProps) {
+  if (positions && positions.length > 0) {
+    return (
+      <div className="mb-10">
+        <div className="mb-2 font-bold text-xl">
+          {url ? (
+            <a href={url} target="_blank" rel="noopener noreferrer" className="underline">
+              {company}
+            </a>
+          ) : (
+            company
+          )}
+        </div>
+        {positions.map((pos, i) => (
+          <div key={i} className="mb-6">
+            <div className="text-sm opacity-50 mb-1">{pos.dates}</div>
+            <div className="font-semibold mb-2">{pos.jobTitle}</div>
+            {pos.descriptions?.length > 0 && (
+              <ul className="list-disc pl-5 space-y-1">
+                {pos.descriptions.map((d, j) => (
+                  <li key={j}>{d}</li>
+                ))}
+              </ul>
+            )}
           </div>
-        </h2>
+        ))}
       </div>
-      <div>{!positions ? SinglePosition(descriptions) : MultiplePositions(positions)}</div>
-    </div>
-  )
-}
+    )
+  }
 
-function SinglePosition(descriptions) {
   return (
-    <ul className="list-outside md:list-disc ml-5 mb-14">
-      {descriptions.map((desc, key) => {
-        return (
-          <li className="mb-3 opacity-80 text-lg leading-8" key={key}>
-            {desc}
-          </li>
-        )
-      })}
-    </ul>
-  )
-}
-
-function MultiplePositions(positions) {
-  return (
-    <div className="mb-14">
-      {positions.map(({ jobTitle, dates, descriptions }, key) => {
-        return (
-          <div key={key}>
-            <div className="mb-3">
-              <span className="text-xl">{jobTitle}</span>
-              <span className="text-sm">
-                &nbsp;&nbsp;&nbsp;<span className="opacity-60">|&nbsp;&nbsp;&nbsp;{dates}</span>
-              </span>
-            </div>
-            <ul className="list-outside md:list-disc ml-5 mb-9">
-              {descriptions.map((desc, key) => {
-                return (
-                  <li className="mb-3 opacity-80 text-lg leading-8" key={key}>
-                    <span key={key}>{desc}</span>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        )
-      })}
+    <div className="mb-10">
+      <div className="mb-2 font-bold text-xl">
+        {url ? (
+          <a href={url} target="_blank" rel="noopener noreferrer" className="underline">
+            {company}
+          </a>
+        ) : (
+          company
+        )}
+      </div>
+      {dates && <div className="text-sm opacity-50 mb-1">{dates}</div>}
+      {title && <div className="font-semibold mb-2">{title}</div>}
+      {descriptions && descriptions.length > 0 && (
+        <ul className="list-disc pl-5 space-y-1">
+          {descriptions.map((d, i) => (
+            <li key={i}>{d}</li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

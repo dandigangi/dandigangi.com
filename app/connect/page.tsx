@@ -1,4 +1,5 @@
 import PageHeader from '@/components/PageHeader'
+import Link from '@/components/Link'
 import { genPageMetadata } from 'app/seo'
 
 export const metadata = genPageMetadata({ title: 'Connect' })
@@ -17,17 +18,17 @@ export default function Connect() {
               </a>
             </p>
             <div className="text-lg">
-              <h3>Speaking, Writing, and Related</h3>
+              <h2>Speaking, Writing, and Related</h2>
               <p>
                 I'm interested in doing more speaking, writing, videocasts, and podcasts. My typical
                 topics include technical leadership, engineering management, building high
                 performance teams, hiring and interviews, mental health in tech, and DEI.
               </p>
               <p>
-                <a href="/blog">Examples of past work</a> are posted on my blog.
+                <Link href="/blog">Examples of past work</Link> are posted on my blog.
               </p>
               <hr className="h-px my-12 bg-gray-200 border-0 dark:bg-gray-700" />
-              <h3>Coaching & Mentoring</h3>
+              <h2>Coaching & Mentoring</h2>
               <p>
                 If you're a software engineer, engineering leader, product owner, or designer at any
                 level I'd love to connect. I've worked with engineers ranging from junior to staff

@@ -14,10 +14,13 @@ const ThemeSwitch = () => {
     return null
   }
 
+  const isDark = theme === 'dark' || resolvedTheme === 'dark'
   return (
     <button
-      aria-label="Toggle Dark Mode"
-      onClick={() => setTheme(theme === 'dark' || resolvedTheme === 'dark' ? 'light' : 'dark')}
+      type="button"
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

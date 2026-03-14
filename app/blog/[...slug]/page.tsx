@@ -11,6 +11,7 @@ import { getPublishedBlogs } from '@/lib/blog'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
+import Link from '@/components/Link'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -54,9 +55,14 @@ export async function generateMetadata({
     }
   })
 
+  const canonicalUrl =
+    (post as Blog & { canonicalUrl?: string }).canonicalUrl ||
+    `${siteMetadata.siteUrl}/blog/${slug}`
+
   return {
     title: post.title,
     description: post.summary,
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: post.title,
       description: post.summary,
@@ -65,7 +71,7 @@ export async function generateMetadata({
       type: 'article',
       publishedTime: publishedAt,
       modifiedTime: modifiedAt,
-      url: './',
+      url: canonicalUrl,
       images: ogImages,
       authors: authors.length > 0 ? authors : [siteMetadata.author],
     },
@@ -95,8 +101,8 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
         <PageTitle>Oops. This isn't here.</PageTitle>
         <br />
         <h2>
-          Looks like this content isn't here right now. Head back to my <a href="/blog">blog</a> for
-          other things & stuff.
+          Looks like this content isn't here right now. Head back to my{' '}
+          <Link href="/blog">blog</Link> for other things & stuff.
         </h2>
       </div>
     )

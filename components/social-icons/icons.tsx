@@ -1,5 +1,4 @@
 import { SVGProps } from 'react'
-import { fill } from 'tailwindcss/defaultTheme'
 
 // Icons taken from: https://simpleicons.org/
 // To add a new icon, add a new function here and add it to components in social-icons/index.tsx

@@ -3,12 +3,33 @@ import { getPublishedBlogs } from '@/lib/blog'
 import Main from './Main'
 import Link from 'next/link'
 import Image from 'next/image'
+import siteMetadata from '@/data/siteMetadata'
 
 import DocuSignLogoCenter from '/public/static/images/xp/docusign.png'
 import ApartmentsComLogo from '/public/static/images/xp/apartmentscom.png'
 import ArriveLogisticsLogo from '/public/static/images/xp/arrivelogistics.png'
 import ActiveCampaignLogo from '/public/static/images/xp/activecampaign.png'
 import OpenLaneLogo from '/public/static/images/xp/openlane.png'
+
+export const metadata = {
+  title: siteMetadata.title,
+  description: siteMetadata.description,
+  openGraph: {
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    siteName: siteMetadata.title,
+    url: './',
+    images: [siteMetadata.socialBanner],
+    locale: siteMetadata.locale,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image' as const,
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    images: [siteMetadata.socialBanner],
+  },
+}
 
 // Page: Home
 export default async function Page() {
@@ -37,6 +58,7 @@ export default async function Page() {
                 href="https://postmarkapp.com"
                 aria-label="Link to Postmark"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
               >
                 <Image

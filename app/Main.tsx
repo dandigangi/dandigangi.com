@@ -17,7 +17,11 @@ function toCalendarDate(date) {
   return new Date(y, m - 1, d)
 }
 
-const listDateTemplate = { year: 'numeric', month: 'short', day: 'numeric' }
+const listDateTemplate: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+}
 
 /** Fisher–Yates shuffle; returns a new array. */
 function shuffle(arr) {

@@ -28,11 +28,13 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 
   return (
     <div id="layout-listlayout" className="space-y-2 pb-8 pt-6 md:space-y-5">
-      <nav className="flex items-center justify-between gap-4">
+      <nav className="flex items-center justify-between gap-4" aria-label="Blog pagination">
         {!prevPage && (
           <button
+            type="button"
             className="min-h-[44px] min-w-[44px] cursor-auto rounded px-4 disabled:opacity-50"
-            disabled={!prevPage}
+            disabled
+            aria-disabled="true"
           >
             Previous
           </button>
@@ -52,8 +54,10 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
         </span>
         {!nextPage && (
           <button
+            type="button"
             className="min-h-[44px] min-w-[44px] cursor-auto rounded px-4 disabled:opacity-50"
-            disabled={!nextPage}
+            disabled
+            aria-disabled="true"
           >
             Next
           </button>
@@ -113,6 +117,7 @@ export default function ListLayout({
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"

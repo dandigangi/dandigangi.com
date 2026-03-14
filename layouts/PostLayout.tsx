@@ -82,7 +82,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                           src={author.avatar}
                           width={38}
                           height={38}
-                          alt="avatar"
+                          alt={`${author.name} profile photo`}
                           className="h-10 w-10 rounded-full"
                           style={{ boxShadow: '0px 0px 12px #4817b0' }}
                         />
@@ -114,7 +114,11 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 {' - '}DD
               </div>
               <div className="pb-6 pt-6 text-m text-gray-700 dark:text-gray-300">
-                <Link target="_blank" href="https://x.com/dandigangi" rel="nofollow">
+                <Link
+                  target="_blank"
+                  href="https://x.com/dandigangi"
+                  rel="noopener noreferrer nofollow"
+                >
                   Have thoughts on this? Find me on X - @dandigangi
                 </Link>
               </div>

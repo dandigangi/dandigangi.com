@@ -26,7 +26,7 @@ export default function AuthorLayout({ children, content }: Props) {
             {avatar && !avatarDisplay ? (
               <Image
                 src={avatar}
-                alt="avatar"
+                alt={`${name} profile photo`}
                 width={250}
                 height={250}
                 className="h-48 w-48"
@@ -35,7 +35,7 @@ export default function AuthorLayout({ children, content }: Props) {
             ) : (
               <Image
                 src={AvatarPikachu}
-                alt="avatar"
+                alt={`${name} alter ego`}
                 width={250}
                 height={250}
                 className="h-48 w-48"
@@ -52,8 +52,11 @@ export default function AuthorLayout({ children, content }: Props) {
               <SocialIcon kind="github" href={github} />
             </div>
             <button
+              type="button"
               onClick={() => toggleAvatar(!avatarDisplay)}
-              className="text-sm uppercase underline font-semibold color text-violet-600"
+              aria-label={!avatarDisplay ? 'Show alter ego avatar' : 'Show main avatar'}
+              aria-pressed={avatarDisplay}
+              className="text-sm uppercase underline font-semibold color text-violet-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
             >
               {!avatarDisplay ? 'My Alter Ego' : 'Back to Dan'}
             </button>

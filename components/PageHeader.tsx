@@ -1,5 +1,3 @@
-import { title } from '@/data/siteMetadata'
-
 const PageHeader = ({ title = 'Page Title' }) => {
   return (
     <div className="space-y-2 pb-8 pt-6 md:space-y-5">

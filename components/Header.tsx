@@ -5,8 +5,6 @@ import Image from '@/components/Image'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import SearchButton from './SearchButton'
-import { boxShadow } from 'tailwindcss/defaultTheme'
-
 const Header = () => {
   return (
     <header className="flex items-center justify-between py-10">
