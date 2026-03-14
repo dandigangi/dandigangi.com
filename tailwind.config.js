@@ -38,6 +38,10 @@ module.exports = {
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
+            lineHeight: '1.8',
+            'p, li': {
+              lineHeight: '1.85',
+            },
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {
@@ -59,6 +63,10 @@ module.exports = {
         },
         invert: {
           css: {
+            lineHeight: '1.8',
+            'p, li': {
+              lineHeight: '1.85',
+            },
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {

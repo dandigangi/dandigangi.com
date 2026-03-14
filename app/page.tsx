@@ -31,6 +31,8 @@ export const metadata = {
   },
 }
 
+export const dynamic = 'force-dynamic'
+
 // Page: Home
 export default async function Page() {
   const sortedPosts = sortPosts(getPublishedBlogs())
