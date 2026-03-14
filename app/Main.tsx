@@ -1,10 +1,23 @@
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 
 const MAX_DISPLAY = 6
+
+/** Parse as calendar date so the same day displays in all timezones. */
+function toCalendarDate(date) {
+  const iso =
+    typeof date === 'string'
+      ? date.includes('T')
+        ? date
+        : `${date}T12:00:00Z`
+      : new Date(date).toISOString()
+  const [y, m, d] = iso.slice(0, 10).split('-').map(Number)
+  return new Date(y, m - 1, d)
+}
+
+const listDateTemplate = { year: 'numeric', month: 'short', day: 'numeric' }
 
 export default function Home({ posts }) {
   return (
@@ -33,7 +46,12 @@ export default function Home({ posts }) {
                     <dl>
                       <dt className="sr-only">Published on</dt>
                       <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                        <time dateTime={date}>
+                          {toCalendarDate(date).toLocaleDateString(
+                            siteMetadata.locale,
+                            listDateTemplate
+                          )}
+                        </time>
                       </dd>
                     </dl>
                     <div className="space-y-5 xl:col-span-3">
