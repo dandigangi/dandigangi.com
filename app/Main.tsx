@@ -3,7 +3,7 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 
-const MAX_DISPLAY = 6
+const MAX_DISPLAY = 5
 
 /** Parse as calendar date so the same day displays in all timezones. */
 function toCalendarDate(date) {
