@@ -19,20 +19,20 @@ export default function Connect() {
             <div className="text-lg">
               <h3>Speaking, Writing, and Related</h3>
               <p>
-                I'm interested in doing more speaking, writing, videocasts, and podcasts. Technical
-                leadership, management, building high performance teams, hiring/interviews, and DEI
-                are my typical topics.
+                I'm interested in doing more speaking, writing, videocasts, and podcasts. My typical
+                topics include technical leadership, engineering management, building high
+                performance teams, hiring and interviews, mental health in tech, and DEI.
               </p>
               <p>
-                <a href="/blog">Examples of what I've done in the past</a> are posted on my blog.
+                <a href="/blog">Examples of past work</a> are posted on my blog.
               </p>
               <hr className="h-px my-12 bg-gray-200 border-0 dark:bg-gray-700" />
-              <h3>Coaching/Mentoring</h3>
+              <h3>Coaching & Mentoring</h3>
               <p>
-                If you're a software engineer, product owner, or designer at any level of
-                experience/role I'd be happy to connect on coaching.
+                If you're a software engineer, engineering leader, product owner, or designer at any
+                level I'd love to connect. I've worked with engineers ranging from junior to staff
+                and technical leaders across a variety of industries.
               </p>
-              <p>Look forward to hearing from you soon.</p>
             </div>
           </div>
         </div>
