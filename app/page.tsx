@@ -18,10 +18,12 @@ export default async function Page() {
   return (
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
       <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-        <h1 className="text-4xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
-          Dan DiGangi
-        </h1>
-        <h2 className="text-2xl md:text-2xl">Senior Software Engineering Manager</h2>
+        <div className="space-y-1.5">
+          <h1 className="text-4xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+            Dan DiGangi
+          </h1>
+          <h2 className="text-2xl md:text-2xl">Senior Software Engineering Manager</h2>
+        </div>
         <div className="mt-7">
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             <em>build experiences, not software</em>

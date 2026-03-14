@@ -19,7 +19,19 @@ function toCalendarDate(date) {
 
 const listDateTemplate = { year: 'numeric', month: 'short', day: 'numeric' }
 
+/** Fisher–Yates shuffle; returns a new array. */
+function shuffle(arr) {
+  const out = [...arr]
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[out[i], out[j]] = [out[j], out[i]]
+  }
+  return out
+}
+
 export default function Home({ posts }) {
+  const remainingPosts = posts.slice(MAX_DISPLAY).filter((p) => !p.draft)
+  const morePosts = shuffle(remainingPosts).slice(0, 5)
   return (
     <>
       <div id="layout-main" className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -40,7 +52,7 @@ export default function Home({ posts }) {
             }
 
             return (
-              <li key={slug} className="py-10 first:pt-8">
+              <li key={slug} className="py-8 first:pt-7">
                 <article>
                   <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                     <dl>
@@ -54,10 +66,10 @@ export default function Home({ posts }) {
                         </time>
                       </dd>
                     </dl>
-                    <div className="space-y-5 xl:col-span-3">
-                      <div className="space-y-6">
+                    <div className="space-y-4 xl:col-span-3">
+                      <div className="space-y-5">
                         <div>
-                          <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
+                          <h2 className="mb-2 text-2xl font-bold leading-8 tracking-tight">
                             <Link
                               href={`/blog/${slug}`}
                               className="text-gray-900 dark:text-gray-100"
@@ -92,6 +104,29 @@ export default function Home({ posts }) {
             )
           })}
         </ul>
+        {posts.length > MAX_DISPLAY && (
+          <div className="pt-6 pb-6">
+            <h4 className="mb-3 text-base font-semibold text-gray-700 dark:text-gray-300">
+              More things & stuff to check out.
+            </h4>
+            <ul className="list-none space-y-1.5 text-base">
+              {morePosts.map((post) => {
+                const { slug, title } = post
+                return (
+                  <li key={slug}>
+                    <Link
+                      href={`/blog/${slug}`}
+                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                      aria-label={`Blog post "${title}"`}
+                    >
+                      {title}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        )}
       </div>
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6 pt-4">
