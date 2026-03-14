@@ -33,6 +33,7 @@ module.exports = {
       colors: {
         primary: colors.violet,
         gray: colors.slate,
+        'site-bg': '#0d0917',
       },
       typography: ({ theme }) => ({
         DEFAULT: {

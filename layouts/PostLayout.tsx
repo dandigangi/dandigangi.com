@@ -108,7 +108,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </dd>
             </dl>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert leading-9 text-xl">
+              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert leading-9 text-base sm:text-lg xl:text-xl">
                 {children}
                 <br />
                 {' - '}DD
@@ -134,7 +134,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </div>
                 )}
                 {(next || prev) && (
-                  <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
+                  <div className="flex flex-col gap-4 py-4 sm:flex-row sm:justify-between xl:block xl:space-y-8 xl:py-8">
                     {prev && prev.path && (
                       <div>
                         <h2 className="pb-2 text-base uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">

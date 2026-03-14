@@ -28,9 +28,12 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 
   return (
     <div id="layout-listlayout" className="space-y-2 pb-8 pt-6 md:space-y-5">
-      <nav className="flex justify-between">
+      <nav className="flex items-center justify-between gap-4">
         {!prevPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
+          <button
+            className="min-h-[44px] min-w-[44px] cursor-auto rounded px-4 disabled:opacity-50"
+            disabled={!prevPage}
+          >
             Previous
           </button>
         )}
@@ -38,16 +41,20 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
           <Link
             href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
             rel="prev"
+            className="min-h-[44px] flex items-center px-4"
             aria-label={`Link to previous blog posts page`}
           >
             Previous
           </Link>
         )}
-        <span>
+        <span className="shrink-0 text-sm">
           {currentPage} of {totalPages}
         </span>
         {!nextPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
+          <button
+            className="min-h-[44px] min-w-[44px] cursor-auto rounded px-4 disabled:opacity-50"
+            disabled={!nextPage}
+          >
             Next
           </button>
         )}
@@ -55,6 +62,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
           <Link
             href={`/${basePath}/page/${currentPage + 1}`}
             rel="next"
+            className="min-h-[44px] flex items-center px-4"
             aria-label={`Link to next blog posts page`}
           >
             Next

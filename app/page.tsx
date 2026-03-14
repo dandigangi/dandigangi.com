@@ -29,8 +29,10 @@ export default async function Page() {
           </p>
         </div>
         <div className="pb-4">
-          <h2 className="pt-8 mb-6 text-md text-gray-900 dark:text-white md:sm">[ PREVIOUSLY ]</h2>
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-3 xl:grid xl:grid-cols-5 xl:gap-6">
+          <h2 className="pt-8 mb-6 text-sm text-gray-900 dark:text-white md:text-base">
+            [ PREVIOUSLY ]
+          </h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 md:grid-cols-3 xl:grid xl:grid-cols-5 xl:gap-6">
             <div>
               <Link
                 className="hidden xl:inline-block"
@@ -43,6 +45,7 @@ export default async function Page() {
                   src={DocuSignLogoLeft}
                   width={544}
                   height={306}
+                  className="max-w-full h-auto object-contain"
                 />
               </Link>
               <Link
@@ -56,6 +59,7 @@ export default async function Page() {
                   src={DocuSignLogoCenter}
                   width={544}
                   height={306}
+                  className="max-w-full h-auto object-contain"
                 />
               </Link>
             </div>
@@ -70,6 +74,7 @@ export default async function Page() {
                   src={ApartmentsComLogo}
                   width={544}
                   height={306}
+                  className="max-w-full h-auto object-contain"
                 />
               </Link>
             </div>
@@ -84,6 +89,7 @@ export default async function Page() {
                   src={ActiveCampaignLogo}
                   width={544}
                   height={306}
+                  className="max-w-full h-auto object-contain"
                 />
               </Link>
             </div>
@@ -98,12 +104,13 @@ export default async function Page() {
                   src={ArriveLogisticsLogo}
                   width={544}
                   height={306}
+                  className="max-w-full h-auto object-contain"
                 />
               </Link>
             </div>
-            <div className="hidden sm:inline-block md:inline-block">
+            <div className="hidden sm:inline-block">
               <Link
-                className="hidden sm:inline-block md:inline-block"
+                className="hidden sm:inline-block"
                 href="https://openlane.com"
                 aria-label="Link to OpenLane.com"
                 target="_blank"
@@ -113,6 +120,7 @@ export default async function Page() {
                   src={OpenLaneLogo}
                   width={544}
                   height={306}
+                  className="max-w-full h-auto object-contain"
                 />
               </Link>
             </div>

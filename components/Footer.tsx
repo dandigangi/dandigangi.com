@@ -11,11 +11,12 @@ export default function Footer() {
           <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
           <SocialIcon kind="github" href={siteMetadata.github} size={6} />
         </div>
-        <div className="mb-2 flex pt-2 space-x-2 text-sm text-gray-500 dark:text-gray-400">
-          <div>{siteMetadata.author}</div>
-          <div>{`© ${new Date().getFullYear()}`}</div>
-          <div>
-            &nbsp;|&nbsp;&nbsp;Built w/{` `}
+        <div className="mb-2 flex flex-wrap justify-center gap-x-2 gap-y-1 pt-2 text-sm text-gray-500 dark:text-gray-400 sm:flex-row sm:justify-center">
+          <span>{siteMetadata.author}</span>
+          <span>{`© ${new Date().getFullYear()}`}</span>
+          <span className="flex flex-wrap justify-center gap-x-1">
+            <span>|</span>
+            <span>Built w/</span>
             <a
               className="underline"
               target="_blank"
@@ -23,8 +24,8 @@ export default function Footer() {
               href="https://nextjs.com"
             >
               NextJS
-            </a>{' '}
-            &{' '}
+            </a>
+            <span>&</span>
             <a
               className="underline"
               target="_blank"
@@ -32,9 +33,9 @@ export default function Footer() {
               href="https://vercel.com"
             >
               Vercel
-            </a>{' '}
-            &hearts;
-          </div>
+            </a>
+            <span>&hearts;</span>
+          </span>
         </div>
         <div className="text-xs opacity-40 uppercase text-center">
           Tue Mar 10 23:25:08 2026 -0500 [HASH:16ea26dcf]

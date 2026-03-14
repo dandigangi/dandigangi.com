@@ -36,17 +36,21 @@ const MobileNav = () => {
         </svg>
       </button>
       <div
-        className={`fixed left-0 top-0 z-10 h-full w-full transform opacity-95 dark:opacity-[0.98] bg-white duration-300 ease-in-out dark:bg-gray-950 ${
+        className={`fixed inset-0 z-10 flex flex-col transform opacity-95 dark:opacity-[0.98] bg-white duration-300 ease-in-out dark:bg-gray-950 pt-[env(safe-area-inset-top)] ${
           navShow ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex justify-end">
-          <button className="mr-8 mt-11 h-8 w-8" aria-label="Toggle Menu" onClick={onToggleNav}>
+        <div className="flex justify-end shrink-0">
+          <button
+            className="mr-6 mt-6 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Close menu"
+            onClick={onToggleNav}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="text-gray-900 dark:text-gray-100"
+              className="text-gray-900 dark:text-gray-100 h-8 w-8"
             >
               <path
                 fillRule="evenodd"
@@ -56,14 +60,14 @@ const MobileNav = () => {
             </svg>
           </button>
         </div>
-        <nav className="fixed mt-8 h-full">
+        <nav className="flex-1 overflow-auto px-8 pb-[env(safe-area-inset-bottom)]">
           {navLinks.map((link) => (
-            <div key={link.title} className="px-12 py-4">
+            <div key={link.title} className="py-4">
               <Link
                 href={link.href}
-                className="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
+                className="flex min-h-[44px] items-center py-2 text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
                 onClick={onToggleNav}
-                aria-label="Link to open navigation"
+                aria-label={`Link to ${link.title} page`}
               >
                 {link.title}
               </Link>

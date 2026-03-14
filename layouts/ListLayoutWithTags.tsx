@@ -30,9 +30,12 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 
   return (
     <div id="layout-listlayoutwithtags" className="space-y-2 pb-8 pt-6 md:space-y-5">
-      <nav className="flex justify-between">
+      <nav className="flex items-center justify-between gap-4">
         {!prevPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
+          <button
+            className="min-h-[44px] min-w-[44px] cursor-auto rounded px-4 disabled:opacity-50"
+            disabled={!prevPage}
+          >
             Previous
           </button>
         )}
@@ -40,20 +43,28 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
           <Link
             href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
             rel="prev"
+            className="min-h-[44px] flex items-center px-4"
           >
             Previous
           </Link>
         )}
-        <span>
+        <span className="shrink-0 text-sm">
           {currentPage} of {totalPages}
         </span>
         {!nextPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
+          <button
+            className="min-h-[44px] min-w-[44px] cursor-auto rounded px-4 disabled:opacity-50"
+            disabled={!nextPage}
+          >
             Next
           </button>
         )}
         {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
+          <Link
+            href={`/${basePath}/page/${currentPage + 1}`}
+            rel="next"
+            className="min-h-[44px] flex items-center px-4"
+          >
             Next
           </Link>
         )}
@@ -78,7 +89,7 @@ export default function ListLayoutWithTags({
     <>
       <div>
         <div className="pb-6 pt-6">
-          <h1 className="sm:hidden text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             {title} ({posts.length})
           </h1>
         </div>
