@@ -41,7 +41,7 @@ const computedFields: ComputedFields = {
 }
 
 /**
- * Csount the occurrences of all tags across blog posts and write to json file
+ * Count the occurrences of all tags across blog posts and write to json file
  */
 function createTagCount(allBlogs) {
   const tagCount: Record<string, number> = {}
@@ -69,9 +69,10 @@ function createSearchIndex(allBlogs) {
     siteMetadata?.search?.provider === 'kbar' &&
     siteMetadata.search.kbarConfig.searchDocumentsPath
   ) {
+    const published = allBlogs.filter((p) => p.draft !== true)
     writeFileSync(
       `public/${siteMetadata.search.kbarConfig.searchDocumentsPath}`,
-      JSON.stringify(allCoreContent(sortPosts(allBlogs)))
+      JSON.stringify(allCoreContent(sortPosts(published)))
     )
     console.log('Local search index generated...')
   }

@@ -1,5 +1,5 @@
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
-import { allBlogs } from 'contentlayer/generated'
+import { getPublishedBlogs } from '@/lib/blog'
 import Main from './Main'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -13,7 +13,7 @@ import OpenLaneLogo from '/public/static/images/xp/openlane.png'
 
 // Page: Home
 export default async function Page() {
-  const sortedPosts = sortPosts(allBlogs)
+  const sortedPosts = sortPosts(getPublishedBlogs())
   const posts = allCoreContent(sortedPosts)
 
   return (

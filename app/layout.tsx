@@ -89,12 +89,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-        <script
-          id="analytics"
-          dangerouslySetInnerHTML={{
-            __html: `window.smartlook||(function(d) {var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);})(document);smartlook('init', '${process.env.ANALYTICS_SMARTLOOK_ID}', { region: 'eu' });`,
-          }}
-        />
+        {process.env.ANALYTICS_SMARTLOOK_ID && (
+          <script
+            id="analytics"
+            dangerouslySetInnerHTML={{
+              __html: `window.smartlook||(function(d) {var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);})(document);smartlook('init', '${process.env.ANALYTICS_SMARTLOOK_ID}', { region: 'eu' });`,
+            }}
+          />
+        )}
       </head>
       <body
         className="dark:text-white bg-page-pattern bg-hero bg-repeat-x bg-bottom bg-fixed"

@@ -16,11 +16,21 @@ export default function Footer() {
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>
             &nbsp;|&nbsp;&nbsp;Built w/{` `}
-            <a className="underline" target="_blank" rel="noopener" href="https://nextjs.com">
+            <a
+              className="underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://nextjs.com"
+            >
               NextJS
             </a>{' '}
             &{' '}
-            <a className="underline" target="_blank" rel="noopener" href="https://vercel.com">
+            <a
+              className="underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://vercel.com"
+            >
               Vercel
             </a>{' '}
             &hearts;

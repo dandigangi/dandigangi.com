@@ -158,7 +158,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light">
                           <Link
                             href={`/${next.path}`}
-                            aria-label={`Read previous article ${next.title}`}
+                            aria-label={`Read next article ${next.title}`}
                           >
                             {next.title}
                           </Link>
