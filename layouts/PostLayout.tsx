@@ -21,6 +21,18 @@ const postDateTemplate: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 }
 
+/** Parse as a calendar date so the same day displays in all timezones. */
+function toCalendarDate(date: string | Date): Date {
+  const iso =
+    typeof date === 'string'
+      ? date.includes('T')
+        ? date
+        : `${date}T12:00:00Z`
+      : date.toISOString()
+  const [y, m, d] = iso.slice(0, 10).split('-').map(Number)
+  return new Date(y, m - 1, d)
+}
+
 interface LayoutProps {
   content: CoreContent<Blog>
   authorDetails: CoreContent<Authors>[]
@@ -44,8 +56,11 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 <div className="mb-6">
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-lg font-light leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                    <time dateTime={typeof date === 'string' ? date : new Date(date).toISOString()}>
+                      {toCalendarDate(date).toLocaleDateString(
+                        siteMetadata.locale,
+                        postDateTemplate
+                      )}
                     </time>
                   </dd>
                 </div>
@@ -96,11 +111,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert leading-9 text-xl">
                 {children}
                 <br />
-                {' - '}DD
               </div>
               <div className="pb-6 pt-6 text-m text-gray-700 dark:text-gray-300">
                 <Link target="_blank" href="https://x.com/dandigangi" rel="nofollow">
-                  Tweet @dandigangi
+                  Have thoughts? Find me on X - @dandigangi
                 </Link>
               </div>
             </div>
