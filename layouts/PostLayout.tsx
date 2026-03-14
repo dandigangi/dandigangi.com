@@ -111,10 +111,11 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert leading-9 text-xl">
                 {children}
                 <br />
+                {' - '}DD
               </div>
               <div className="pb-6 pt-6 text-m text-gray-700 dark:text-gray-300">
                 <Link target="_blank" href="https://x.com/dandigangi" rel="nofollow">
-                  Have thoughts? Find me on X - @dandigangi
+                  Have thoughts on this? Find me on X - @dandigangi
                 </Link>
               </div>
             </div>
