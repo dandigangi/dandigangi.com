@@ -3,7 +3,7 @@ import { getPublishedBlogs } from '@/lib/blog'
 import siteMetadata from '@/data/siteMetadata'
 import tagData from 'app/tag-data.json'
 
-const POSTS_PER_PAGE = 8
+const POSTS_PER_PAGE = 7
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = siteMetadata.siteUrl

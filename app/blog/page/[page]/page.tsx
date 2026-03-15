@@ -4,7 +4,7 @@ import { getPublishedBlogs } from '@/lib/blog'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 
-const POSTS_PER_PAGE = 8
+const POSTS_PER_PAGE = 7
 
 const BLOG_DESCRIPTION =
   'Blog posts and articles on engineering leadership, management, hiring, and career.'

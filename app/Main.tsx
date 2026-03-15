@@ -113,7 +113,7 @@ export default function Home({ posts }) {
           <div className="pt-6 pb-6 grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-6 md:gap-8">
             <div>
               <RandomLinkBox />
-              <p className="mt-4 text-xs font-light italic text-gray-500 dark:text-gray-400">
+              <p className="mt-4 text-sm font-light italic text-gray-500 dark:text-gray-400">
                 More projects coming in 2026…
               </p>
             </div>
