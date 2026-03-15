@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
@@ -18,6 +17,23 @@ interface ListLayoutProps {
   title: string
   initialDisplayPosts?: CoreContent<Blog>[]
   pagination?: PaginationProps
+}
+
+const listDateTemplate: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+}
+
+function toCalendarDate(date: string | Date): Date {
+  const iso =
+    typeof date === 'string'
+      ? date.includes('T')
+        ? date
+        : `${date}T12:00:00Z`
+      : new Date(date).toISOString()
+  const [y, m, d] = iso.slice(0, 10).split('-').map(Number)
+  return new Date(y, m - 1, d)
 }
 
 function Pagination({ totalPages, currentPage }: PaginationProps) {
@@ -137,7 +153,12 @@ export default function ListLayout({
                   <dl>
                     <dt className="sr-only">Published on</dt>
                     <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                      <time dateTime={date}>
+                        {toCalendarDate(date).toLocaleDateString(
+                          siteMetadata.locale,
+                          listDateTemplate
+                        )}
+                      </time>
                     </dd>
                   </dl>
                   <div className="space-y-3 xl:col-span-3">
