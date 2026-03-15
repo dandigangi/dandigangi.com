@@ -18,19 +18,21 @@ export default function Footer() {
             <span>|</span>
             <span>Built w/</span>
             <a
-              className="underline"
+              className="underline focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
               target="_blank"
               rel="noopener noreferrer"
               href="https://nextjs.com"
+              aria-label="Next.js (external)"
             >
               NextJS
             </a>
             <span>&</span>
             <a
-              className="underline"
+              className="underline focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
               target="_blank"
               rel="noopener noreferrer"
               href="https://vercel.com"
+              aria-label="Vercel (external)"
             >
               Vercel
             </a>

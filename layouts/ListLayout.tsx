@@ -104,7 +104,6 @@ export default function ListLayout({
             <label>
               <span className="sr-only">Search articles</span>
               <input
-                aria-label="Search articles"
                 type="text"
                 onChange={(e) => setSearchValue(e.target.value)}
                 placeholder="Search articles"

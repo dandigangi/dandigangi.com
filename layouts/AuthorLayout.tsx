@@ -61,8 +61,15 @@ export default function AuthorLayout({ children, content }: Props) {
               {!avatarDisplay ? 'My Alter Ego' : 'Back to Dan'}
             </button>
           </div>
-          <div className="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 text-lg leading-8">
+          <div className="prose max-w-none pb-6 pt-8 dark:prose-invert xl:col-span-2 text-lg leading-8">
             {children}
+            <br />
+            <img
+              src="/static/images/dd-signature.png"
+              alt="DD signature"
+              className="mt-1.5 h-7 w-auto scale-95 inline-block align-baseline invert dark:invert-0 origin-left"
+              style={{ marginLeft: '7px' }}
+            />
           </div>
         </div>
       </div>

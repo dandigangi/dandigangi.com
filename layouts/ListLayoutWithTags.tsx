@@ -108,13 +108,13 @@ export default function ListLayoutWithTags({
                     return (
                       <li key={t} className="my-1.5">
                         {pathname.split('/blog/tags/')[1] === slug(t) ? (
-                          <h3
+                          <span
                             className="flex items-baseline gap-0.5 py-2 px-3 uppercase text-sm font-bold text-primary-500 min-w-0"
                             title={t}
                           >
                             <span className="truncate">{t}</span>
                             <span className="shrink-0">{count}</span>
-                          </h3>
+                          </span>
                         ) : (
                           <Link
                             href={`/blog/tags/${slug(t)}`}

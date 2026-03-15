@@ -8,6 +8,14 @@ const components = {
   web: Web,
 }
 
+const kindLabels: Record<keyof typeof components, string> = {
+  mail: 'Email',
+  github: 'GitHub',
+  linkedin: 'LinkedIn',
+  twitter: 'Twitter',
+  web: 'Website',
+}
+
 type SocialIconProps = {
   kind: keyof typeof components
   href: string | undefined
@@ -19,15 +27,16 @@ const SocialIcon = ({ kind, href, size = 8 }: SocialIconProps) => {
     return null
 
   const SocialSvg = components[kind]
+  const label = kindLabels[kind]
 
   return (
     <a
-      className="text-sm text-gray-500 transition hover:text-gray-600"
+      className="text-sm text-gray-500 transition hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
       target="_blank"
       rel="noopener noreferrer"
       href={href}
+      aria-label={label}
     >
-      <span className="sr-only">{kind}</span>
       <SocialSvg
         className={`fill-current text-gray-700 hover:text-primary-500 dark:text-gray-200 dark:hover:text-primary-400 h-${size} w-${size}`}
       />

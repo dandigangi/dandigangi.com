@@ -1,27 +1,42 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from './Link'
 import navLinks from '@/data/navLinks'
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
 
   const onToggleNav = () => {
     setNavShow((status) => {
       if (status) {
         document.body.style.overflow = 'auto'
+        toggleRef.current?.focus()
       } else {
-        // Prevent scrolling
         document.body.style.overflow = 'hidden'
+        closeRef.current?.focus()
       }
       return !status
     })
   }
 
+  useEffect(() => {
+    if (navShow) {
+      closeRef.current?.focus()
+    }
+  }, [navShow])
+
   return (
     <>
-      <button aria-label="Toggle Menu" onClick={onToggleNav} className="sm:hidden">
+      <button
+        ref={toggleRef}
+        aria-label="Toggle Menu"
+        aria-expanded={navShow}
+        onClick={onToggleNav}
+        className="sm:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -42,7 +57,8 @@ const MobileNav = () => {
       >
         <div className="flex justify-end shrink-0">
           <button
-            className="mr-6 mt-6 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+            ref={closeRef}
+            className="mr-6 mt-6 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
             aria-label="Close menu"
             onClick={onToggleNav}
           >
@@ -65,7 +81,7 @@ const MobileNav = () => {
             <div key={link.title} className="py-4">
               <Link
                 href={link.href}
-                className="flex min-h-[44px] items-center py-2 text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
+                className="flex min-h-[44px] items-center py-2 text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
                 onClick={onToggleNav}
                 aria-label={`Link to ${link.title} page`}
               >
