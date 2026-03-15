@@ -45,10 +45,15 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
               <PageTitle>{title}</PageTitle>
             </div>
           </div>
-          <div className="prose max-w-none py-4 dark:prose-invert">
+          <div className="prose max-w-none pt-4 pb-3 dark:prose-invert">
             {children}
             <br />
-            {' - '}DD
+            <img
+              src="/static/images/dd-signature.png"
+              alt="DD signature"
+              className="mt-1.5 h-7 w-auto scale-95 inline-block align-baseline invert dark:invert-0 origin-left"
+              style={{ marginLeft: '7px' }}
+            />
           </div>
           <footer>
             <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">

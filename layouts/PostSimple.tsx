@@ -41,10 +41,15 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
           </header>
           <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0">
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">
+              <div className="prose max-w-none pb-6 pt-10 dark:prose-invert">
                 {children}
                 <br />
-                {'— '}DD
+                <img
+                  src="/static/images/dd-signature.png"
+                  alt="DD signature"
+                  className="mt-1.5 h-7 w-auto scale-95 inline-block align-baseline invert dark:invert-0 origin-left"
+                  style={{ marginLeft: '7px' }}
+                />
               </div>
             </div>
             <footer>
