@@ -95,25 +95,13 @@ export default function ListLayoutWithTags({
       <div>
         <div className="pb-6 pt-6">
           <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-3xl md:text-3xl">
-            {title} ({posts.length})
+            {title} <span className="font-normal">({posts.length})</span>
           </h1>
         </div>
         <div className="flex sm:space-x-24">
           <div className="hidden sm:flex sm:flex-col min-w-[320px] max-w-[320px] gap-8">
-            <div className="max-h-screen flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md pt-5 dark:shadow-gray-800/40 rounded overflow-auto shrink-0">
+            <div className="max-h-screen flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md pt-5 pb-5 dark:shadow-gray-800/40 rounded overflow-auto shrink-0">
               <div className="py-4 px-6">
-                {pathname.startsWith('/blog') ? (
-                  <h3 className="text-sm text-primary-500 font-bold uppercase">
-                    All Posts ({posts.length})
-                  </h3>
-                ) : (
-                  <Link
-                    href={`/blog`}
-                    className="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
-                  >
-                    All Posts ({posts.length})
-                  </Link>
-                )}
                 <ul>
                   {sortedTags.map((t) => {
                     const count = ` (${tagCounts[t]})`
@@ -145,10 +133,11 @@ export default function ListLayoutWithTags({
               </div>
             </div>
             <div>
-              <p className="mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                Some projects.
-              </p>
+              <p className="mb-2 text-lg font-medium text-gray-900 dark:text-gray-100">Projects</p>
               <RandomLinkBox />
+              <p className="mt-4 text-xs font-light italic text-gray-500 dark:text-gray-400">
+                More coming in 2026…
+              </p>
             </div>
           </div>
           <div>

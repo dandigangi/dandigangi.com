@@ -111,10 +111,15 @@ export default function Home({ posts }) {
         </ul>
         {posts.length > MAX_DISPLAY && (
           <div className="pt-6 pb-6 grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-6 md:gap-8">
-            <RandomLinkBox />
+            <div>
+              <RandomLinkBox />
+              <p className="mt-4 text-xs font-light italic text-gray-500 dark:text-gray-400">
+                More projects coming in 2026…
+              </p>
+            </div>
             <div className="min-w-0">
               <h4 className="mb-3 text-base font-semibold text-gray-700 dark:text-gray-300">
-                More things to read.
+                Read More
               </h4>
               <ul className="list-none space-y-1.5 text-base">
                 {morePosts.map((post) => {
