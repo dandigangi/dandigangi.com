@@ -6,7 +6,12 @@ import PageHeader from '@/components/PageHeader'
 
 const POSTS_PER_PAGE = 7
 
-export const metadata = genPageMetadata({ title: 'Blog', alternates: { canonical: '/blog' } })
+export const metadata = genPageMetadata({
+  title: 'Blog',
+  description:
+    'Blog posts and articles on engineering leadership, management, hiring, career development, and mental health.',
+  alternates: { canonical: '/blog' },
+})
 
 export default function BlogPage() {
   const posts = allCoreContent(sortPosts(getPublishedBlogs()))

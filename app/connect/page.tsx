@@ -4,6 +4,7 @@ import { genPageMetadata } from 'app/seo'
 
 export const metadata = genPageMetadata({
   title: 'Connect - Contact Dan DiGangi',
+  description: 'Get in touch – speaking, writing, mentoring, and contact information.',
   alternates: { canonical: '/connect' },
 })
 
