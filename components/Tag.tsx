@@ -6,15 +6,17 @@ interface Props {
 }
 
 const Tag = ({ text, fontSize = '' }: Props) => {
+  const displayText = text.split(' ').join('-')
   return (
     <Link
       href={`/blog/tags/${slug(text)}`}
-      className={`mr-3 ${
+      className={`mr-3 max-w-[12rem] truncate inline-block align-baseline ${
         fontSize || 'text-sm'
       } font-light uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400`}
       aria-label={`Link to posts tagged with ${text}`}
+      title={displayText}
     >
-      {text.split(' ').join('-')}
+      {displayText}
     </Link>
   )
 }
