@@ -71,7 +71,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             </div>
           </header>
           <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0">
-            <dl className="pb-10 pt-6 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
+            <dl className="pb-6 pt-6 xl:pt-11 xl:pb-4">
               <dt className="sr-only">Authors</dt>
               <dd>
                 <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8">
@@ -124,24 +124,28 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
             <footer>
-              <div className="divide-gray-200 text-base leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
+              <div className="text-base leading-5 xl:col-start-1 xl:row-start-2">
                 {tags && (
-                  <div className="py-4 xl:py-8">
-                    <h2 className="pb-2 text-base uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
-                      Tags
-                    </h2>
-                    <div className="flex flex-wrap">
-                      {tags.map((tag) => (
-                        <Tag key={tag} text={tag} />
-                      ))}
+                  <div className="pt-2 pb-2 xl:pt-4 xl:pb-4">
+                    <div className="bg-gray-50 dark:bg-gray-900/70 shadow-md py-2 dark:shadow-gray-800/40 rounded overflow-hidden">
+                      <div className="py-1.5 px-4">
+                        <h2 className="pb-2 text-base uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
+                          Tags
+                        </h2>
+                        <div className="flex flex-wrap">
+                          {tags.map((tag) => (
+                            <Tag key={tag} text={tag} />
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
                 {(next || prev) && (
-                  <div className="flex flex-col gap-4 py-4 sm:flex-row sm:justify-between xl:block xl:space-y-8 xl:py-8">
+                  <div className="flex flex-col gap-4 py-2 xl:py-4">
                     {prev && prev.path && (
                       <div>
-                        <h2 className="pb-2 text-base uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
+                        <h2 className="pb-2 text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
                           Previous Article
                         </h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light">
@@ -155,8 +159,8 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       </div>
                     )}
                     {next && next.path && (
-                      <div>
-                        <h2 className="pb-2 text-base uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
+                      <div className="mt-2">
+                        <h2 className="pb-2 text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
                           Next Article
                         </h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light">
@@ -172,7 +176,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </div>
                 )}
               </div>
-              <div className="pt-4 xl:pt-8">
+              <div className="pt-6 xl:pt-10">
                 <Link
                   href={`/${basePath}`}
                   className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light"
