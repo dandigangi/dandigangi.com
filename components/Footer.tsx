@@ -40,7 +40,9 @@ export default function Footer() {
           </span>
         </div>
         <div className="text-xs opacity-40 uppercase text-center">
-          Tue Mar 10 23:25:08 2026 -0500 [HASH:16ea26dcf]
+          {process.env.NEXT_PUBLIC_BUILD_DATE && process.env.NEXT_PUBLIC_BUILD_HASH
+            ? `${process.env.NEXT_PUBLIC_BUILD_DATE} [HASH:${process.env.NEXT_PUBLIC_BUILD_HASH}]`
+            : 'dev'}
         </div>
       </div>
     </footer>
