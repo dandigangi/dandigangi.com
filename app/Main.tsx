@@ -1,5 +1,6 @@
 import Link from '@/components/Link'
 import RandomLinkBox from '@/components/RandomLinkBox'
+import ReadMorePosts from '@/components/ReadMorePosts'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
@@ -24,19 +25,8 @@ const listDateTemplate: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 }
 
-/** Fisher–Yates shuffle; returns a new array. */
-function shuffle(arr) {
-  const out = [...arr]
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[out[i], out[j]] = [out[j], out[i]]
-  }
-  return out
-}
-
 export default function Home({ posts }) {
   const remainingPosts = posts.slice(MAX_DISPLAY).filter((p) => !p.draft)
-  const morePosts = shuffle(remainingPosts).slice(0, 5)
   return (
     <>
       <div id="layout-main" className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -121,23 +111,7 @@ export default function Home({ posts }) {
               <h4 className="mb-3 text-base font-semibold text-gray-700 dark:text-gray-300">
                 Read More
               </h4>
-              <ul className="list-none space-y-1.5 text-base">
-                {morePosts.map((post) => {
-                  const { slug, title } = post
-                  return (
-                    <li key={slug} className="min-w-0 overflow-hidden">
-                      <Link
-                        href={`/blog/${slug}`}
-                        className="block truncate text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                        aria-label={`Blog post "${title}"`}
-                        title={title}
-                      >
-                        {title}
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
+              <ReadMorePosts posts={remainingPosts} />
             </div>
           </div>
         )}

@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import Image from '@/components/Image'
+import NextImage from 'next/image'
 import Bleed from 'pliny/ui/Bleed'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
@@ -48,11 +49,13 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
           <div className="prose max-w-none pt-4 pb-3 dark:prose-invert">
             {children}
             <br />
-            <img
+            <NextImage
               src="/static/images/dd-signature.png"
               alt="DD signature"
-              className="mt-1.5 h-7 w-auto scale-95 inline-block align-baseline invert dark:invert-0 origin-left"
-              style={{ marginLeft: '7px' }}
+              width={44}
+              height={16}
+              className="mt-3 h-4 w-auto scale-85 inline-block align-baseline invert dark:invert-0 origin-left"
+              style={{ marginLeft: '11px', width: 'auto', height: 'auto' }}
             />
           </div>
           <footer>

@@ -1,5 +1,4 @@
 import 'css/tailwind.css'
-import 'pliny/search/algolia.css'
 
 import { Space_Grotesk } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
@@ -9,6 +8,7 @@ import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
+import Script from 'next/script'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 
@@ -102,14 +102,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-        {process.env.ANALYTICS_SMARTLOOK_ID?.length === 40 && (
-          <script
-            id="analytics"
-            dangerouslySetInnerHTML={{
-              __html: `window.smartlook||(function(d) {var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);})(document);smartlook('init', '${process.env.ANALYTICS_SMARTLOOK_ID}', { region: 'eu' });`,
-            }}
-          />
-        )}
       </head>
       <body className="font-sans dark:text-white bg-site-bg bg-page-pattern bg-hero bg-repeat-x bg-bottom bg-scroll md:bg-fixed">
         <a
@@ -133,6 +125,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </SectionContainer>
         </ThemeProviders>
         <VercelAnalytics />
+        {process.env.ANALYTICS_SMARTLOOK_ID?.length === 40 && (
+          <Script
+            id="analytics-smartlook"
+            strategy="lazyOnload"
+            dangerouslySetInnerHTML={{
+              __html: `window.smartlook||(function(d) {var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);})(document);smartlook('init', '${process.env.ANALYTICS_SMARTLOOK_ID}', { region: 'eu' });`,
+            }}
+          />
+        )}
       </body>
     </html>
   )

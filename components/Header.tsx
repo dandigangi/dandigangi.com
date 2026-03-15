@@ -1,10 +1,13 @@
+import dynamic from 'next/dynamic'
 import siteMetadata from '@/data/siteMetadata'
 import navLinks from '@/data/navLinks'
 import LogoLight from '/public/static/images/dan-digangi-logo-light.png'
 import Image from '@/components/Image'
 import Link from './Link'
 import MobileNav from './MobileNav'
-import SearchButton from './SearchButton'
+
+const SearchButton = dynamic(() => import('@/components/SearchButton'), { ssr: false })
+
 const Header = () => {
   return (
     <header className="flex items-center justify-between py-10">
@@ -19,9 +22,16 @@ const Header = () => {
               <Image
                 alt="Dan DiGangi - Senior Software Engineering Manager"
                 src={LogoLight}
-                width="39"
-                height="39"
-                style={{ boxShadow: '0 !important', borderRadius: '0 !important', border: 0 }}
+                width={39}
+                height={39}
+                priority
+                style={{
+                  boxShadow: '0 !important',
+                  borderRadius: '0 !important',
+                  border: 0,
+                  width: 'auto',
+                  height: 'auto',
+                }}
               />
             </div>
             {typeof siteMetadata.headerTitle === 'string' ? (

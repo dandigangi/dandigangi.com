@@ -98,7 +98,7 @@ export default function ListLayoutWithTags({
             {title} <span className="font-normal">({posts.length})</span>
           </h1>
         </div>
-        <div className="flex sm:space-x-24">
+        <div className="flex sm:space-x-8 md:space-x-12 xl:space-x-24">
           <div className="hidden sm:flex sm:flex-col min-w-[320px] max-w-[320px] gap-8">
             <div className="max-h-screen flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md py-3 dark:shadow-gray-800/40 rounded overflow-auto shrink-0">
               <div className="py-2 px-6">

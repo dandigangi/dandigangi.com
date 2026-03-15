@@ -6,6 +6,7 @@ import Comments from '@/components/Comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
+import NextImage from 'next/image'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 
@@ -44,11 +45,13 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
               <div className="prose max-w-none pb-6 pt-10 dark:prose-invert">
                 {children}
                 <br />
-                <img
+                <NextImage
                   src="/static/images/dd-signature.png"
                   alt="DD signature"
-                  className="mt-1.5 h-7 w-auto scale-95 inline-block align-baseline invert dark:invert-0 origin-left"
-                  style={{ marginLeft: '7px' }}
+                  width={44}
+                  height={16}
+                  className="mt-3 h-4 w-auto scale-85 inline-block align-baseline invert dark:invert-0 origin-left"
+                  style={{ marginLeft: '11px', width: 'auto', height: 'auto' }}
                 />
               </div>
             </div>

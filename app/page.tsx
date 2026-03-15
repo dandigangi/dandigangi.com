@@ -46,8 +46,6 @@ export const metadata = {
   },
 }
 
-export const dynamic = 'force-dynamic'
-
 // Page: Home
 export default async function Page() {
   const sortedPosts = sortPosts(getPublishedBlogs())
@@ -104,6 +102,8 @@ export default async function Page() {
                     src="/static/images/xp/postmark.svg"
                     width={200}
                     height={44}
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 420px"
                     className="dark:invert"
                   />
                 </Link>
@@ -136,6 +136,8 @@ export default async function Page() {
                         src={DocuSignLogoCenter}
                         width={180}
                         height={60}
+                        priority
+                        sizes="(max-width: 640px) 50vw, 33vw"
                         className="object-contain max-w-full max-h-full"
                       />
                     </span>
@@ -152,6 +154,7 @@ export default async function Page() {
                         src={ApartmentsComLogo}
                         width={160}
                         height={56}
+                        sizes="(max-width: 640px) 50vw, 33vw"
                         className="object-contain max-w-full max-h-full"
                       />
                     </span>
@@ -168,6 +171,7 @@ export default async function Page() {
                         src={ActiveCampaignLogo}
                         width={160}
                         height={56}
+                        sizes="(max-width: 640px) 50vw, 33vw"
                         className="object-contain max-w-full max-h-full"
                       />
                     </span>
@@ -184,6 +188,7 @@ export default async function Page() {
                         src={ArriveLogisticsLogo}
                         width={160}
                         height={56}
+                        sizes="(max-width: 640px) 50vw, 33vw"
                         className="object-contain max-w-full max-h-full"
                       />
                     </span>
@@ -200,6 +205,7 @@ export default async function Page() {
                         src={OpenLaneLogo}
                         width={140}
                         height={48}
+                        sizes="(max-width: 640px) 50vw, 33vw"
                         className="object-contain max-w-full max-h-full"
                       />
                     </span>
@@ -216,6 +222,7 @@ export default async function Page() {
                         src="/static/images/xp/clearstorydata.svg"
                         width={160}
                         height={56}
+                        sizes="(max-width: 640px) 50vw, 33vw"
                         className="object-contain max-w-full max-h-full"
                       />
                     </span>

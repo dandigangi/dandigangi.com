@@ -6,6 +6,7 @@ import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import Image from '@/components/Image'
+import NextImage from 'next/image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
@@ -70,7 +71,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
           </header>
-          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0">
+          <div className="grid-rows-[auto_1fr] pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6">
             <dl className="pb-6 pt-6 xl:pt-11 xl:pb-4">
               <dt className="sr-only">Authors</dt>
               <dd>
@@ -107,15 +108,17 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </ul>
               </dd>
             </dl>
-            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
+            <div className="border-t border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0 pt-6 xl:pt-0">
               <div className="prose max-w-none pb-6 pt-10 dark:prose-invert leading-10 text-base sm:text-lg xl:text-xl">
                 {children}
                 <br />
-                <img
+                <NextImage
                   src="/static/images/dd-signature.png"
                   alt="DD signature"
-                  className="mt-1.5 h-7 w-auto scale-95 inline-block align-baseline invert dark:invert-0 origin-left"
-                  style={{ marginLeft: '7px' }}
+                  width={44}
+                  height={16}
+                  className="mt-3 h-4 w-auto scale-85 inline-block align-baseline invert dark:invert-0 origin-left"
+                  style={{ marginLeft: '11px', width: 'auto', height: 'auto' }}
                 />
               </div>
               <div className="pb-6 pt-6 text-m text-gray-700 dark:text-gray-300">
@@ -147,9 +150,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </div>
                 )}
                 {(next || prev) && (
-                  <div className="flex flex-col gap-4 py-2 xl:py-4">
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-4 py-2 xl:grid-cols-1 xl:py-4">
                     {prev && prev.path && (
-                      <div>
+                      <div className="min-w-0">
                         <h2 className="pb-2 text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
                           Previous Article
                         </h2>
@@ -164,7 +167,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       </div>
                     )}
                     {next && next.path && (
-                      <div className="mt-2">
+                      <div className="min-w-0">
                         <h2 className="pb-2 text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium">
                           Next Article
                         </h2>

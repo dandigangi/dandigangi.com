@@ -4,6 +4,7 @@ import { ReactNode, useState } from 'react'
 import type { Authors } from 'contentlayer/generated'
 import SocialIcon from '@/components/social-icons'
 import Image from '@/components/Image'
+import NextImage from 'next/image'
 import { github, linkedin, twitter } from '@/data/siteMetadata'
 import AvatarPikachu from '/public/static/images/avatar-pikachu.png'
 import PageHeader from '@/components/PageHeader'
@@ -64,11 +65,13 @@ export default function AuthorLayout({ children, content }: Props) {
           <div className="prose max-w-none pb-6 pt-8 dark:prose-invert xl:col-span-2 text-lg leading-8">
             {children}
             <br />
-            <img
+            <NextImage
               src="/static/images/dd-signature.png"
               alt="DD signature"
-              className="mt-1.5 h-7 w-auto scale-95 inline-block align-baseline invert dark:invert-0 origin-left"
-              style={{ marginLeft: '7px' }}
+              width={44}
+              height={16}
+              className="mt-3 h-4 w-auto scale-85 inline-block align-baseline invert dark:invert-0 origin-left"
+              style={{ marginLeft: '11px', width: 'auto', height: 'auto' }}
             />
           </div>
         </div>
