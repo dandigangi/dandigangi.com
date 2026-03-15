@@ -30,7 +30,13 @@ export const metadata: Metadata = {
     description: siteMetadata.description,
     url: './',
     siteName: siteMetadata.title,
-    images: [siteMetadata.socialBanner],
+    images: [
+      {
+        url: siteMetadata.socialBanner,
+        width: 1200,
+        height: 630,
+      },
+    ],
     locale: 'en_US',
     type: 'website',
   },
@@ -55,7 +61,13 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     description: siteMetadata.description,
     card: 'summary_large_image',
-    images: [siteMetadata.socialBanner],
+    images: [
+      {
+        url: siteMetadata.socialBanner,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 }
 

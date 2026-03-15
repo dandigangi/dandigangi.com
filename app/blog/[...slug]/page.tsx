@@ -50,9 +50,8 @@ export async function generateMetadata({
     imageList = typeof post.images === 'string' ? [post.images] : post.images
   }
   const ogImages = imageList.map((img) => {
-    return {
-      url: img.includes('http') ? img : siteMetadata.siteUrl + img,
-    }
+    const url = img.includes('http') ? img : siteMetadata.siteUrl + img
+    return { url, width: 1200, height: 630 }
   })
 
   const canonicalUrl =
@@ -79,7 +78,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: post.title,
       description: post.summary,
-      images: imageList,
+      images: ogImages,
     },
   }
 }

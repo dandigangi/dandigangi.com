@@ -30,7 +30,13 @@ export async function generateMetadata({
       description: BLOG_DESCRIPTION,
       url: canonicalUrl,
       siteName: siteMetadata.title,
-      images: [siteMetadata.socialBanner],
+      images: [
+        {
+          url: siteMetadata.socialBanner,
+          width: 1200,
+          height: 630,
+        },
+      ],
       locale: 'en_US',
       type: 'website',
     },
@@ -38,7 +44,13 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: `${title} | ${siteMetadata.title}`,
       description: BLOG_DESCRIPTION,
-      images: [siteMetadata.socialBanner],
+      images: [
+        {
+          url: siteMetadata.socialBanner,
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
   }
 }

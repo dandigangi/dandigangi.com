@@ -9,7 +9,18 @@ interface PageSEOProps {
   [key: string]: any
 }
 
+const defaultOgImage = {
+  url: siteMetadata.socialBanner,
+  width: 1200,
+  height: 630,
+}
+
 export function genPageMetadata({ title, description, image, ...rest }: PageSEOProps): Metadata {
+  const ogImage = image
+    ? typeof image === 'string'
+      ? { url: image, width: 1200, height: 630 }
+      : image
+    : defaultOgImage
   return {
     title,
     openGraph: {
@@ -17,7 +28,7 @@ export function genPageMetadata({ title, description, image, ...rest }: PageSEOP
       description: description || siteMetadata.description,
       url: './',
       siteName: siteMetadata.title,
-      images: image ? [image] : [siteMetadata.socialBanner],
+      images: [ogImage],
       locale: 'en_US',
       type: 'website',
     },
@@ -25,7 +36,7 @@ export function genPageMetadata({ title, description, image, ...rest }: PageSEOP
       title: `${title} | ${siteMetadata.title}`,
       description: description || siteMetadata.description,
       card: 'summary_large_image',
-      images: image ? [image] : [siteMetadata.socialBanner],
+      images: [ogImage],
     },
     ...rest,
   }

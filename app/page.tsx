@@ -11,6 +11,9 @@ import ArriveLogisticsLogo from '/public/static/images/xp/arrivelogistics.png'
 import ActiveCampaignLogo from '/public/static/images/xp/activecampaign.png'
 import OpenLaneLogo from '/public/static/images/xp/openlane.png'
 
+const OG_IMAGE_WIDTH = 1200
+const OG_IMAGE_HEIGHT = 630
+
 export const metadata = {
   title: siteMetadata.title,
   description: siteMetadata.description,
@@ -19,7 +22,13 @@ export const metadata = {
     description: siteMetadata.description,
     siteName: siteMetadata.title,
     url: './',
-    images: [siteMetadata.socialBanner],
+    images: [
+      {
+        url: siteMetadata.socialBanner,
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+      },
+    ],
     locale: siteMetadata.locale,
     type: 'website',
   },
@@ -27,7 +36,13 @@ export const metadata = {
     card: 'summary_large_image' as const,
     title: siteMetadata.title,
     description: siteMetadata.description,
-    images: [siteMetadata.socialBanner],
+    images: [
+      {
+        url: siteMetadata.socialBanner,
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+      },
+    ],
   },
 }
 
@@ -38,8 +53,28 @@ export default async function Page() {
   const sortedPosts = sortPosts(getPublishedBlogs())
   const posts = allCoreContent(sortedPosts)
 
+  const personSchema = {
+    '@type': 'Person',
+    name: siteMetadata.author,
+    url: siteMetadata.siteUrl,
+    jobTitle: 'Senior Software Engineering Manager',
+    sameAs: [siteMetadata.linkedin, siteMetadata.twitter, siteMetadata.github],
+  }
+
+  const webSiteSchema = {
+    '@type': 'WebSite',
+    name: siteMetadata.title,
+    url: siteMetadata.siteUrl,
+    description: siteMetadata.description,
+    author: personSchema,
+  }
+
   return (
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+      />
       <div className="space-y-2 pb-8 pt-6 md:space-y-5">
         <div className="space-y-1.5">
           <h1 className="text-4xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
