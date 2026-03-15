@@ -51,4 +51,7 @@ yarn-error.log*
 *.draft.mdx
 *.hide.mdx
 
+# local docs and plans (not for repo)
+/docs
+
 resume-print
