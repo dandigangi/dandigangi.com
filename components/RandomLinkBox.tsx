@@ -52,25 +52,37 @@ export default function RandomLinkBox() {
 
   const href = selected?.url ?? RANDOM_LINKS[0].url
 
+  const violetShadow = '0px 0px 12px #4817b0' // same as AuthorLayout, PostBanner, Card, etc.
+
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block w-full min-h-[200px] rounded bg-gray-50 dark:bg-gray-900/70 bg-page-pattern bg-repeat-x bg-bottom shadow-md dark:shadow-gray-800/40 py-5 px-6 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity text-center"
-      aria-label={
-        selected
-          ? `Open ${selected.label} in new tab`
-          : 'Open a random project or resource in new tab'
-      }
-    >
-      <span
-        className={`text-lg font-medium text-gray-700 dark:text-gray-300 transition-opacity duration-200 ${
-          selected && reveal ? 'opacity-100' : 'opacity-0'
-        }`}
+    <>
+      <style>{`.random-link-box:hover { box-shadow: ${violetShadow}; }`}</style>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="random-link-box block w-full min-h-[200px] rounded bg-gray-50 dark:bg-gray-900/70 bg-page-pattern bg-repeat-x bg-bottom shadow-md dark:shadow-gray-800/40 py-5 px-6 flex items-center justify-center cursor-pointer hover:opacity-90 transition-all duration-150 text-center"
+        aria-label={
+          selected
+            ? `Open ${selected.label} in new tab`
+            : 'Open a random project or resource in new tab'
+        }
       >
-        {selected ? `${selected.label} →` : '\u00A0'}
-      </span>
-    </a>
+        <span
+          className={`text-lg font-medium text-gray-700 dark:text-gray-300 transition-opacity duration-200 ${
+            selected && reveal ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {selected ? (
+            <>
+              {selected.label}
+              <span className="ml-2.5">→</span>
+            </>
+          ) : (
+            '\u00A0'
+          )}
+        </span>
+      </a>
+    </>
   )
 }

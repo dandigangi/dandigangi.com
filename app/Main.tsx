@@ -114,7 +114,7 @@ export default function Home({ posts }) {
             <RandomLinkBox />
             <div className="min-w-0">
               <h4 className="mb-3 text-base font-semibold text-gray-700 dark:text-gray-300">
-                More things & stuff to check out.
+                More things to read.
               </h4>
               <ul className="list-none space-y-1.5 text-base">
                 {morePosts.map((post) => {
