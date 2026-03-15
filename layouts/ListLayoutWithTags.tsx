@@ -7,6 +7,7 @@ import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
+import RandomLinkBox from '@/components/RandomLinkBox'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import tagData from 'app/tag-data.json'
@@ -98,48 +99,56 @@ export default function ListLayoutWithTags({
           </h1>
         </div>
         <div className="flex sm:space-x-24">
-          <div className="hidden max-h-screen h-full sm:flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md pt-5 dark:shadow-gray-800/40 rounded min-w-[320px] max-w-[320px] overflow-auto">
-            <div className="py-4 px-6">
-              {pathname.startsWith('/blog') ? (
-                <h3 className="text-sm text-primary-500 font-bold uppercase">
-                  All Posts ({posts.length})
-                </h3>
-              ) : (
-                <Link
-                  href={`/blog`}
-                  className="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
-                >
-                  All Posts ({posts.length})
-                </Link>
-              )}
-              <ul>
-                {sortedTags.map((t) => {
-                  const count = ` (${tagCounts[t]})`
-                  return (
-                    <li key={t} className="my-1.5">
-                      {pathname.split('/blog/tags/')[1] === slug(t) ? (
-                        <h3
-                          className="flex items-baseline gap-0.5 py-2 px-3 uppercase text-sm font-bold text-primary-500 min-w-0"
-                          title={t}
-                        >
-                          <span className="truncate">{t}</span>
-                          <span className="shrink-0">{count}</span>
-                        </h3>
-                      ) : (
-                        <Link
-                          href={`/blog/tags/${slug(t)}`}
-                          className="flex items-baseline gap-0.5 py-2 px-3 uppercase text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500 min-w-0"
-                          aria-label={`View posts tagged ${t}`}
-                          title={t}
-                        >
-                          <span className="truncate">{t}</span>
-                          <span className="shrink-0">{count}</span>
-                        </Link>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
+          <div className="hidden sm:flex sm:flex-col min-w-[320px] max-w-[320px] gap-4">
+            <div className="max-h-screen flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md pt-5 dark:shadow-gray-800/40 rounded overflow-auto shrink-0">
+              <div className="py-4 px-6">
+                {pathname.startsWith('/blog') ? (
+                  <h3 className="text-sm text-primary-500 font-bold uppercase">
+                    All Posts ({posts.length})
+                  </h3>
+                ) : (
+                  <Link
+                    href={`/blog`}
+                    className="text-sm font-bold uppercase text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
+                  >
+                    All Posts ({posts.length})
+                  </Link>
+                )}
+                <ul>
+                  {sortedTags.map((t) => {
+                    const count = ` (${tagCounts[t]})`
+                    return (
+                      <li key={t} className="my-1.5">
+                        {pathname.split('/blog/tags/')[1] === slug(t) ? (
+                          <h3
+                            className="flex items-baseline gap-0.5 py-2 px-3 uppercase text-sm font-bold text-primary-500 min-w-0"
+                            title={t}
+                          >
+                            <span className="truncate">{t}</span>
+                            <span className="shrink-0">{count}</span>
+                          </h3>
+                        ) : (
+                          <Link
+                            href={`/blog/tags/${slug(t)}`}
+                            className="flex items-baseline gap-0.5 py-2 px-3 uppercase text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500 min-w-0"
+                            aria-label={`View posts tagged ${t}`}
+                            title={t}
+                          >
+                            <span className="truncate">{t}</span>
+                            <span className="shrink-0">{count}</span>
+                          </Link>
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            </div>
+            <div>
+              <p className="mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                Some projects.
+              </p>
+              <RandomLinkBox />
             </div>
           </div>
           <div>

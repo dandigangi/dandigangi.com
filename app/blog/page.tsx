@@ -4,7 +4,7 @@ import { getPublishedBlogs } from '@/lib/blog'
 import { genPageMetadata } from 'app/seo'
 import PageHeader from '@/components/PageHeader'
 
-const POSTS_PER_PAGE = 6
+const POSTS_PER_PAGE = 8
 
 export const metadata = genPageMetadata({ title: 'Blog' })
 

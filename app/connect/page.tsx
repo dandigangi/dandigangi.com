@@ -2,7 +2,7 @@ import PageHeader from '@/components/PageHeader'
 import Link from '@/components/Link'
 import { genPageMetadata } from 'app/seo'
 
-export const metadata = genPageMetadata({ title: 'Connect' })
+export const metadata = genPageMetadata({ title: 'Connect - Contact Dan DiGangi' })
 
 export default function Connect() {
   return (

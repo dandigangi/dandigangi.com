@@ -49,7 +49,7 @@ export default async function Page() {
         </div>
         <div className="mt-7">
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            <em>build experiences, not software</em>
+            <em>Build experiences, not software.</em>
           </p>
         </div>
         <div className="flex flex-col gap-8 pt-8 pb-4 lg:flex-row lg:gap-24">
@@ -71,9 +71,6 @@ export default async function Page() {
                   className="dark:invert"
                 />
               </Link>
-              <p className="mt-4 text-gray-900 dark:text-white">
-                Senior Software Engineering Manager
-              </p>
               <Link
                 href="https://linkedin.com/in/dandigangi"
                 aria-label="Dan DiGangi on LinkedIn"

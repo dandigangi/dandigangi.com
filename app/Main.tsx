@@ -1,4 +1,5 @@
 import Link from '@/components/Link'
+import RandomLinkBox from '@/components/RandomLinkBox'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
@@ -109,26 +110,30 @@ export default function Home({ posts }) {
           })}
         </ul>
         {posts.length > MAX_DISPLAY && (
-          <div className="pt-6 pb-6">
-            <h4 className="mb-3 text-base font-semibold text-gray-700 dark:text-gray-300">
-              More things & stuff to check out.
-            </h4>
-            <ul className="list-none space-y-1.5 text-base">
-              {morePosts.map((post) => {
-                const { slug, title } = post
-                return (
-                  <li key={slug}>
-                    <Link
-                      href={`/blog/${slug}`}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                      aria-label={`Blog post "${title}"`}
-                    >
-                      {title}
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
+          <div className="pt-6 pb-6 grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-6 md:gap-8">
+            <RandomLinkBox />
+            <div className="min-w-0">
+              <h4 className="mb-3 text-base font-semibold text-gray-700 dark:text-gray-300">
+                More things & stuff to check out.
+              </h4>
+              <ul className="list-none space-y-1.5 text-base">
+                {morePosts.map((post) => {
+                  const { slug, title } = post
+                  return (
+                    <li key={slug} className="min-w-0 overflow-hidden">
+                      <Link
+                        href={`/blog/${slug}`}
+                        className="block truncate text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                        aria-label={`Blog post "${title}"`}
+                        title={title}
+                      >
+                        {title}
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
           </div>
         )}
       </div>
