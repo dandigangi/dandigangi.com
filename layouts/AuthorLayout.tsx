@@ -23,7 +23,7 @@ export default function AuthorLayout({ children, content }: Props) {
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <PageHeader title="About" />
         <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
-          <div className="flex flex-col items-center space-x-2 pt-8">
+          <div className="flex flex-col items-center space-x-2 pt-10 md:pt-12">
             {avatar && !avatarDisplay ? (
               <Image
                 src={avatar}
@@ -62,7 +62,7 @@ export default function AuthorLayout({ children, content }: Props) {
               {!avatarDisplay ? 'My Alter Ego' : 'Back to Dan'}
             </button>
           </div>
-          <div className="prose max-w-none pb-6 pt-8 dark:prose-invert xl:col-span-2 text-lg leading-8">
+          <div className="prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 text-lg leading-8">
             {children}
             <br />
             <NextImage

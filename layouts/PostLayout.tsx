@@ -108,8 +108,8 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </ul>
               </dd>
             </dl>
-            <div className="border-t border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0 pt-6 xl:pt-0">
-              <div className="prose max-w-none pb-6 pt-10 dark:prose-invert leading-10 text-base sm:text-lg xl:text-xl">
+            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0 pt-6 xl:pt-0">
+              <div className="prose max-w-none pb-6 pt-10 dark:prose-invert leading-10 text-xl sm:text-lg xl:text-xl">
                 {children}
                 <br />
                 <NextImage

@@ -26,7 +26,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
       <article id="layout-postsimple">
         <div>
           <header>
-            <div className="space-y-1 border-b border-gray-200 pb-10 text-center dark:border-gray-700">
+            <div className="space-y-1 pb-10 text-center">
               <dl>
                 <div>
                   <dt className="sr-only">Published on</dt>
@@ -42,7 +42,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
           </header>
           <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0">
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-6 pt-10 dark:prose-invert">
+              <div className="prose max-w-none pb-6 pt-10 dark:prose-invert leading-10 text-xl sm:text-base">
                 {children}
                 <br />
                 <NextImage

@@ -6,12 +6,22 @@ import { getPublishedBlogs } from '@/lib/blog'
 import tagData from 'app/tag-data.json'
 import { genPageMetadata } from 'app/seo'
 import { Metadata } from 'next'
+import PageHeader from '@/components/PageHeader'
+
+function getTagTitle(tagSlug: string): string {
+  // Prettify slug like "engineering-management" -> "Engineering Management"
+  return tagSlug
+    .split('-')
+    .map((part) => (part ? part[0].toUpperCase() + part.slice(1) : part))
+    .join(' ')
+}
 
 export async function generateMetadata({ params }: { params: { tag: string } }): Promise<Metadata> {
   const tag = decodeURI(params.tag)
+  const title = getTagTitle(tag)
   return genPageMetadata({
-    title: tag,
-    description: `${siteMetadata.title} ${tag} tagged content`,
+    title,
+    description: `${siteMetadata.title} ${title} tagged content`,
     alternates: {
       canonical: './',
       types: {
@@ -32,11 +42,17 @@ export const generateStaticParams = async () => {
 
 export default function TagPage({ params }: { params: { tag: string } }) {
   const tag = decodeURI(params.tag)
-  // Capitalize first letter and convert space to dash
-  const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
+  const title = getTagTitle(tag)
   const published = getPublishedBlogs()
   const filteredPosts = allCoreContent(
     sortPosts(published.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
   )
-  return <ListLayout posts={filteredPosts} title={title} />
+  return (
+    <>
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <PageHeader title="Blog" />
+        <ListLayout posts={filteredPosts} title={title} />
+      </div>
+    </>
+  )
 }
