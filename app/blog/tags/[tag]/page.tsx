@@ -18,10 +18,11 @@ function getTagTitle(tagSlug: string): string {
 
 export async function generateMetadata({ params }: { params: { tag: string } }): Promise<Metadata> {
   const tag = decodeURI(params.tag)
-  const title = getTagTitle(tag)
+  const prettyTag = getTagTitle(tag)
+  const title = `${prettyTag} Blog Posts`
   return genPageMetadata({
     title,
-    description: `${siteMetadata.title} ${title} tagged content`,
+    description: `${siteMetadata.title} ${prettyTag} tagged content`,
     alternates: {
       canonical: './',
       types: {
