@@ -50,8 +50,8 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
                   alt="DD signature"
                   width={44}
                   height={16}
-                  className="mt-3 h-4 w-auto scale-85 inline-block align-baseline invert dark:invert-0 origin-left"
-                  style={{ marginLeft: '11px', width: 'auto', height: 'auto' }}
+                  className="mt-2 h-4 w-auto scale-85 inline-block align-baseline invert dark:invert-0 origin-left"
+                  style={{ marginLeft: '14px', width: 'auto', height: 'auto' }}
                 />
               </div>
             </div>
