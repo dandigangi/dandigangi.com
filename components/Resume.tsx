@@ -35,9 +35,14 @@ export default function Experience({
               <div className="text-sm font-normal opacity-50">{pos.dates}</div>
             </div>
             {pos.descriptions?.length > 0 && (
-              <ul className="list-disc pl-5 space-y-2 mt-4 text-[18px] leading-[30px] text-[#cecdd0]">
+              <ul className="list-none space-y-2 mt-4 text-[18px] leading-[30px] text-[#cecdd0]">
                 {pos.descriptions.map((d, j) => (
-                  <li key={j}>{d}</li>
+                  <li key={j} className="flex gap-3">
+                    <span aria-hidden="true" className="shrink-0 mt-[2px]">
+                      ▸
+                    </span>
+                    <span>{d}</span>
+                  </li>
                 ))}
               </ul>
             )}
@@ -66,9 +71,14 @@ export default function Experience({
         )}
       </div>
       {descriptions && descriptions.length > 0 && (
-        <ul className="list-disc pl-5 space-y-2 mt-4 text-[18px] leading-[30px] text-[#cecdd0]">
+        <ul className="list-none space-y-2 mt-4 text-[18px] leading-[30px] text-[#cecdd0]">
           {descriptions.map((d, i) => (
-            <li key={i}>{d}</li>
+            <li key={i} className="flex gap-3">
+              <span aria-hidden="true" className="shrink-0 mt-[2px]">
+                ▸
+              </span>
+              <span>{d}</span>
+            </li>
           ))}
         </ul>
       )}
