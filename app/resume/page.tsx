@@ -27,7 +27,7 @@ export default function Resume() {
               </div>
             </div>
             <div className="basis-1/2">
-              <div className="mb-3 italic text-lg text-right">
+              <div className="mb-3 italic text-lg text-right text-[#cecdd0]">
                 <em>build experiences, not software</em>
               </div>
               <div className="flex justify-end gap-3">
@@ -43,6 +43,22 @@ export default function Resume() {
 
         {/* Experience */}
         <div className="mb-2">
+          <div className="mb-8">
+            <div className="bg-gray-50 dark:bg-gray-900/70 shadow-md py-2 dark:shadow-gray-800/40 rounded overflow-hidden">
+              <div className="py-3 px-4 text-lg text-gray-700 dark:text-gray-300">
+                For a complete work history and more information, check out{' '}
+                <a
+                  href="https://linkedin.com/in/dandigangi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
+                  LinkedIn
+                </a>
+                .
+              </div>
+            </div>
+          </div>
           <div>
             <h1 className="mb-8 font-light leading-none tracking-tight text-gray-900 text-4xl dark:text-white">
               Experience

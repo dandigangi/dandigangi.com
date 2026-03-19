@@ -17,7 +17,7 @@ const Header = () => {
   const isResumePage =
     pathname === '/resume' || (pathname.startsWith('/resume') && pathname !== '/resume/')
   const downloadHref =
-    'https://drive.google.com/file/d/11-rvQ2_RwaGHVLORNI5Vv-A4f8Llyy0s/view?usp=sharing'
+    'https://drive.google.com/file/d/1aMeWulQo0745ip7tWXLliIuuwJm_Ns3S/view?usp=sharing'
 
   return (
     <header className="flex items-center justify-between py-10">
@@ -58,6 +58,14 @@ const Header = () => {
         <div className="flex items-center leading-5 space-x-3 sm:space-x-4">
           {isResumePage ? (
             <div className="flex flex-col items-end">
+              <a
+                href={downloadHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-white mb-2 bg-violet-800 hover:bg-violet-900 px-3 py-1.5 rounded-md text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
+              >
+                Download Resume
+              </a>
               <Link
                 href="/"
                 aria-label="Back to website"

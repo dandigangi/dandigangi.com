@@ -1,0 +1,155 @@
+\documentclass[10pt, letterpaper]{article}
+
+\usepackage[top=0.5in, bottom=0.75in, left=0.75in, right=0.75in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{fontawesome5}
+\usepackage{fontspec}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{setspace}
+\usepackage{needspace}
+\usepackage{graphicx}
+
+% Set Lato as main font
+\setmainfont{Lato}[
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Italic,
+]
+
+% Space Grotesk for name/title only
+\newfontfamily\spacegrotesk{SpaceGrotesk}[
+  Path = ./,
+  Extension = .ttf,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Light,
+]
+
+% Brand color
+\definecolor{brand}{HTML}{391383}
+\definecolor{datecolor}{HTML}{888888}
+\definecolor{hrcolor}{HTML}{D8D8D8}
+\definecolor{tagline}{HTML}{999999}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% Section formatting
+\titleformat{\section}
+  {\small\bfseries\color{brand}}{}{0em}{\MakeUppercase}
+  [\color{hrcolor}\titlerule]
+\titlespacing{\section}{0pt}{10pt}{6pt}
+
+% Hyperlink styling
+\hypersetup{
+  colorlinks=true,
+  urlcolor=brand,
+  linkcolor=brand,
+}
+
+\setlength{\parindent}{0pt}
+
+% Date helper - smaller and grey
+\newcommand{\jobdate}[1]{\hfill{\footnotesize\color{datecolor}#1}}
+
+\begin{document}
+
+% ── Header ──────────────────────────────────────────────────────────────
+\begin{minipage}[c]{0.6\textwidth}
+  {\LARGE\bfseries\spacegrotesk\color{brand}Dan DiGangi}\\[4pt]
+  {\large\spacegrotesk Senior Software Engineering Manager}\\[10pt]
+  {\small Chicago, IL \, | \, me@dandigangi.com}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.35\textwidth}
+  \raggedleft
+  \includegraphics[height=0.9cm]{dan-digangi-logo-dark.png}\\[4pt]
+  \textit{\color{tagline}build experiences, not software}\\[6pt]
+  {\small\href{https://dandigangi.com}{dandigangi.com}} \quad
+  \href{mailto:me@dandigangi.com}{\faEnvelope} \,
+  \href{https://linkedin.com/in/dandigangi}{\faLinkedin} \,
+  \href{https://github.com/dandigangi}{\faGithub} \,
+  \href{https://x.com/dandigangi}{\faTwitter}
+\end{minipage}
+
+\vspace{12pt}
+
+% ── Experience ──────────────────────────────────────────────────────────
+\section{Experience}
+
+% Postmark
+\textbf{\href{https://postmark.com}{\color{brand}Postmark}} -- Senior Software Engineering Manager \jobdate{Apr 2024 -- Present}\\[-4pt]
+\begin{itemize}[leftmargin=*, itemsep=3pt, topsep=0pt]
+  \item Scaled email throughput from 2B to 3B+ emails/month in 10 months, maintaining \textasciitilde200ms per message processing performance through MTA expansion and infrastructure growth.
+  \item Prevented \$1.5M+ in fraud by architecting a multi-layer security platform spanning AI content moderation, fraud detection, WAF/firewall edge protection, and eHawk traffic analysis.
+  \item Grew the engineering organization from 6 to 11 FTE and hired 6 contractors, expanding delivery capacity across .NET backend, web, platform/SRE, and security/compliance functions.
+  \item Led cross-functional initiatives including pricing redesign, high-traffic legacy Windows service migration, ZenDesk migration, SOC2 compliance, and large-scale billing platform migration.
+\end{itemize}
+
+\vspace{6pt}
+
+% ActiveCampaign
+\textbf{\href{https://activecampaign.com}{\color{brand}ActiveCampaign}} -- Software Engineering Manager \jobdate{May 2023 -- Sep 2023 (Layoff)}\\[-4pt]
+\begin{itemize}[leftmargin=*, itemsep=3pt, topsep=0pt]
+  \item Led and hired the Velocity team (3 reports) delivering special projects, features, and applications supporting the BTS org across finance, growth, and internal services.
+  \item Redesigned agile/SDLC processes from ideation to delivery, adopted across all BTS teams, reducing defect rates (\textasciitilde16\%) through new testing requirements and reintroduction of Playwright E2E testing suites.
+  \item Coached engineers across BTS growing their technical, product, and business skill sets while collaborating with cross-functional partners to develop org-wide roadmaps.
+\end{itemize}
+
+\vspace{6pt}
+
+% Arrive Logistics
+\textbf{\href{https://arrivelogistics.com}{\color{brand}Arrive Logistics}} -- Senior Software Engineering Manager \jobdate{July 2022 -- May 2023}\\[-4pt]
+\begin{itemize}[leftmargin=*, itemsep=3pt, topsep=0pt]
+  \item Led the TSO (3 reports), finance/accounting (8 reports), and load services (9 reports) teams responsible for core business operations from shipping to financial transactions across 20 direct reports.
+  \item Delivered complex E2E shipping workflow UIs leveraging federated modules, new finance microservices, 3rd party accounting integrations, and re-architected the service domain model.
+  \item Delivered an automated real-time AI/ML based shipment pricing model in collaboration with the data science team and led a Docker to Kubernetes migration across highly coupled organization-wide applications.
+\end{itemize}
+
+\vspace{6pt}
+
+% DocuSign
+\textbf{\href{https://docusign.com}{\color{brand}DocuSign}} -- Software Engineering Manager \jobdate{May 2020 -- July 2022}\\[-4pt]
+\begin{itemize}[leftmargin=*, itemsep=3pt, topsep=0pt]
+  \item Built and scaled CLM's Buy/Sell team from the ground up, hiring 7 full stack engineers responsible for buy/sell contract management, party management, global user experience, and accessibility.
+  \item Delivered WCAG 2.1 accessibility across major UI components in collaboration with enterprise customers, ensuring compliance at global scale.
+  \item Implemented on-call rotations and E2E test automation increasing coverage by 60\%+ and reducing regressions and escalations (\textasciitilde9\%).
+\end{itemize}
+
+\vspace{6pt}
+
+% OpenLane - force to next page to keep together
+\newpage
+\textbf{\href{https://openlane.com}{\color{brand}OpenLane}} -- Software Engineering Manager \jobdate{July 2017 -- May 2020}\\[-4pt]
+\begin{itemize}[leftmargin=*, itemsep=3pt, topsep=0pt]
+  \item Promoted from Lead Frontend Engineer to Engineering Manager, growing to lead 3 product engineering teams across 12 engineers, 2 contractors, and 1 manager spanning React, Node, Java, and Python.
+  \item Led integration of DRIVIN engineering through the OpenLane/KAR acquisition, built a redefined cross-functional SDLC, and scaled delivery capacity through internal and 3rd party recruiting.
+  \item Delivered complex financial and analytics products using TensorFlow pricing models, established front end standards of practice, increased testing coverage (\textasciitilde42\%), reduced defects (\textasciitilde21\%), and stabilized release processes.
+\end{itemize}
+
+\vspace{12pt}
+\color{hrcolor}\hrule\color{black}
+\vspace{12pt}
+
+% ── Education & Other ───────────────────────────────────────────────────
+\begin{minipage}[t]{0.40\textwidth}
+  {\small\bfseries\color{brand}\MakeUppercase{Education}}\\[2pt]
+  {\small\textbf{The Art Institutes -- IL Institute of Art}} \hfill {\footnotesize\color{datecolor}2007--2010}\\[1pt]
+  {\footnotesize Bachelor's Degree, Web Design \& Interactive Media}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.55\textwidth}
+  {\small\bfseries\color{brand}\MakeUppercase{Other}}\\[0pt]
+  \begin{itemize}[leftmargin=*, itemsep=2pt, topsep=0pt, label=\small\textbullet]
+    \item {\small React Chicago Conference Organizer}
+    \item {\small ActiveAbility Mental Health ERG Founder}
+    \item {\small Postmark Open Source Contributor}
+    \item {\small Technical Leadership Speaker \& Writer}
+    \item {\small Engineering Mentor \& Educator}
+  \end{itemize}
+\end{minipage}
+
+\end{document}
