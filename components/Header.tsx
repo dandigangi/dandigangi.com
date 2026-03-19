@@ -59,16 +59,9 @@ const Header = () => {
           {isResumePage ? (
             <div className="flex flex-col items-end">
               <Link
-                href={downloadHref}
-                aria-label="Download resume"
-                className="inline-flex items-center justify-center bg-violet-800 hover:bg-violet-900 px-3 py-1.5 rounded-md text-white text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-              >
-                Download Resume
-              </Link>
-              <Link
                 href="/"
                 aria-label="Back to website"
-                className="mt-4 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light inline-flex items-center gap-1 text-sm"
+                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-light inline-flex items-center gap-1 text-sm"
               >
                 &larr; Back to website
               </Link>
