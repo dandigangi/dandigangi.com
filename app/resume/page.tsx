@@ -18,8 +18,8 @@ export default function Resume() {
       <div>
         {/* Header */}
         <div className="pt-8 mb-14">
-          <div className="flex">
-            <div className="basis-1/2">
+          <div className="flex flex-col gap-6 md:flex-row md:gap-0">
+            <div className="md:basis-1/2">
               <h1 className="mb-4 text-5xl font-bold leading-none tracking-tight">Dan DiGangi</h1>
               <h2 className="mb-2 text-xl">Senior Software Engineering Manager</h2>
               <div className="opacity-80">
@@ -29,11 +29,11 @@ export default function Resume() {
                 </a>
               </div>
             </div>
-            <div className="basis-1/2">
-              <div className="mb-3 italic text-lg text-right text-[#cecdd0]">
+            <div className="md:basis-1/2 md:flex md:flex-col md:items-end">
+              <div className="mb-3 italic text-lg text-left md:text-right text-[#cecdd0]">
                 <em>build experiences, not software</em>
               </div>
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-start md:justify-end gap-3">
                 {/* <SocialIcon kind="web" href={siteMetadata.web} size={7} /> */}
                 <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
                 <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
@@ -85,9 +85,9 @@ export default function Resume() {
 
           <hr className="h-px my-12 bg-gray-200 border-0 dark:bg-gray-700" />
 
-          <div className="flex gap-16 mb-16">
+          <div className="flex flex-col md:flex-row gap-12 md:gap-16 mb-16">
             {/* Education */}
-            <div className="mb-10 text-xl">
+            <div className="md:flex-1 text-xl">
               <div className="mb-7 text-2xl font-light">Education</div>
               <div className="mb-2 font-bold">
                 The Art Institutes - IL Institute of Art{' '}
@@ -102,7 +102,7 @@ export default function Resume() {
             </div>
 
             {/* Volunteering/Other */}
-            <div className="md:pl-12">
+            <div className="md:flex-1 md:pl-12">
               <div className="font-light text-2xl mb-7">Other</div>
               <div>
                 <ul>
