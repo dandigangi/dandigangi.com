@@ -2,8 +2,7 @@ import { genPageMetadata } from 'app/seo'
 import SocialIcon from '@/components/social-icons'
 import siteMetadata from '@/data/siteMetadata'
 import Experience from '@/components/Resume'
-import Button from '@/components/Button'
-import { resumeXp } from '@/data/resume'
+import { resumeOther, resumeXp } from '@/data/resume'
 
 export const metadata = genPageMetadata({
   title: 'Resume',
@@ -88,80 +87,11 @@ export default function Resume() {
               <div className="font-light text-2xl mb-7">Other</div>
               <div>
                 <ul>
-                  <li className="mb-2 text-lg">
-                    <a
-                      rel="noopener"
-                      className="font-semibold underline"
-                      target="_blank"
-                      href="https://2019.reactloop.com"
-                    >
-                      React Loop
-                    </a>{' '}
-                    Conference Organizer
-                  </li>
-                  <li className="mb-2 text-lg">
-                    <a
-                      rel="noopener"
-                      className="font-semibold underline"
-                      target="_blank"
-                      href="https://chicagojs.org"
-                    >
-                      Chicago JS Camp
-                    </a>{' '}
-                    Volunteer Staff
-                  </li>
-                  <li className="mb-2 text-lg">
-                    <a
-                      rel="noopener"
-                      className="font-semibold underline"
-                      target="_blank"
-                      href="https://platohq.com"
-                    >
-                      Plato
-                    </a>
-                    ,{' '}
-                    <a
-                      rel="noopener"
-                      className="font-semibold underline"
-                      target="_blank"
-                      href="https://mentorcruise.com"
-                    >
-                      MentorCruise
-                    </a>
-                    , and Private Mentoring
-                  </li>
-                  <li className="mb-2 text-lg">
-                    <a
-                      rel="noopener"
-                      className="font-semibold underline"
-                      target="_blank"
-                      href="/blog"
-                    >
-                      Technical Leadership Content Creator
-                    </a>
-                  </li>
-                  <li className="mb-2 text-lg">
-                    <a
-                      rel="noopener"
-                      className="font-semibold underline"
-                      target="_blank"
-                      href="https://www.uprighted.com"
-                    >
-                      Upright Education
-                    </a>{' '}
-                    Software Instructor
-                  </li>
-                  <li className="mb-2 text-lg">
-                    <a
-                      rel="noopener"
-                      className="font-semibold underline"
-                      target="_blank"
-                      href="https://www.startupinstitute.com/"
-                    >
-                      Startup Institute
-                    </a>{' '}
-                    Javascript Teacher
-                  </li>
+                  {resumeOther.map((item) => (
+                    <li key={item} className="mb-2 text-lg font-normal text-[#cecdd0]">
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>

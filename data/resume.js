@@ -63,4 +63,12 @@ const resumeXp = [
   },
 ]
 
-export { resumeXp }
+const resumeOther = [
+  'React Chicago Conference Organizer',
+  'ActiveAbility Mental Health ERG Founder',
+  'Postmark Open Source Contributor',
+  'Technical Leadership Speaker & Writer',
+  'Engineering Mentor & Educator',
+]
+
+export { resumeXp, resumeOther }
