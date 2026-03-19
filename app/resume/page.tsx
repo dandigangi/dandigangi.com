@@ -78,7 +78,9 @@ export default function Resume() {
                   <span className="font-normal opacity-50">|&nbsp;&nbsp;&nbsp;2007-2010</span>
                 </span>
               </div>
-              <div>Bachelor's Degree, Web Design & Interactive Media</div>
+              <div className="text-[18px] text-[#cecdd0]">
+                Bachelor's Degree, Web Design & Interactive Media
+              </div>
             </div>
 
             {/* Volunteering/Other */}

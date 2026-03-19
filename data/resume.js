@@ -20,11 +20,9 @@ const resumeXp = [
     jobTitle: 'Software Engineering Manager',
     dates: 'May 2023 – Sep 2023 (Layoff)',
     descriptions: [
-      'Led and hired the Velocity team (3 reports) delivering special projects, features, and applications/tooling supporting the BTS org., finance, growth, and internal services teams.',
-      'Coached engineers across BTS growing their technical, product, user experience, and business skill sets.',
-      'Collaborated closely w/ cross functional partners and business stakeholders developing cross team product/technical roadmaps.',
-      'Redesigned agile/SDLC processes from ideation to delivery and adopted across all BTS teams.',
-      'Analyzed and reduced defect rates (~16%) leveraging new SDLC processes and testing requirements including reintroduction of Playwright E2E testing suites.',
+      'Led and hired the Velocity team (3 reports) delivering special projects, features, and applications supporting the BTS org across finance, growth, and internal services.',
+      'Redesigned agile/SDLC processes from ideation to delivery, adopted across all BTS teams, reducing defect rates (~16%) through new testing requirements and reintroduction of Playwright E2E testing suites.',
+      'Coached engineers across BTS growing their technical, product, and business skill sets while collaborating with cross-functional partners to develop org-wide roadmaps.',
     ],
   },
   {
@@ -34,10 +32,9 @@ const resumeXp = [
     jobTitle: 'Senior Software Engineering Manager',
     dates: 'July 2022 – May 2023',
     descriptions: [
-      'Responsible for the TSO team (3 reports), finance/accounting (8 reports), and load services (9 reports) teams responsible for core business operations from shipping to financial transactions.',
-      'Worked closely with cross functional partners and teams to deliver on highly coupled organization wide applications including a Docker to Kubernetes migration.',
+      'Led the TSO (3 reports), finance/accounting (8 reports), and load services (9 reports) teams responsible for core business operations from shipping to financial transactions across 20 direct reports.',
       'Delivered complex E2E shipping workflow UIs leveraging federated modules, new finance microservices, 3rd party accounting integrations, and re-architected the service domain model.',
-      'Delivered an automated, real time AI/ML based shipment pricing model in collaboration with the data science team.',
+      'Delivered an automated real-time AI/ML based shipment pricing model in collaboration with the data science team and led a Docker to Kubernetes migration across highly coupled organization-wide applications.',
     ],
   },
   {
@@ -47,11 +44,9 @@ const resumeXp = [
     jobTitle: 'Software Engineering Manager',
     dates: 'May 2020 – July 2022',
     descriptions: [
-      'Built and led CLM’s Buy/Sell team hiring 7 full stack engineers responsible for developing buy/sell contracts and party management, global user experience, and accessibility.',
-      'Coached team on our mission, values, SDLC processes, and implementation of measured performance metrics sprint-over-sprint.',
-      'Worked closely with product managers to build and deliver roadmaps on aggressive deadlines.',
-      'Delivered WCAG 2.1 accessibility on major UI components in collaboration with enterprise customers.',
-      'Implemented on-call rotations (Tower) and E2E automation increasing coverage by 60%+ and reducing regressions/escalations (~9%).',
+      'Built and scaled CLM’s Buy/Sell team from the ground up, hiring 7 full stack engineers responsible for buy/sell contract management, party management, global user experience, and accessibility.',
+      'Delivered WCAG 2.1 accessibility across major UI components in collaboration with enterprise customers, ensuring compliance at global scale.',
+      'Implemented on-call rotations and E2E test automation increasing coverage by 60%+ and reducing regressions and escalations (~9%).',
     ],
   },
   {
@@ -61,10 +56,9 @@ const resumeXp = [
     jobTitle: 'Software Engineering Manager',
     dates: 'May 2018 - May 2020',
     descriptions: [
-      'Managed 3 product engineering teams (12 engineers, 2 contractors, 1 manager) composed of React, Node, Java, and Python engineers.',
-      'Led the OpenLane (KAR) acquisition of integrating DRIVIN engineering and built a redefined, cross functional SDLC.',
-      'Hired with internal and 3rd party recruiters to expand the Web and OTS delivery capabilities. Coached team on new processes enabling rapid scaling.',
-      'Delivered complex financial and analytics products using TensorFlow pricing models developed in collaboration with the data science team for enterprise customers.',
+      'Promoted from Lead Frontend Engineer to Engineering Manager, growing to lead 3 product engineering teams across 12 engineers, 2 contractors, and 1 manager spanning React, Node, Java, and Python.',
+      'Led integration of DRIVIN engineering through the OpenLane/KAR acquisition, built a redefined cross-functional SDLC, and scaled delivery capacity through internal and 3rd party recruiting.',
+      'Delivered complex financial and analytics products using TensorFlow pricing models, established front end standards of practice, increased testing coverage (~42%), reduced defects (~21%), and stabilized release processes.',
     ],
   },
 ]
