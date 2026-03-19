@@ -9,17 +9,16 @@ const RANDOM_LINKS: LinkEntry[] = [
     url: 'https://github.com/dandigangi/engineering-manager-resources',
     label: 'Engineering Manager Resources',
   },
-  {
-    url: 'https://dandigangi.github.io/touchytouchy/',
-    label: 'TouchyTouchy (Legacy)',
-    weight: 1,
-  },
   { url: 'https://shouldyouwritetests.com/', label: 'ShouldYouWriteTests.com' },
   { url: 'https://github.com/dandigangi/canvas-things', label: 'Canvas 2D/3D Experiments' },
   { url: 'https://github.com/dandigangi/misc-code-things', label: 'Misc Code Things' },
   {
     url: 'https://x.com/search?q=from%3Adandigangi%20(ux%20OR%20ui)&src=typed_query&f=live',
     label: 'UX/UI Callouts',
+  },
+  {
+    url: 'https://2019.reactloop.com/',
+    label: 'React Chicago Conference',
   },
 ]
 
