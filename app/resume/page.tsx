@@ -10,6 +10,9 @@ export const metadata = genPageMetadata({
 })
 
 export default function Resume() {
+  const downloadHref =
+    'https://drive.google.com/file/d/1aMeWulQo0745ip7tWXLliIuuwJm_Ns3S/view?usp=sharing'
+
   return (
     <>
       <div>
@@ -111,6 +114,17 @@ export default function Resume() {
                 </ul>
               </div>
             </div>
+          </div>
+
+          <div className="flex justify-center pt-8 pb-8">
+            <a
+              href={downloadHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-white bg-violet-800 hover:bg-violet-900 px-7 py-3 rounded-md text-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
+            >
+              Download Resume
+            </a>
           </div>
         </div>
       </div>

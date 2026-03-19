@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-type LinkEntry = { url: string; label: string; weight?: number }
+type LinkEntry = { url: string; label: string }
 
 const RANDOM_LINKS: LinkEntry[] = [
   {
@@ -22,15 +22,8 @@ const RANDOM_LINKS: LinkEntry[] = [
   },
 ]
 
-function pickWeightedRandom(entries: LinkEntry[]): LinkEntry {
-  const total = entries.reduce((sum, e) => sum + (e.weight ?? 3), 0)
-  let r = Math.random() * total
-  for (const entry of entries) {
-    const w = entry.weight ?? 3
-    if (r < w) return entry
-    r -= w
-  }
-  return entries[entries.length - 1]
+function pickRandom(entries: LinkEntry[]): LinkEntry {
+  return entries[Math.floor(Math.random() * entries.length)]
 }
 
 export default function RandomLinkBox() {
@@ -40,7 +33,7 @@ export default function RandomLinkBox() {
   const [reveal, setReveal] = useState(false)
 
   useEffect(() => {
-    setSelected(pickWeightedRandom(RANDOM_LINKS))
+    setSelected(pickRandom(RANDOM_LINKS))
   }, [])
 
   useEffect(() => {
@@ -60,7 +53,7 @@ export default function RandomLinkBox() {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="random-link-box block w-full min-h-[200px] rounded bg-gray-50 dark:bg-gray-900/70 bg-page-pattern bg-repeat-x bg-bottom shadow-md dark:shadow-gray-800/40 py-5 px-6 flex items-center justify-center cursor-pointer hover:opacity-90 transition-all duration-150 text-center"
+        className="random-link-box w-full min-h-[200px] rounded bg-gray-50 dark:bg-gray-900/70 bg-page-pattern bg-repeat-x bg-bottom shadow-md dark:shadow-gray-800/40 py-5 px-6 flex items-center justify-center cursor-pointer hover:opacity-90 transition-all duration-150 text-center"
         aria-label={
           selected
             ? `Open ${selected.label} in new tab`
