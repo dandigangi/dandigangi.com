@@ -55,7 +55,7 @@ const Header = () => {
         </Link>
       </div>
       <nav>
-        <div className="flex items-center leading-5 space-x-4 sm:space-x-6">
+        <div className="flex items-center leading-5 space-x-3 sm:space-x-4">
           {isResumePage ? (
             <div className="flex flex-col items-end">
               <Link

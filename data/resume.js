@@ -54,7 +54,7 @@ const resumeXp = [
     company: 'OpenLane',
     url: 'https://openlane.com',
     jobTitle: 'Software Engineering Manager',
-    dates: 'May 2018 - May 2020',
+    dates: 'July 2017 - May 2020',
     descriptions: [
       'Promoted from Lead Frontend Engineer to Engineering Manager, growing to lead 3 product engineering teams across 12 engineers, 2 contractors, and 1 manager spanning React, Node, Java, and Python.',
       'Led integration of DRIVIN engineering through the OpenLane/KAR acquisition, built a redefined cross-functional SDLC, and scaled delivery capacity through internal and 3rd party recruiting.',
