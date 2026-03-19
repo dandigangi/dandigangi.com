@@ -2,7 +2,7 @@ const navLinks = [
   { href: '/', title: 'Home' },
   { href: '/blog', title: 'Blog' },
   { href: '/about', title: 'About' },
-  // { href: '/resume', title: 'Resume' },
+  { href: '/resume', title: 'Resume' },
   { href: '/connect', title: 'Connect' },
 ]
 
