@@ -71,7 +71,13 @@ export default function AuthorLayout({ children, content }: Props) {
               width={44}
               height={16}
               className="mt-3 h-4 w-auto scale-85 inline-block align-baseline invert dark:invert-0 origin-left"
-              style={{ marginLeft: '11px', width: 'auto', height: 'auto' }}
+              style={{
+                marginLeft: '11px',
+                width: 'auto',
+                height: 'auto',
+                opacity: 0.85,
+                transform: 'rotate(-2.8deg)',
+              }}
             />
           </div>
         </div>
