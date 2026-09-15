@@ -28,7 +28,7 @@ export const projects: Project[] = [
     title: 'Engineering Manager Resources',
     eyebrow: 'GitHub · Open source',
     description:
-      'A curated collection of resources for engineering managers — hiring, coaching, process, and leadership reading.',
+      'A curated collection of leadership, management, and technical strategy resources for engineering leaders.',
     url: 'https://github.com/dandigangi/engineering-manager-resources',
     linkLabel: 'GitHub',
     image: '/static/images/video-card.jpg',
@@ -47,8 +47,7 @@ export const projects: Project[] = [
     slug: 'react-chicago',
     title: 'React Chicago Conference',
     eyebrow: 'Conference',
-    // PLACEHOLDER — the 2019 numbers belong to React Loop, below.
-    description: 'The relaunch of Chicago’s React conference — new name, same community.',
+    description: 'The relaunch of Chicago’s only React conference.',
     url: 'https://reactchicago.com',
     linkLabel: 'reactchicago.com',
     image: '/static/images/video-card.jpg',
@@ -60,8 +59,9 @@ export const projects: Project[] = [
     eyebrow: 'Conference',
     description:
       'Organized Chicago’s first and only React Conference — Single day tracks, sold-out 250+ attendees, 12 speakers, 2 keynotes, 5 sponsors and 8 partner companies.',
+    // Shown as reactloop.com; the archive at 2019. is what still resolves.
     url: 'https://2019.reactloop.com',
-    linkLabel: '2019.reactloop.com',
+    linkLabel: 'reactloop.com',
     image: '/static/images/video-card.jpg',
   },
 ]

@@ -36,6 +36,12 @@
   background: var(--hover);
 }
 
+/* An odd card last in the grid would leave its empty neighbour showing the
+   grid's --line background as a grey block. Let it span instead. */
+.card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
 /* The wrapper owns the square: next/image writes inline sizing that would
    override an aspect-ratio set on the img itself. */
 .thumbWrap {
