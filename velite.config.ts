@@ -63,10 +63,14 @@ const posts = defineCollection({
     .transform((data) => {
       const slug = stripCollectionDir(data.path)
       const url = `${siteMetadata.siteUrl}/blog/${slug}`
-      const rawImage = data.images?.[0] ?? siteMetadata.socialBanner
-      const image = rawImage.startsWith('http')
-        ? rawImage
-        : `${siteMetadata.siteUrl}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`
+      // Defaults to the post's own generated OG card. `images` in frontmatter
+      // stays an override for a post that wants a specific picture instead.
+      const rawImage = data.images?.[0]
+      const image = !rawImage
+        ? `${siteMetadata.siteUrl}/blog/${slug}/opengraph-image`
+        : rawImage.startsWith('http')
+          ? rawImage
+          : `${siteMetadata.siteUrl}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`
 
       return {
         ...data,
