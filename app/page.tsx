@@ -18,7 +18,7 @@ const personJsonLd = {
   jobTitle: siteMetadata.role,
   description: siteMetadata.description,
   email: `mailto:${siteMetadata.email}`,
-  image: `${siteMetadata.siteUrl}${siteMetadata.socialBanner}`,
+  image: `${siteMetadata.siteUrl}/opengraph-image`,
   address: { '@type': 'PostalAddress', addressLocality: 'Chicago', addressRegion: 'IL' },
   sameAs: [siteMetadata.linkedin, siteMetadata.twitter, siteMetadata.github],
 }

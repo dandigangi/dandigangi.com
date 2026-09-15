@@ -3,7 +3,7 @@ const siteMetadata = {
   author: 'Dan DiGangi',
   headerTitle: false,
   description:
-    'Software engineering manager and tech mentor building diverse, high performance teams delivering the best software and experiences.',
+    'Software engineering manager and mentor building diverse, high performance teams that deliver exceptional experiences.',
   language: 'en-us',
   theme: 'dark',
   siteUrl: 'https://dandigangi.com',
