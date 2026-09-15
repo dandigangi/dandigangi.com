@@ -39,7 +39,7 @@ export default function Footer() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 6,
+            gap: 3,
             letterSpacing: '0.14em',
           }}
         >
