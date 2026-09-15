@@ -8,6 +8,7 @@ import {
   RESUME_PDF_ENABLED,
 } from '@/data/resume'
 import PageBand from '@/components/PageBand'
+import { ArrowRight } from '@/components/Icons'
 import { genPageMetadata } from 'app/seo'
 import styles from './resume.module.css'
 
@@ -114,11 +115,11 @@ export default function Resume() {
         <div className={styles.cta}>
           {RESUME_PDF_ENABLED && (
             <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer" className="btn">
-              Download PDF
+              Download PDF <ArrowRight size={14} />
             </a>
           )}
           <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
-            LinkedIn
+            LinkedIn <ArrowRight size={14} />
           </a>
         </div>
       </div>
