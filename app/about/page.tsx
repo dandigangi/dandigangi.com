@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
 import {
@@ -48,6 +49,17 @@ export default function About() {
               <p className={styles.body}>{aboutOverview.support}</p>
             </div>
             <aside className={`splitAside ${styles.aside}`}>
+              <div className={styles.portrait}>
+                <Image
+                  src="/static/images/dan-digangi-portrait.jpg"
+                  alt="Dan DiGangi"
+                  width={400}
+                  height={400}
+                  sizes="(max-width: 700px) 100vw, 300px"
+                  priority
+                />
+                <span className="meta">Dan DiGangi · Chicago</span>
+              </div>
               <Link href="/resume" className="btn">
                 View Résumé
               </Link>

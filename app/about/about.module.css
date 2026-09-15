@@ -113,3 +113,19 @@
 .lastSection {
   padding-bottom: clamp(64px, 10vw, 110px);
 }
+
+/* Portrait sits at the top of the sidebar, above the résumé link. The image is
+   square at source, so the box just follows it rather than imposing a crop. */
+.portrait {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.portrait img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--line);
+}
