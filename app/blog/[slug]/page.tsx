@@ -10,18 +10,16 @@ import SiteNav from '@/components/SiteNav'
 import { XIcon, LinkedInIcon, MailIcon } from '@/components/Icons'
 import styles from './post.module.css'
 
-type Props = { params: Promise<{ slug: string[] }> }
+type Props = { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {
-  return getPublishedPosts().map((post) => ({ slug: post.slug.split('/') }))
+  return getPublishedPosts().map((post) => ({ slug: post.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const post = getPostBySlug(slug.join('/'))
+  const post = getPostBySlug(slug)
   if (!post) return {}
-
-  const images = post.images?.length ? post.images : [siteMetadata.socialBanner]
 
   return {
     title: post.title,
@@ -36,13 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: new Date(post.date).toISOString(),
       modifiedTime: new Date(post.lastmod || post.date).toISOString(),
       url: post.permalink,
-      images,
+      // No `images` here on purpose: opengraph-image.tsx generates a per-post
+      // card, and an explicit value would shadow that file convention.
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.summary,
-      images,
     },
   }
 }
@@ -123,7 +121,7 @@ function PostTocLinks({ post }: { post: Post }) {
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params
-  const post = getPostBySlug(slug.join('/'))
+  const post = getPostBySlug(slug)
   if (!post || post.draft) notFound()
 
   const { prev, next } = getAdjacentPosts(post.slug)
