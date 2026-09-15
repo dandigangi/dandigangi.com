@@ -13,7 +13,7 @@ export type ResumeEducation = {
 }
 
 export const resumeSummary =
-  'Senior Software Engineering Manager in Chicago, IL. Engineering leadership for 7+ years, software engineering for 20+.'
+  'Senior Software Engineering Manager in Chicago, IL. Engineering leadership for 9+ years, software engineering for 20+.'
 
 export const resumeExperience: ResumeRole[] = [
   {

@@ -97,12 +97,14 @@
   font-size: clamp(17px, 1.8vw, 18px);
 }
 
-.summaryBlock {
-  max-width: 1040px;
-}
-
-.lastSection {
-  padding-bottom: clamp(64px, 10vw, 110px);
+/* Mirrors the home page's closing CTA: centred, outlined, generous space above
+   the footer. .lastSection is no longer used — the CTA now closes the page. */
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  padding: clamp(48px, 7vw, 76px) var(--rail) clamp(64px, 10vw, 110px);
 }
 
 .bandActions {

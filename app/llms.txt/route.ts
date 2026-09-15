@@ -20,7 +20,7 @@ export function GET() {
 > ${siteMetadata.role} based in ${siteMetadata.location}. ${siteMetadata.description}
 
 Most recently ${latest.title} at ${latest.company} (${latest.dates}). Engineering
-leadership for 7+ years, software engineering for 20+. Tagline: "${siteMetadata.tagline}".
+leadership for 9+ years, software engineering for 20+. Tagline: "${siteMetadata.tagline}".
 Open to senior engineering leadership roles.
 
 Writing focuses on engineering management, hiring and interviewing, career

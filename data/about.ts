@@ -1,5 +1,5 @@
 export const aboutOverview = {
-  lede: "For over 20 years I've worked as a software engineer dedicated to delivering high quality software and solving complex problems. The last 7+ years I've held multiple engineering management and leadership roles.",
+  lede: "For over 20 years I've worked as a software engineer dedicated to delivering high quality software and solving complex problems. The last 9+ years I've held multiple engineering management and leadership roles.",
   pullQuote: 'Build experiences, not software',
   support:
     'My core mission is building diverse, high performance teams that deliver exceptional products — business, customer, and experience first.',
@@ -16,7 +16,7 @@ export const aboutOverview = {
 }
 
 export const aboutExperience = {
-  headline: ['Engineering leadership — 7+ years', 'Software engineer — 20+ years'],
+  headline: ['Engineering leadership — 9+ years', 'Software engineer — 20+ years'],
   paragraphs: [
     'My main experience is developing full stack Node, Typescript, Javascript, and my favorite, React. But, I do enjoy Go, Python, Kotlin, and occasionally some poorly written Rust. These days I work in engineering leadership owning product engineering end-to-end — from platform infrastructure and mail operations to security, compliance, and hiring.',
     'Most recently I ran all things engineering and then some at Postmark (under ActiveCampaign) — a large-scale transactional email platform processing 3B+ emails/month serving thousands of customers.',

@@ -97,7 +97,7 @@ export default function Resume() {
           </div>
         </section>
 
-        <section className={`rail railSection ${styles.lastSection}`}>
+        <section className={`rail railSection`}>
           <span className="label">Other</span>
           <ul className={styles.other}>
             {resumeOther.map((item) => (
@@ -105,6 +105,17 @@ export default function Resume() {
             ))}
           </ul>
         </section>
+
+        {/* Repeats the band's actions at the end of a long page, so the reader
+            does not have to scroll back up to act on what they just read. */}
+        <div className={styles.cta}>
+          <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer" className="btn">
+            Download PDF
+          </a>
+          <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
+            LinkedIn
+          </a>
+        </div>
       </div>
     </>
   )
