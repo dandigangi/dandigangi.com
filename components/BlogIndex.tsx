@@ -3,6 +3,7 @@ import type { Post } from '@/lib/blog'
 import { getPublishedPosts, getTagCounts } from '@/lib/blog'
 import PageBand from './PageBand'
 import PostList from './PostList'
+import PostSearch, { type SearchEntry } from './PostSearch'
 import styles from './BlogIndex.module.css'
 
 const TAG_CHIP_COUNT = 12
@@ -22,9 +23,22 @@ export default function BlogIndex({
   title?: string
   basePath?: string
 }) {
+  const allPosts = getPublishedPosts()
+
   // A post carries several tags, so the total is the post count, not the sum of
   // the per-tag counts.
-  const allCount = getPublishedPosts().length
+  const allCount = allPosts.length
+
+  // Search covers every post, not just the current page or tag — carries only
+  // the fields it matches on, so the payload stays around 10KB.
+  const searchIndex: SearchEntry[] = allPosts.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    summary: post.summary,
+    tags: post.tags,
+    date: post.date,
+    permalink: post.permalink,
+  }))
   const topTags = Object.entries(getTagCounts())
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .slice(0, TAG_CHIP_COUNT)
@@ -54,7 +68,9 @@ export default function BlogIndex({
         </div>
 
         <div className="rail">
-          <PostList posts={posts} />
+          <PostSearch index={searchIndex}>
+            <PostList posts={posts} />
+          </PostSearch>
         </div>
 
         {totalPages > 1 && (

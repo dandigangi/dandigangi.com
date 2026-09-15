@@ -1,9 +1,9 @@
 .band {
   position: relative;
-  height: clamp(220px, 34vh, 300px);
+  height: clamp(250px, 38vh, 330px);
 }
 
-/* 20% overscan on a band up to 300px tall leaves ~60px of headroom, which must
+/* 20% overscan on a band up to 330px tall leaves ~66px of headroom, which must
    stay above the --par-band clamp (56px) or the image edge becomes visible.
    The wrapper carries it because next/image's `fill` sets its own positioning. */
 .imageWrap {

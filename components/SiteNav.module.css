@@ -1,0 +1,14 @@
+/* This nav always sits over the graphic band, where the render is busy enough
+   in places that flat text loses its edges. The shadow is deliberately small —
+   it disappears against the solid-black bar on post pages, so one rule covers
+   both placements. The footer nav does not use this and stays flat. */
+.nav {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+
+/* Deliberately not var(--logo): this logo only ever sits on the graphic band or
+   the black bar, both of which stay black in light mode, so inverting it would
+   make it disappear. */
+.logo {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
+}

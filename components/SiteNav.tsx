@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import navLinks from '@/data/navLinks'
+import styles from './SiteNav.module.css'
 
 /**
  * Logo + primary nav. Used inside the home hero and inside the black bar that
@@ -8,6 +9,7 @@ import navLinks from '@/data/navLinks'
 export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
   return (
     <div
+      className={styles.nav}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -22,6 +24,7 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
           src="/static/images/dan-digangi-logo-light.png"
           alt="Dan DiGangi"
           height={logoHeight}
+          className={styles.logo}
           style={{ height: logoHeight, width: 'auto', display: 'block' }}
         />
       </Link>
