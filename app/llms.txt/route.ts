@@ -1,5 +1,6 @@
 import siteMetadata from '@/data/siteMetadata'
 import { getPublishedPosts } from '@/lib/blog'
+import { projects } from '@/data/projects'
 import { resumeExperience } from '@/data/resume'
 
 /**
@@ -33,6 +34,10 @@ growth, developer platforms, and mental health in tech.
 - [Projects](${siteMetadata.siteUrl}/projects): Open source and the Chicago React conference.
 - [Blog](${siteMetadata.siteUrl}/blog): ${posts.length} posts on engineering leadership and career.
 - [Contact](${siteMetadata.siteUrl}/contact): Email, LinkedIn, X, GitHub, and mentoring platforms.
+
+## Projects
+
+${projects.map((project) => `- [${project.title}](${project.url}): ${project.description}`).join('\n')}
 
 ## Writing
 

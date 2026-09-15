@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import PageBand from '@/components/PageBand'
+import siteMetadata from '@/data/siteMetadata'
 import { projects } from '@/data/projects'
 import { genPageMetadata } from 'app/seo'
 import styles from './projects.module.css'
@@ -11,16 +12,44 @@ export const metadata = genPageMetadata({
   alternates: { canonical: '/projects' },
 })
 
+/** Makes the list itself machine-readable, not just the page around it. */
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Projects',
+  url: `${siteMetadata.siteUrl}/projects`,
+  description: 'Open source, conferences, and side projects by Dan DiGangi.',
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: projects.map((project, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'CreativeWork',
+        name: project.title,
+        description: project.description,
+        url: project.url,
+        author: { '@type': 'Person', name: siteMetadata.author },
+      },
+    })),
+  },
+}
+
 export default function Projects() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <PageBand title="Projects" objectPosition="50% 45%" />
 
       <div className="container">
         <section className={`rail railSection ${styles.intro}`}>
           <span className="label">Selected work</span>
           <p className={styles.lede}>
-            Platform and product work I led or built, plus the side projects I keep coming back to.
+            Platform and product work I led or built + the side projects I keep coming back to.
           </p>
         </section>
 

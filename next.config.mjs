@@ -13,6 +13,10 @@ const withBundleAnalyzer = bundleAnalyzer({
  * for debugging (reconstructing callstacks) and never in production, so the
  * allowance is scoped to the dev server rather than shipped.
  *
+ * img-src and media-src are 'self' because next/image proxies every remote
+ * image through /_next/image on this origin, and nothing renders a raw <audio>
+ * or <video> — the podcast and talk embeds are iframes, governed by frame-src.
+ *
  * connect-src is enumerated rather than '*'. Embeds (YouTube, Spotify) make
  * their own requests from inside their iframe, which this policy does not govern
  * — they need frame-src, not connect-src.
@@ -21,11 +25,15 @@ const devOnlyEval = process.env.NODE_ENV === 'production' ? '' : " 'unsafe-eval'
 
 const ContentSecurityPolicy = `
   default-src 'self';
+  base-uri 'self';
+  form-action 'self';
+  object-src 'none';
+  frame-ancestors 'none';
   script-src 'self'${devOnlyEval} 'unsafe-inline' *.vercel.com vercel.com *.vercel-scripts.com vercel-scripts.com *.posthog.com;
   style-src 'self' 'unsafe-inline';
   worker-src 'self' blob:;
-  img-src * blob: data:;
-  media-src *.s3.amazonaws.com *.youtube.com youtube.com *.soundcloud.com soundcloud.com *.spotify.com spotify.com *.twitch.tv twitch.tv player.twitch.tv;
+  img-src 'self' blob: data: https://img.youtube.com https://i.ytimg.com;
+  media-src 'self';
   connect-src 'self' *.posthog.com *.vercel-insights.com *.vercel-scripts.com vitals.vercel-insights.com;
   font-src 'self';
   frame-src *.youtube.com youtube.com *.soundcloud.com soundcloud.com *.spotify.com spotify.com *.twitch.tv twitch.tv player.twitch.tv;
@@ -50,7 +58,6 @@ const nextConfig = {
   agentRules: false,
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'picsum.photos', pathname: '/**' },
       // Video-post thumbnails are derived from the YouTube video id.
       { protocol: 'https', hostname: 'img.youtube.com', pathname: '/vi/**' },
       { protocol: 'https', hostname: 'i.ytimg.com', pathname: '/vi/**' },
@@ -61,8 +68,10 @@ const nextConfig = {
       { source: '/connect', destination: '/contact', permanent: true },
       // Slug had "presentatinos" misspelled; the old URL is already indexed.
       {
-        source: '/blog/upright-education-graduation-software-projects-and-presentatinos-oct-23-cohort',
-        destination: '/blog/upright-education-graduation-software-projects-and-presentations-oct-23-cohort',
+        source:
+          '/blog/upright-education-graduation-software-projects-and-presentatinos-oct-23-cohort',
+        destination:
+          '/blog/upright-education-graduation-software-projects-and-presentations-oct-23-cohort',
         permanent: true,
       },
       // Tag pages removed when the vocabulary was consolidated. These were live
