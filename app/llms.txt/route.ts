@@ -30,6 +30,7 @@ growth, developer platforms, and mental health in tech.
 
 - [About](${siteMetadata.siteUrl}/about): Background, experience, industries, coaching and volunteering.
 - [Résumé](${siteMetadata.siteUrl}/resume): Full work history, education, and focus areas.
+- [Projects](${siteMetadata.siteUrl}/projects): Open source and the Chicago React conference.
 - [Blog](${siteMetadata.siteUrl}/blog): ${posts.length} posts on engineering leadership and career.
 - [Contact](${siteMetadata.siteUrl}/contact): Email, LinkedIn, X, GitHub, and mentoring platforms.
 

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import siteMetadata from '@/data/siteMetadata'
-import { projects } from '@/data/projects'
+import { homeProjects } from '@/data/projects'
 import { getPublishedPosts, type Post } from '@/lib/blog'
 import { formatMonthYear, formatTag } from '@/lib/format'
 import SiteNav from '@/components/SiteNav'
@@ -144,18 +144,18 @@ export default function Home() {
               <span>Projects</span>
             </div>
             <div className={styles.projects}>
-              {projects.map((project) => (
-                <a
-                  key={project.title}
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+              {homeProjects.map((project) => (
+                /* Deep-links into the Projects page rather than straight out to
+                   the project, so the full list is one scroll away. */
+                <Link
+                  key={project.slug}
+                  href={`/projects#${project.slug}`}
                   className={styles.project}
                 >
                   <span className="meta">{project.eyebrow}</span>
                   <h3 className={styles.projectTitle}>{project.title}</h3>
                   <p className={styles.projectDescription}>{project.description}</p>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

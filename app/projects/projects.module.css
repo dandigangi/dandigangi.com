@@ -1,0 +1,84 @@
+.intro {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: clamp(34px, 5vw, 48px);
+}
+
+.lede {
+  margin: 0;
+  max-width: 700px;
+  font-size: clamp(20px, 2.6vw, 26px);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: clamp(64px, 9vw, 110px);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: clamp(24px, 4vw, 48px);
+  align-items: center;
+  padding: clamp(30px, 4vw, 44px) 0;
+  border-bottom: 1px solid var(--line);
+  /* The home page deep-links to these anchors; without this the heading lands
+     flush against the top of the viewport. */
+  scroll-margin-top: 90px;
+}
+
+.rowBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.rowTitle {
+  margin: 0;
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.rowDescription {
+  margin: 0;
+  max-width: 560px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin-top: 4px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--soft);
+  transition: color 0.15s ease;
+}
+
+.link:hover {
+  color: var(--ink);
+}
+
+.rowImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+}
