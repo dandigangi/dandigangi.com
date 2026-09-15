@@ -11,14 +11,17 @@ export const dynamic = 'force-static'
 
 export function GET() {
   const posts = getPublishedPosts()
-  const current = resumeExperience[0]
+  // Deliberately "most recently" rather than "currently": this is whatever role
+  // sits at the top of the résumé, which is not necessarily an ongoing one.
+  const latest = resumeExperience[0]
 
   const body = `# ${siteMetadata.author}
 
 > ${siteMetadata.role} based in ${siteMetadata.location}. ${siteMetadata.description}
 
-Currently ${current.title} at ${current.company} (${current.dates}). Engineering
+Most recently ${latest.title} at ${latest.company} (${latest.dates}). Engineering
 leadership for 7+ years, software engineering for 20+. Tagline: "${siteMetadata.tagline}".
+Open to senior engineering leadership roles.
 
 Writing focuses on engineering management, hiring and interviewing, career
 growth, developer platforms, and mental health in tech.

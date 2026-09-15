@@ -20,7 +20,7 @@ export const resumeExperience: ResumeRole[] = [
     title: 'Senior Software Engineering Manager',
     company: 'Postmark',
     url: 'https://postmarkapp.com',
-    dates: 'Apr 2024 — Present',
+    dates: 'Apr 2024 — Sep 2026',
     achievements: [
       'Scaled email throughput from 2B to 3B+ emails/month in 10 months, maintaining ~200ms per message processing performance through MTA expansion and infrastructure growth.',
       'Prevented $1.5M+ in fraud by architecting a multi-layer security platform spanning AI content moderation, fraud detection, WAF/firewall edge protection, and eHawk traffic analysis.',
