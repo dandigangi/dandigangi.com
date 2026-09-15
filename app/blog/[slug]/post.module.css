@@ -85,10 +85,12 @@
   padding-bottom: clamp(40px, 6vw, 64px);
 }
 
+/* Larger than the handoff's 19px body: at the article measure 19px read too
+   small, and long-form reading is what this page is for. */
 .body {
   max-width: 760px;
-  font-size: clamp(17px, 1.8vw, 19px);
-  line-height: 1.7;
+  font-size: clamp(18px, 2.2vw, 24px);
+  line-height: 1.65;
   color: var(--soft);
 }
 

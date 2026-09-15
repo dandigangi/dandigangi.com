@@ -13,6 +13,13 @@
   gap: 10px;
 }
 
+/* The bottom gap before the footer lives here, not on .pagination — a tag page
+   with a single page of results renders no pagination at all, which left the
+   list butted straight against the footer. */
+.body {
+  padding-bottom: clamp(64px, 10vw, 110px);
+}
+
 .pagination {
   display: flex;
   align-items: center;
@@ -20,7 +27,6 @@
   flex-wrap: wrap;
   gap: 20px 40px;
   padding-top: 48px;
-  padding-bottom: 110px;
 }
 
 .pageLinks {

@@ -7,6 +7,7 @@ import { Analytics as VercelAnalytics } from '@vercel/analytics/react'
 import siteMetadata from '@/data/siteMetadata'
 import ThemeScript from '@/components/ThemeScript'
 import Footer from '@/components/Footer'
+import Parallax from '@/components/Parallax'
 
 const archivo = Archivo({
   subsets: ['latin'],
@@ -92,6 +93,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="srOnly">
           Skip to main content
         </a>
+        {/* Mounted here, not per page: every banded page consumes --par-band,
+            so the scroll listener has to run site-wide, not just on home. */}
+        <Parallax />
         <main id="main-content">{children}</main>
         <Footer />
         <VercelAnalytics />

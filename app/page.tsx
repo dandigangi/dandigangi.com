@@ -5,7 +5,6 @@ import { projects } from '@/data/projects'
 import { getPublishedPosts, type Post } from '@/lib/blog'
 import { formatMonthYear, formatTag } from '@/lib/format'
 import SiteNav from '@/components/SiteNav'
-import Parallax from '@/components/Parallax'
 import { ArrowRight, PlayIcon } from '@/components/Icons'
 import styles from './home.module.css'
 
@@ -43,7 +42,17 @@ function VideoCard({ post }: { post: Post }) {
   const thumbnail = video.thumbnail ?? '/static/images/hero-render.jpg'
   return (
     <div className={styles.videoCard}>
-      <Image src={thumbnail} alt="" width={400} height={400} className={styles.videoThumb} />
+      {/* The wrapper owns the square; next/image with explicit width/height
+          writes inline sizing that overrides an aspect-ratio set on the img. */}
+      <div className={styles.videoThumbWrap}>
+        <Image
+          src={thumbnail}
+          alt=""
+          fill
+          sizes="200px"
+          style={{ objectFit: 'cover', objectPosition: '60% 45%' }}
+        />
+      </div>
       <div className={styles.videoBody}>
         <div className={`meta ${styles.videoMeta}`}>
           <span>Watch · Latest talk</span>
@@ -70,7 +79,6 @@ export default function Home() {
 
   return (
     <>
-      <Parallax />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

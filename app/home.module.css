@@ -145,12 +145,12 @@
   border-bottom: 1px solid var(--line);
 }
 
-.videoThumb {
+.videoThumbWrap {
+  position: relative;
   flex: 0 0 auto;
   width: clamp(150px, 18vw, 200px);
   aspect-ratio: 1;
-  object-fit: cover;
-  object-position: 60% 45%;
+  overflow: hidden;
 }
 
 .videoBody {

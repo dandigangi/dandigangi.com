@@ -33,7 +33,7 @@ export default function BlogIndex({
     <>
       <PageBand title={title} objectPosition="20% 40%" />
 
-      <div className="container">
+      <div className={`container ${styles.body}`}>
         <div className={`rail ${styles.filters}`}>
           <span className="label">Tags</span>
           <div className={styles.chips}>
