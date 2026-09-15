@@ -1,0 +1,51 @@
+.portrait {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Shrink-wraps the image so the toggle can pin to the picture's corner rather
+   than the column's. */
+.frame {
+  position: relative;
+  display: inline-flex;
+  width: 90%;
+}
+
+.frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--line);
+}
+
+/* Sits flush in the bottom-right corner of the image, no offset. */
+.toggle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  background: #000;
+  color: #f5f4f1;
+  cursor: pointer;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.toggle:hover {
+  background: #f5f4f1;
+  color: #000;
+  border-color: #f5f4f1;
+}
