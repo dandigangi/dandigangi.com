@@ -1,48 +1,81 @@
-import siteMetadata, { email } from '@/data/siteMetadata'
-import SocialIcon from '@/components/social-icons'
+import Link from 'next/link'
+import navLinks from '@/data/navLinks'
+import siteMetadata from '@/data/siteMetadata'
+import ThemeToggle from './ThemeToggle'
+import { LinkedInIcon, XIcon, GitHubIcon, MailIcon } from './Icons'
+
+const socials = [
+  { href: siteMetadata.linkedin, label: 'LinkedIn', Icon: LinkedInIcon },
+  { href: siteMetadata.twitter, label: 'X', Icon: XIcon },
+  { href: siteMetadata.github, label: 'GitHub', Icon: GitHubIcon },
+  { href: `mailto:${siteMetadata.email}`, label: 'Email', Icon: MailIcon },
+]
 
 export default function Footer() {
+  const hash = process.env.NEXT_PUBLIC_BUILD_HASH
+  const date = process.env.NEXT_PUBLIC_BUILD_DATE
+
   return (
-    <footer className="pb-12">
-      <div className="mt-16 flex flex-col items-center">
-        <div className="mb-3 flex space-x-4">
-          <SocialIcon kind="mail" href={`mailto:${email}`} size={6} />
-          <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
-          <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
-          <SocialIcon kind="github" href={siteMetadata.github} size={6} />
+    <footer style={{ borderTop: '1px solid var(--line)' }}>
+      <div
+        className="rail"
+        style={{
+          maxWidth: 'var(--container)',
+          margin: '0 auto',
+          paddingTop: 26,
+          paddingBottom: 38,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '24px 40px',
+        }}
+      >
+        <div className="label" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 14px' }}>
+          <span>Dan DiGangi</span>
+          {hash ? (
+            <span title={date || undefined} style={{ opacity: 0.7 }}>
+              {date ? `${date} · ` : ''}
+              {hash}
+            </span>
+          ) : null}
         </div>
-        <div className="mb-2 flex flex-wrap justify-center gap-x-2 gap-y-1 pt-2 text-sm text-gray-500 dark:text-gray-400 sm:flex-row sm:justify-center">
-          <span>{siteMetadata.author}</span>
-          <span>{`© ${new Date().getFullYear()}`}</span>
-          <span className="flex flex-wrap justify-center gap-x-1">
-            <span>|</span>
-            <span>Built w/</span>
+
+        <nav>
+          <ul
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '12px 30px',
+              listStyle: 'none',
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="navLink" style={{ fontSize: 13 }}>
+                  {link.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+          {socials.map(({ href, label, Icon }) => (
             <a
-              className="underline focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
+              key={label}
+              href={href}
+              aria-label={label}
               target="_blank"
               rel="noopener noreferrer"
-              href="https://nextjs.com"
-              aria-label="Next.js (external)"
+              style={{ display: 'inline-flex', transition: 'opacity .15s ease' }}
             >
-              NextJS
+              <Icon size={19} />
             </a>
-            <span>&</span>
-            <a
-              className="underline focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://vercel.com"
-              aria-label="Vercel (external)"
-            >
-              Vercel
-            </a>
-            <span>&hearts;</span>
-          </span>
-        </div>
-        <div className="text-xs opacity-40 uppercase text-center">
-          {process.env.NEXT_PUBLIC_BUILD_DATE && process.env.NEXT_PUBLIC_BUILD_HASH
-            ? `${process.env.NEXT_PUBLIC_BUILD_DATE} [HASH:${process.env.NEXT_PUBLIC_BUILD_HASH}]`
-            : 'dev'}
+          ))}
+          <ThemeToggle />
         </div>
       </div>
     </footer>

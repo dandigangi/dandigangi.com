@@ -1,0 +1,205 @@
+/* Home page layout. Fixed values come from the design handoff; clamp() bounds
+   are holding values so narrow viewports stay usable until the mobile design lands. */
+
+.hero {
+  position: relative;
+  height: clamp(540px, 92vh, 740px);
+}
+
+.heroImage {
+  position: absolute;
+  inset: -12%;
+  width: 124%;
+  height: 124%;
+  object-fit: cover;
+  object-position: 62% 45%;
+  transform: translate3d(0, var(--par-hero, 0px), 0);
+}
+
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+}
+
+.heroInner {
+  position: relative;
+  height: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 26px;
+  padding-bottom: 52px;
+  /* Band is always black, so band text does not follow the theme. */
+  color: #f5f4f1;
+}
+
+.heroBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 58px;
+}
+
+.name {
+  margin: 0 0 0 -9px;
+  font-size: clamp(56px, 11.4vw, 176px);
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.058em;
+  text-transform: uppercase;
+}
+
+.identityRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px 40px;
+}
+
+.role {
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(16px, 2vw, 28px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.tagline {
+  display: inline-block;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(13px, 1.4vw, 22px);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(245, 244, 241, 0.85);
+}
+
+/* ---------- post grid ---------- */
+
+/* 1px gap over a --line background draws the divider, and reflows to a
+   horizontal rule when the columns stack. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 1px;
+  background: var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.column {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px var(--rail);
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  display: block;
+  padding: 20px 32px 20px var(--rail);
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.15s ease;
+}
+
+.rowRight {
+  padding: 20px var(--rail) 20px 32px;
+}
+
+.row:hover {
+  background: var(--hover);
+}
+
+.rowTitle {
+  margin: 0 0 10px;
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+}
+
+/* ---------- video card ---------- */
+
+.videoCard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 40px;
+  padding: 24px var(--rail) 30px 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.videoThumb {
+  width: 100%;
+  max-width: 240px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.videoBody {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.videoMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 18px;
+}
+
+.videoTitle {
+  margin: 0;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+}
+
+.playRow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.playButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.playRow:hover .playButton {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+/* ---------- cta ---------- */
+
+.cta {
+  display: flex;
+  justify-content: center;
+  padding: 76px var(--rail) 110px;
+}

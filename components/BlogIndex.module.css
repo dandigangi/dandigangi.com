@@ -1,0 +1,30 @@
+.filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 30px;
+  padding-top: 48px;
+  padding-bottom: 40px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px 40px;
+  padding-top: 48px;
+  padding-bottom: 110px;
+}
+
+.pageLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}

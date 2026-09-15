@@ -1,21 +1,25 @@
-import 'css/tailwind.css'
+import '@/css/globals.css'
 
-import { Space_Grotesk } from 'next/font/google'
-import { Analytics, AnalyticsConfig } from 'pliny/analytics'
+import type { Metadata } from 'next'
+import { Archivo, IBM_Plex_Mono } from 'next/font/google'
 import { Analytics as VercelAnalytics } from '@vercel/analytics/react'
-import { SearchProvider, SearchConfig } from 'pliny/search'
-import Header from '@/components/Header'
-import SectionContainer from '@/components/SectionContainer'
-import Footer from '@/components/Footer'
-import siteMetadata from '@/data/siteMetadata'
 import Script from 'next/script'
-import { ThemeProviders } from './theme-providers'
-import { Metadata } from 'next'
+import siteMetadata from '@/data/siteMetadata'
+import ThemeScript from '@/components/ThemeScript'
+import Footer from '@/components/Footer'
 
-const space_grotesk = Space_Grotesk({
+const archivo = Archivo({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
-  variable: '--font-space-grotesk',
+  variable: '--font-display',
+})
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
+  variable: '--font-mono',
 })
 
 export const metadata: Metadata = {
@@ -30,13 +34,7 @@ export const metadata: Metadata = {
     description: siteMetadata.description,
     url: './',
     siteName: siteMetadata.title,
-    images: [
-      {
-        url: siteMetadata.socialBanner,
-        width: 1200,
-        height: 630,
-      },
-    ],
+    images: [{ url: siteMetadata.socialBanner, width: 1200, height: 630 }],
     locale: 'en_US',
     type: 'website',
   },
@@ -61,13 +59,7 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     description: siteMetadata.description,
     card: 'summary_large_image',
-    images: [
-      {
-        url: siteMetadata.socialBanner,
-        width: 1200,
-        height: 630,
-      },
-    ],
+    images: [{ url: siteMetadata.socialBanner, width: 1200, height: 630 }],
   },
 }
 
@@ -75,10 +67,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang={siteMetadata.language}
-      className={`${space_grotesk.variable} scroll-smooth`}
+      className={`${archivo.variable} ${plexMono.variable}`}
       suppressHydrationWarning
     >
       <head>
+        <ThemeScript />
         <link
           rel="apple-touch-icon"
           sizes="76x76"
@@ -90,40 +83,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           sizes="32x32"
           href="/static/images/dan-digangi-logo-light.png"
         />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/static/images/dan-digangi-logo-light.png"
-        />
         <link rel="manifest" href="/static/favicons/site.webmanifest" />
-        <link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#5bbad5" />
-        <meta name="msapplication-TileColor" content="#000000" />
-        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
-        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EDEDEB" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
         <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       </head>
-      <body className="font-sans dark:text-white bg-site-bg bg-page-pattern bg-hero bg-repeat-x bg-bottom bg-scroll md:bg-fixed">
-        <a
-          href="#main-content"
-          className="sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:w-auto focus:h-auto focus:p-4 focus:m-0 focus:overflow-visible focus:[clip:auto] focus:rounded focus:bg-primary-500 focus:text-white focus:outline-none focus:ring-2 focus:ring-white"
-        >
+      <body>
+        <a href="#main-content" className="srOnly">
           Skip to main content
         </a>
-        <ThemeProviders>
-          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
-          <SectionContainer>
-            <div className="flex h-screen flex-col justify-between font-sans">
-              <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-                <Header />
-                <main id="main-content" className="mb-auto">
-                  {children}
-                </main>
-              </SearchProvider>
-              <Footer />
-            </div>
-          </SectionContainer>
-        </ThemeProviders>
+        <main id="main-content">{children}</main>
+        <Footer />
         <VercelAnalytics />
         {process.env.ANALYTICS_SMARTLOOK_ID?.length === 40 && (
           <Script

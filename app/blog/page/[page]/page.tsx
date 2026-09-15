@@ -1,86 +1,38 @@
-import ListLayout from '@/layouts/ListLayoutWithTags'
-import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
-import { getPublishedBlogs } from '@/lib/blog'
-import { Metadata } from 'next'
-import siteMetadata from '@/data/siteMetadata'
+import { notFound } from 'next/navigation'
+import { getPublishedPosts, POSTS_PER_PAGE } from '@/lib/blog'
+import BlogIndex from '@/components/BlogIndex'
+import { genPageMetadata } from 'app/seo'
 
-const POSTS_PER_PAGE = 7
+type Props = { params: Promise<{ page: string }> }
 
-const BLOG_DESCRIPTION =
-  'Blog posts and articles on engineering leadership, management, hiring, and career.'
+export const metadata = genPageMetadata({
+  title: 'Blog',
+  description:
+    'Writing on engineering management, hiring, career growth, and mental health in tech.',
+})
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { page: string }
-}): Promise<Metadata> {
-  const pageNumber = parseInt(params.page, 10)
-  const title = pageNumber === 1 ? 'Blog' : `Blog – Page ${pageNumber}`
-  const canonicalUrl =
-    pageNumber === 1
-      ? `${siteMetadata.siteUrl}/blog`
-      : `${siteMetadata.siteUrl}/blog/page/${pageNumber}`
-
-  return {
-    title,
-    description: BLOG_DESCRIPTION,
-    alternates: { canonical: canonicalUrl },
-    openGraph: {
-      title: `${title} - ${siteMetadata.title}`,
-      description: BLOG_DESCRIPTION,
-      url: canonicalUrl,
-      siteName: siteMetadata.title,
-      images: [
-        {
-          url: siteMetadata.socialBanner,
-          width: 1200,
-          height: 630,
-        },
-      ],
-      locale: 'en_US',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${title} | ${siteMetadata.title}`,
-      description: BLOG_DESCRIPTION,
-      images: [
-        {
-          url: siteMetadata.socialBanner,
-          width: 1200,
-          height: 630,
-        },
-      ],
-    },
-  }
+export async function generateStaticParams() {
+  const totalPages = Math.ceil(getPublishedPosts().length / POSTS_PER_PAGE)
+  return Array.from({ length: Math.max(totalPages - 1, 0) }, (_, i) => ({
+    page: String(i + 2),
+  }))
 }
 
-export const generateStaticParams = async () => {
-  const published = getPublishedBlogs()
-  const totalPages = Math.ceil(published.length / POSTS_PER_PAGE)
-  const paths = Array.from({ length: totalPages }, (_, i) => ({ page: (i + 1).toString() }))
+export default async function BlogPaginatedPage({ params }: Props) {
+  const { page } = await params
+  const pageNumber = Number(page)
+  const posts = getPublishedPosts()
+  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
 
-  return paths
-}
+  if (!Number.isInteger(pageNumber) || pageNumber < 1 || pageNumber > totalPages) notFound()
 
-export default function Page({ params }: { params: { page: string } }) {
-  const posts = allCoreContent(sortPosts(getPublishedBlogs()))
-  const pageNumber = parseInt(params.page as string)
-  const initialDisplayPosts = posts.slice(
-    POSTS_PER_PAGE * (pageNumber - 1),
-    POSTS_PER_PAGE * pageNumber
-  )
-  const pagination = {
-    currentPage: pageNumber,
-    totalPages: Math.ceil(posts.length / POSTS_PER_PAGE),
-  }
+  const start = (pageNumber - 1) * POSTS_PER_PAGE
 
   return (
-    <ListLayout
-      posts={posts}
-      initialDisplayPosts={initialDisplayPosts}
-      pagination={pagination}
-      title="All Posts"
+    <BlogIndex
+      posts={posts.slice(start, start + POSTS_PER_PAGE)}
+      page={pageNumber}
+      totalPages={totalPages}
     />
   )
 }

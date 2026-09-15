@@ -1,0 +1,30 @@
+.button {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0;
+}
+
+.dark,
+.light {
+  display: inline-flex;
+}
+
+/* Dark is the default, so the sun shows unless the light theme is active. */
+.light {
+  display: none;
+}
+
+:global([data-theme='light']) .dark {
+  display: none;
+}
+
+:global([data-theme='light']) .light {
+  display: inline-flex;
+}

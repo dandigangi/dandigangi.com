@@ -1,18 +1,54 @@
-import type { Blog } from 'contentlayer/generated'
-import { allBlogs } from 'contentlayer/generated'
+import { posts, type Post } from '@/content'
 
-/** Today's date as YYYY-MM-DD (UTC) for comparison. Posts with date after this are not yet "published". */
-function todayUTC(): string {
-  return new Date().toISOString().slice(0, 10)
-}
+/** Fields that are expensive to ship to list views. */
+type ListPost = Omit<Post, 'body' | 'raw' | 'toc'>
 
-/** Returns only published (non-draft, date <= today) blog posts. Use everywhere public lists are built. */
-export function getPublishedBlogs(): Blog[] {
+const todayUTC = () => new Date().toISOString().slice(0, 10)
+
+const sortByDateDesc = <T extends { date: string }>(items: T[]) =>
+  [...items].sort((a, b) => +new Date(b.date) - +new Date(a.date))
+
+/**
+ * Published means: not a draft, and not future-dated. Posts are written ahead of
+ * time with a future date and are expected to stay hidden until that date passes.
+ */
+export function getPublishedPosts(): Post[] {
   const today = todayUTC()
-  return allBlogs.filter((p) => {
-    if (p.draft === true) return false
-    const dateStr =
-      typeof p.date === 'string' ? p.date.slice(0, 10) : new Date(p.date).toISOString().slice(0, 10)
-    return dateStr <= today
-  })
+  return sortByDateDesc(posts.filter((p) => !p.draft && p.date.slice(0, 10) <= today))
 }
+
+export function getPostBySlug(slug: string): Post | undefined {
+  return posts.find((p) => p.slug === slug)
+}
+
+/** Drops compiled MDX and TOC — list views never render them. */
+export function toListPost(post: Post): ListPost {
+  const { body, raw, toc, ...rest } = post
+  return rest
+}
+
+export function getTagCounts(): Record<string, number> {
+  const counts: Record<string, number> = {}
+  for (const post of getPublishedPosts()) {
+    for (const tag of post.tags) {
+      counts[tag] = (counts[tag] ?? 0) + 1
+    }
+  }
+  return counts
+}
+
+export function getAdjacentPosts(slug: string): { prev?: Post; next?: Post } {
+  const published = getPublishedPosts()
+  const index = published.findIndex((p) => p.slug === slug)
+  if (index === -1) return {}
+  return {
+    // published is newest-first, so the "next" post chronologically sits earlier in the array.
+    next: published[index - 1],
+    prev: published[index + 1],
+  }
+}
+
+export type { Post, ListPost }
+
+/** Design specifies eight posts per blog index page. */
+export const POSTS_PER_PAGE = 8

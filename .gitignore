@@ -44,8 +44,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# Contentlayer
-.contentlayer
+# Velite generated content + processed assets
+.velite
+public/static/velite
 
 # blog temp while writing even draft state
 *.draft.mdx

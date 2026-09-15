@@ -1,0 +1,82 @@
+.section {
+  display: grid;
+  grid-template-columns: minmax(96px, 220px) minmax(0, 1fr);
+  gap: 24px 40px;
+  padding-top: 72px;
+  padding-bottom: 24px;
+}
+
+@media (max-width: 800px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sectionBody {
+  padding-top: 38px;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(90px, 150px);
+  gap: 24px 40px;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (max-width: 640px) {
+  .entry {
+    grid-template-columns: 1fr;
+  }
+}
+
+.role {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.14;
+}
+
+.company {
+  margin: 0 0 18px;
+  font-family: var(--font-mono), monospace;
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.descriptions {
+  margin: 0;
+  padding-left: 20px;
+  max-width: 640px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.descriptions li {
+  margin-bottom: 10px;
+}
+
+.dates {
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .dates {
+    text-align: left;
+  }
+}
+
+.other {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px 40px;
+  margin: 0 0 72px;
+  padding: 0;
+  list-style: none;
+  font-size: 18px;
+}

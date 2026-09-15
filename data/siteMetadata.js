@@ -1,4 +1,3 @@
-/** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
   title: 'Dan DiGangi - Senior Software Engineering Manager',
   author: 'Dan DiGangi',
@@ -17,17 +16,9 @@ const siteMetadata = {
   github: 'https://github.com/dandigangi',
   web: 'https://dandigangi.com',
   locale: 'en-US',
-  analytics: {},
-  newsletter: {
-    provider: 'buttondown',
-  },
-  comments: false,
-  search: {
-    provider: 'kbar',
-    kbarConfig: {
-      searchDocumentsPath: 'search.json',
-    },
-  },
+  role: 'Senior Software Engineering Manager',
+  tagline: 'Build experiences, not software',
+  location: 'Chicago, IL',
 }
 
 module.exports = siteMetadata

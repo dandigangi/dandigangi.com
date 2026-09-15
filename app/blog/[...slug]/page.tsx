@@ -1,144 +1,123 @@
-import 'css/prism.css'
-import 'katex/dist/katex.css'
-
-import PageTitle from '@/components/PageTitle'
-import { components } from '@/components/MDXComponents'
-import { MDXLayoutRenderer } from 'pliny/mdx-components'
-import { sortPosts, coreContent, allCoreContent, type CoreContent } from 'pliny/utils/contentlayer'
-import { allBlogs, allAuthors } from 'contentlayer/generated'
-import type { Authors, Blog } from 'contentlayer/generated'
-import { getPublishedBlogs } from '@/lib/blog'
-import PostSimple from '@/layouts/PostSimple'
-import PostLayout from '@/layouts/PostLayout'
-import PostBanner from '@/layouts/PostBanner'
-import Link from '@/components/Link'
-import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import type { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
+import { getPublishedPosts, getPostBySlug, getAdjacentPosts } from '@/lib/blog'
+import { formatMonthYear, formatTag } from '@/lib/format'
+import MDXContent from '@/components/MDXContent'
+import SiteNav from '@/components/SiteNav'
+import styles from './post.module.css'
 
-const defaultLayout = 'PostLayout'
-const layouts = {
-  PostSimple,
-  PostLayout,
-  PostBanner,
+type Props = { params: Promise<{ slug: string[] }> }
+
+export async function generateStaticParams() {
+  return getPublishedPosts().map((post) => ({ slug: post.slug.split('/') }))
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string[] }
-}): Promise<Metadata | undefined> {
-  const slug = decodeURI(params.slug.join('/'))
-  const post = allBlogs.find((p) => p.slug === slug)
-  if (!post) {
-    return
-  }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const post = getPostBySlug(slug.join('/'))
+  if (!post) return {}
 
-  const defaultAuthor = allAuthors.find((p) => p.slug === 'default')
-  const authorList = post.authors || ['default']
-  const authorDetails = authorList
-    .map((author) => {
-      const found = allAuthors.find((p) => p.slug === author) ?? defaultAuthor
-      return found ? coreContent(found as Authors) : null
-    })
-    .filter((a): a is CoreContent<Authors> => a != null)
-
-  const publishedAt = new Date(post.date).toISOString()
-  const modifiedAt = new Date(post.lastmod || post.date).toISOString()
-  const authors = authorDetails.map((author) => author.name)
-  let imageList = [siteMetadata.socialBanner]
-  if (post.images) {
-    imageList = typeof post.images === 'string' ? [post.images] : post.images
-  }
-  const ogImages = imageList.map((img) => {
-    const url = img.includes('http') ? img : siteMetadata.siteUrl + img
-    return { url, width: 1200, height: 630 }
-  })
-
-  const canonicalUrl =
-    (post as Blog & { canonicalUrl?: string }).canonicalUrl ||
-    `${siteMetadata.siteUrl}/blog/${slug}`
+  const images = post.images?.length ? post.images : [siteMetadata.socialBanner]
 
   return {
     title: post.title,
     description: post.summary,
-    alternates: { canonical: canonicalUrl },
+    alternates: { canonical: post.canonicalUrl || post.permalink },
     openGraph: {
       title: post.title,
       description: post.summary,
       siteName: siteMetadata.title,
       locale: 'en_US',
       type: 'article',
-      publishedTime: publishedAt,
-      modifiedTime: modifiedAt,
-      url: canonicalUrl,
-      images: ogImages,
-      authors: authors.length > 0 ? authors : [siteMetadata.author],
+      publishedTime: new Date(post.date).toISOString(),
+      modifiedTime: new Date(post.lastmod || post.date).toISOString(),
+      url: post.permalink,
+      images,
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.summary,
-      images: ogImages,
+      images,
     },
   }
 }
 
-export const generateStaticParams = async () => {
-  const paths = getPublishedBlogs().map((p) => ({ slug: p.slug.split('/') }))
+export default async function PostPage({ params }: Props) {
+  const { slug } = await params
+  const post = getPostBySlug(slug.join('/'))
+  if (!post || post.draft) notFound()
 
-  return paths
-}
-
-export default async function Page({ params }: { params: { slug: string[] } }) {
-  const slug = decodeURI(params.slug.join('/'))
-  const sortedCoreContents = allCoreContent(sortPosts(getPublishedBlogs()))
-  const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
-
-  if (postIndex === -1) {
-    return (
-      <div className="mt-24 text-center">
-        <PageTitle>Oops. This isn't here.</PageTitle>
-        <br />
-        <h2>
-          Looks like this content isn't here right now. Head back to my{' '}
-          <Link href="/blog">blog</Link> for other things & stuff.
-        </h2>
-      </div>
-    )
-  }
-
-  const prev = sortedCoreContents[postIndex + 1]
-  const next = sortedCoreContents[postIndex - 1]
-  const post = allBlogs.find((p) => p.slug === slug) as Blog
-  const defaultAuthor = allAuthors.find((p) => p.slug === 'default')
-  const authorList = post?.authors || ['default']
-  const authorDetails = authorList
-    .map((author) => {
-      const found = allAuthors.find((p) => p.slug === author) ?? defaultAuthor
-      return found ? coreContent(found as Authors) : null
-    })
-    .filter((a): a is CoreContent<Authors> => a != null)
-  const mainContent = coreContent(post)
-  const jsonLd = post.structuredData
-
-  jsonLd['author'] = authorDetails.map((author) => {
-    return {
-      '@type': 'Person',
-      name: author.name,
-    }
-  })
-
-  const Layout = layouts[post.layout || defaultLayout]
+  const { prev, next } = getAdjacentPosts(post.slug)
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(post.structuredData) }}
       />
-      <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
-        <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
-      </Layout>
+
+      {/* Black bar keeps the top edge consistent with the banded pages in light mode. */}
+      <div className="bleed">
+        <div className={`rail ${styles.topBar}`} style={{ color: '#F5F4F1' }}>
+          <SiteNav />
+        </div>
+      </div>
+
+      <article className="container">
+        <header className={`rail ${styles.header}`}>
+          <Link href="/blog" className="label">
+            ← Blog
+          </Link>
+          <h1 className={styles.title}>{post.title}</h1>
+          <div className="meta">
+            {formatMonthYear(post.date)}
+            {post.tags[0] ? ` · ${formatTag(post.tags[0])}` : ''}
+            {` · ${Math.max(1, Math.round(post.metadata.readingTime))} min read`}
+          </div>
+        </header>
+
+        <div className={`rail ${styles.body}`}>
+          <MDXContent code={post.body} />
+        </div>
+
+        {post.tags.length > 0 && (
+          <div className={`rail ${styles.tags}`}>
+            {post.tags.map((tag) => (
+              <Link key={tag} href={`/blog/tags/${tag}`} className="chip">
+                {formatTag(tag)}
+              </Link>
+            ))}
+          </div>
+        )}
+
+        <nav className={styles.adjacent}>
+          <div className={styles.adjacentCell}>
+            {prev && (
+              <Link href={prev.permalink}>
+                <span className="label">← Previous</span>
+                <h2 className={styles.adjacentTitle}>{prev.title}</h2>
+              </Link>
+            )}
+          </div>
+          <div className={`${styles.adjacentCell} ${styles.adjacentRight}`}>
+            {next && (
+              <Link href={next.permalink}>
+                <span className="label">Next →</span>
+                <h2 className={styles.adjacentTitle}>{next.title}</h2>
+              </Link>
+            )}
+          </div>
+        </nav>
+
+        <div className={styles.cta}>
+          <Link href="/blog" className="btn">
+            All posts ({getPublishedPosts().length}) →
+          </Link>
+        </div>
+      </article>
     </>
   )
 }

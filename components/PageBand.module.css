@@ -1,0 +1,50 @@
+.band {
+  position: relative;
+  height: clamp(220px, 34vh, 300px);
+}
+
+/* 24% overscan so the parallax offset (max 58px) never exposes an edge. */
+.image {
+  position: absolute;
+  inset: -12%;
+  width: 124%;
+  height: 124%;
+  object-fit: cover;
+  transform: translate3d(0, var(--par-band, 0px), 0);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+}
+
+.inner {
+  position: relative;
+  height: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 26px;
+  padding-bottom: 34px;
+  color: #f5f4f1;
+}
+
+.bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px 40px;
+}
+
+.title {
+  margin: 0 0 0 -7px;
+  font-size: clamp(40px, 7vw, 104px);
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}

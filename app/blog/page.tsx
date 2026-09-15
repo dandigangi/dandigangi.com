@@ -1,41 +1,17 @@
-import ListLayout from '@/layouts/ListLayoutWithTags'
-import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
-import { getPublishedBlogs } from '@/lib/blog'
+import { getPublishedPosts, POSTS_PER_PAGE } from '@/lib/blog'
+import BlogIndex from '@/components/BlogIndex'
 import { genPageMetadata } from 'app/seo'
-import PageHeader from '@/components/PageHeader'
-
-const POSTS_PER_PAGE = 7
 
 export const metadata = genPageMetadata({
   title: 'Blog',
   description:
-    'Blog posts and articles on engineering leadership, management, hiring, career development, and mental health.',
+    'Writing on engineering management, hiring, career growth, and mental health in tech.',
   alternates: { canonical: '/blog' },
 })
 
 export default function BlogPage() {
-  const posts = allCoreContent(sortPosts(getPublishedBlogs()))
-  const pageNumber = 1
-  const initialDisplayPosts = posts.slice(
-    POSTS_PER_PAGE * (pageNumber - 1),
-    POSTS_PER_PAGE * pageNumber
-  )
-  const pagination = {
-    currentPage: pageNumber,
-    totalPages: Math.ceil(posts.length / POSTS_PER_PAGE),
-  }
+  const posts = getPublishedPosts()
+  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
 
-  return (
-    <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <PageHeader title="Blog" />
-        <ListLayout
-          posts={posts}
-          initialDisplayPosts={initialDisplayPosts}
-          pagination={pagination}
-          title="All Posts"
-        />
-      </div>
-    </>
-  )
+  return <BlogIndex posts={posts.slice(0, POSTS_PER_PAGE)} page={1} totalPages={totalPages} />
 }

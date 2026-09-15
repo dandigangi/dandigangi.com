@@ -1,238 +1,131 @@
-import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
-import { getPublishedBlogs } from '@/lib/blog'
-import Main from './Main'
 import Link from 'next/link'
-import Image from 'next/image'
 import siteMetadata from '@/data/siteMetadata'
+import { getPublishedPosts, type Post } from '@/lib/blog'
+import { formatMonthYear, formatTag } from '@/lib/format'
+import SiteNav from '@/components/SiteNav'
+import Parallax from '@/components/Parallax'
+import { ArrowRight, PlayIcon } from '@/components/Icons'
+import styles from './home.module.css'
 
-import DocuSignLogoCenter from '/public/static/images/xp/docusign.png'
-import ApartmentsComLogo from '/public/static/images/xp/apartmentscom.png'
-import ArriveLogisticsLogo from '/public/static/images/xp/arrivelogistics.png'
-import ActiveCampaignLogo from '/public/static/images/xp/activecampaign.png'
-import OpenLaneLogo from '/public/static/images/xp/openlane.png'
-
-const OG_IMAGE_WIDTH = 1200
-const OG_IMAGE_HEIGHT = 630
-
-export const metadata = {
-  title: siteMetadata.title,
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteMetadata.author,
+  url: siteMetadata.siteUrl,
+  jobTitle: siteMetadata.role,
   description: siteMetadata.description,
-  openGraph: {
-    title: siteMetadata.title,
-    description: siteMetadata.description,
-    siteName: siteMetadata.title,
-    url: './',
-    images: [
-      {
-        url: siteMetadata.socialBanner,
-        width: OG_IMAGE_WIDTH,
-        height: OG_IMAGE_HEIGHT,
-      },
-    ],
-    locale: siteMetadata.locale,
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image' as const,
-    title: siteMetadata.title,
-    description: siteMetadata.description,
-    images: [
-      {
-        url: siteMetadata.socialBanner,
-        width: OG_IMAGE_WIDTH,
-        height: OG_IMAGE_HEIGHT,
-      },
-    ],
-  },
+  email: `mailto:${siteMetadata.email}`,
+  image: `${siteMetadata.siteUrl}${siteMetadata.socialBanner}`,
+  sameAs: [siteMetadata.linkedin, siteMetadata.twitter, siteMetadata.github],
 }
 
-// Page: Home
-export default async function Page() {
-  const sortedPosts = sortPosts(getPublishedBlogs())
-  const posts = allCoreContent(sortedPosts)
+function PostRow({ post, align = 'left' }: { post: Post; align?: 'left' | 'right' }) {
+  return (
+    <Link
+      href={post.permalink}
+      className={`${styles.row} ${align === 'right' ? styles.rowRight : ''}`}
+    >
+      <h3 className={styles.rowTitle}>{post.title}</h3>
+      <span className="meta">
+        {formatMonthYear(post.date)}
+        {post.tags[0] ? ` · ${formatTag(post.tags[0])}` : ''}
+      </span>
+    </Link>
+  )
+}
 
-  const personSchema = {
-    '@type': 'Person',
-    name: siteMetadata.author,
-    url: siteMetadata.siteUrl,
-    jobTitle: 'Senior Software Engineering Manager',
-    sameAs: [siteMetadata.linkedin, siteMetadata.twitter, siteMetadata.github],
-  }
+function VideoCard({ post }: { post: Post }) {
+  const video = post.video!
+  return (
+    <div className={styles.videoCard}>
+      {video.thumbnail ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={video.thumbnail} alt="" className={styles.videoThumb} />
+      ) : null}
+      <div className={styles.videoBody}>
+        <div className={`meta ${styles.videoMeta}`}>
+          <span>Watch · Latest talk</span>
+          {video.duration ? <span>{video.duration}</span> : null}
+        </div>
+        <h3 className={styles.videoTitle}>{post.title}</h3>
+        <Link href={post.permalink} className={styles.playRow}>
+          <span className={styles.playButton}>
+            <PlayIcon size={13} />
+          </span>
+          <span className="meta">
+            {video.platform} · {formatMonthYear(post.date)}
+          </span>
+        </Link>
+      </div>
+    </div>
+  )
+}
 
-  const webSiteSchema = {
-    '@type': 'WebSite',
-    name: siteMetadata.title,
-    url: siteMetadata.siteUrl,
-    description: siteMetadata.description,
-    author: personSchema,
-  }
+export default function Home() {
+  const published = getPublishedPosts()
+  const featured = published.find((post) => post.video)
+  const rest = published.filter((post) => post !== featured)
+
+  const leftPosts = rest.slice(0, 4)
+  const rightPosts = rest.slice(4, featured ? 6 : 8)
 
   return (
     <>
+      <Parallax />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <div className="space-y-1.5">
-            <h1 className="text-4xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
-              Dan DiGangi
+
+      <section className={`bleed ${styles.hero}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/static/images/hero-render.jpg" alt="" className={styles.heroImage} />
+        <div className={styles.heroScrim} />
+        <div className={`rail ${styles.heroInner}`}>
+          <SiteNav />
+          <div className={styles.heroBottom}>
+            <h1 className={styles.name}>
+              Dan
+              <br />
+              DiGangi
             </h1>
-            <h2 className="text-2xl md:text-2xl">Senior Software Engineering Manager</h2>
-          </div>
-          <div className="mt-7">
-            <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-              <em>Build experiences, not software.</em>
-            </p>
-          </div>
-          <div className="flex flex-col gap-8 pt-8 pb-4 lg:flex-row lg:gap-24">
-            <div className="flex flex-col lg:min-w-0 lg:max-w-[420px] lg:flex-shrink-0">
-              <h2 className="mb-6 text-xs text-gray-900 dark:text-white md:text-sm">[ CURRENT ]</h2>
-              <div className="flex flex-1 flex-col justify-center">
-                <Link
-                  href="https://postmarkapp.com"
-                  aria-label="Link to Postmark"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-                >
-                  <Image
-                    alt="Postmark"
-                    src="/static/images/xp/postmark.svg"
-                    width={200}
-                    height={44}
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 420px"
-                    className="dark:invert"
-                  />
-                </Link>
-                <Link
-                  href="https://linkedin.com/in/dandigangi"
-                  aria-label="Dan DiGangi on LinkedIn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-block text-sm text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-                >
-                  LinkedIn
-                </Link>
-              </div>
-            </div>
-            <div className="flex flex-col lg:min-w-0 lg:flex-1">
-              <h2 className="mb-6 text-xs text-gray-900 dark:text-white md:text-sm">
-                [ PREVIOUS ]
-              </h2>
-              <div className="flex flex-1 items-center">
-                <div className="grid auto-rows-[68px] grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-2">
-                  <Link
-                    href="https://docusign.com"
-                    aria-label="Link to DocuSign.com"
-                    target="_blank"
-                    className="flex items-center justify-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-                  >
-                    <span className="inline-block max-w-[180px] max-h-[60px] dark:[filter:brightness(0)_invert(1)]">
-                      <Image
-                        alt="Previously worked at DocuSign"
-                        src={DocuSignLogoCenter}
-                        width={180}
-                        height={60}
-                        priority
-                        sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-contain max-w-full max-h-full"
-                      />
-                    </span>
-                  </Link>
-                  <Link
-                    href="https://apartments.com"
-                    aria-label="Link to Apartments.com"
-                    target="_blank"
-                    className="flex items-center justify-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-                  >
-                    <span className="inline-block max-w-[160px] max-h-[56px] dark:[filter:brightness(0)_invert(1)]">
-                      <Image
-                        alt="Previously worked at Apartments.com"
-                        src={ApartmentsComLogo}
-                        width={160}
-                        height={56}
-                        sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-contain max-w-full max-h-full"
-                      />
-                    </span>
-                  </Link>
-                  <Link
-                    href="https://activecampaign.com"
-                    aria-label="Link to ActiveCampaign.com"
-                    target="_blank"
-                    className="flex items-center justify-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-                  >
-                    <span className="inline-block max-w-[160px] max-h-[56px] dark:[filter:brightness(0)_invert(1)]">
-                      <Image
-                        alt="Previously worked at Active Campaign"
-                        src={ActiveCampaignLogo}
-                        width={160}
-                        height={56}
-                        sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-contain max-w-full max-h-full"
-                      />
-                    </span>
-                  </Link>
-                  <Link
-                    href="https://arrivelogistics.com"
-                    aria-label="Link to ArriveLogistics.com"
-                    target="_blank"
-                    className="flex items-center justify-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-                  >
-                    <span className="inline-block max-w-[160px] max-h-[56px] dark:[filter:brightness(0)_invert(1)]">
-                      <Image
-                        alt="Previously worked at Arrive Logistics"
-                        src={ArriveLogisticsLogo}
-                        width={160}
-                        height={56}
-                        sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-contain max-w-full max-h-full"
-                      />
-                    </span>
-                  </Link>
-                  <Link
-                    href="https://openlane.com"
-                    aria-label="Link to OpenLane.com"
-                    target="_blank"
-                    className="flex items-center justify-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-                  >
-                    <span className="inline-block max-w-[140px] max-h-[48px] dark:[filter:brightness(0)_invert(1)]">
-                      <Image
-                        alt="Previously worked at OpenLane"
-                        src={OpenLaneLogo}
-                        width={140}
-                        height={48}
-                        sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-contain max-w-full max-h-full"
-                      />
-                    </span>
-                  </Link>
-                  <Link
-                    href="https://www.alteryx.com/"
-                    aria-label="Link to Alteryx (ClearStory Data acquired by Alteryx)"
-                    target="_blank"
-                    className="flex items-center justify-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
-                  >
-                    <span className="inline-block max-w-[160px] max-h-[56px] dark:[filter:brightness(0)_invert(1)]">
-                      <Image
-                        alt="Previously worked at ClearStory Data"
-                        src="/static/images/xp/clearstorydata.svg"
-                        width={160}
-                        height={56}
-                        sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-contain max-w-full max-h-full"
-                      />
-                    </span>
-                  </Link>
-                </div>
-              </div>
+            <div className={styles.identityRow}>
+              <p className={styles.role}>
+                Senior Software
+                <br />
+                Engineering Manager
+              </p>
+              <span className={styles.tagline}>{siteMetadata.tagline}</span>
             </div>
           </div>
         </div>
-        <Main posts={posts} />
+      </section>
+
+      <div className="container">
+        <div className={styles.grid}>
+          <div className={styles.column}>
+            <div className={`label ${styles.labelRow}`}>
+              <span>Latest writing</span>
+              <span>01 — {String(leftPosts.length).padStart(2, '0')}</span>
+            </div>
+            {leftPosts.map((post) => (
+              <PostRow key={post.slug} post={post} />
+            ))}
+          </div>
+
+          <div className={styles.column}>
+            {featured ? <VideoCard post={featured} /> : null}
+            {rightPosts.map((post) => (
+              <PostRow key={post.slug} post={post} align="right" />
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.cta}>
+          <Link href="/blog" className="btn">
+            All posts ({published.length}) <ArrowRight size={14} />
+          </Link>
+        </div>
       </div>
     </>
   )

@@ -1,44 +1,40 @@
-import Link from '@/components/Link'
-import Tag from '@/components/Tag'
-import { slug } from 'github-slugger'
-import tagData from 'app/tag-data.json'
+import Link from 'next/link'
+import { getTagCounts } from '@/lib/blog'
+import { formatTag } from '@/lib/format'
+import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
 
 export const metadata = genPageMetadata({
   title: 'Tags',
-  description: 'Things I blog about',
+  description: 'Browse posts by topic.',
   alternates: { canonical: '/blog/tags' },
 })
 
-export default async function Page() {
-  const tagCounts = tagData as Record<string, number>
-  const tagKeys = Object.keys(tagCounts)
-  const sortedTags = tagKeys.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+export default function TagsPage() {
+  const tags = Object.entries(getTagCounts()).sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+  )
+
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Tags
-          </h1>
-        </div>
+      <PageBand title="Tags" objectPosition="45% 50%" />
 
-        <div className="flex flex-wrap">
-          {tagKeys.length === 0 && 'No tags found.'}
-          {sortedTags.map((tag) => {
-            return (
-              <div key={tag} className="mb-2 mr-5 mt-2">
-                <Tag text={tag} fontSize="text-lg" />
-                <Link
-                  href={`/blog/tags/${slug(tag)}`}
-                  className="-ml-2 text-lg font-semibold uppercase text-gray-600 dark:text-gray-300"
-                  aria-label={`View posts tagged with ${tag}`}
-                >
-                  {` (${tagCounts[tag]})`}
-                </Link>
-              </div>
-            )
-          })}
+      <div className="container">
+        <div
+          className="rail"
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 12,
+            paddingTop: 72,
+            paddingBottom: 110,
+          }}
+        >
+          {tags.map(([tag, count]) => (
+            <Link key={tag} href={`/blog/tags/${tag}`} className="chip">
+              {formatTag(tag)} ({count})
+            </Link>
+          ))}
         </div>
       </div>
     </>
