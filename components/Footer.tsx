@@ -31,12 +31,15 @@ export default function Footer() {
           gap: '24px 40px',
         }}
       >
-        <div className="label" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 14px' }}>
-          <span>Dan DiGangi</span>
-          {hash ? (
-            <span title={date || undefined} style={{ opacity: 0.7 }}>
-              {date ? `${date} · ` : ''}
-              {hash}
+        {/* Build stamp, as the previous site carried. Both values come from
+            scripts/prebuild-env.mjs and are absent in dev, so the domain stands
+            alone rather than rendering an empty bracket. */}
+        <div className="label" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 10px' }}>
+          <span>dandigangi.com</span>
+          {date || hash ? (
+            <span style={{ opacity: 0.7 }}>
+              {date ? `— ${date}` : '—'}
+              {hash ? ` [${hash}]` : ''}
             </span>
           ) : null}
         </div>
