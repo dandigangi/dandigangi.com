@@ -58,3 +58,8 @@ public/static/velite
 resume-print
 # TypeScript incremental build cache
 tsconfig.tsbuildinfo
+
+# Next regenerates this on every dev/build and marks it do-not-edit. Its contents
+# differ between the two (.next/dev/types vs .next/types), so tracking it means a
+# permanently dirty tree. Next recreates it locally and on Vercel before typecheck.
+next-env.d.ts
