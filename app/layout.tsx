@@ -1,4 +1,5 @@
 import '@/css/globals.css'
+import '@/css/prism.css'
 
 import type { Metadata } from 'next'
 import { Archivo, IBM_Plex_Mono } from 'next/font/google'

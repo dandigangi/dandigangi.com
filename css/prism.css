@@ -1,144 +1,145 @@
-/**
- * CSS Styles for code highlighting.
- * Feel free to customize token styles 
- * by copying from a prismjs compatible theme:
- * https://github.com/PrismJS/prism-themes
+/*
+ * Syntax highlighting for rehype-prism-plus output.
+ * Code blocks stay dark in both themes, matching the design's treatment of
+ * embeds and graphic bands — those are always dark regardless of theme.
+ * The palette is deliberately low-saturation to sit with the monochrome design
+ * rather than fight it.
  */
 
-/* Code title styles */
+:root {
+  --code-bg: #0a0a0c;
+  --code-ink: #e8e6e1;
+  --code-muted: rgba(245, 244, 241, 0.42);
+  --code-punctuation: rgba(245, 244, 241, 0.58);
+  --code-string: #9ccfa8;
+  --code-number: #e0b080;
+  --code-keyword: #8fb8d9;
+  --code-name: #e0c98a;
+  --code-property: #c8d4e0;
+}
+
+pre[class*='language-'],
+code[class*='language-'] {
+  color: var(--code-ink);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  tab-size: 2;
+  hyphens: none;
+}
+
+/* Inline code sits in body copy, so it takes the page colours, not the block's. */
+:not(pre) > code {
+  padding: 0.15em 0.4em;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  white-space: break-spaces;
+}
+
 .remark-code-title {
-  @apply rounded-t bg-gray-700 dark:bg-gray-800 px-5 py-3 font-mono text-sm font-bold text-gray-200;
+  padding: 10px 24px;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  background: var(--code-bg);
+  color: var(--code-muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
-.remark-code-title + div > pre {
-  @apply mt-0 rounded-t-none;
+.remark-code-title + pre {
+  margin-top: 0;
 }
 
-/* Code block styles */
 .code-highlight {
-  @apply float-left min-w-full overflow-x-auto;
+  float: left;
+  min-width: 100%;
 }
 
 .code-line {
-  @apply -mx-4 block border-l-4 border-transparent pl-4 pr-4;
+  display: block;
+  margin-left: -24px;
+  margin-right: -24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-left: 2px solid transparent;
 }
 
-.code-line.inserted {
-  @apply bg-green-500 bg-opacity-20;
-}
-
-.code-line.deleted {
-  @apply bg-red-500 bg-opacity-20;
-}
-
-.highlight-line {
-  @apply -mx-4 border-l-4 border-primary-500 bg-gray-700 bg-opacity-50;
+.code-line.line-highlight {
+  margin-left: -26px;
+  border-left: 2px solid var(--code-number);
+  background: rgba(245, 244, 241, 0.06);
 }
 
 .line-number::before {
-  @apply mr-4 -ml-2 inline-block w-4 text-right text-gray-400;
+  display: inline-block;
+  width: 1.4rem;
+  margin-right: 18px;
+  text-align: right;
+  color: var(--code-muted);
   content: attr(line);
 }
 
-/* Token styles */
-/**
- * MIT License
- * Copyright (c) 2018 Sarah Drasner
- * Sarah Drasner's[@sdras] Night Owl
- * Ported by Sara vieria [@SaraVieira]
- * Added by Souvik Mandal [@SimpleIndian]
- */
 .token.comment,
 .token.prolog,
+.token.doctype,
 .token.cdata {
-  color: rgb(99, 119, 119);
+  color: var(--code-muted);
   font-style: italic;
 }
 
-.token.punctuation {
-  color: rgb(199, 146, 234);
-}
-
-.namespace {
-  color: rgb(178, 204, 214);
-}
-
-.token.deleted {
-  color: rgba(239, 83, 80, 0.56);
-  font-style: italic;
-}
-
-.token.symbol,
-.token.property {
-  color: rgb(128, 203, 196);
-}
-
-.token.tag,
+.token.punctuation,
 .token.operator,
-.token.keyword {
-  color: rgb(127, 219, 202);
-}
-
-.token.boolean {
-  color: rgb(255, 88, 116);
-}
-
-.token.number {
-  color: rgb(247, 140, 108);
-}
-
-.token.constant,
-.token.function,
-.token.builtin,
-.token.char {
-  color: rgb(130, 170, 255);
-}
-
-.token.selector,
-.token.doctype {
-  color: rgb(199, 146, 234);
-  font-style: italic;
-}
-
-.token.attr-name,
-.token.inserted {
-  color: rgb(173, 219, 103);
-  font-style: italic;
+.token.entity {
+  color: var(--code-punctuation);
 }
 
 .token.string,
-.token.url,
-.token.entity,
-.language-css .token.string,
-.style .token.string {
-  color: rgb(173, 219, 103);
+.token.char,
+.token.attr-value,
+.token.inserted,
+.token.url {
+  color: var(--code-string);
 }
 
-.token.class-name,
-.token.atrule,
-.token.attr-value {
-  color: rgb(255, 203, 139);
-}
-
+.token.number,
+.token.boolean,
+.token.constant,
+.token.symbol,
 .token.regex,
-.token.important,
-.token.variable {
-  color: rgb(214, 222, 235);
+.token.important {
+  color: var(--code-number);
 }
 
-.token.important,
+.token.keyword,
+.token.atrule,
+.token.selector,
+.token.builtin {
+  color: var(--code-keyword);
+}
+
+.token.function,
+.token.class-name,
+.token.tag,
+.token.deleted {
+  color: var(--code-name);
+}
+
+.token.property,
+.token.attr-name,
+.token.variable,
+.token.parameter {
+  color: var(--code-property);
+}
+
 .token.bold {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .token.italic {
   font-style: italic;
-}
-
-.token.table {
-  display: inline;
-}
-
-.token.table {
-  display: inline;
 }
