@@ -13,7 +13,7 @@ import styles from './resume.module.css'
 export const metadata = genPageMetadata({
   title: 'Résumé',
   description:
-    "Dan DiGangi's engineering leadership experience — Postmark, ActiveCampaign, Arrive Logistics, DocuSign, and OpenLane.",
+    "Dan DiGangi's engineering leadership experience — Postmark, Arrive Logistics, DocuSign, and OpenLane.",
   alternates: { canonical: '/resume' },
 })
 
