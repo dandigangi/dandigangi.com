@@ -19,7 +19,7 @@ export const projects: Project[] = [
   },
   {
     title: 'React Chicago Conference',
-    eyebrow: 'Chicago · Conference',
+    eyebrow: 'Conference',
     description:
       'Organized Chicago’s first and only React Conference — Single day tracks, sold-out 250+ attendees, 12 speakers, 2 keynotes, 5 sponsors and 8 partner companies.',
     url: 'https://2019.reactloop.com',
