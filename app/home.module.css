@@ -3,7 +3,7 @@
 
 .hero {
   position: relative;
-  height: clamp(520px, 80vh, 740px);
+  height: clamp(480px, 76vh, 680px);
 }
 
 /* The wrapper carries the overscan and the parallax transform; next/image's
@@ -39,12 +39,16 @@
 .heroBottom {
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 5vw, 58px);
+  gap: clamp(17px, 3vw, 35px);
 }
 
+/* The only size in the design gated on viewport height as well as width: at
+   176px flat, the name overwhelmed a laptop-height band while looking right on
+   a large display. min() lets it stand down on short windows without costing
+   anything on tall ones. */
 .name {
   margin: 0 0 0 -0.05em;
-  font-size: clamp(56px, 12vw, 176px);
+  font-size: clamp(56px, min(12vw, 19vh), 158px);
   font-weight: 700;
   line-height: 0.82;
   letter-spacing: -0.058em;
@@ -62,7 +66,7 @@
 .role {
   margin: 0;
   font-family: var(--font-mono), monospace;
-  font-size: clamp(17px, 2.6vw, 28px);
+  font-size: clamp(17px, 2.6vw, 26px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: 0.04em;
@@ -74,7 +78,7 @@
   padding: 10px 16px;
   background: rgba(0, 0, 0, 0.2);
   font-family: var(--font-mono), monospace;
-  font-size: clamp(13px, 2vw, 22px);
+  font-size: clamp(13px, 2vw, 20px);
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
