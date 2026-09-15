@@ -39,13 +39,15 @@ const ContentSecurityPolicy = `
   frame-src *.youtube.com youtube.com *.soundcloud.com soundcloud.com *.spotify.com spotify.com *.twitch.tv twitch.tv player.twitch.tv;
 `
 
+// No Strict-Transport-Security here: Vercel already sends one with a longer
+// max-age, browsers honour whichever arrives first, and a second header only
+// made this one look effective when it was being ignored.
 const securityHeaders = [
   { key: 'Content-Security-Policy', value: ContentSecurityPolicy.replace(/\n/g, '') },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-DNS-Prefetch-Control', value: 'on' },
-  { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
 ]
 
