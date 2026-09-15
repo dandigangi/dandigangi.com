@@ -20,7 +20,7 @@ export const resumeExperience: ResumeRole[] = [
     title: 'Senior Software Engineering Manager',
     company: 'Postmark',
     url: 'https://postmarkapp.com',
-    dates: 'Apr 2024 — Sep 2026',
+    dates: 'Apr 2024 — Sep 2026 (Layoff)',
     achievements: [
       'Scaled email throughput from 2B to 3B+ emails/month in 10 months, maintaining ~200ms per message processing performance through MTA expansion and infrastructure growth.',
       'Prevented $1.5M+ in fraud by architecting a multi-layer security platform spanning AI content moderation, fraud detection, WAF/firewall edge protection, and eHawk traffic analysis.',
@@ -32,7 +32,7 @@ export const resumeExperience: ResumeRole[] = [
     title: 'Software Engineering Manager',
     company: 'ActiveCampaign — Velocity',
     url: 'https://www.activecampaign.com',
-    dates: 'May 2023 — Sep 2023',
+    dates: 'May 2023 — Sep 2023 (Layoff)',
     achievements: [
       'Led and hired the Velocity team (3 reports) delivering special projects, features, and applications supporting the BTS org across finance, growth, and internal services.',
       'Redesigned agile/SDLC processes from ideation to delivery, adopted across all BTS teams, reducing defect rates (~16%) through new testing requirements and reintroduction of Playwright E2E testing suites.',

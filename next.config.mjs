@@ -57,7 +57,22 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return [{ source: '/connect', destination: '/contact', permanent: true }]
+    return [
+      { source: '/connect', destination: '/contact', permanent: true },
+      // Tag pages removed when the vocabulary was consolidated. These were live
+      // URLs, so they point at the tag that absorbed them rather than 404.
+      {
+        source: '/blog/tags/management',
+        destination: '/blog/tags/engineering-management',
+        permanent: true,
+      },
+      { source: '/blog/tags/ai', destination: '/blog/tags/software-engineering', permanent: true },
+      {
+        source: '/blog/tags/conferences',
+        destination: '/blog/tags/engineering-management',
+        permanent: true,
+      },
+    ]
   },
   async headers() {
     return [{ source: '/(.*)', headers: securityHeaders }]

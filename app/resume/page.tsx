@@ -6,6 +6,7 @@ import {
   resumeOther,
   RESUME_PDF_URL,
 } from '@/data/resume'
+import { aboutCourses } from '@/data/about'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
 import styles from './resume.module.css'
@@ -93,6 +94,18 @@ export default function Resume() {
                 <p className={styles.company}>{resumeEducation.institution}</p>
               </div>
               <div className={`meta ${styles.dates}`}>{resumeEducation.dates}</div>
+            </article>
+
+            <article className={styles.role}>
+              <div className={styles.roleMain}>
+                <h2 className={styles.roleTitle}>Continuing education</h2>
+                <p className={styles.company}>LinkedIn Learning</p>
+                <ul className={styles.achievements}>
+                  {aboutCourses.map((course) => (
+                    <li key={course}>{course}</li>
+                  ))}
+                </ul>
+              </div>
             </article>
           </div>
         </section>

@@ -1,4 +1,5 @@
 import siteMetadata from '@/data/siteMetadata'
+import { speakingTopics } from '@/data/about'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
 import styles from './contact.module.css'
@@ -68,6 +69,14 @@ export default function Contact() {
               <ul className={styles.list}>
                 {reasons.map((reason) => (
                   <li key={reason}>{reason}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <span className="label">Topics I speak and write on</span>
+              <ul className={styles.list}>
+                {speakingTopics.map((topic) => (
+                  <li key={topic}>{topic}</li>
                 ))}
               </ul>
             </div>

@@ -75,9 +75,32 @@ export const aboutCoaching = {
     "I'm also a vocal advocate for mental health in tech — because building great teams starts with taking care of the people on them.",
 }
 
+/** Verbatim from the previous site — this is Dan's own writing, not a rewrite. */
 export const aboutLongerStory = [
-  'My background is cliche in some respects but my background started in hacking games, creating game art, and digital art. In gaming I spent days on days hacking into Age of Empires decompiling DLLs, writing simple if/thens, and creating character art.',
-  'One day my dad caught me using MS Paint dabbing pixel-by-pixel creating Achilles black Myrmidon armor based on the 2001 Troy movie with Brad Pitt. He asked what I was doing and in turn introduced me to Photoshop which is my longest running skill set. What a lifesaver for my time and catalyst for what would become my future.',
-  'Those skills took me into freelance where I created websites, designed marketing/print, and went deep into Wordpress/LAMP stack. Arrogantly I even took my portfolio at 16 to apply for a design job at State Farm. They shot me down but it didn’t matter. It didn’t stop me from continuing forward growing as both an engineer and designer.',
+  'My background is cliche in some respects but my background started in hacking games, creating game art, and digital art.',
+  'In gaming I spent days on days hacking into Age of Empires decompiling DLLs, writing simple if/thens, and creating character art. One day my dad caught me using MS Paint dabbing pixel-by-pixel creating Achilles black Myrmidon armor based on the 2001 Troy movie with Brad Pitt.',
+  'He asked what I was doing and in turn introduced me to Photoshop which is my longest running skill set. What a lifesaver for my time and catalyst for what would become my future.',
+  'Getting older I started to move into digital art using Photoshop, Illustrator, and Cinema4D. My career as an artist didn’t go nearly as far as my friends who became top tier artists but it was a great experience. If you’ve known me long enough you’ll remember me from the IF Skin Zone and my forum Elite Graphics.',
+  'Those skills took me into freelance where I created websites, designed marketing/print, and went deep into Wordpress/LAMP stack. Arrogantly I even took my portfolio at 16 to apply for a design job at State Farm. They shot me down but it didn’t matter.',
+  'It didn’t stop me from continuing forward growing as both an engineer and designer.',
+  'What’s important is the foundation was built and supported my future career every step of the way. I’ve been permanently influenced with an exceptionally passionate drive towards the best design and user experiences.',
   'It took many years for my tagline "build experiences, not software" to come to life but it’s been my core mission for longer than I can remember.',
+]
+
+/** Continuing education from the previous site's About page. */
+export const aboutCourses = [
+  'Critical Thinking',
+  'Taking Charge of Leadership Conversations',
+  'How Leaders Can Motivate Others by Creating Meaning',
+  'Communicating with EQ',
+]
+
+/** Speaking and writing topics, carried over from the previous /connect page. */
+export const speakingTopics = [
+  'Technical leadership',
+  'Engineering management',
+  'Building high performance teams',
+  'Hiring and interviews',
+  'Mental health in tech',
+  'DEI',
 ]
