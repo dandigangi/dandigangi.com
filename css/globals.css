@@ -75,6 +75,12 @@
 
 html {
   scroll-behavior: smooth;
+  /* Full-bleed bands are sized with 100vw, which on platforms with classic
+     (space-taking) scrollbars is wider than the 100% available to content — so
+     every band overflowed by the scrollbar width and Windows Chrome grew a
+     horizontal scrollbar. `clip` stops that without creating a scroll container
+     the way `hidden` would. */
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {

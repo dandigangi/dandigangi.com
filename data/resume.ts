@@ -26,7 +26,7 @@ export const resumeExperience: ResumeRole[] = [
       'Prevented $1.5M+ in fraud by architecting a multi-layer security platform spanning AI content moderation, fraud detection, WAF/firewall edge protection, and eHawk traffic analysis.',
       'Grew the engineering organization from 6 to 11 FTE and hired 6 contractors, expanding delivery capacity across .NET backend, web, platform/SRE, and security/compliance functions.',
       'Led cross-functional initiatives including pricing redesign, high-traffic legacy Windows service migration, ZenDesk migration, SOC2 compliance, and billing platform migration.',
-      'Led and hired the Velocity team (3 reports) delivering special projects, features, and applications supporting the BTS org across finance, growth, and internal services.',
+      'ActiveCampaign 2023 (Layoff) - Led and hired the Velocity team (3 reports) delivering special projects, features, and applications supporting the BTS org across finance, growth, and internal services.',
     ],
   },
   {

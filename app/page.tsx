@@ -38,8 +38,9 @@ function PostRow({ post }: { post: Post }) {
 function VideoCard({ post }: { post: Post }) {
   const video = post.media!.video!
   // Branded art by default — a 16:9 video frame cropped to square lands badly
-  // far more often than not.
-  const thumbnail = video.thumbnail ?? '/static/images/hero-render.jpg'
+  // far more often than not. video-card.jpg is pre-cropped square, so it needs
+  // no object-position nudging the way the wide hero render did.
+  const thumbnail = video.thumbnail ?? '/static/images/video-card.jpg'
   return (
     // The whole card is the link. It was previously only the play row, which
     // made the thumbnail and title look interactive without being so.
@@ -47,13 +48,7 @@ function VideoCard({ post }: { post: Post }) {
       {/* The wrapper owns the square; next/image with explicit width/height
           writes inline sizing that overrides an aspect-ratio set on the img. */}
       <div className={styles.videoThumbWrap}>
-        <Image
-          src={thumbnail}
-          alt=""
-          fill
-          sizes="200px"
-          style={{ objectFit: 'cover', objectPosition: '60% 45%' }}
-        />
+        <Image src={thumbnail} alt="" fill sizes="200px" style={{ objectFit: 'cover' }} />
       </div>
       <div className={styles.videoBody}>
         <div className={`meta ${styles.videoMeta}`}>

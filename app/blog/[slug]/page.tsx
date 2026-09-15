@@ -3,7 +3,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
-import { getPublishedPosts, getPostBySlug, getAdjacentPosts, type Post } from '@/lib/blog'
+import {
+  getPublishedPosts,
+  getPostBySlug,
+  getAdjacentPosts,
+  getRelatedPosts,
+  type Post,
+} from '@/lib/blog'
 import { formatMonthYear, formatTag } from '@/lib/format'
 import MDXContent from '@/components/MDXContent'
 import SiteNav from '@/components/SiteNav'
@@ -125,6 +131,7 @@ export default async function PostPage({ params }: Props) {
   if (!post || post.draft) notFound()
 
   const { prev, next } = getAdjacentPosts(post.slug)
+  const related = getRelatedPosts(post.slug)
   const published = getPublishedPosts()
   const shareUrl = `${siteMetadata.siteUrl}${post.permalink}`
   const readingTime = Math.max(1, Math.round(post.metadata.readingTime))
@@ -189,6 +196,22 @@ export default async function PostPage({ params }: Props) {
                   {post.tags.map((tag) => (
                     <Link key={tag} href={`/blog/tags/${tag}`} className="chip">
                       {tag}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+            {related.length > 0 && (
+              <div>
+                <span className="label">You might also like</span>
+                <div className={styles.related}>
+                  {related.map((item) => (
+                    <Link key={item.slug} href={item.permalink} className={styles.relatedRow}>
+                      <span className={styles.relatedTitle}>{item.title}</span>
+                      <span className="meta">
+                        {formatMonthYear(item.date)}
+                        {item.tags[0] ? ` · ${formatTag(item.tags[0])}` : ''}
+                      </span>
                     </Link>
                   ))}
                 </div>

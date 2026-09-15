@@ -52,3 +52,22 @@ export type { Post, ListPost }
 
 /** Design specifies seven posts per blog index page. */
 export const POSTS_PER_PAGE = 7
+
+/**
+ * Posts sharing the most tags with the given one, best overlap first, ties
+ * broken by recency. Returns fewer than `limit` — or nothing at all — when the
+ * post's tags are not shared, which is why the caller must handle an empty list.
+ */
+export function getRelatedPosts(slug: string, limit = 3): Post[] {
+  const published = getPublishedPosts()
+  const current = published.find((p) => p.slug === slug)
+  if (!current || current.tags.length === 0) return []
+
+  return published
+    .filter((p) => p.slug !== slug)
+    .map((p) => ({ post: p, shared: p.tags.filter((t) => current.tags.includes(t)).length }))
+    .filter((c) => c.shared > 0)
+    .sort((a, b) => b.shared - a.shared || +new Date(b.post.date) - +new Date(a.post.date))
+    .slice(0, limit)
+    .map((c) => c.post)
+}
