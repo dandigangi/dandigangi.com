@@ -34,7 +34,7 @@ export default async function OpengraphImage() {
         fontFamily: 'Archivo',
       }}
     >
-      { }
+      {/* The render, dimmed so the type stays dominant. */}
       <img
         src={bg}
         alt=""
