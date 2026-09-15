@@ -33,12 +33,22 @@
   padding-bottom: clamp(24px, 4vw, 40px);
 }
 
+/* Cover images take a fixed height; video takes 16:9. A fixed height on a video
+   means the player renders 16:9 of the container width and overflows whenever
+   that width exceeds the height's ratio. */
 .mediaMain {
   position: relative;
   flex: 3 1 520px;
   min-width: 0;
   height: clamp(220px, 30vw, 380px);
   overflow: hidden;
+}
+
+.mediaVideo {
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #0a0a0c;
+  border: 1px solid var(--line);
 }
 
 .embed {
@@ -81,8 +91,17 @@
 
 /* ---------- body ---------- */
 
+/* Capped so the two columns actually consume the row. Uncapped, the article
+   stops at its 760px measure and the sidebar at 300px, leaving ~350px of dead
+   slack on the right that made the split read as even. */
 .bodySplit {
+  max-width: 1240px;
   padding-bottom: clamp(40px, 6vw, 64px);
+}
+
+.bodySplit .aside {
+  flex: 1 1 320px;
+  max-width: 420px;
 }
 
 /* Larger than the handoff's 19px body: at the article measure 19px read too

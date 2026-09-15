@@ -72,7 +72,7 @@ function PostMedia({ post }: { post: Post }) {
   if (media.type === 'video' && media.video) {
     return (
       <div className={`rail ${styles.mediaSplit}`}>
-        <div className={styles.mediaMain}>
+        <div className={`${styles.mediaMain} ${styles.mediaVideo}`}>
           <iframe
             src={media.video.url}
             title={post.title}

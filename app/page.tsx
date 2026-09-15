@@ -74,7 +74,7 @@ function VideoCard({ post }: { post: Post }) {
 
 export default function Home() {
   const published = getPublishedPosts()
-  const featured = published.find((post) => post.media?.type === 'video' && post.media.video)
+  const featured = published.find((post) => post.media?.video)
   const listed = published.filter((post) => post !== featured).slice(0, HOME_POST_COUNT)
 
   return (
