@@ -1,0 +1,40 @@
+.topBar {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-top: 26px;
+  padding-bottom: 26px;
+  color: #f5f4f1;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding-top: clamp(48px, 9vw, 110px);
+  padding-bottom: clamp(64px, 10vw, 140px);
+}
+
+.code {
+  margin: 0;
+  font-size: clamp(44px, 9vw, 104px);
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.body {
+  margin: 0;
+  max-width: 560px;
+  font-size: clamp(17px, 1.8vw, 19px);
+  line-height: 1.7;
+  color: var(--soft);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
