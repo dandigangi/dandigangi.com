@@ -87,14 +87,6 @@ export const aboutLongerStory = [
   'It took many years for my tagline "build experiences, not software" to come to life but it’s been my core mission for longer than I can remember.',
 ]
 
-/** Continuing education from the previous site's About page. */
-export const aboutCourses = [
-  'Critical Thinking',
-  'Taking Charge of Leadership Conversations',
-  'How Leaders Can Motivate Others by Creating Meaning',
-  'Communicating with EQ',
-]
-
 /** Speaking and writing topics, carried over from the previous /connect page. */
 export const speakingTopics = [
   'Technical leadership',
