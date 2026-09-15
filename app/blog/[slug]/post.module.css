@@ -93,10 +93,11 @@
 
 /* Both columns are capped — the article by its reading measure, the sidebar by
    how wide chips and share icons want to be — so they cannot fill the row
-   between them. Anchoring the sidebar to the right puts the leftover width in
-   the gutter instead of trailing off the end, which is what made the article
-   look narrow next to a title that runs much wider. */
+   between them. The sidebar is pinned right and the row capped, which puts the
+   leftover width into a deliberate ~100px gutter rather than either a trailing
+   gap or a canyon between the columns. */
 .bodySplit {
+  max-width: 1320px;
   justify-content: space-between;
   padding-bottom: clamp(40px, 6vw, 64px);
 }
@@ -105,11 +106,9 @@
   flex: 0 1 340px;
 }
 
-/* Larger than the handoff's 19px body: at the article measure 19px read too
-   small, and long-form reading is what this page is for. */
-/* Wider than the handoff's 760px: at 24px type that measure ran short, and the
-   title above it extends much further, which made the column look undersized.
-   880px is ~70 characters at this size — still inside a comfortable measure. */
+/* Both larger and wider than the handoff (19px / 760px): long-form reading is
+   what this page is for, and the title above runs much further. 880px is ~70
+   characters at 24px — still a comfortable measure. */
 .body {
   max-width: 880px;
   font-size: clamp(18px, 2.2vw, 24px);
@@ -153,20 +152,30 @@
   height: auto;
 }
 
+/* Scaled with the body type — 15px against 24px prose read as a footnote. */
 .body :global(pre) {
-  padding: 20px 24px;
+  margin: 32px 0;
+  padding: 24px 28px;
   border: 1px solid var(--line);
   background: #0a0a0c;
   overflow-x: auto;
   font-family: var(--font-mono), monospace;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.65;
   color: #f5f4f1;
 }
 
-.body :global(code) {
+/* Inline code sits mid-sentence, so it gets a tint rather than a border — a
+   boxed outline at this type size breaks the line rhythm badly. */
+.body :global(:not(pre) > code) {
+  padding: 0.1em 0.35em;
+  border: 0;
+  border-radius: 2px;
+  background: rgba(245, 244, 241, 0.09);
+  color: var(--ink);
   font-family: var(--font-mono), monospace;
-  font-size: 0.92em;
+  font-size: 0.82em;
+  white-space: break-spaces;
 }
 
 /* Shared shell for inline non-image embeds (podcast players, audio, iframes). */
