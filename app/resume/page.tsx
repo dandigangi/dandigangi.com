@@ -5,6 +5,7 @@ import {
   resumeEducation,
   resumeOther,
   RESUME_PDF_URL,
+  RESUME_PDF_ENABLED,
 } from '@/data/resume'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
@@ -22,14 +23,16 @@ export default function Resume() {
     <>
       <PageBand title="Résumé" objectPosition="70% 35%">
         <div className={styles.bandActions}>
-          <a
-            href={RESUME_PDF_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btnBand"
-          >
-            Download PDF
-          </a>
+          {RESUME_PDF_ENABLED && (
+            <a
+              href={RESUME_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btnBand"
+            >
+              Download PDF
+            </a>
+          )}
           <a
             href={siteMetadata.linkedin}
             target="_blank"
@@ -109,9 +112,11 @@ export default function Resume() {
         {/* Repeats the band's actions at the end of a long page, so the reader
             does not have to scroll back up to act on what they just read. */}
         <div className={styles.cta}>
-          <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer" className="btn">
-            Download PDF
-          </a>
+          {RESUME_PDF_ENABLED && (
+            <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer" className="btn">
+              Download PDF
+            </a>
+          )}
           <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
             LinkedIn
           </a>

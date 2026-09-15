@@ -80,3 +80,10 @@ export const resumeOther: string[] = [
 
 export const RESUME_PDF_URL =
   'https://drive.google.com/file/d/1aMeWulQo0745ip7tWXLliIuuwJm_Ns3S/view?usp=sharing'
+
+/**
+ * Temporarily hides both Download PDF buttons while the LaTeX résumé is being
+ * reworked, so the site never links to a PDF that is out of date with it.
+ * Flip back to true once the new PDF is published.
+ */
+export const RESUME_PDF_ENABLED = false
