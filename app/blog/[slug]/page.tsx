@@ -201,22 +201,6 @@ export default async function PostPage({ params }: Props) {
                 </div>
               </div>
             )}
-            {related.length > 0 && (
-              <div>
-                <span className="label">You might also like</span>
-                <div className={styles.related}>
-                  {related.map((item) => (
-                    <Link key={item.slug} href={item.permalink} className={styles.relatedRow}>
-                      <span className={styles.relatedTitle}>{item.title}</span>
-                      <span className="meta">
-                        {formatMonthYear(item.date)}
-                        {item.tags[0] ? ` · ${formatTag(item.tags[0])}` : ''}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
             <div>
               <span className="label">Share</span>
               <div className={styles.share}>
@@ -233,6 +217,19 @@ export default async function PostPage({ params }: Props) {
                 ))}
               </div>
             </div>
+            {related.length > 0 && (
+              <div>
+                <span className="label">You might also like</span>
+                <div className={styles.related}>
+                  {related.map((item) => (
+                    <Link key={item.slug} href={item.permalink} className={styles.relatedRow}>
+                      <span className={styles.relatedTitle}>{item.title}</span>
+                      <span className="meta">{formatMonthYear(item.date)}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </aside>
         </div>
 
