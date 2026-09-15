@@ -14,13 +14,11 @@ import siteMetadata from './data/siteMetadata'
 const stripCollectionDir = (path: string) => path.replace(/^.+?\//, '')
 
 /**
- * YouTube serves a thumbnail at a predictable URL per video id, so a video post
- * only needs its watch/embed URL — no separate image to produce or keep in sync.
+ * The video card's thumbnail is a square, and a YouTube frame is 16:9 — cropping
+ * one to square reliably lands on a mid-sentence face or a slide. The design
+ * calls for branded art here, so the card falls back to the site render and
+ * media.video.thumbnail stays available for posts that have real artwork.
  */
-const youtubeThumbnail = (url: string): string | undefined => {
-  const id = url.match(/(?:embed\/|watch\?v=|youtu\.be\/)([\w-]{11})/)?.[1]
-  return id ? `https://img.youtube.com/vi/${id}/maxresdefault.jpg` : undefined
-}
 
 const posts = defineCollection({
   name: 'Post',
@@ -70,19 +68,8 @@ const posts = defineCollection({
         ? rawImage
         : `${siteMetadata.siteUrl}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`
 
-      const media = data.media?.video
-        ? {
-            ...data.media,
-            video: {
-              ...data.media.video,
-              thumbnail: data.media.video.thumbnail ?? youtubeThumbnail(data.media.video.url),
-            },
-          }
-        : data.media
-
       return {
         ...data,
-        media,
         slug,
         permalink: `/blog/${slug}`,
         structuredData: {

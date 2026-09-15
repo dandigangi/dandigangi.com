@@ -21,9 +21,24 @@ export default function Resume() {
   return (
     <>
       <PageBand title="Résumé" objectPosition="70% 35%">
-        <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer" className="btn btnBand">
-          Download PDF
-        </a>
+        <div className={styles.bandActions}>
+          <a
+            href={RESUME_PDF_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btnBand"
+          >
+            Download PDF
+          </a>
+          <a
+            href={siteMetadata.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btnBand"
+          >
+            LinkedIn
+          </a>
+        </div>
       </PageBand>
 
       <div className="container">

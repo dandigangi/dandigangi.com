@@ -150,6 +150,7 @@
   width: clamp(150px, 18vw, 200px);
   aspect-ratio: 1;
   object-fit: cover;
+  object-position: 60% 45%;
 }
 
 .videoBody {

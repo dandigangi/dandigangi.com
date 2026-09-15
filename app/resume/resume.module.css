@@ -19,15 +19,23 @@
 }
 
 /* Wrapping flex rather than a two-track grid so the date drops below the role
-   on narrow viewports instead of squeezing the content column. */
+   on narrow viewports instead of squeezing the content column.
+   Capped because the date is pushed right with margin-left:auto — across the
+   full 1600px column it ends up stranded far from the text it belongs to. */
 .role {
   display: flex;
   flex-wrap: wrap;
   gap: 12px 40px;
+  max-width: 1040px;
   padding: clamp(24px, 4vw, 34px) 0;
 }
 
-/* First row in the section has no rule — the section's top padding separates it. */
+/* The section's own top padding separates the first row, so it adds neither a
+   rule nor padding of its own — together they left a visible dead gap. */
+.role:first-child {
+  padding-top: 0;
+}
+
 .role + .role {
   border-top: 1px solid var(--line);
 }
@@ -83,11 +91,22 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px 40px;
   margin: 0;
+  max-width: 1040px;
   padding: 0;
   list-style: none;
   font-size: clamp(17px, 1.8vw, 18px);
 }
 
+.summaryBlock {
+  max-width: 1040px;
+}
+
 .lastSection {
   padding-bottom: clamp(64px, 10vw, 110px);
+}
+
+.bandActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }

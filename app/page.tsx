@@ -38,17 +38,12 @@ function PostRow({ post }: { post: Post }) {
 
 function VideoCard({ post }: { post: Post }) {
   const video = post.media!.video!
+  // Branded art by default — a 16:9 video frame cropped to square lands badly
+  // far more often than not.
+  const thumbnail = video.thumbnail ?? '/static/images/hero-render.jpg'
   return (
     <div className={styles.videoCard}>
-      {video.thumbnail ? (
-        <Image
-          src={video.thumbnail}
-          alt=""
-          width={400}
-          height={400}
-          className={styles.videoThumb}
-        />
-      ) : null}
+      <Image src={thumbnail} alt="" width={400} height={400} className={styles.videoThumb} />
       <div className={styles.videoBody}>
         <div className={`meta ${styles.videoMeta}`}>
           <span>Watch · Latest talk</span>

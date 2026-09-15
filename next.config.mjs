@@ -4,15 +4,25 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
-// Fonts are self-hosted via next/font, so font-src stays 'self'.
+/**
+ * Fonts are self-hosted via next/font, so font-src stays 'self'.
+ *
+ * No 'unsafe-eval': contentlayer required it, Velite does not. The MDX runtime
+ * still calls `new Function`, but MDXContent is a server component, so that runs
+ * in Node where browser CSP has no say.
+ *
+ * connect-src is enumerated rather than '*'. Embeds (YouTube, Spotify) make
+ * their own requests from inside their iframe, which this policy does not govern
+ * — they need frame-src, not connect-src.
+ */
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' *.vercel.com vercel.com *.vercel-scripts.com vercel-scripts.com *.posthog.com;
+  script-src 'self' 'unsafe-inline' *.vercel.com vercel.com *.vercel-scripts.com vercel-scripts.com *.posthog.com;
   style-src 'self' 'unsafe-inline';
   worker-src 'self' blob:;
   img-src * blob: data:;
   media-src *.s3.amazonaws.com *.youtube.com youtube.com *.soundcloud.com soundcloud.com *.spotify.com spotify.com *.twitch.tv twitch.tv player.twitch.tv;
-  connect-src *;
+  connect-src 'self' *.posthog.com *.vercel-insights.com *.vercel-scripts.com vitals.vercel-insights.com;
   font-src 'self';
   frame-src *.youtube.com youtube.com *.soundcloud.com soundcloud.com *.spotify.com spotify.com *.twitch.tv twitch.tv player.twitch.tv;
 `
