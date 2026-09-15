@@ -12,59 +12,70 @@
   text-wrap: pretty;
 }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: clamp(64px, 9vw, 110px);
-}
-
-.row {
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
-  gap: clamp(24px, 4vw, 48px);
-  align-items: center;
-  padding: clamp(30px, 4vw, 44px) 0;
+  gap: 1px;
+  background: var(--line);
   border-bottom: 1px solid var(--line);
-  /* The home page deep-links to these anchors; without this the heading lands
-     flush against the top of the viewport. */
+  margin-bottom: clamp(64px, 9vw, 110px);
+}
+
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 30px var(--gutter) 34px var(--gutter);
+  background: var(--bg);
+  transition: background-color 0.15s ease;
+  /* The home page deep-links to these anchors. */
   scroll-margin-top: 90px;
 }
 
-.rowBody {
+.card:hover {
+  background: var(--hover);
+}
+
+/* The wrapper owns the square: next/image writes inline sizing that would
+   override an aspect-ratio set on the img itself. */
+.thumbWrap {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(120px, 14vw, 170px);
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.body {
+  flex: 1 1 240px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  min-width: 0;
 }
 
-.rowTitle {
+.cardTitle {
   margin: 0;
-  font-size: clamp(26px, 3.4vw, 36px);
+  font-size: clamp(22px, 2.4vw, 28px);
   font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 1.08;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
 }
 
-.rowDescription {
+.cardDescription {
   margin: 0;
-  max-width: 560px;
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.55;
   color: var(--soft);
   text-wrap: pretty;
 }
 
-.links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 28px;
-  margin-top: 4px;
-}
-
-.link {
+.linkRow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  margin-top: auto;
+  padding-top: 6px;
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -73,12 +84,6 @@
   transition: color 0.15s ease;
 }
 
-.link:hover {
+.card:hover .linkRow {
   color: var(--ink);
-}
-
-.rowImage {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
 }
