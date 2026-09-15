@@ -59,6 +59,12 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/connect', destination: '/contact', permanent: true },
+      // Slug had "presentatinos" misspelled; the old URL is already indexed.
+      {
+        source: '/blog/upright-education-graduation-software-projects-and-presentatinos-oct-23-cohort',
+        destination: '/blog/upright-education-graduation-software-projects-and-presentations-oct-23-cohort',
+        permanent: true,
+      },
       // Tag pages removed when the vocabulary was consolidated. These were live
       // URLs, so they point at the tag that absorbed them rather than 404.
       {
