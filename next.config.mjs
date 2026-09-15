@@ -68,6 +68,11 @@ const nextConfig = {
       },
       { source: '/blog/tags/ai', destination: '/blog/tags/software-engineering', permanent: true },
       {
+        source: '/blog/tags/productivity',
+        destination: '/blog/tags/software-engineering',
+        permanent: true,
+      },
+      {
         source: '/blog/tags/conferences',
         destination: '/blog/tags/engineering-management',
         permanent: true,
