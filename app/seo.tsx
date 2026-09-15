@@ -5,7 +5,7 @@ interface PageSEOProps {
   title: string
   description?: string
   image?: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   [key: string]: any
 }
 
@@ -23,6 +23,9 @@ export function genPageMetadata({ title, description, image, ...rest }: PageSEOP
     : defaultOgImage
   return {
     title,
+    // Without this the page inherits the layout's description, so every page
+    // ships the same one — duplicate meta descriptions across the whole site.
+    description: description || siteMetadata.description,
     openGraph: {
       title: `${title} - ${siteMetadata.title}`,
       description: description || siteMetadata.description,
