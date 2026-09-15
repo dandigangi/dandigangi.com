@@ -34,13 +34,27 @@ export default function Footer() {
         {/* Build stamp, as the previous site carried. Both values come from
             scripts/prebuild-env.mjs and are absent in dev, so the domain stands
             alone rather than rendering an empty bracket. */}
-        <div className="label" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 10px' }}>
+        <div
+          className="label"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 6,
+            letterSpacing: '0.14em',
+          }}
+        >
           <span>dandigangi.com</span>
-          {date || hash ? (
-            <span style={{ opacity: 0.7 }}>
-              {date ? `— ${date}` : '—'}
-              {hash ? ` [${hash}]` : ''}
-            </span>
+          {hash ? (
+            <a
+              href={`${siteMetadata.siteRepo}/commit/${hash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ opacity: 0.7 }}
+            >
+              {date ? `${date} ` : ''}[{hash}]
+            </a>
+          ) : date ? (
+            <span style={{ opacity: 0.7 }}>{date}</span>
           ) : null}
         </div>
 

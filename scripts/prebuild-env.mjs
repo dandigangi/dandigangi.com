@@ -12,10 +12,13 @@ function getGitHash() {
 
 function getGitCommitDate() {
   try {
-    // %cD = RFC 2822, e.g. "Tue, 10 Mar 2026 23:25:08 -0500"
-    const raw = execSync('git log -1 --format=%cD', { encoding: 'utf8' }).trim()
-    // Shape to "Tue Mar 10 23:25:08 2026 -0500"
-    return raw.replace(/^(\w+), (\d+) (\w+) (\d+)(.*)$/, '$1 $3 $2 $4$5')
+    // "09/15/2026 12:34:56" — no timezone; the footer is a build marker, not a
+    // timestamp anyone needs to convert.
+    return execSync("git log -1 --format=%cd --date=format:'%m/%d/%Y %H:%M:%S'", {
+      encoding: 'utf8',
+    })
+      .trim()
+      .replace(/^'|'$/g, '')
   } catch {
     return ''
   }
