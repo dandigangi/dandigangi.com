@@ -18,8 +18,8 @@ export default function Parallax() {
     const apply = () => {
       frame = 0
       const y = window.scrollY || 0
-      root.style.setProperty('--par-hero', `${Math.round(Math.min(y * 0.16, 74))}px`)
-      root.style.setProperty('--par-band', `${Math.round(Math.min(y * 0.1, 58))}px`)
+      root.style.setProperty('--par-hero', `${Math.round(Math.min(y * 0.26, 84))}px`)
+      root.style.setProperty('--par-band', `${Math.round(Math.min(y * 0.2, 56))}px`)
     }
 
     const onScroll = () => {

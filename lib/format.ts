@@ -10,3 +10,13 @@ export function formatTag(tag: string): string {
   const spaced = tag.replace(/-/g, ' ')
   return spaced.charAt(0).toUpperCase() + spaced.slice(1)
 }
+
+/** "Mar 14 2026" — the blog index meta format. */
+export function formatFullDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
+}

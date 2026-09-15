@@ -1,11 +1,15 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import siteMetadata from '@/data/siteMetadata'
+import { projects } from '@/data/projects'
 import { getPublishedPosts, type Post } from '@/lib/blog'
 import { formatMonthYear, formatTag } from '@/lib/format'
 import SiteNav from '@/components/SiteNav'
 import Parallax from '@/components/Parallax'
 import { ArrowRight, PlayIcon } from '@/components/Icons'
 import styles from './home.module.css'
+
+const HOME_POST_COUNT = 5
 
 const personJsonLd = {
   '@context': 'https://schema.org',
@@ -16,15 +20,13 @@ const personJsonLd = {
   description: siteMetadata.description,
   email: `mailto:${siteMetadata.email}`,
   image: `${siteMetadata.siteUrl}${siteMetadata.socialBanner}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'Chicago', addressRegion: 'IL' },
   sameAs: [siteMetadata.linkedin, siteMetadata.twitter, siteMetadata.github],
 }
 
-function PostRow({ post, align = 'left' }: { post: Post; align?: 'left' | 'right' }) {
+function PostRow({ post }: { post: Post }) {
   return (
-    <Link
-      href={post.permalink}
-      className={`${styles.row} ${align === 'right' ? styles.rowRight : ''}`}
-    >
+    <Link href={post.permalink} className={styles.row}>
       <h3 className={styles.rowTitle}>{post.title}</h3>
       <span className="meta">
         {formatMonthYear(post.date)}
@@ -35,7 +37,7 @@ function PostRow({ post, align = 'left' }: { post: Post; align?: 'left' | 'right
 }
 
 function VideoCard({ post }: { post: Post }) {
-  const video = post.video!
+  const video = post.media!.video!
   return (
     <div className={styles.videoCard}>
       {video.thumbnail ? (
@@ -53,7 +55,7 @@ function VideoCard({ post }: { post: Post }) {
             <PlayIcon size={13} />
           </span>
           <span className="meta">
-            {video.platform} · {formatMonthYear(post.date)}
+            {video.provider} · {formatMonthYear(post.date)}
           </span>
         </Link>
       </div>
@@ -63,11 +65,8 @@ function VideoCard({ post }: { post: Post }) {
 
 export default function Home() {
   const published = getPublishedPosts()
-  const featured = published.find((post) => post.video)
-  const rest = published.filter((post) => post !== featured)
-
-  const leftPosts = rest.slice(0, 4)
-  const rightPosts = rest.slice(4, featured ? 6 : 8)
+  const featured = published.find((post) => post.media?.type === 'video' && post.media.video)
+  const listed = published.filter((post) => post !== featured).slice(0, HOME_POST_COUNT)
 
   return (
     <>
@@ -78,8 +77,16 @@ export default function Home() {
       />
 
       <section className={`bleed ${styles.hero}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/static/images/hero-render.jpg" alt="" className={styles.heroImage} />
+        <div className={styles.heroImageWrap}>
+          <Image
+            src="/static/images/hero-render.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: '62% 45%' }}
+          />
+        </div>
         <div className={styles.heroScrim} />
         <div className={`rail ${styles.heroInner}`}>
           <SiteNav />
@@ -106,18 +113,34 @@ export default function Home() {
           <div className={styles.column}>
             <div className={`label ${styles.labelRow}`}>
               <span>Latest writing</span>
-              <span>01 — {String(leftPosts.length).padStart(2, '0')}</span>
+              <span>01 — {String(listed.length).padStart(2, '0')}</span>
             </div>
-            {leftPosts.map((post) => (
+            {listed.map((post) => (
               <PostRow key={post.slug} post={post} />
             ))}
           </div>
 
           <div className={styles.column}>
             {featured ? <VideoCard post={featured} /> : null}
-            {rightPosts.map((post) => (
-              <PostRow key={post.slug} post={post} align="right" />
-            ))}
+
+            <div className={`label ${styles.labelRow} ${styles.labelRowRight}`}>
+              <span>Projects</span>
+            </div>
+            <div className={styles.projects}>
+              {projects.map((project) => (
+                <a
+                  key={project.title}
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.project}
+                >
+                  <span className="meta">{project.eyebrow}</span>
+                  <h3 className={styles.projectTitle}>{project.title}</h3>
+                  <p className={styles.projectDescription}>{project.description}</p>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 

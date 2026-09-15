@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import type { Post } from '@/lib/blog'
-import { getTagCounts } from '@/lib/blog'
-import { formatTag } from '@/lib/format'
+import { getPublishedPosts, getTagCounts } from '@/lib/blog'
 import PageBand from './PageBand'
 import PostList from './PostList'
 import styles from './BlogIndex.module.css'
+
+const TAG_CHIP_COUNT = 12
 
 export default function BlogIndex({
   posts,
@@ -21,11 +22,12 @@ export default function BlogIndex({
   title?: string
   basePath?: string
 }) {
-  const tagCounts = getTagCounts()
-  const allCount = Object.values(tagCounts).reduce((a, b) => a + b, 0)
-  const topTags = Object.entries(tagCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6)
+  // A post carries several tags, so the total is the post count, not the sum of
+  // the per-tag counts.
+  const allCount = getPublishedPosts().length
+  const topTags = Object.entries(getTagCounts())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, TAG_CHIP_COUNT)
 
   return (
     <>
@@ -45,7 +47,7 @@ export default function BlogIndex({
                 className="chip"
                 data-active={activeTag === tag}
               >
-                {formatTag(tag)} ({count})
+                {tag} ({count})
               </Link>
             ))}
           </div>
@@ -58,17 +60,17 @@ export default function BlogIndex({
         {totalPages > 1 && (
           <div className={`rail ${styles.pagination}`}>
             <span className="label">
-              Page {page} of {totalPages}
+              {page} of {totalPages}
             </span>
             <div className={styles.pageLinks}>
               {page > 1 && (
                 <Link href={page === 2 ? basePath : `${basePath}/page/${page - 1}`} className="btn">
-                  ← Newer posts
+                  ← Previous
                 </Link>
               )}
               {page < totalPages && (
                 <Link href={`${basePath}/page/${page + 1}`} className="btn">
-                  Older posts →
+                  Next →
                 </Link>
               )}
             </div>

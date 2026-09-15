@@ -28,14 +28,23 @@ const posts = defineCollection({
       authors: s.array(s.string()).optional(),
       layout: s.string().optional(),
       canonicalUrl: s.string().optional(),
-      // Drives the home page's featured video card. Add to a post's frontmatter
-      // to surface it there; the card is omitted entirely when no post has it.
-      video: s
+      /**
+       * Selects the post header variant and drives the home page's featured
+       * card. Absent means the 'none' variant: body follows the header directly.
+       */
+      media: s
         .object({
-          url: s.string(),
-          duration: s.string().optional(),
-          thumbnail: s.string().optional(),
-          platform: s.string().default('YouTube'),
+          type: s.enum(['cover', 'video', 'none']).default('none'),
+          image: s.string().optional(),
+          video: s
+            .object({
+              provider: s.string().default('YouTube'),
+              url: s.string(),
+              duration: s.string().optional(),
+              thumbnail: s.string().optional(),
+            })
+            .optional(),
+          sources: s.array(s.object({ label: s.string(), url: s.string() })).optional(),
         })
         .optional(),
       path: s.path(),

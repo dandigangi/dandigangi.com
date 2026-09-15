@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import siteMetadata from '@/data/siteMetadata'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
@@ -7,24 +6,27 @@ import styles from './contact.module.css'
 export const metadata = genPageMetadata({
   title: 'Contact',
   description:
-    'Get in touch with Dan DiGangi — open to speaking, podcast appearances, writing collaborations, and mentoring engineers and leaders.',
+    'Get in touch with Dan DiGangi — open to senior engineering leadership roles, speaking, podcasts, and mentoring.',
   alternates: { canonical: '/contact' },
 })
 
 const channels = [
   { label: 'Email', value: siteMetadata.email, href: `mailto:${siteMetadata.email}` },
   { label: 'LinkedIn', value: 'linkedin.com/in/dandigangi', href: siteMetadata.linkedin },
-  { label: 'X', value: '@dandigangi', href: siteMetadata.twitter },
+  { label: 'X', value: 'x.com/dandigangi', href: siteMetadata.twitter },
+  { label: 'GitHub', value: 'github.com/dandigangi', href: siteMetadata.github },
 ]
 
 const reasons = [
-  'Speaking, podcasts, and livestreams',
-  'Writing and collaborations',
-  'Coaching and mentoring engineers or leaders',
-  'Hiring, interviewing, and career questions',
+  'Engineering leadership roles',
+  'Podcast or webinar guest',
+  'Mentoring an engineer or manager',
+  'Speaking and writing',
 ]
 
-export default function Connect() {
+const mentoring = ['Plato', 'MentorCruise', 'Private']
+
+export default function Contact() {
   return (
     <>
       <PageBand title="Contact" objectPosition="50% 70%" />
@@ -33,23 +35,26 @@ export default function Connect() {
         <div className={`rail ${styles.grid}`}>
           <div>
             <p className={styles.lede}>
-              The best way to reach me day to day is X or LinkedIn. Email works better for anything
-              longer or detailed.
+              Open to senior engineering leadership roles, and always happy to talk hiring, teams,
+              or developer platforms.
             </p>
 
             <div className={styles.channels}>
-              {channels.map((channel) => (
-                <a
-                  key={channel.label}
-                  href={channel.href}
-                  target={channel.href.startsWith('mailto:') ? undefined : '_blank'}
-                  rel="noopener noreferrer"
-                  className={styles.channel}
-                >
-                  <span className={styles.channelValue}>{channel.value}</span>
-                  <span className="label">{channel.label}</span>
-                </a>
-              ))}
+              {channels.map((channel) => {
+                const isMail = channel.href.startsWith('mailto:')
+                return (
+                  <a
+                    key={channel.label}
+                    href={channel.href}
+                    target={isMail ? undefined : '_blank'}
+                    rel={isMail ? undefined : 'noopener noreferrer'}
+                    className={styles.channel}
+                  >
+                    <span className={styles.channelValue}>{channel.value}</span>
+                    <span className="label">{channel.label}</span>
+                  </a>
+                )
+              })}
             </div>
           </div>
 
@@ -60,18 +65,16 @@ export default function Connect() {
             </div>
             <div>
               <span className="label">Good reasons to write</span>
-              <ul className={styles.reasons}>
+              <ul className={styles.list}>
                 {reasons.map((reason) => (
                   <li key={reason}>{reason}</li>
                 ))}
               </ul>
             </div>
-            <p className={styles.sidebarBody}>
-              <Link href="/blog" style={{ textDecoration: 'underline', textUnderlineOffset: 3 }}>
-                Examples of past work
-              </Link>{' '}
-              are on the blog.
-            </p>
+            <div>
+              <span className="label">Mentoring</span>
+              <p className={styles.sidebarBody}>{mentoring.join(' · ')}</p>
+            </div>
           </aside>
         </div>
       </div>

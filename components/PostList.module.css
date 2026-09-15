@@ -3,25 +3,35 @@
   flex-direction: column;
 }
 
-/* The negative margin lets the hover tint extend past the text; the parent rail
-   supplies the padding that absorbs it. */
+/* Wrapping flex, not a two-track grid: the meta needs to drop below the title on
+   narrow viewports rather than squeezing it. The negative margin lets the hover
+   tint extend past the text while the text stays on the rail. */
 .row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(120px, 200px);
-  gap: 24px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
   margin: 0 -24px;
   padding: 26px 24px;
-  border-bottom: 1px solid var(--line);
   transition: background-color 0.15s ease;
+}
+
+/* First row has no rule — the section's top padding carries the separation. */
+.row + .row {
+  border-top: 1px solid var(--line);
 }
 
 .row:hover {
   background: var(--hover);
 }
 
+.rowMain {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
 .title {
   margin: 0 0 12px;
-  font-size: clamp(22px, 2.4vw, 30px);
+  font-size: clamp(24px, 3vw, 30px);
   font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.03em;
@@ -30,26 +40,13 @@
 .summary {
   margin: 0;
   max-width: 720px;
-  font-size: 17px;
+  font-size: clamp(16px, 1.7vw, 17px);
   line-height: 1.55;
   color: var(--soft);
 }
 
 .rowMeta {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex: 0 1 auto;
+  margin-left: auto;
   text-align: right;
-}
-
-@media (max-width: 640px) {
-  .row {
-    grid-template-columns: 1fr;
-  }
-
-  .rowMeta {
-    flex-direction: row;
-    gap: 14px;
-    text-align: left;
-  }
 }

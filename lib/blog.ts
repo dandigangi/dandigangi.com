@@ -50,5 +50,5 @@ export function getAdjacentPosts(slug: string): { prev?: Post; next?: Post } {
 
 export type { Post, ListPost }
 
-/** Design specifies eight posts per blog index page. */
-export const POSTS_PER_PAGE = 8
+/** Design specifies seven posts per blog index page. */
+export const POSTS_PER_PAGE = 7

@@ -19,9 +19,10 @@
     rgba(0, 0, 0, 0.35) 100%
   );
 
-  /* 64px is the designed desktop rail. The lower bound is a holding value so
-     narrow viewports are usable before the mobile design lands. */
-  --rail: clamp(24px, 4vw, 64px);
+  /* The two variables that drive all horizontal rhythm. The design is built
+     without media queries: these plus wrapping flex hold from 375px to 1600px. */
+  --rail: clamp(20px, 5vw, 64px);
+  --gutter: clamp(16px, 3vw, 32px);
   --container: 1600px;
 
   --par-hero: 0px;
@@ -82,7 +83,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-display), 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 19px;
+  font-size: clamp(17px, 1.8vw, 19px);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -127,6 +128,54 @@ a {
   padding-right: var(--rail);
 }
 
+/* Asymmetric 75/25 sections are wrapping flex, never a two-track grid: a grid
+   cannot wrap, so the sidebar could not drop underneath on narrow viewports.
+   The sidebar wraps below roughly 620px on its own. */
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(24px, 4vw, 48px) clamp(24px, 4vw, 64px);
+}
+
+.splitMain {
+  flex: 3 1 520px;
+  min-width: 0;
+}
+
+.splitAside {
+  flex: 1 1 200px;
+  max-width: 300px;
+}
+
+/* Label rail. The min-content floor is required — without it the rail column
+   collapses and crushes its own label. */
+.railSection {
+  display: grid;
+  grid-template-columns: minmax(min-content, clamp(96px, 15vw, 220px)) minmax(0, 1fr);
+  gap: clamp(16px, 3vw, 40px);
+  padding-top: clamp(34px, 5vw, 56px);
+}
+
+/* Hover tint extends left of the text while the text stays on the rail. Only
+   valid where the parent supplies at least 24px of left padding to absorb it. */
+.hoverRow {
+  display: block;
+  margin-left: -24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  transition: background-color 0.15s ease;
+}
+
+.hoverRow:hover {
+  background: var(--hover);
+}
+
+/* The first row in a rail section carries no top hairline — the section's top
+   padding provides the separation instead. */
+.hairlineRow + .hairlineRow {
+  border-top: 1px solid var(--line);
+}
+
 /* ---------- type primitives ---------- */
 
 .mono {
@@ -153,7 +202,7 @@ a {
 
 .navLink {
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 14px;
+  font-size: clamp(11px, 1.4vw, 14px);
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -187,15 +236,29 @@ a {
   border-color: var(--ink);
 }
 
+/* Buttons sitting inside a graphic band are tighter and always light-on-black,
+   because the band does not follow the theme. */
+.btnBand {
+  padding: 15px 24px;
+  border-color: #f5f4f1;
+  color: #f5f4f1;
+}
+
+.btnBand:hover {
+  background: #f5f4f1;
+  color: #000;
+  border-color: #f5f4f1;
+}
+
 .chip {
   display: inline-block;
-  padding: 9px 16px;
+  padding: 9px 15px;
   border: 1px solid var(--line);
   color: var(--soft);
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   transition:
     border-color 0.15s ease,

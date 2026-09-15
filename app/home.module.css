@@ -1,18 +1,18 @@
-/* Home page layout. Fixed values come from the design handoff; clamp() bounds
-   are holding values so narrow viewports stay usable until the mobile design lands. */
+/* Home page. No media queries by design — clamp() plus wrapping flex and
+   auto-fit grids carry the layout from 375px to 1600px. */
 
 .hero {
   position: relative;
-  height: clamp(540px, 92vh, 740px);
+  height: clamp(520px, 80vh, 740px);
 }
 
-.heroImage {
+/* The wrapper carries the overscan and the parallax transform; next/image's
+   `fill` sets its own inline positioning and would otherwise override them. */
+.heroImageWrap {
   position: absolute;
   inset: -12%;
   width: 124%;
   height: 124%;
-  object-fit: cover;
-  object-position: 62% 45%;
   transform: translate3d(0, var(--par-hero, 0px), 0);
 }
 
@@ -32,19 +32,19 @@
   justify-content: space-between;
   padding-top: 26px;
   padding-bottom: 52px;
-  /* Band is always black, so band text does not follow the theme. */
+  /* The band stays black in both themes, so band text does not follow theme. */
   color: #f5f4f1;
 }
 
 .heroBottom {
   display: flex;
   flex-direction: column;
-  gap: 58px;
+  gap: clamp(28px, 5vw, 58px);
 }
 
 .name {
-  margin: 0 0 0 -9px;
-  font-size: clamp(56px, 11.4vw, 176px);
+  margin: 0 0 0 -0.05em;
+  font-size: clamp(56px, 12vw, 176px);
   font-weight: 700;
   line-height: 0.82;
   letter-spacing: -0.058em;
@@ -56,17 +56,17 @@
   align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 24px 40px;
+  gap: 20px 40px;
 }
 
 .role {
+  margin: 0;
   font-family: var(--font-mono), monospace;
-  font-size: clamp(16px, 2vw, 28px);
+  font-size: clamp(17px, 2.6vw, 28px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  margin: 0;
 }
 
 .tagline {
@@ -74,16 +74,16 @@
   padding: 10px 16px;
   background: rgba(0, 0, 0, 0.2);
   font-family: var(--font-mono), monospace;
-  font-size: clamp(13px, 1.4vw, 22px);
+  font-size: clamp(13px, 2vw, 22px);
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(245, 244, 241, 0.85);
 }
 
-/* ---------- post grid ---------- */
+/* ---------- two-column body ---------- */
 
-/* 1px gap over a --line background draws the divider, and reflows to a
+/* A 1px gap over a --line background draws the column divider, and reflows to a
    horizontal rule when the columns stack. */
 .grid {
   display: grid;
@@ -104,19 +104,23 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 20px var(--rail);
+  padding: 20px var(--gutter) 20px var(--rail);
   border-bottom: 1px solid var(--line);
+}
+
+.labelRowRight {
+  padding: 20px var(--rail) 20px var(--gutter);
 }
 
 .row {
   display: block;
-  padding: 20px 32px 20px var(--rail);
+  padding: 20px var(--gutter) 20px var(--rail);
   border-bottom: 1px solid var(--line);
   transition: background-color 0.15s ease;
 }
 
 .rowRight {
-  padding: 20px var(--rail) 20px 32px;
+  padding: 20px var(--rail) 20px var(--gutter);
 }
 
 .row:hover {
@@ -125,7 +129,7 @@
 
 .rowTitle {
   margin: 0 0 10px;
-  font-size: clamp(20px, 2vw, 26px);
+  font-size: clamp(21px, 2.4vw, 26px);
   font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.025em;
@@ -134,24 +138,25 @@
 /* ---------- video card ---------- */
 
 .videoCard {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-  gap: 40px;
-  padding: 24px var(--rail) 30px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 26px var(--rail) 30px var(--gutter);
   border-bottom: 1px solid var(--line);
 }
 
 .videoThumb {
-  width: 100%;
-  max-width: 240px;
-  aspect-ratio: 1 / 1;
+  flex: 0 0 auto;
+  width: clamp(150px, 18vw, 200px);
+  aspect-ratio: 1;
   object-fit: cover;
 }
 
 .videoBody {
+  flex: 1 1 260px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .videoMeta {
@@ -163,7 +168,7 @@
 
 .videoTitle {
   margin: 0;
-  font-size: clamp(22px, 2.2vw, 30px);
+  font-size: clamp(24px, 2.8vw, 30px);
   font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.03em;
@@ -196,10 +201,55 @@
   border-color: var(--ink);
 }
 
+/* ---------- projects two-up ---------- */
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 1px;
+  background: var(--line);
+}
+
+.project {
+  background: var(--bg);
+  padding: 26px var(--gutter) 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: background-color 0.15s ease;
+}
+
+.project:first-child {
+  padding-left: var(--rail);
+}
+
+.project:last-child {
+  padding-right: var(--rail);
+}
+
+.project:hover {
+  background: var(--hover);
+}
+
+.projectTitle {
+  margin: 0;
+  font-size: clamp(21px, 2.2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.14;
+}
+
+.projectDescription {
+  margin: 0;
+  font-size: clamp(16px, 1.7vw, 17px);
+  line-height: 1.55;
+  color: var(--soft);
+}
+
 /* ---------- cta ---------- */
 
 .cta {
   display: flex;
   justify-content: center;
-  padding: 76px var(--rail) 110px;
+  padding: clamp(48px, 7vw, 76px) var(--rail) clamp(64px, 10vw, 110px);
 }

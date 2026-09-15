@@ -1,39 +1,52 @@
-.section {
-  display: grid;
-  grid-template-columns: minmax(96px, 220px) minmax(0, 1fr);
-  gap: 24px 40px;
-  padding-top: 72px;
-  padding-bottom: 24px;
+.lede {
+  margin: 0 0 20px;
+  max-width: 760px;
+  font-size: clamp(20px, 2.6vw, 26px);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
 }
 
-@media (max-width: 800px) {
-  .section {
-    grid-template-columns: 1fr;
-  }
+.summaryMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0;
 }
 
-.sectionBody {
-  padding-top: 38px;
+.summaryMeta a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.entry {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(90px, 150px);
-  gap: 24px 40px;
-  padding-bottom: 40px;
-  margin-bottom: 40px;
-  border-bottom: 1px solid var(--line);
-}
-
-@media (max-width: 640px) {
-  .entry {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* Wrapping flex rather than a two-track grid so the date drops below the role
+   on narrow viewports instead of squeezing the content column. */
 .role {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+  padding: clamp(24px, 4vw, 34px) 0;
+}
+
+/* First row in the section has no rule — the section's top padding separates it. */
+.role + .role {
+  border-top: 1px solid var(--line);
+}
+
+.roleMain {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.dates {
+  flex: 0 1 auto;
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.roleTitle {
   margin: 0 0 10px;
-  font-size: clamp(22px, 2.2vw, 30px);
+  font-size: clamp(24px, 3vw, 30px);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.14;
@@ -48,35 +61,33 @@
   color: var(--soft);
 }
 
-.descriptions {
+.company a:hover {
+  color: var(--ink);
+}
+
+.achievements {
   margin: 0;
   padding-left: 20px;
-  max-width: 640px;
-  font-size: 17px;
+  max-width: 680px;
+  font-size: clamp(16px, 1.7vw, 17px);
   line-height: 1.6;
   color: var(--soft);
 }
 
-.descriptions li {
+.achievements li {
   margin-bottom: 10px;
-}
-
-.dates {
-  text-align: right;
-}
-
-@media (max-width: 640px) {
-  .dates {
-    text-align: left;
-  }
 }
 
 .other {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px 40px;
-  margin: 0 0 72px;
+  margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 18px;
+  font-size: clamp(17px, 1.8vw, 18px);
+}
+
+.lastSection {
+  padding-bottom: clamp(64px, 10vw, 110px);
 }
