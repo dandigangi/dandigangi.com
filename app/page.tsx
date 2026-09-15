@@ -41,7 +41,9 @@ function VideoCard({ post }: { post: Post }) {
   // far more often than not.
   const thumbnail = video.thumbnail ?? '/static/images/hero-render.jpg'
   return (
-    <div className={styles.videoCard}>
+    // The whole card is the link. It was previously only the play row, which
+    // made the thumbnail and title look interactive without being so.
+    <Link href={post.permalink} className={styles.videoCard}>
       {/* The wrapper owns the square; next/image with explicit width/height
           writes inline sizing that overrides an aspect-ratio set on the img. */}
       <div className={styles.videoThumbWrap}>
@@ -59,16 +61,16 @@ function VideoCard({ post }: { post: Post }) {
           {video.duration ? <span>{video.duration}</span> : null}
         </div>
         <h3 className={styles.videoTitle}>{post.title}</h3>
-        <Link href={post.permalink} className={styles.playRow}>
+        <span className={styles.playRow}>
           <span className={styles.playButton}>
             <PlayIcon size={13} />
           </span>
           <span className="meta">
             {video.provider} · {formatMonthYear(post.date)}
           </span>
-        </Link>
+        </span>
       </div>
-    </div>
+    </Link>
   )
 }
 

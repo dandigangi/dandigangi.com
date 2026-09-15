@@ -143,6 +143,11 @@
   gap: 24px;
   padding: 26px var(--rail) 30px var(--gutter);
   border-bottom: 1px solid var(--line);
+  transition: background-color 0.15s ease;
+}
+
+.videoCard:hover {
+  background: var(--hover);
 }
 
 .videoThumbWrap {
@@ -196,7 +201,7 @@
     border-color 0.15s ease;
 }
 
-.playRow:hover .playButton {
+.videoCard:hover .playButton {
   background: var(--ink);
   color: var(--bg);
   border-color: var(--ink);

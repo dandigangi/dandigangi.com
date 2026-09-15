@@ -152,13 +152,24 @@ a {
   max-width: 300px;
 }
 
-/* Label rail. The min-content floor is required — without it the rail column
-   collapses and crushes its own label. */
+/* Label rail. Wrapping flex rather than a two-track grid: a grid cannot wrap, so
+   on a phone the label kept its column and pushed the content into roughly a
+   third of the screen. Below about 700px the content now drops beneath the label
+   and takes the full width — no media query needed. */
 .railSection {
-  display: grid;
-  grid-template-columns: minmax(min-content, clamp(96px, 15vw, 220px)) minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: clamp(16px, 3vw, 40px);
   padding-top: clamp(34px, 5vw, 56px);
+}
+
+.railSection > :first-child {
+  flex: 0 0 clamp(96px, 15vw, 220px);
+}
+
+.railSection > :last-child {
+  flex: 1 1 440px;
+  min-width: 0;
 }
 
 /* Hover tint extends left of the text while the text stays on the rail. Only

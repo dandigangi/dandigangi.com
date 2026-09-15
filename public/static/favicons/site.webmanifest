@@ -16,7 +16,7 @@
       "type": "image/png"
     },
     {
-      "src": "/static/favicons/apple-touch-icon.png",
+      "src": "/static/favicons/apple-touch-icon-180.png",
       "sizes": "180x180",
       "type": "image/png"
     }
