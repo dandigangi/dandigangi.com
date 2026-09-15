@@ -35,8 +35,11 @@ export const metadata: Metadata = {
     description: siteMetadata.description,
     url: './',
     siteName: siteMetadata.title,
-    // No `images`: opengraph-image.tsx supplies the card for every page that
-    // does not override it. An explicit value here shadows that convention.
+    // Named explicitly rather than left to opengraph-image.tsx: the file
+    // convention appends a content hash, and LinkedIn shrinks any og:image
+    // carrying a query string to a 160px thumbnail. The home page repeats this
+    // in its own metadata, since layout metadata loses to the convention file.
+    images: [{ url: '/opengraph-image', width: 1200, height: 630 }],
     locale: 'en_US',
     type: 'website',
   },
@@ -61,6 +64,7 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     description: siteMetadata.description,
     card: 'summary_large_image',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630 }],
   },
 }
 

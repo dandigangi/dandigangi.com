@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import siteMetadata from '@/data/siteMetadata'
@@ -67,6 +68,17 @@ function VideoCard({ post }: { post: Post }) {
       </div>
     </Link>
   )
+}
+
+const ogImage = { url: '/opengraph-image', width: 1200, height: 630 }
+
+/**
+ * Only overrides the images. Page-level metadata outranks the root segment's
+ * opengraph-image.tsx, which would otherwise append a content hash to the URL.
+ */
+export const metadata: Metadata = {
+  openGraph: { images: [ogImage] },
+  twitter: { images: [ogImage] },
 }
 
 export default function Home() {
