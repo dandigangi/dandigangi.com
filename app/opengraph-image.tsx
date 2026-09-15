@@ -40,7 +40,15 @@ export default async function OpengraphImage() {
         alt=""
         width={1200}
         height={630}
-        style={{ position: 'absolute', inset: 0, objectFit: 'cover', opacity: 0.62 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: 1200,
+          height: 630,
+          objectFit: 'cover',
+          opacity: 0.72,
+        }}
       />
 
       {/* Same left-heavy scrim the site uses, so the type sits on near-black
@@ -48,9 +56,12 @@ export default async function OpengraphImage() {
       <div
         style={{
           position: 'absolute',
-          inset: 0,
-          background:
-            'linear-gradient(90deg, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.82) 42%, rgba(0,0,0,0.28) 78%, rgba(0,0,0,0.5) 100%)',
+          top: 0,
+          left: 0,
+          width: 1200,
+          height: 630,
+          backgroundImage:
+            'linear-gradient(90deg, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.93) 46%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.15) 88%, rgba(0,0,0,0.38) 100%)',
         }}
       />
 
