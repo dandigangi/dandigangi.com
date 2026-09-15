@@ -7,17 +7,21 @@ const withBundleAnalyzer = bundleAnalyzer({
 /**
  * Fonts are self-hosted via next/font, so font-src stays 'self'.
  *
- * No 'unsafe-eval': contentlayer required it, Velite does not. The MDX runtime
- * still calls `new Function`, but MDXContent is a server component, so that runs
- * in Node where browser CSP has no say.
+ * 'unsafe-eval' is development-only. Contentlayer needed it in production;
+ * Velite does not, and the MDX runtime's `new Function` runs in a server
+ * component where browser CSP has no say. React itself does use eval() in dev
+ * for debugging (reconstructing callstacks) and never in production, so the
+ * allowance is scoped to the dev server rather than shipped.
  *
  * connect-src is enumerated rather than '*'. Embeds (YouTube, Spotify) make
  * their own requests from inside their iframe, which this policy does not govern
  * — they need frame-src, not connect-src.
  */
+const devOnlyEval = process.env.NODE_ENV === 'production' ? '' : " 'unsafe-eval'"
+
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline' *.vercel.com vercel.com *.vercel-scripts.com vercel-scripts.com *.posthog.com;
+  script-src 'self'${devOnlyEval} 'unsafe-inline' *.vercel.com vercel.com *.vercel-scripts.com vercel-scripts.com *.posthog.com;
   style-src 'self' 'unsafe-inline';
   worker-src 'self' blob:;
   img-src * blob: data:;

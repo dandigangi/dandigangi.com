@@ -13,7 +13,7 @@
     "build": "node ./scripts/prebuild-env.mjs && velite --clean && next build && node ./scripts/postbuild.mjs",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true yarn build",
-    "lint": "next lint",
+    "lint": "eslint app components lib scripts instrumentation-client.ts velite.config.ts",
     "smoke": "node ./scripts/smoke.mjs"
   },
   "dependencies": {

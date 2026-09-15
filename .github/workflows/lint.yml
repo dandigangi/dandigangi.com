@@ -1,0 +1,36 @@
+# Lint only, deliberately.
+#
+# Vercel already builds every push and every branch, and never promotes a failed
+# build — so a workflow running `yarn build` would duplicate that and fail in the
+# same place, slower. What Vercel does not run is ESLint: Next 16 removed the
+# lint-during-build integration, so without this nothing checks it at all.
+name: Lint
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      # Velite generates .velite, which the TypeScript path alias '@/content'
+      # resolves to. Without it, lint fails on unresolved imports.
+      - name: Build content
+        run: yarn velite
+
+      - name: Lint
+        run: yarn lint
