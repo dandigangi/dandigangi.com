@@ -7,6 +7,7 @@ export type Project = {
   /** The whole card is one anchor to this, so a project gets a single link. */
   url: string
   linkLabel: string
+  /** PLACEHOLDER for all four — every card shares the 3D render for now. */
   image: string
   /** Also surfaced in the home page's projects column. */
   onHome?: boolean
@@ -20,7 +21,6 @@ export const projects: Project[] = [
     description: 'If you ain’t writing tests, you ain’t shipping to prod.',
     url: 'https://shouldyouwritetests.com',
     linkLabel: 'shouldyouwritetests.com',
-    // PLACEHOLDER art — no asset for this one yet.
     image: '/static/images/video-card.jpg',
   },
   {
@@ -31,30 +31,29 @@ export const projects: Project[] = [
       'A curated collection of resources for engineering managers — hiring, coaching, process, and leadership reading.',
     url: 'https://github.com/dandigangi/engineering-manager-resources',
     linkLabel: 'GitHub',
-    image: '/static/images/projects/engineering-management-learning-resources.png',
+    image: '/static/images/video-card.jpg',
     onHome: true,
   },
   {
     slug: 'react-chicago',
     title: 'React Chicago',
-    eyebrow: 'Conference · Chicago',
+    eyebrow: 'Conference',
     // PLACEHOLDER — the 2019 numbers belong to React Loop, below.
     description: 'The relaunch of Chicago’s React conference — new name, same community.',
     url: 'https://reactchicago.com',
     linkLabel: 'reactchicago.com',
-    // PLACEHOLDER art — no asset for this one yet.
     image: '/static/images/video-card.jpg',
     onHome: true,
   },
   {
     slug: 'react-loop',
     title: 'React Loop Conference',
-    eyebrow: 'Conference · Chicago 2019',
+    eyebrow: 'Conference',
     description:
       'Organized Chicago’s first and only React Conference — Single day tracks, sold-out 250+ attendees, 12 speakers, 2 keynotes, 5 sponsors and 8 partner companies.',
     url: 'https://2019.reactloop.com',
     linkLabel: '2019.reactloop.com',
-    image: '/static/images/projects/react-loop-chicago-conference.png',
+    image: '/static/images/video-card.jpg',
   },
 ]
 
