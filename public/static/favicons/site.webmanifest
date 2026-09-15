@@ -1,10 +1,23 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "Dan DiGangi",
+  "short_name": "Dan DiGangi",
+  "description": "Senior Software Engineering Manager in Chicago. Writing on engineering leadership, hiring, and mental health in tech.",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
-      "src": "/android-chrome-96x96.png",
+      "src": "/static/favicons/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/favicons/android-chrome-96x96.png",
       "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/favicons/apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png"
     }
   ],

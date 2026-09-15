@@ -73,17 +73,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <ThemeScript />
-        <link
-          rel="apple-touch-icon"
-          sizes="76x76"
-          href="/static/images/dan-digangi-logo-light.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/static/images/dan-digangi-logo-light.png"
-        />
+        {/* Purpose-built favicons exist in /static/favicons; the previous site
+            pointed these at the full logo PNG, which browsers then downscaled. */}
+        <link rel="icon" type="image/x-icon" href="/static/favicons/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+        <link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+        <link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#000000" />
         <link rel="manifest" href="/static/favicons/site.webmanifest" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EDEDEB" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
