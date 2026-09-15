@@ -13,7 +13,8 @@
     "build": "node ./scripts/prebuild-env.mjs && velite --clean && next build && node ./scripts/postbuild.mjs",
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true yarn build",
-    "lint": "next lint"
+    "lint": "next lint",
+    "smoke": "node ./scripts/smoke.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
