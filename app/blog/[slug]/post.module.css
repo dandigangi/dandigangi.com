@@ -91,23 +91,27 @@
 
 /* ---------- body ---------- */
 
-/* Capped so the two columns actually consume the row. Uncapped, the article
-   stops at its 760px measure and the sidebar at 300px, leaving ~350px of dead
-   slack on the right that made the split read as even. */
+/* Both columns are capped — the article by its reading measure, the sidebar by
+   how wide chips and share icons want to be — so they cannot fill the row
+   between them. Anchoring the sidebar to the right puts the leftover width in
+   the gutter instead of trailing off the end, which is what made the article
+   look narrow next to a title that runs much wider. */
 .bodySplit {
-  max-width: 1240px;
+  justify-content: space-between;
   padding-bottom: clamp(40px, 6vw, 64px);
 }
 
 .bodySplit .aside {
-  flex: 1 1 320px;
-  max-width: 420px;
+  flex: 0 1 340px;
 }
 
 /* Larger than the handoff's 19px body: at the article measure 19px read too
    small, and long-form reading is what this page is for. */
+/* Wider than the handoff's 760px: at 24px type that measure ran short, and the
+   title above it extends much further, which made the column look undersized.
+   880px is ~70 characters at this size — still inside a comfortable measure. */
 .body {
-  max-width: 760px;
+  max-width: 880px;
   font-size: clamp(18px, 2.2vw, 24px);
   line-height: 1.65;
   color: var(--read);
