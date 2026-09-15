@@ -7,8 +7,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 // Fonts are self-hosted via next/font, so font-src stays 'self'.
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' *.smartlook.com smartlook.com *.vercel.com vercel.com *.vercel-scripts.com vercel-scripts.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' *.smartlook.com smartlook.com *.vercel.com vercel.com *.vercel-scripts.com vercel-scripts.com *.posthog.com;
   style-src 'self' 'unsafe-inline';
+  worker-src 'self' blob:;
   img-src * blob: data:;
   media-src *.s3.amazonaws.com *.youtube.com youtube.com *.soundcloud.com soundcloud.com *.spotify.com spotify.com *.twitch.tv twitch.tv player.twitch.tv;
   connect-src *;
