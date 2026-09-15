@@ -59,7 +59,7 @@ function PostMedia({ post }: { post: Post }) {
 
   if (media.type === 'cover' && media.image) {
     return (
-      <div className={`rail ${styles.mediaSplit}`}>
+      <div className={`rail ${styles.mediaSplit}`} data-cameo>
         <div className={styles.mediaMain}>
           <Image
             src={media.image}
@@ -79,7 +79,7 @@ function PostMedia({ post }: { post: Post }) {
 
   if (media.type === 'video' && media.video) {
     return (
-      <div className={`rail ${styles.mediaSplit}`}>
+      <div className={`rail ${styles.mediaSplit}`} data-cameo>
         <div className={`${styles.mediaMain} ${styles.mediaVideo}`}>
           <iframe
             src={media.video.url}
@@ -186,11 +186,11 @@ export default async function PostPage({ params }: Props) {
         <PostMedia post={post} />
 
         <div className={`rail split ${styles.bodySplit}`}>
-          <div className={`splitMain ${styles.body}`}>
+          <div className={`splitMain ${styles.body}`} data-cameo>
             <MDXContent code={post.body} />
           </div>
 
-          <aside className={`splitAside ${styles.aside}`}>
+          <aside className={`splitAside ${styles.aside}`} data-cameo>
             {post.tags.length > 0 && (
               <div>
                 <span className="label">Tags</span>

@@ -127,7 +127,7 @@ export default function Home() {
 
       <div className="container">
         <div className={styles.grid}>
-          <div className={styles.column}>
+          <div className={styles.column} data-cameo>
             <div className={`label ${styles.labelRow}`}>
               <span>Latest writing</span>
               <span>01 — {String(listed.length).padStart(2, '0')}</span>
@@ -137,13 +137,13 @@ export default function Home() {
             ))}
           </div>
 
-          <div className={styles.column}>
+          <div className={styles.column} data-cameo>
             {featured ? <VideoCard post={featured} /> : null}
 
             <div className={`label ${styles.labelRow} ${styles.labelRowRight}`}>
               <span>Projects</span>
             </div>
-            <div className={styles.projects}>
+            <div className={styles.projects} data-cameo>
               {homeProjects.map((project) => (
                 /* Deep-links into the Projects page rather than straight out to
                    the project, so the full list is one scroll away. */

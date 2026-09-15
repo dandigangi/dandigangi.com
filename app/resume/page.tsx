@@ -46,7 +46,7 @@ export default function Resume() {
       </PageBand>
 
       <div className="container">
-        <section className={`rail railSection`}>
+        <section className={`rail railSection`} data-cameo>
           <span className="label">Summary</span>
           <div>
             <p className={styles.lede}>{resumeSummary}</p>
@@ -60,7 +60,7 @@ export default function Resume() {
           </div>
         </section>
 
-        <section className={`rail railSection`}>
+        <section className={`rail railSection`} data-cameo>
           <span className="label">Experience</span>
           <div>
             {resumeExperience.map((role) => (
@@ -88,7 +88,7 @@ export default function Resume() {
           </div>
         </section>
 
-        <section className={`rail railSection`}>
+        <section className={`rail railSection`} data-cameo>
           <span className="label">Education</span>
           <div>
             <article className={styles.role}>
@@ -101,7 +101,7 @@ export default function Resume() {
           </div>
         </section>
 
-        <section className={`rail railSection`}>
+        <section className={`rail railSection`} data-cameo>
           <span className="label">Other</span>
           <ul className={styles.other}>
             {resumeOther.map((item) => (

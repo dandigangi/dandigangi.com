@@ -33,7 +33,7 @@ export default function Contact() {
       <PageBand title="Contact" objectPosition="50% 70%" />
 
       <div className="container">
-        <div className={`rail ${styles.grid}`}>
+        <div className={`rail ${styles.grid}`} data-cameo>
           <div>
             <p className={styles.lede}>
               Open to senior engineering leadership roles, and always happy to talk hiring, teams,

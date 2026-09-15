@@ -13,7 +13,7 @@ export default function PostList({ posts }: { posts: Post[] }) {
   }
 
   return (
-    <div className={styles.list}>
+    <div className={styles.list} data-cameo>
       {posts.map((post) => (
         <Link key={post.slug} href={post.permalink} className={styles.row}>
           <div className={styles.rowMain}>

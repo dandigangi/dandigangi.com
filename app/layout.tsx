@@ -7,6 +7,7 @@ import { Analytics as VercelAnalytics } from '@vercel/analytics/react'
 import siteMetadata from '@/data/siteMetadata'
 import ThemeScript from '@/components/ThemeScript'
 import Footer from '@/components/Footer'
+import PikachuCameo from '@/components/PikachuCameo'
 import Parallax from '@/components/Parallax'
 
 const archivo = Archivo({
@@ -102,6 +103,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Parallax />
         <main id="main-content">{children}</main>
         <Footer />
+        <PikachuCameo />
         <VercelAnalytics />
       </body>
     </html>

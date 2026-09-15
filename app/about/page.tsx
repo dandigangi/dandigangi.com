@@ -46,7 +46,7 @@ export default function About() {
             and left a void beside the short Overview prose; as a page column the
             rail sections below simply flow up alongside it. */}
         <div className={styles.page}>
-          <div className={styles.pageMain}>
+          <div className={styles.pageMain} data-cameo>
             <Section title="Overview">
               <p className={styles.lede}>{aboutOverview.lede}</p>
               <blockquote className={styles.pullQuote}>{aboutOverview.pullQuote}</blockquote>
@@ -119,7 +119,7 @@ export default function About() {
             </section>
           </div>
 
-          <aside className={styles.aside}>
+          <aside className={styles.aside} data-cameo>
             <Portrait />
             <a
               href={siteMetadata.linkedin}

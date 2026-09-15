@@ -56,7 +56,7 @@ export default function Projects() {
         {/* Two-up grid of the home page's video-card treatment: square art on
             the left, body on the right. The 1px gap over a --line background
             is what draws the hairlines between cells. */}
-        <div className={styles.grid}>
+        <div className={styles.grid} data-cameo>
           {projects.map((project) => (
             <a
               key={project.slug}

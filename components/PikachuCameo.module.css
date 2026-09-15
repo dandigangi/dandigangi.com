@@ -1,0 +1,76 @@
+/* The clip is what sells it: he slides inside a box pinned to the container's
+   edge, so he reads as rising from behind it rather than floating over it. */
+.clip {
+  position: absolute;
+  overflow: hidden;
+  /* Only he is clickable — the box around him must not eat clicks on the page
+     underneath while he is on screen. */
+  pointer-events: none;
+  z-index: 40;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: auto;
+  cursor: pointer;
+  /* Ease-in on the way out, ease-out on the way in — he decelerates into place
+     and accelerates away, which reads as weight rather than a slide. */
+  transition: transform 620ms cubic-bezier(0.64, 0, 0.78, 0);
+  will-change: transform;
+}
+
+.shown {
+  transform: translate3d(0, 0, 0) !important;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pika {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Start position per edge, and the rotation that puts his head into the page —
+   he always enters head-first, whichever side he comes from. Rotation lives on
+   the image so it does not fight the slider's translation. */
+.top .slider {
+  transform: translate3d(0, -100%, 0);
+}
+
+.top .pika {
+  transform: rotate(180deg);
+}
+
+.bottom .slider {
+  transform: translate3d(0, 100%, 0);
+}
+
+.left .slider {
+  transform: translate3d(-100%, 0, 0);
+}
+
+.left .pika {
+  transform: rotate(90deg);
+}
+
+.right .slider {
+  transform: translate3d(100%, 0, 0);
+}
+
+.right .pika {
+  transform: rotate(-90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clip {
+    display: none;
+  }
+}
