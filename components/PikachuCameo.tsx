@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import Image from 'next/image'
+import { PIKACHU_CAUGHT, PIKACHU_OPEN, markCaught } from '@/lib/pikachu'
 import PikachuModal from './PikachuModal'
 import styles from './PikachuCameo.module.css'
 
@@ -12,6 +14,8 @@ type Cameo = {
   edge: Edge
   top: number
   left: number
+  /** The route he was measured on — his coordinates mean nothing anywhere else. */
+  path: string
 }
 
 const SRC = '/static/images/pikachu.png'
@@ -25,12 +29,6 @@ const SLIDE_MS = 620
 const GAP_MIN_MS = 7000
 const GAP_MAX_MS = 15000
 const RETRY_MS = 4000
-
-/**
- * Fired on window when someone clicks him. Nothing listens yet — the modal is
- * the next piece of this.
- */
-export const PIKACHU_EVENT = 'pikachu:caught'
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min)
 const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)]
@@ -65,9 +63,12 @@ function candidates(): { rect: DOMRect; edges: Edge[] }[] {
     })
     .map((el) => el.getBoundingClientRect())
     .filter((rect) => {
-      if (rect.width < SIZE * 4 || rect.height < SIZE * 3) return false
-      // A page wrapper, not a container.
-      return rect.width * rect.height <= vw * vh * 0.7
+      // Measured against the part that is on screen, not the whole element: a
+      // post list taller than the viewport is still a perfectly good container,
+      // and judging it by its full height rules out every long page.
+      const width = Math.min(rect.right, vw) - Math.max(rect.left, 0)
+      const height = Math.min(rect.bottom, vh) - Math.max(rect.top, 0)
+      return width >= SIZE * 4 && height >= SIZE * 3
     })
     .map((rect) => ({ rect, edges: visibleEdges(rect) }))
     .filter((entry) => entry.edges.length > 0)
@@ -78,6 +79,7 @@ export default function PikachuCameo() {
   const [shown, setShown] = useState(false)
   const [open, setOpen] = useState(false)
   const [amount, setAmount] = useState(100)
+  const pathname = usePathname()
   const [previous, setPrevious] = useState<number | null>(null)
   const caught = useRef(false)
   // Lets the modal stop and restart the loop without re-running the effect,
@@ -127,6 +129,7 @@ export default function PikachuCameo() {
       setCameo({
         id: ++id,
         edge,
+        path: window.location.pathname,
         top:
           edge === 'top'
             ? pageTop
@@ -174,13 +177,30 @@ export default function PikachuCameo() {
       setAmount(Math.round((amount + rand(25, 75)) * 100) / 100)
     }
     caught.current = true
+    show()
+  }
 
-    // Take him off the page while he is busy invoicing you.
+  useEffect(() => {
+    // A new page has new containers, and the pending schedule was measured
+    // against the old ones. No setState here on purpose — the render already
+    // drops a cameo whose path no longer matches.
+    loop.current?.stop()
+    loop.current?.start()
+  }, [pathname])
+
+  // Reopening from the footer must not add to the tab: only he gets to do that.
+  const show = () => {
     loop.current?.stop()
     setShown(false)
     setCameo(null)
     setOpen(true)
   }
+
+  useEffect(() => {
+    const onOpen = () => show()
+    window.addEventListener(PIKACHU_OPEN, onOpen)
+    return () => window.removeEventListener(PIKACHU_OPEN, onOpen)
+  }, [])
 
   const onClose = () => {
     setOpen(false)
@@ -190,7 +210,7 @@ export default function PikachuCameo() {
   return (
     <>
       {open && <PikachuModal amount={amount} previous={previous} onClose={onClose} />}
-      {cameo && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
+      {cameo?.path === pathname && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
     </>
   )
 }
@@ -207,7 +227,8 @@ function Cameo({ cameo, shown, onCatch }: { cameo: Cameo; shown: boolean; onCatc
         className={`${styles.slider} ${shown ? styles.shown : ''}`}
         aria-label="Pikachu"
         onClick={() => {
-          window.dispatchEvent(new CustomEvent(PIKACHU_EVENT))
+          markCaught()
+          window.dispatchEvent(new CustomEvent(PIKACHU_CAUGHT))
           onCatch()
         }}
       >

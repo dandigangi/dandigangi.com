@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import navLinks from '@/data/navLinks'
 import siteMetadata from '@/data/siteMetadata'
+import PayPikachuLink from './PayPikachuLink'
 import ThemeToggle from './ThemeToggle'
 import { LinkedInIcon, XIcon, GitHubIcon, MailIcon } from './Icons'
 
@@ -69,6 +70,7 @@ export default function Footer() {
               padding: 0,
             }}
           >
+            <PayPikachuLink fontSize={13} />
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="navLink" style={{ fontSize: 13 }}>

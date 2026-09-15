@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import navLinks from '@/data/navLinks'
+import PayPikachuLink from './PayPikachuLink'
 import styles from './SiteNav.module.css'
 
 /**
@@ -47,6 +48,8 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
               </Link>
             </li>
           ))}
+          {/* Last, after Contact — he is not part of the site's navigation. */}
+          <PayPikachuLink tone="plain" />
         </ul>
       </nav>
     </div>

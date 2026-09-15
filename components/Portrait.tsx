@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { isAlterEgo, setAlterEgo } from '@/lib/pikachu'
 import { ArrowRight } from './Icons'
 import styles from './Portrait.module.css'
 
@@ -13,7 +14,8 @@ const ALTER = '/static/images/dan-digangi-alter-ego.jpg'
  * layout around it.
  */
 export default function Portrait() {
-  const [alter, setAlter] = useState(false)
+  // Seeded from the store so the photo and the hero agree after navigating away.
+  const [alter, setAlter] = useState(() => isAlterEgo())
 
   return (
     <div className={styles.portrait}>
@@ -28,7 +30,13 @@ export default function Portrait() {
         />
         <button
           type="button"
-          onClick={() => setAlter((v) => !v)}
+          onClick={() => {
+            const next = !alter
+            setAlter(next)
+            // A toggle, not a latch — but it cannot put the hero back once he
+            // has actually been caught. The store decides that.
+            setAlterEgo(next)
+          }}
           className={styles.toggle}
           aria-pressed={alter}
         >

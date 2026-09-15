@@ -202,7 +202,8 @@
 .frown {
   font-family: var(--font-mono), monospace;
   font-size: 15px;
-  letter-spacing: 0.08em;
+  /* Tight: at any real tracking the three glyphs stop reading as a face. */
+  letter-spacing: -0.16em;
   opacity: 0;
   transition: opacity 0.15s ease;
 }

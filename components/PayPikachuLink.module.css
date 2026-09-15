@@ -1,0 +1,15 @@
+.pay {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  /* His yellow, the same one the confetti leads with. */
+  color: #ffd23f;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The band is a dark photograph — his yellow reads as an alert against it. */
+.plain {
+  color: #f5f4f1;
+}
