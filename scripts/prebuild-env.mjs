@@ -33,6 +33,16 @@ const lines = [
   `NEXT_PUBLIC_BUILD_DATE=${date}`,
 ].join('\n')
 
-const envPath = join(process.cwd(), '.env.production.local')
-writeFileSync(envPath, lines + '\n', 'utf8')
+// Written for development as well as production so the footer stamp is visible
+// while working locally. With only the production file the values are absent
+// under `next dev` and the footer silently drops to the domain alone. Both
+// targets are gitignored, and neither is the hand-managed local config.
+const targets = ['production', 'development'].map((mode) =>
+  join(process.cwd(), `.env.${mode}.local`)
+)
+
+for (const target of targets) {
+  writeFileSync(target, lines + '\n', 'utf8')
+}
+
 console.log('Wrote build env:', hash ? `${date} [${hash}]` : '(no git)')
