@@ -36,10 +36,10 @@
   background: var(--hover);
 }
 
-/* An odd card last in the grid would leave its empty neighbour showing the
-   grid's --line background as a grey block. Let it span instead. */
-.card:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
+/* Fills the empty cell an odd project count leaves behind, so the grid's
+   --line background does not show through it as a grey block. */
+.filler {
+  background: var(--bg);
 }
 
 /* The wrapper owns the square: next/image writes inline sizing that would

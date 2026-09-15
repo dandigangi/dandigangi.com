@@ -59,6 +59,7 @@ export default function Projects() {
               </div>
             </a>
           ))}
+          {projects.length % 2 === 1 && <div className={styles.filler} aria-hidden="true" />}
         </div>
       </div>
     </>
