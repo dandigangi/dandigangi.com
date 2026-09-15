@@ -3,7 +3,7 @@ export const aboutOverview = {
   pullQuote: 'Build experiences, not software',
   support:
     'My core mission is building diverse, high performance teams that deliver exceptional products — business, customer, and experience first.',
-  currently: 'Postmark',
+  currently: 'Open to new roles',
   previously: ['ActiveCampaign', 'Arrive Logistics', 'DocuSign', 'OpenLane', 'Apartments.com'],
 }
 
@@ -11,7 +11,7 @@ export const aboutExperience = {
   headline: ['Engineering leadership — 7+ years', 'Software engineer — 20+ years'],
   paragraphs: [
     'My main experience is developing full stack Node, Typescript, Javascript, and my favorite, React. But, I do enjoy Go, Python, Kotlin, and occasionally some poorly written Rust. These days I work in engineering leadership owning product engineering end-to-end — from platform infrastructure and mail operations to security, compliance, and hiring.',
-    'Right now you can find me running all things engineering and then some at Postmark (under ActiveCampaign) — a large-scale transactional email platform processing 3B+ emails/month serving thousands of customers.',
+    'Most recently I ran all things engineering and then some at Postmark (under ActiveCampaign) — a large-scale transactional email platform processing 3B+ emails/month serving thousands of customers.',
     "Companies I've worked at in the past include DocuSign, Apartments.com, Arrive Logistics, and OpenLane. Once upon a time I worked at a marketing agency completing projects for AT&T, Bosch, H&R Block, and Mazda to name a few.",
   ],
 }

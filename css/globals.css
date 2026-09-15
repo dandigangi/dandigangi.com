@@ -202,7 +202,8 @@ a {
 
 .navLink {
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: clamp(11px, 1.4vw, 14px);
+  /* Design specifies max 14px; bumped to 16px — 14 read too small in practice. */
+  font-size: clamp(13px, 1.5vw, 16px);
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;

@@ -34,7 +34,12 @@ const nextConfig = {
   // agent conventions are managed elsewhere.
   agentRules: false,
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: 'picsum.photos', pathname: '/**' }],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'picsum.photos', pathname: '/**' },
+      // Video-post thumbnails are derived from the YouTube video id.
+      { protocol: 'https', hostname: 'img.youtube.com', pathname: '/vi/**' },
+      { protocol: 'https', hostname: 'i.ytimg.com', pathname: '/vi/**' },
+    ],
   },
   async redirects() {
     return [{ source: '/connect', destination: '/contact', permanent: true }]

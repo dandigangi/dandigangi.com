@@ -41,8 +41,13 @@ function VideoCard({ post }: { post: Post }) {
   return (
     <div className={styles.videoCard}>
       {video.thumbnail ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={video.thumbnail} alt="" className={styles.videoThumb} />
+        <Image
+          src={video.thumbnail}
+          alt=""
+          width={400}
+          height={400}
+          className={styles.videoThumb}
+        />
       ) : null}
       <div className={styles.videoBody}>
         <div className={`meta ${styles.videoMeta}`}>
