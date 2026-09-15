@@ -4,7 +4,14 @@ export const aboutOverview = {
   support:
     'My core mission is building diverse, high performance teams that deliver exceptional products — business, customer, and experience first.',
   currently: 'Open to new roles',
-  previously: ['ActiveCampaign', 'Arrive Logistics', 'DocuSign', 'OpenLane', 'Apartments.com'],
+  previously: [
+    'Postmark',
+    'ActiveCampaign',
+    'Arrive Logistics',
+    'DocuSign',
+    'OpenLane',
+    'Apartments.com',
+  ],
 }
 
 export const aboutExperience = {

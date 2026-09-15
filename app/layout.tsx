@@ -4,7 +4,6 @@ import '@/css/prism.css'
 import type { Metadata } from 'next'
 import { Archivo, IBM_Plex_Mono } from 'next/font/google'
 import { Analytics as VercelAnalytics } from '@vercel/analytics/react'
-import Script from 'next/script'
 import siteMetadata from '@/data/siteMetadata'
 import ThemeScript from '@/components/ThemeScript'
 import Footer from '@/components/Footer'
@@ -96,15 +95,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main-content">{children}</main>
         <Footer />
         <VercelAnalytics />
-        {process.env.ANALYTICS_SMARTLOOK_ID?.length === 40 && (
-          <Script
-            id="analytics-smartlook"
-            strategy="lazyOnload"
-            dangerouslySetInnerHTML={{
-              __html: `window.smartlook||(function(d) {var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);})(document);smartlook('init', '${process.env.ANALYTICS_SMARTLOOK_ID}', { region: 'eu' });`,
-            }}
-          />
-        )}
       </body>
     </html>
   )

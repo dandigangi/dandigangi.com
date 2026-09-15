@@ -56,3 +56,5 @@ public/static/velite
 /docs
 
 resume-print
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo

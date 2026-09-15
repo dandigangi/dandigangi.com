@@ -6,29 +6,45 @@ const POSTS_PER_PAGE = 7
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = siteMetadata.siteUrl
-  const today = new Date().toISOString().split('T')[0]
   const published = getPublishedPosts()
+
+  /**
+   * Stamping every route with the build date tells crawlers the whole site
+   * changes daily, which devalues the signal for the pages that genuinely did.
+   * Listing-style routes inherit the newest post they contain; pages with no
+   * meaningful date omit lastModified entirely rather than inventing one.
+   */
+  const latestPostDate = published[0]?.lastmod || published[0]?.date
 
   const postRoutes = published.map((post) => ({
     url: `${siteUrl}${post.permalink}`,
     lastModified: post.lastmod || post.date,
   }))
 
-  const staticRoutes = ['', 'blog', 'about', 'resume', 'contact', 'blog/tags'].map((route) => ({
+  const datelessRoutes = ['', 'about', 'resume', 'contact'].map((route) => ({
     url: `${siteUrl}/${route}`,
-    lastModified: today,
   }))
+
+  const listingRoutes = ['blog', 'blog/tags'].map((route) => ({
+    url: `${siteUrl}/${route}`,
+    lastModified: latestPostDate,
+  }))
+
+  const staticRoutes = [...datelessRoutes, ...listingRoutes]
 
   const totalPages = Math.ceil(published.length / POSTS_PER_PAGE)
   const paginatedRoutes = Array.from({ length: Math.max(totalPages - 1, 0) }, (_, i) => ({
     url: `${siteUrl}/blog/page/${i + 2}`,
-    lastModified: today,
+    lastModified: latestPostDate,
   }))
 
-  const tagRoutes = Object.keys(getTagCounts()).map((tag) => ({
-    url: `${siteUrl}/blog/tags/${tag}`,
-    lastModified: today,
-  }))
+  const tagRoutes = Object.keys(getTagCounts()).map((tag) => {
+    const newest = published.find((post) => post.tags.includes(tag))
+    return {
+      url: `${siteUrl}/blog/tags/${tag}`,
+      lastModified: newest?.lastmod || newest?.date,
+    }
+  })
 
   return [...staticRoutes, ...postRoutes, ...paginatedRoutes, ...tagRoutes]
 }
