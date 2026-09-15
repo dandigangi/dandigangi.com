@@ -35,8 +35,17 @@ export const projects: Project[] = [
     onHome: true,
   },
   {
+    slug: 'postmark-open-source',
+    title: 'Postmark Open Source',
+    eyebrow: 'GitHub · Open source',
+    description: 'OSS contributions to Postmark SDKs, integrations, and tooling.',
+    url: 'https://github.com/ActiveCampaign',
+    linkLabel: 'GitHub',
+    image: '/static/images/video-card.jpg',
+  },
+  {
     slug: 'react-chicago',
-    title: 'React Chicago',
+    title: 'React Chicago Conference',
     eyebrow: 'Conference',
     // PLACEHOLDER — the 2019 numbers belong to React Loop, below.
     description: 'The relaunch of Chicago’s React conference — new name, same community.',
