@@ -18,7 +18,7 @@ export const projects: Project[] = [
     url: 'https://github.com/dandigangi/engineering-manager-resources',
   },
   {
-    title: 'React Loop Conference',
+    title: 'React Chicago Conference',
     eyebrow: 'Chicago · Conference',
     description:
       'Organizer of React Loop, a Chicago React conference: a sold-out 250+ attendees, 12 speakers, 2 keynotes, 5 sponsors and 8 partner companies.',
