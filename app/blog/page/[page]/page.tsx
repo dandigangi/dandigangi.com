@@ -1,15 +1,25 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { getPublishedPosts, POSTS_PER_PAGE } from '@/lib/blog'
 import BlogIndex from '@/components/BlogIndex'
 import { genPageMetadata } from 'app/seo'
 
 type Props = { params: Promise<{ page: string }> }
 
-export const metadata = genPageMetadata({
-  title: 'Blog',
-  description:
-    'Writing on engineering management, hiring, career growth, and mental health in tech.',
-})
+/**
+ * Per-page rather than a shared constant: every paginated page otherwise ships
+ * the same title, description and canonical as /blog, which reads to a crawler
+ * as five near-duplicate pages.
+ */
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { page } = await params
+  const totalPages = Math.ceil(getPublishedPosts().length / POSTS_PER_PAGE)
+  return genPageMetadata({
+    title: `Blog — Page ${page} of ${totalPages}`,
+    description: `Page ${page} of writing on engineering management, hiring, career growth, and mental health in tech.`,
+    alternates: { canonical: `/blog/page/${page}` },
+  })
+}
 
 export async function generateStaticParams() {
   const totalPages = Math.ceil(getPublishedPosts().length / POSTS_PER_PAGE)
