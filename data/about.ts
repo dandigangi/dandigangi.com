@@ -11,6 +11,7 @@ export const aboutOverview = {
     'DocuSign',
     'OpenLane',
     'Apartments.com',
+    'ClearStory Data',
   ],
 }
 
