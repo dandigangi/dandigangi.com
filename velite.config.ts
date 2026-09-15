@@ -32,7 +32,6 @@ const posts = defineCollection({
       draft: s.boolean().default(false),
       summary: s.string().optional(),
       images: s.array(s.string()).optional(),
-      authors: s.array(s.string()).optional(),
       layout: s.string().optional(),
       canonicalUrl: s.string().optional(),
       /**
@@ -90,26 +89,6 @@ const posts = defineCollection({
     }),
 })
 
-const authors = defineCollection({
-  name: 'Author',
-  pattern: 'authors/**/*.mdx',
-  schema: s
-    .object({
-      name: s.string(),
-      avatar: s.string().optional(),
-      occupation: s.string().optional(),
-      company: s.string().optional(),
-      email: s.string().optional(),
-      twitter: s.string().optional(),
-      linkedin: s.string().optional(),
-      github: s.string().optional(),
-      layout: s.string().optional(),
-      path: s.path(),
-      body: s.mdx(),
-    })
-    .transform((data) => ({ ...data, slug: stripCollectionDir(data.path) })),
-})
-
 export default defineConfig({
   root: 'data',
   output: {
@@ -121,7 +100,7 @@ export default defineConfig({
     name: '[name]-[hash:8].[ext]',
     clean: true,
   },
-  collections: { posts, authors },
+  collections: { posts },
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
