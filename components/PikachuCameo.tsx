@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import PikachuModal from './PikachuModal'
 import styles from './PikachuCameo.module.css'
@@ -77,6 +77,12 @@ export default function PikachuCameo() {
   const [cameo, setCameo] = useState<Cameo | null>(null)
   const [shown, setShown] = useState(false)
   const [open, setOpen] = useState(false)
+  const [amount, setAmount] = useState(100)
+  const [previous, setPrevious] = useState<number | null>(null)
+  const caught = useRef(false)
+  // Lets the modal stop and restart the loop without re-running the effect,
+  // which would reset every timer it owns.
+  const loop = useRef<{ stop: () => void; start: () => void } | null>(null)
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -146,18 +152,45 @@ export default function PikachuCameo() {
       later(appear, SLIDE_MS + HOLD_MS + SLIDE_MS + rand(GAP_MIN_MS, GAP_MAX_MS))
     }
 
+    const clear = () => {
+      timers.forEach(clearTimeout)
+      timers.length = 0
+      cancelAnimationFrame(frame)
+    }
+
+    loop.current = { stop: clear, start: () => later(appear, 900) }
     later(appear, rand(1000, 1300))
 
     return () => {
-      timers.forEach(clearTimeout)
-      cancelAnimationFrame(frame)
+      clear()
+      loop.current = null
     }
   }, [])
 
+  const onCatch = () => {
+    // Each shakedown costs more than the last, cents and all.
+    if (caught.current) {
+      setPrevious(amount)
+      setAmount(Math.round((amount + rand(25, 75)) * 100) / 100)
+    }
+    caught.current = true
+
+    // Take him off the page while he is busy invoicing you.
+    loop.current?.stop()
+    setShown(false)
+    setCameo(null)
+    setOpen(true)
+  }
+
+  const onClose = () => {
+    setOpen(false)
+    loop.current?.start()
+  }
+
   return (
     <>
-      {open && <PikachuModal onClose={() => setOpen(false)} />}
-      {cameo && <Cameo cameo={cameo} shown={shown} onCatch={() => setOpen(true)} />}
+      {open && <PikachuModal amount={amount} previous={previous} onClose={onClose} />}
+      {cameo && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
     </>
   )
 }

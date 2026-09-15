@@ -11,6 +11,9 @@
 }
 
 .modal {
+  /* Above the confetti canvas, which is absolutely positioned in the overlay. */
+  position: relative;
+  z-index: 1;
   width: min(100%, 680px);
   max-height: 100%;
   overflow-y: auto;
@@ -94,7 +97,11 @@
 }
 
 .amount {
-  font-size: clamp(46px, 8vw, 78px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.34em;
+  font-size: clamp(28px, 4.2vw, 46px);
   font-weight: 700;
   line-height: 0.92;
   letter-spacing: -0.04em;
@@ -208,6 +215,44 @@
 @media (prefers-reduced-motion: reduce) {
   .overlay,
   .modal {
+    animation: none;
+  }
+}
+
+/* An explicit grey, not --soft: the modal is dark in both themes, and --soft
+   inverts to near-black in light mode. */
+/* Two full figures on one line need more room than the single price the design
+   was drawn around. */
+.amountPair {
+  font-size: clamp(24px, 3.6vw, 39px);
+}
+
+.previous {
+  color: rgba(245, 244, 241, 0.42);
+  text-decoration: line-through;
+}
+
+.roll {
+  display: inline-flex;
+  /* Fixed-width figures: without this the line jitters sideways as digits
+     change during the roll. */
+  font-variant-numeric: tabular-nums;
+}
+
+.digit {
+  display: inline-block;
+  animation: roll 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes roll {
+  from {
+    transform: translateY(0.5em);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digit {
     animation: none;
   }
 }

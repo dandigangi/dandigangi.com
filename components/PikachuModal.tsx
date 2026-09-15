@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
 import styles from './PikachuModal.module.css'
 
@@ -15,7 +16,83 @@ const METHODS = [
   { name: 'Bitcoin', note: 'Network fees apply', mark: '₿', color: '#F7931A' },
 ]
 
-export default function PikachuModal({ onClose }: { onClose: () => void }) {
+/**
+ * Decimal places come from the target, not the value being rendered: during the
+ * count-up the intermediate numbers all have cents, and letting them decide
+ * would add and drop a ".00" mid-roll.
+ */
+const money = (value: number, fractionDigits: number) =>
+  `$${value.toLocaleString('en-US', {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  })}`
+
+const ROLL_MS = 620
+const STEP_MS = 38
+
+/** Eased ramp to `to`, sampled slowly enough that digits land instead of blur. */
+function useCountUp(from: number, to: number) {
+  const [value, setValue] = useState(from)
+
+  useEffect(() => {
+    if (from === to) return
+
+    const started = performance.now()
+    let last = 0
+    let frame = 0
+
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - started) / ROLL_MS)
+      if (t === 1) {
+        setValue(to)
+        return
+      }
+      if (now - last >= STEP_MS) {
+        const eased = 1 - Math.pow(1 - t, 3)
+        setValue(from + (to - from) * eased)
+        last = now
+      }
+      frame = requestAnimationFrame(tick)
+    }
+
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [from, to])
+
+  return value
+}
+
+/**
+ * Each character is its own element keyed by its value, so React replaces the
+ * node whenever a digit changes and the CSS roll plays again. That is what
+ * makes the number look mechanical rather than merely re-rendered.
+ */
+function RollingAmount({ from, to }: { from: number; to: number }) {
+  const fractionDigits = to % 1 ? 2 : 0
+  const value = useCountUp(from, to)
+
+  return (
+    <span className={styles.roll}>
+      {money(value, fractionDigits)
+        .split('')
+        .map((char, index) => (
+          <span key={`${index}-${char}`} className={styles.digit}>
+            {char}
+          </span>
+        ))}
+    </span>
+  )
+}
+
+export default function PikachuModal({
+  amount,
+  previous,
+  onClose,
+}: {
+  amount: number
+  previous: number | null
+  onClose: () => void
+}) {
   const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -44,6 +121,8 @@ export default function PikachuModal({ onClose }: { onClose: () => void }) {
         if (event.target === event.currentTarget) onClose()
       }}
     >
+      <Confetti />
+
       <div
         className={styles.modal}
         role="dialog"
@@ -72,14 +151,19 @@ export default function PikachuModal({ onClose }: { onClose: () => void }) {
             {/* Centred against the avatar rather than sitting on its top edge. */}
             <div className={styles.amountCol}>
               <span className="label">Requested by Pikachu</span>
-              <span className={styles.amount}>$500</span>
+              <span className={`${styles.amount} ${previous !== null ? styles.amountPair : ''}`}>
+                {previous !== null && (
+                  <span className={styles.previous}>{money(previous, previous % 1 ? 2 : 0)}</span>
+                )}
+                <RollingAmount from={previous ?? 0} to={amount} />
+              </span>
             </div>
           </div>
 
           <p className={styles.quote}>
             Why are you clicking me like that?
             <br />
-            You owe me $500 and a hug.
+            You owe me {money(amount, amount % 1 ? 2 : 0)} and a hug.
           </p>
 
           <div className={styles.settle}>
