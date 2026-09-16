@@ -142,11 +142,8 @@ export default function PikachuModal({
         <header className={`${styles.head} ${over ? styles.headOver : ''}`}>
           <span className={styles.headTitle} id="pikachu-modal-title">
             <span className={styles.headTitleStrong}>Payment request</span>
-            {over && invoices > 0 && (
-              <span className={styles.headCount}>
-                {' '}
-                — {invoices} missed {invoices === 1 ? 'invoice' : 'invoices'}
-              </span>
+            {invoices > 1 && (
+              <span className={styles.headCount}> — {invoices} missed invoices</span>
             )}
           </span>
           <button ref={closeRef} type="button" className={styles.close} onClick={onClose}>
