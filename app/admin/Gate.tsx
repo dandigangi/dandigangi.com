@@ -15,7 +15,7 @@ import gate from './gate.module.css'
  * actually captured what was typed into it would be a genuinely nasty thing to
  * leave on a public site, so this one is wired to nothing on purpose.
  */
-const DECOY = 'ACDoBc7WianXYKeprF9YKPt6_HWig*wLQnWfP4iQgGphR2QnVqpAVAMydRVU.e9j'
+const DECOY = 'ACDoBc7WianXYKeprF9YKPt6_HWig*69420fP4iQgGphR2QnVqpAVAMydRVU.e9j'
 
 /** Generated on click rather than during render: a value that differs between
  *  the server and the client is a hydration mismatch. */
@@ -26,6 +26,118 @@ const fakeIp = () =>
     Math.floor(Math.random() * 256),
     Math.floor(Math.random() * 254) + 1,
   ].join('.')
+
+const IP_KEY = 'dd:gate-ip'
+const IP_SHAPE = /^\d{1,3}(\.\d{1,3}){3}$/
+
+/**
+ * The same box every time you try, because a server that moved between attempts
+ * would give the game away.
+ *
+ * Read on click rather than during render, for the same reason the value is
+ * generated there. The shape is checked on the way back out: nothing sensitive
+ * lives here, but a value from storage is still someone else's input, and it
+ * should not be able to put anything it likes on the page.
+ */
+const sessionIp = () => {
+  try {
+    const saved = localStorage.getItem(IP_KEY)
+    if (saved && IP_SHAPE.test(saved)) return saved
+  } catch {
+    // Private mode or blocked storage — a fresh address is a fine fallback.
+  }
+
+  const fresh = fakeIp()
+  try {
+    localStorage.setItem(IP_KEY, fresh)
+  } catch {
+    // Same again; it just will not be remembered.
+  }
+  return fresh
+}
+
+/**
+ * The only password the page reacts to at all, and it still does not let you in
+ * — it just decorates the refusal. Compared case-insensitively; nothing is
+ * stored or sent either way.
+ */
+const MAGIC = 'pikachu'
+
+/** Long enough to be a plausible rule, and a nudge at the only answer that
+ *  changes anything — which happens to be exactly this many letters. */
+const MIN_LENGTH = 7
+
+/**
+ * Knocks on a door that always says no, so the attempt appears in the network
+ * tab as a real one would.
+ *
+ * The body is fabricated on the spot and contains nothing that was typed: the
+ * field's value does not leave the browser. Fire and forget — the answer is
+ * always 401 and the page does not wait for it.
+ */
+const nonce = () => {
+  // randomUUID needs a secure context, and it used to sit inside the same try
+  // as the fetch — so anywhere it threw, the request was silently skipped.
+  try {
+    return crypto.randomUUID()
+  } catch {
+    return Math.random().toString(16).slice(2) + Date.now().toString(16)
+  }
+}
+
+/** Both guarded: neither is worth an exception, and both are absent somewhere. */
+const timezone = () => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'UTC'
+  } catch {
+    return 'UTC'
+  }
+}
+
+const viewport = () => {
+  try {
+    return `${window.innerWidth}x${window.innerHeight}`
+  } catch {
+    return '0x0'
+  }
+}
+
+const knock = () => {
+  // Wrapped as well as caught: a throw from fetch() itself — a blocked origin,
+  // an extension tearing it out — must not stop the page doing its thing.
+  try {
+    void fetch('/admin/auth', {
+      method: 'POST',
+      cache: 'no-store',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-Client-Version': '2.0.0',
+        'X-Request-Id': nonce(),
+      },
+      body: JSON.stringify({
+        grant_type: 'password',
+        client_id: 'dandigangi-web',
+        scope: 'admin:read admin:write',
+        redirect_uri: '/admin',
+        code_challenge_method: 'S256',
+        nonce: nonce(),
+        pikachu: true,
+        client: {
+          tz: timezone(),
+          viewport: viewport(),
+          locale: typeof navigator === 'undefined' ? 'en-US' : navigator.language,
+        },
+      }),
+    }).catch(() => {
+      // Offline, blocked, whatever. The theatre does not depend on it.
+    })
+  } catch {
+    // Same.
+  }
+}
 
 const CONNECT_MS = 1900
 const VALIDATE_MS = 1800
@@ -50,13 +162,32 @@ export default function Gate() {
     return () => pending.forEach(clearTimeout)
   }, [])
 
-  const start = () => {
-    setIp(fakeIp())
+  const attempt = () => {
+    const entered = value.trim()
+
+    if (entered === '') {
+      setError('Enter a password first.')
+      return
+    }
+    if (entered.length < MIN_LENGTH) {
+      setError(`Minimum ${MIN_LENGTH} characters and possibly a Pokemon.`)
+      return
+    }
+
+    knock()
+    start(entered.toLowerCase() === MAGIC)
+  }
+
+  const start = (magic: boolean) => {
+    setIp(sessionIp())
     setPhase('connecting')
     timers.current.push(
       setTimeout(() => setPhase('validating'), CONNECT_MS),
       setTimeout(() => setPhase('settled'), CONNECT_MS + VALIDATE_MS),
-      setTimeout(() => router.push('/admin/lulz'), CONNECT_MS + VALIDATE_MS + SETTLE_MS)
+      setTimeout(
+        () => router.push(magic ? '/admin/lulz?pika=1' : '/admin/lulz'),
+        CONNECT_MS + VALIDATE_MS + SETTLE_MS
+      )
     )
   }
 
@@ -69,44 +200,51 @@ export default function Gate() {
         this <code className={gate.decoy}>{DECOY}</code>.
       </p>
 
-      <form
-        className={gate.form}
-        noValidate
-        onSubmit={(event) => {
-          event.preventDefault()
-          if (value.trim() === '') {
-            setError('Enter a password first.')
-            return
-          }
-          start()
-        }}
-      >
-        <div className={gate.entry}>
-          <input
-            type="password"
-            className={`${gate.input} ${error ? gate.invalid : ''}`}
-            placeholder="Password"
-            aria-label="Password"
-            aria-invalid={error !== null}
-            aria-describedby={error ? 'gate-error' : undefined}
-            autoComplete="off"
-            spellCheck={false}
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value)
-              if (error) setError(null)
-            }}
-          />
-          {error && (
-            <span id="gate-error" className={gate.error}>
-              {error}
-            </span>
-          )}
-        </div>
-        <button type="submit" className="btn" disabled={phase !== 'idle'}>
+      {/*
+       * Deliberately not a <form>. Password managers offer "Save login?" off
+       * the submit event, and there is no login here worth saving — so the
+       * field keeps type="password" and the submit goes away instead. Enter is
+       * wired up by hand below, which is all the form was doing for us.
+       */}
+      <div className={gate.form}>
+        <input
+          type="password"
+          className={`${gate.input} ${error ? gate.invalid : ''}`}
+          placeholder="Password"
+          aria-label="Password"
+          aria-invalid={error !== null}
+          aria-describedby={error ? 'gate-error' : undefined}
+          autoComplete="off"
+          spellCheck={false}
+          // Every manager opted out differently; none of them agreed on one
+          // attribute, so this is the full set rather than a favourite.
+          data-1p-ignore
+          data-lpignore="true"
+          data-bwignore
+          data-form-type="other"
+          value={value}
+          onChange={(event) => {
+            setValue(event.target.value)
+            if (error) setError(null)
+          }}
+          onKeyDown={(event) => {
+            if (event.key !== 'Enter') return
+            event.preventDefault()
+            attempt()
+          }}
+        />
+        <button type="button" className="btn" disabled={phase !== 'idle'} onClick={attempt}>
           Login
         </button>
-      </form>
+      </div>
+
+      {/* Below the row rather than inside it: in the row, a message that wrapped
+          to two lines grew the row and stretched the Login button to match. */}
+      {error && (
+        <span id="gate-error" className={gate.error}>
+          {error}
+        </span>
+      )}
 
       {phase !== 'idle' && <Loader ip={ip} phase={phase} />}
     </>

@@ -4,6 +4,7 @@ import siteMetadata from '@/data/siteMetadata'
 import PayPikachuLink from './PayPikachuLink'
 import ThemeToggle from './ThemeToggle'
 import { LinkedInIcon, XIcon, GitHubIcon, MailIcon } from './Icons'
+import AdminLink from './AdminLink'
 
 const socials = [
   { href: siteMetadata.linkedin, label: 'LinkedIn', Icon: LinkedInIcon },
@@ -61,6 +62,10 @@ export default function Footer() {
           ) : date ? (
             <span style={{ opacity: 0.7 }}>{date}</span>
           ) : null}
+
+          {/* Its own line under the stamp, and fainter still — findable rather
+              than advertised. */}
+          <AdminLink />
         </div>
 
         <nav>

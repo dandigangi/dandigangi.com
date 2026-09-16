@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import SiteNav from '@/components/SiteNav'
+import siteMetadata from '@/data/siteMetadata'
 import Gate from '../Gate'
+import PikaTheme from '../PikaTheme'
+import gate from '../gate.module.css'
 import styles from '../../not-found.module.css'
 
 /**
@@ -36,19 +40,46 @@ export async function generateMetadata({
   }
 }
 
-export default async function AdminGate({ params }: { params: Promise<{ rest?: string[] }> }) {
+export default async function AdminGate({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ rest?: string[] }>
+  searchParams: Promise<{ pika?: string }>
+}) {
   const { rest } = await params
   if (rest?.length && !isLulz(rest)) notFound()
 
+  const lulz = isLulz(rest)
+  // Only reachable by guessing his name at the prompt, so it is only fetched by
+  // the people who earned it.
+  const pika = lulz && (await searchParams).pika === '1'
+
   return (
     <>
+      {pika && <PikaTheme />}
+
+      {pika && (
+        <div className={gate.pikaLayer} aria-hidden="true">
+          <Image
+            src="/static/images/pikachu-hero.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: '50% 28%' }}
+          />
+          <div className={gate.pikaScrim} />
+        </div>
+      )}
+
       <div className="bleed">
         <div className={`rail ${styles.topBar}`}>
           <SiteNav />
         </div>
       </div>
 
-      <div className={`container rail ${styles.wrap}`}>{isLulz(rest) ? <Lulz /> : <Gate />}</div>
+      <div className={`container rail ${styles.wrap}`}>{lulz ? <Lulz /> : <Gate />}</div>
     </>
   )
 }
@@ -63,6 +94,9 @@ function Lulz() {
         Rekt.
       </p>
       <div className={styles.actions}>
+        <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
+          Hire Me
+        </a>
         <Link href="/" className="btn">
           Home
         </Link>

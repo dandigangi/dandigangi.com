@@ -8,7 +8,7 @@
 
 .input {
   min-width: 0;
-  flex: 0 1 260px;
+  flex: 0 1 300px;
   padding: 18px 20px;
   color: var(--ink);
   background: none;
@@ -30,25 +30,15 @@
   border-color: var(--ink);
 }
 
-/* The field and its complaint, stacked, so the message does not shove the
-   button sideways when it appears. */
-.entry {
-  display: flex;
-  flex: 0 1 300px;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-}
-
-.entry .input {
-  flex: 1 1 auto;
-}
-
 .invalid {
   border-color: #ee3524;
 }
 
+/* Its own line under the row. Inside it, a message long enough to wrap grew the
+   row and the stretched Login button came with it. */
 .error {
+  display: block;
+  max-width: 420px;
   color: #ee3524;
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
@@ -166,4 +156,28 @@
     animation: none;
     opacity: 0.7;
   }
+}
+
+/*
+ * The reward for guessing his name: he takes the whole page.
+ *
+ * Behind everything, at z-index -1, rather than at 0 with the content lifted
+ * above it. `position: fixed` makes this a positioned element, and a positioned
+ * element paints over non-positioned content whatever the DOM order — so at 0
+ * it covered the header band and the site footer, which sit outside this page's
+ * markup and could not be lifted with it. Below the canvas it is simply behind
+ * all three.
+ */
+.pikaLayer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+/* The page's own scrim token, so the text keeps the contrast the rest of the
+   site's banded sections have over a photograph. */
+.pikaScrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
 }

@@ -1,0 +1,14 @@
+/*
+ * Fainter than the build stamp above it, which is already at 0.7. Findable if
+ * you look at the bottom-left corner, easy to miss if you do not.
+ *
+ * No hover or focus state on purpose: lighting up as the cursor approaches is
+ * the site pointing at it, which is the opposite of the idea.
+ */
+.admin {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  width: fit-content;
+  opacity: 0.34;
+}

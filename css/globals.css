@@ -86,6 +86,49 @@
   }
 }
 
+/*
+ * Set by app/admin/PikaTheme.tsx while the full-bleed image is up. The header
+ * band and the footer live outside that page's markup, so pinning the dark
+ * palette at the root is the only way to reach all three — otherwise light mode
+ * puts near-black text on a dimmed photograph.
+ */
+:root[data-pika] {
+  --bg: #000000;
+  --ink: #f5f4f1;
+  --soft: rgba(245, 244, 241, 0.72);
+  --line: rgba(245, 244, 241, 0.2);
+  --hover: rgba(245, 244, 241, 0.07);
+  --read: rgba(245, 244, 241, 0.86);
+}
+
+/* The band is opaque black everywhere else; here it would cut a bar across the
+   top of the image. */
+:root[data-pika] .bleed {
+  background: transparent;
+}
+
+/* The footer has no background of its own — it sits on the body's, which is the
+   canvas, which the image is painting over. So it needs one, or Pikachu shows
+   through the build stamp. */
+:root[data-pika] footer {
+  background: var(--bg);
+}
+
+/*
+ * And the footer has to reach the bottom of the window, or its black band ends
+ * partway down and the image reappears underneath it. This page is short enough
+ * to leave that gap on any normal screen.
+ */
+:root[data-pika] body {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+
+:root[data-pika] body > main {
+  flex: 1 0 auto;
+}
+
 *,
 *::before,
 *::after {
