@@ -15,6 +15,7 @@ const socials = [
 export default function Footer() {
   const hash = process.env.NEXT_PUBLIC_BUILD_HASH
   const date = process.env.NEXT_PUBLIC_BUILD_DATE
+  const version = process.env.NEXT_PUBLIC_BUILD_VERSION
 
   return (
     <footer style={{ borderTop: '1px solid var(--line)' }} data-print="hide">
@@ -44,7 +45,10 @@ export default function Footer() {
             letterSpacing: '0.14em',
           }}
         >
-          <span>dandigangi.com</span>
+          <span>
+            dandigangi.com
+            {version ? <span style={{ opacity: 0.7 }}> v{version}</span> : null}
+          </span>
           {hash ? (
             <a
               href={`${siteMetadata.siteRepo}/commit/${hash}`}
