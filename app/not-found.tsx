@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import SiteNav from '@/components/SiteNav'
+import siteMetadata from '@/data/siteMetadata'
 import styles from './not-found.module.css'
 
 export default function NotFound() {
@@ -19,6 +20,10 @@ export default function NotFound() {
           logs.
         </p>
         <div className={styles.actions}>
+          {/* First, as on /admin/lulz — the two pages share this row. */}
+          <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
+            Hire Me
+          </a>
           <Link href="/" className="btn">
             Home
           </Link>
