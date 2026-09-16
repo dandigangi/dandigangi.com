@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import styles from '../not-found.module.css'
 import gate from './gate.module.css'
 
@@ -27,12 +27,16 @@ const fakeIp = () =>
     Math.floor(Math.random() * 254) + 1,
   ].join('.')
 
-const CONNECT_MS = 1400
-const VALIDATE_MS = 1300
+const CONNECT_MS = 1900
+const VALIDATE_MS = 1800
+/** Both lines sit green for a beat before the answer lands — the pause is what
+ *  makes it read as "it worked" right up until it does not. */
+const SETTLE_MS = 900
 
-type Phase = 'idle' | 'connecting' | 'validating' | 'done'
+type Phase = 'idle' | 'connecting' | 'validating' | 'settled'
 
 export default function Gate() {
+  const router = useRouter()
   const [phase, setPhase] = useState<Phase>('idle')
   const [value, setValue] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -46,33 +50,13 @@ export default function Gate() {
     return () => pending.forEach(clearTimeout)
   }, [])
 
-  if (phase === 'done') {
-    return (
-      <>
-        <p className="label">You serious?</p>
-        <h1 className={styles.code}>Lulz no</h1>
-        <p className={styles.body}>
-          I&rsquo;ve done enough security work to not put this up in production. This is all fake.
-          Rekt.
-        </p>
-        <div className={styles.actions}>
-          <Link href="/" className="btn">
-            Home
-          </Link>
-          <Link href="/blog" className="btn">
-            Read the blog
-          </Link>
-        </div>
-      </>
-    )
-  }
-
   const start = () => {
     setIp(fakeIp())
     setPhase('connecting')
     timers.current.push(
       setTimeout(() => setPhase('validating'), CONNECT_MS),
-      setTimeout(() => setPhase('done'), CONNECT_MS + VALIDATE_MS)
+      setTimeout(() => setPhase('settled'), CONNECT_MS + VALIDATE_MS),
+      setTimeout(() => router.push('/admin/lulz'), CONNECT_MS + VALIDATE_MS + SETTLE_MS)
     )
   }
 
@@ -124,21 +108,24 @@ export default function Gate() {
         </button>
       </form>
 
-      {phase !== 'idle' && <Loader ip={ip} validating={phase === 'validating'} />}
+      {phase !== 'idle' && <Loader ip={ip} phase={phase} />}
     </>
   )
 }
 
-function Loader({ ip, validating }: { ip: string; validating: boolean }) {
+function Loader({ ip, phase }: { ip: string; phase: Phase }) {
+  const connected = phase !== 'connecting'
+  const validated = phase === 'settled'
+
   return (
     <div className={gate.overlay} role="status" aria-live="polite">
       <div className={gate.dialog}>
         <p className={gate.line}>
-          <span className={gate.mark}>{validating ? 'ok' : <Dots />}</span>
+          <span className={gate.mark}>{connected ? 'ok' : <Dots />}</span>
           Establishing SSH connection to {ip}
         </p>
-        <p className={`${gate.line} ${validating ? '' : gate.pending}`}>
-          <span className={gate.mark}>{validating ? <Dots /> : ''}</span>
+        <p className={`${gate.line} ${connected ? '' : gate.pending}`}>
+          <span className={gate.mark}>{validated ? 'ok' : connected ? <Dots /> : ''}</span>
           Validating credentials
         </p>
       </div>
