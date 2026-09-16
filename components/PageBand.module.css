@@ -1,6 +1,14 @@
 .band {
   position: relative;
-  height: clamp(250px, 38vh, 330px);
+  /* min-height, not height: 38vh is far shorter on a phone (~285px) than in a
+     narrowed desktop window (~330px), and a fixed height squashed the nav into
+     the page title once the nav wrapped. The image layers are absolute, so
+     they stretch to whatever height the content settles on. */
+  min-height: clamp(250px, 38vh, 330px);
+  /* Flex, because a percentage height against a min-height-only parent resolves
+     to auto — the inner would collapse and the title would ride at the top. */
+  display: flex;
+  flex-direction: column;
 }
 
 /* 20% overscan on a band up to 330px tall leaves ~66px of headroom, which must
@@ -22,12 +30,19 @@
 
 .inner {
   position: relative;
-  height: 100%;
+  flex: 1 1 auto;
+  /* Required now the parent is a flex column: margin:0 auto on the cross axis
+     shrink-wraps a flex item, which centred the whole band instead of filling
+     it. width:100% restores block-like sizing, max-width still centres it. */
+  width: 100%;
   max-width: var(--container);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* A floor under space-between: when the nav wraps on a phone there is no
+     slack left to distribute and the title collides with it. */
+  gap: 22px;
   padding-top: 26px;
   padding-bottom: 34px;
   color: #f5f4f1;

@@ -3,7 +3,11 @@
 
 .hero {
   position: relative;
-  height: clamp(480px, 76vh, 680px);
+  /* Same reasoning as the page band: a short phone viewport must be allowed to
+     grow rather than compress the name into the nav. */
+  min-height: clamp(480px, 76vh, 680px);
+  display: flex;
+  flex-direction: column;
 }
 
 /* The wrapper carries the overscan and the parallax transform; next/image's
@@ -24,7 +28,11 @@
 
 .heroInner {
   position: relative;
-  height: 100%;
+  flex: 1 1 auto;
+  /* Required now the parent is a flex column: margin:0 auto on the cross axis
+     shrink-wraps a flex item, which centred the whole band instead of filling
+     it. width:100% restores block-like sizing, max-width still centres it. */
+  width: 100%;
   max-width: var(--container);
   margin: 0 auto;
   display: flex;

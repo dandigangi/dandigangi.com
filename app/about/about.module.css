@@ -70,6 +70,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: clamp(24px, 4vw, 64px);
+  padding-left: var(--rail);
   padding-right: var(--rail);
 }
 
@@ -133,8 +134,8 @@
   padding-bottom: clamp(64px, 10vw, 110px);
 }
 
-/* Inner sections keep the left rail inset but not the right one — the page
-   shell owns the right edge so the sidebar sits against it. */
+/* The page shell owns both gutters now, so the sections add none of their own —
+   otherwise they would be inset twice. */
 .section {
-  padding-left: var(--rail);
+  padding-left: 0;
 }

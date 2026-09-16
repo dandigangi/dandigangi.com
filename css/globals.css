@@ -240,7 +240,7 @@ a {
   font-weight: 500;
   /* Tracking is what costs the most width at phone sizes: five items at 0.2em
      wrap onto a second line, at 0.12em they do not. */
-  letter-spacing: clamp(0.12em, 0.6vw, 0.2em);
+  letter-spacing: clamp(0.12em, 0.4vw, 0.2em);
   text-transform: uppercase;
   transition: opacity 0.15s ease;
 }
