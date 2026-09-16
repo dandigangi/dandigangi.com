@@ -4,6 +4,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypePrismPlus from 'rehype-prism-plus'
 import rehypePresetMinify from 'rehype-preset-minify'
 import remarkGfm from 'remark-gfm'
+import rehypeImageSize from './lib/rehype-image-size'
 import siteMetadata from './data/siteMetadata'
 
 /**
@@ -104,6 +105,9 @@ export default defineConfig({
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
+      // Before rehypePresetMinify, which strips attributes it considers
+      // redundant — the dimensions have to be on the node by then.
+      rehypeImageSize,
       rehypeSlug,
       rehypeAutolinkHeadings,
       [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],

@@ -2805,6 +2805,7 @@ __metadata:
     eslint-config-prettier: ^9.1.0
     gray-matter: ^4.0.3
     husky: ^9.1.7
+    image-size: ^2.0.4
     jsdom: ^30.0.1
     lint-staged: ^15.3.0
     next: 16.3.5
@@ -4939,6 +4940,15 @@ __metadata:
   version: 7.0.9
   resolution: "ignore@npm:7.0.9"
   checksum: 5d2c5369db4f940fa65dfa2a95af9a3877b1b36b8d7ad991f457200f3f5f8996c93eb84f8151f3b0a4ed02e0d2f39d50114868d82cb7820bcbe76bdbb1298e18
+  languageName: node
+  linkType: hard
+
+"image-size@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "image-size@npm:2.0.4"
+  bin:
+    image-size: bin/image-size.js
+  checksum: 172f6b6cca0937d2d70034366655c5af457dcdef62339e504f4030ed70f3992c53c001b6613dbf13f2938f698868dabfc634c77dd551ee7c329b69828d6fc6ef
   languageName: node
   linkType: hard
 
