@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync, readFileSync } from 'fs'
+import { writeFileSync, mkdirSync, readFileSync, rmSync } from 'fs'
 import path from 'path'
 import siteMetadata from '../data/siteMetadata.js'
 
@@ -54,13 +54,24 @@ const rss = () => {
 
   writeFileSync('./public/feed.xml', generateRss(siteMetadata, published))
 
+  /*
+   * Cleared before writing, not merged into. This only ever added directories,
+   * so a tag removed from the vocabulary kept serving its feed forever — four
+   * of them were still live after the tag pages themselves had been redirected
+   * away. Anyone subscribed was reading a feed for a tag that no longer exists.
+   */
+  rmSync(path.join('public', 'tags'), { recursive: true, force: true })
+
   const tags = [...new Set(published.flatMap((post) => post.tags || []))]
   for (const tag of tags) {
     const tagged = published.filter((post) => (post.tags || []).includes(tag))
     if (tagged.length === 0) continue
     const rssPath = path.join('public', 'tags', tag)
     mkdirSync(rssPath, { recursive: true })
-    writeFileSync(path.join(rssPath, 'feed.xml'), generateRss(siteMetadata, tagged, `tags/${tag}/feed.xml`))
+    writeFileSync(
+      path.join(rssPath, 'feed.xml'),
+      generateRss(siteMetadata, tagged, `tags/${tag}/feed.xml`)
+    )
   }
 
   console.log(`RSS generated: ${published.length} posts, ${tags.length} tag feeds`)
