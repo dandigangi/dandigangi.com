@@ -70,3 +70,102 @@ export const setAlterEgo = (on: boolean) => {
   alterEgo = on
   changed(wasActive)
 }
+
+/**
+ * The running tab, kept here for the same reason the flags above are: it has to
+ * outlive any component that unmounts on a client-side navigation. It also
+ * outlives the browser tab closing, which is the point — sixteen catches is not
+ * a sitting, it is something you come back to.
+ *
+ * Shaped for `useSyncExternalStore`, so the snapshot has to stay referentially
+ * stable between changes or the store re-renders forever.
+ */
+export type Tab = {
+  amount: number
+  invoices: number
+  /** When the last state was reached, or null. Expires — see WON_MS. */
+  wonAt: number | null
+}
+
+const OPENING = 100
+
+/** Where the last state takes over. Lives here rather than in the modal so the
+ *  store can stamp `wonAt` at the moment it is crossed. */
+export const FINAL_TIER = 2500
+
+/** How long the last state outlives the tab that earned it. After this the
+ *  whole thing resets, so it can be found again. */
+const WON_MS = 24 * 60 * 60 * 1000
+
+const STORE_KEY = 'dd:pk'
+
+const OPENING_TAB: Tab = { amount: OPENING, invoices: 0, wonAt: null }
+
+let tab: Tab = OPENING_TAB
+/** Constant identity: what the server renders, and what hydration matches. */
+const INITIAL: Tab = OPENING_TAB
+let read = false
+
+const persist = () => {
+  try {
+    localStorage.setItem(STORE_KEY, btoa(JSON.stringify(tab)))
+  } catch {
+    // Nothing to do — he just forgets you next time.
+  }
+}
+
+const stored = (): Tab | null => {
+  try {
+    const raw = localStorage.getItem(STORE_KEY)
+    if (!raw) return null
+    const saved: unknown = JSON.parse(atob(raw))
+    if (typeof saved !== 'object' || saved === null) return null
+    const { amount, invoices, wonAt } = saved as Partial<Tab>
+    if (typeof amount !== 'number' || typeof invoices !== 'number') return null
+    if (!Number.isFinite(amount) || amount < OPENING || invoices < 0) return null
+    const won = typeof wonAt === 'number' && Number.isFinite(wonAt) ? wonAt : null
+    // Evaluated once per page load rather than on every read, so the modal
+    // cannot change state under someone who is looking at it.
+    if (won !== null && Date.now() - won >= WON_MS) {
+      localStorage.removeItem(STORE_KEY)
+      return null
+    }
+    return { amount, invoices, wonAt: won }
+  } catch {
+    // Private mode, blocked storage, or a value written by an older shape.
+    return null
+  }
+}
+
+export const getTab = (): Tab => {
+  if (!read) {
+    read = true
+    const saved = stored()
+    if (saved) tab = saved
+  }
+  return tab
+}
+
+export const getInitialTab = (): Tab => INITIAL
+
+/** Raises the tab and counts the invoice. Only he may call this. */
+export const raiseTab = (amount: number) => {
+  tab = {
+    amount,
+    invoices: tab.invoices + 1,
+    // Stamped once. A hug can take the figure back down; it cannot un-win.
+    wonAt: tab.wonAt ?? (amount >= FINAL_TIER ? Date.now() : null),
+  }
+  persist()
+  emit()
+}
+
+/** A hug is worth something. Never below the opening ask. */
+export const softenTab = (by: number): boolean => {
+  const next = Math.max(OPENING, Math.round((tab.amount - by) * 100) / 100)
+  if (next === tab.amount) return false
+  tab = { ...tab, amount: next }
+  persist()
+  emit()
+  return true
+}

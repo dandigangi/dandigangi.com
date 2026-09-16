@@ -116,7 +116,7 @@
 .quote {
   margin: clamp(22px, 3vw, 30px) 0 0;
   font-size: clamp(21px, 2.8vw, 29px);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.22;
   letter-spacing: -0.025em;
   text-wrap: pretty;
@@ -195,12 +195,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px 24px;
-  padding: clamp(18px, 3vw, 24px) clamp(18px, 3vw, 28px);
+  padding: calc(clamp(18px, 3vw, 24px) + 20px) clamp(18px, 3vw, 28px) clamp(18px, 3vw, 24px);
 }
 
 .declineWrap {
   display: flex;
+  /* Two actions in the third state do not fit one phone-width line. */
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   gap: 14px;
 }
 
@@ -333,4 +336,77 @@
 .headOver .close:hover {
   background: #000;
   color: #ee3524;
+}
+
+/* The third state. Deep enough to carry white text on the banner and on the
+   button fill — the mint in the confetti palette cannot. */
+.headFinal {
+  background: #12a150;
+  border-bottom-color: #12a150;
+}
+
+.headFinal .headTitle {
+  color: #fff;
+}
+
+.headFinal .headTitleStrong {
+  font-weight: 600;
+}
+
+.headFinal .close {
+  border-color: #fff;
+  color: #fff;
+}
+
+.headFinal .close:hover {
+  background: #fff;
+  color: #12a150;
+}
+
+/* Matches the third banner. Outlined at rest and filled on hover, the same
+   shape as .decline — with two of these side by side, filling both at rest
+   would give the footer two competing primaries. Scoped under .foot for the
+   same reason .decline is: it has to beat the global .btn. */
+.foot .claim {
+  border-color: #12a150;
+  background: none;
+  color: #12a150;
+}
+
+.foot .claim:hover,
+.foot .claim:focus-visible,
+.foot .claim:active {
+  border-color: #12a150;
+  background: #12a150;
+  color: #fff;
+}
+
+/* With the small print gone the button is the footer's only child, and
+   space-between would park it on the left. */
+.foot .soleAction {
+  margin-left: auto;
+}
+
+/* Same size as the figure; only the weight and colour step it back. 300 is
+   loaded in layout.tsx solely for this line — drop it there if this goes. */
+.aside {
+  font-weight: 300;
+  color: rgba(245, 244, 241, 0.62);
+}
+
+/* The one conciliatory control, so it stays the plain light outline the rest of
+   the site uses. Explicit colours rather than the global .btn's var(--bg),
+   which resolves to white in light mode and would vanish on the fill. */
+.foot .hug {
+  border-color: rgba(245, 244, 241, 0.62);
+  background: none;
+  color: #f5f4f1;
+}
+
+.foot .hug:hover,
+.foot .hug:focus-visible,
+.foot .hug:active {
+  border-color: #f5f4f1;
+  background: #f5f4f1;
+  color: #000;
 }

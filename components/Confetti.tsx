@@ -16,6 +16,18 @@ const COLORS = [
 /** Past the threshold the celebration curdles: mostly reds, a little ember. */
 const ANGRY_COLORS = ['#EE3524', '#C62817', '#FF4D6D', '#8E1B0F', '#FF8C42', '#FFD23F', '#F5F4F1']
 
+/** And past the next one it uncurdles. Same shape as the angry palette —
+ *  three shades of the banner green, then a cool accent, then his yellow. */
+const CALM_COLORS = ['#12A150', '#0D7F3E', '#3DDC97', '#0A6632', '#4CC9F0', '#FFD23F', '#F5F4F1']
+
+type Tone = 'default' | 'angry' | 'calm'
+
+const PALETTES: Record<Tone, string[]> = {
+  default: COLORS,
+  angry: ANGRY_COLORS,
+  calm: CALM_COLORS,
+}
+
 const COUNT = 140
 const GRAVITY = 0.13
 const DRAG = 0.992
@@ -40,13 +52,13 @@ type Piece = {
  * One burst, drawn on a canvas rather than as DOM nodes: 140 elements each
  * getting a transform every frame is the slow way to do this.
  */
-export default function Confetti({ angry = false }: { angry?: boolean }) {
+export default function Confetti({ tone = 'default' }: { tone?: Tone }) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const palette = angry ? ANGRY_COLORS : COLORS
+    const palette = PALETTES[tone]
 
     const canvas = ref.current
     if (!canvas) return
@@ -82,9 +94,10 @@ export default function Confetti({ angry = false }: { angry?: boolean }) {
         h: rand(8, 16),
         rot: rand(0, Math.PI * 2),
         vrot: rand(-0.24, 0.24),
-        // Weighted to the front of the palette, so the reds dominate rather
-        // than being one colour among seven.
-        color: palette[Math.floor(Math.random() ** (angry ? 1.9 : 1) * palette.length)],
+        // Weighted to the front of the palette, so the themed colours dominate
+        // rather than being one among seven. The default burst stays even.
+        color:
+          palette[Math.floor(Math.random() ** (tone === 'default' ? 1 : 1.9) * palette.length)],
         phase: rand(0, Math.PI * 2),
         spin: rand(0.08, 0.2),
       }
@@ -132,7 +145,7 @@ export default function Confetti({ angry = false }: { angry?: boolean }) {
       cancelAnimationFrame(frame)
       window.removeEventListener('resize', resize)
     }
-  }, [angry])
+  }, [tone])
 
   return <canvas ref={ref} className={styles.canvas} aria-hidden="true" />
 }

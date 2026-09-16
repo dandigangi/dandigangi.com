@@ -23,7 +23,9 @@
   cursor: pointer;
   /* Ease-in on the way out, ease-out on the way in — he decelerates into place
      and accelerates away, which reads as weight rather than a slide. */
-  transition: transform 620ms cubic-bezier(0.64, 0, 0.78, 0);
+  /* Duration is set inline per appearance — it shortens as the chase heats up.
+     This value is only the fallback if that style never lands. */
+  transition: transform 480ms cubic-bezier(0.64, 0, 0.78, 0);
   will-change: transform;
 }
 
@@ -40,17 +42,25 @@
 
 /* Start position per edge, and the rotation that puts his head into the page —
    he always enters head-first, whichever side he comes from. Rotation lives on
-   the image so it does not fight the slider's translation. */
+   the image so it does not fight the slider's translation.
+   
+   The translate before each rotation pushes him out by --slack, cancelling the
+   dead space the square box leaves above and below him. Order matters: the
+   rotation applies first, so the translate moves the already-turned image. */
 .top .slider {
   transform: translate3d(0, -100%, 0);
 }
 
 .top .pika {
-  transform: rotate(180deg);
+  transform: translateY(calc(var(--slack) * -1)) rotate(180deg);
 }
 
 .bottom .slider {
   transform: translate3d(0, 100%, 0);
+}
+
+.bottom .pika {
+  transform: translateY(var(--slack));
 }
 
 .left .slider {
@@ -58,7 +68,7 @@
 }
 
 .left .pika {
-  transform: rotate(90deg);
+  transform: translateX(calc(var(--slack) * -1)) rotate(90deg);
 }
 
 .right .slider {
@@ -66,7 +76,7 @@
 }
 
 .right .pika {
-  transform: rotate(-90deg);
+  transform: translateX(var(--slack)) rotate(-90deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
