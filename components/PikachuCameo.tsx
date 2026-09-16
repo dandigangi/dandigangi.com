@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import {
@@ -123,6 +123,9 @@ export default function PikachuCameo() {
   // navigation and the browser tab closing.
   const { amount, invoices, wonAt } = useSyncExternalStore(subscribe, getTab, getInitialTab)
   const [previous, setPrevious] = useState<number | null>(null)
+  /** Only a catch earns the chance to hug; reopening from a nav link is a
+   *  re-read of the invoice, not a new encounter. */
+  const [byCatch, setByCatch] = useState(false)
   // Lets the modal stop and restart the loop without re-running the effect,
   // which would reset every timer it owns.
   const loop = useRef<{ stop: () => void; start: () => void } | null>(null)
@@ -229,7 +232,7 @@ export default function PikachuCameo() {
     } else {
       raiseTab(tab.amount)
     }
-    show()
+    show(true)
   }
 
   // Not a catch: it changes the figure without raising an invoice, and leaves
@@ -248,23 +251,29 @@ export default function PikachuCameo() {
   }, [pathname])
 
   // Reopening from the footer must not add to the tab: only he gets to do that.
-  const show = () => {
+  const show = (viaCatch: boolean) => {
     loop.current?.stop()
     setShown(false)
     setCameo(null)
+    setByCatch(viaCatch)
     setOpen(true)
   }
 
   useEffect(() => {
-    const onOpen = () => show()
+    const onOpen = () => show(false)
     window.addEventListener(PIKACHU_OPEN, onOpen)
     return () => window.removeEventListener(PIKACHU_OPEN, onOpen)
   }, [])
 
-  const onClose = () => {
+  /**
+   * Stable, and it has to be: the modal focuses its close button and arms the
+   * hug's exit timer off this identity. A fresh function each render would
+   * steal focus back on every store update and keep restarting the timer.
+   */
+  const onClose = useCallback(() => {
     setOpen(false)
     loop.current?.start()
-  }
+  }, [])
 
   return (
     <>
@@ -274,6 +283,7 @@ export default function PikachuCameo() {
           previous={previous}
           invoices={invoices}
           won={wonAt !== null}
+          viaCatch={byCatch}
           onHug={onHug}
           onClose={onClose}
         />

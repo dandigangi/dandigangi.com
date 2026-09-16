@@ -13,9 +13,8 @@ export const PIKACHU_OPEN = 'pikachu:open'
  * fired. Anything inside a page unmounts on a client-side navigation and has to
  * be able to ask what happened while it was gone.
  *
- * Two independent sources drive the hero swap. Catching him is permanent — you
- * met him, that is that. The About page's Alter Ego button is a toggle, so it
- * can put the abstract render back, but only if he was never caught.
+ * `caught` is permanent and only opens the footer link — you met him, that is
+ * that. The hero swap is a separate, higher bar: see heroActive below.
  */
 let caught = false
 let alterEgo = false
@@ -42,9 +41,20 @@ export const subscribe = (listener: () => void) => {
 
 export const hasCaught = () => caught
 export const isAlterEgo = () => alterEgo
-export const heroActive = () => caught || alterEgo
 
-export const heroEverActive = () => everActive
+/**
+ * Meeting him is not enough to take over the page — he has to have escalated
+ * first, at the same figure that turns the modal red.
+ *
+ * Derived from the tab rather than a flag of its own, so a hug that drops him
+ * back under the line puts the abstract render back exactly as it puts the
+ * modal back to black.
+ */
+export const heroActive = () => alterEgo || getTab().amount >= OVER_TIER
+
+/** Derived too, or a reload with an escalated tab stored would never mount the
+ *  layer that `heroActive` is about to switch on. */
+export const heroEverActive = () => everActive || heroActive()
 
 const changed = (wasActive: boolean) => {
   if (heroActive()) {
@@ -87,7 +97,11 @@ export type Tab = {
   wonAt: number | null
 }
 
-const OPENING = 100
+/** His opening ask, and the floor a hug cannot take him below. */
+export const OPENING = 100
+
+/** Where he stops being polite, and where the hero swap earns its keep. */
+export const OVER_TIER = 500
 
 /** Where the last state takes over. Lives here rather than in the modal so the
  *  store can stamp `wonAt` at the moment it is crossed. */
@@ -150,6 +164,7 @@ export const getInitialTab = (): Tab => INITIAL
 
 /** Raises the tab and counts the invoice. Only he may call this. */
 export const raiseTab = (amount: number) => {
+  const wasActive = heroActive()
   tab = {
     amount,
     invoices: tab.invoices + 1,
@@ -157,15 +172,18 @@ export const raiseTab = (amount: number) => {
     wonAt: tab.wonAt ?? (amount >= FINAL_TIER ? Date.now() : null),
   }
   persist()
-  emit()
+  // Not emit(): crossing OVER_TIER is what switches the hero on, and only this
+  // knows whether that just happened.
+  changed(wasActive)
 }
 
 /** A hug is worth something. Never below the opening ask. */
 export const softenTab = (by: number): boolean => {
   const next = Math.max(OPENING, Math.round((tab.amount - by) * 100) / 100)
   if (next === tab.amount) return false
+  const wasActive = heroActive()
   tab = { ...tab, amount: next }
   persist()
-  emit()
+  changed(wasActive)
   return true
 }

@@ -207,18 +207,58 @@
   gap: 14px;
 }
 
-/* Pikachu's opinion of your decision. Appears only on hover or focus. */
+/*
+ * Pikachu's opinion of your decision, as a tooltip over the button that earns
+ * it. Absolute so it costs no layout — in flow it sat between the two actions
+ * and pushed them apart even while invisible.
+ */
 .frown {
+  position: absolute;
+  /* 10px clears the 6px tail below, leaving 4px between its point and the
+     button — any more and the tooltip stops looking attached to it. */
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 1;
+  /* The tight tracking below pulls the last glyph left, so the right padding
+     is trimmed slightly to match and the face still sits centred in the chip. */
+  padding: 9px 11px 9px 12px;
+  background: #f5f4f1;
+  color: #000;
+  /* Rounded and shadowed, unlike every other surface here — a tooltip that
+     shares the modal's square edges reads as a panel, not a tooltip. */
+  border-radius: 9px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
   font-family: var(--font-mono), monospace;
   font-size: 15px;
   /* Tight: at any real tracking the three glyphs stop reading as a face. */
   letter-spacing: -0.16em;
+  line-height: 1;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s ease;
 }
 
-.declineWrap:hover .frown,
-.declineWrap:focus-within .frown {
+/* The tail. A border triangle rather than a rotated square, so the rounded
+   corners above it stay square-free and nothing needs clipping. */
+.frown::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-top-color: #f5f4f1;
+  transform: translateX(-50%);
+}
+
+/* Scoped to the button itself, not the row — hovering anywhere near the Hug
+   button used to summon it. */
+.foot .decline:hover .frown,
+.foot .decline:focus-visible .frown,
+.foot .decline:active .frown {
   opacity: 1;
 }
 
@@ -271,6 +311,8 @@
    these beat the global .btn and .btn:hover, which are a single class each and
    would otherwise win on source order. */
 .foot .decline {
+  /* Anchors the tooltip, which escapes upward out of the button. */
+  position: relative;
   border-color: #ee3524;
   background: none;
   color: #ee3524;
@@ -398,15 +440,108 @@
    the site uses. Explicit colours rather than the global .btn's var(--bg),
    which resolves to white in light mode and would vanish on the fill. */
 .foot .hug {
+  /* Anchors the heart, which escapes upward out of the button. */
+  position: relative;
   border-color: rgba(245, 244, 241, 0.62);
   background: none;
   color: #f5f4f1;
 }
 
-.foot .hug:hover,
-.foot .hug:focus-visible,
-.foot .hug:active {
+.foot .hug:hover:not(:disabled),
+.foot .hug:focus-visible:not(:disabled),
+.foot .hug:active:not(:disabled) {
   border-color: #f5f4f1;
   background: #f5f4f1;
   color: #000;
+}
+
+/* Spent. Still readable, so it is clear it was a thing you did rather than a
+   control that vanished. */
+.foot .hug:disabled {
+  border-color: rgba(245, 244, 241, 0.2);
+  background: none;
+  color: rgba(245, 244, 241, 0.32);
+  cursor: default;
+}
+
+/*
+ * The only width breakpoint in the project — everything else is clamp(), but
+ * clamp cannot express "stop sitting side by side and centre instead".
+ *
+ * 580px is where the footer's content (~483px of label, gap and two actions)
+ * stops fitting the modal's inner width, so the rule lands exactly when the
+ * row would otherwise wrap and strand the actions against one edge.
+ */
+@media (max-width: 580px) {
+  .foot {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+  }
+
+  .declineWrap {
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* No hover to summon it here, and :active would only flash it as the modal
+     is already closing. */
+  .frown {
+    display: none;
+  }
+
+  /* Equal widths, capped so they stay buttons rather than becoming banners,
+     and centred as a pair rather than pinned to an edge. */
+  .foot .decline,
+  .foot .hug,
+  .foot .claim {
+    flex: 1 1 0;
+    max-width: 200px;
+    justify-content: center;
+    padding: 16px 18px;
+  }
+
+  /* Nothing to push away from in a centred column. */
+  .foot .soleAction {
+    margin-left: 0;
+  }
+}
+
+/*
+ * One beat, not a shower. The glyph carries its own colour, so no `color`
+ * here — and the U+FE0F after it is what forces emoji presentation rather
+ * than the flat text heart some platforms default to.
+ */
+.heart {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  font-size: 24px;
+  line-height: 1;
+  pointer-events: none;
+  animation: hugged 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes hugged {
+  0% {
+    transform: translate(-50%, 0) scale(0.7);
+    opacity: 0;
+  }
+
+  25% {
+    transform: translate(-50%, -14px) scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -52px) scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart {
+    display: none;
+  }
 }

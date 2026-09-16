@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import siteMetadata from '@/data/siteMetadata'
-import { FINAL_TIER } from '@/lib/pikachu'
+import { FINAL_TIER, OPENING, OVER_TIER } from '@/lib/pikachu'
 import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
 import styles from './PikachuModal.module.css'
@@ -15,15 +15,22 @@ import styles from './PikachuModal.module.css'
  * the joke; the row below them is.
  */
 const METHODS = [
-  { name: 'Venmo / PayPal', note: 'Instant', mark: '$', color: '#12A150' },
-  { name: 'Bitcoin', note: 'Network fees apply', mark: '₿', color: '#F7931A' },
-  { name: 'Check', note: '7–14 days', mark: '✉', color: '#6B7280' },
+  { name: 'Venmo / PayPal', note: 'Instant', retort: 'Rude, TBH', mark: '$', color: '#12A150' },
+  {
+    name: 'Bitcoin',
+    note: 'Network fees apply',
+    retort: 'You’re about to get phished',
+    mark: '₿',
+    color: '#F7931A',
+  },
+  {
+    name: 'Check',
+    note: '7–14 days',
+    retort: 'Are you crazy? It’s not 1994.',
+    mark: '✉',
+    color: '#6B7280',
+  },
 ]
-
-/** The one rail he will not entertain. Clicking it settles nothing — he just
- *  says so, in place of the delivery estimate. */
-const ANACHRONISM = 'Check'
-const RETORT = 'Are you crazy? It\u2019s not 1994.'
 
 /**
  * Decimal places come from the target, not the value being rendered: during the
@@ -37,6 +44,22 @@ const money = (value: number, fractionDigits: number) =>
   })}`
 
 const ROLL_MS = 620
+
+/**
+ * The figure lands at ROLL_MS and the heart clears at 900ms, so this leaves
+ * roughly six tenths of a second holding still on the new, lower total before
+ * he lets you go. Without that beat the close eats the very thing it is
+ * rewarding you with.
+ */
+const HUG_EXIT_MS = 1500
+
+/**
+ * One hug settles an encounter and ends it. Reopening the invoice from a nav
+ * link is not an encounter, so there is nothing to end — you can work him down
+ * a few times instead, and he just stops obliging.
+ */
+const HUGS_PER_CATCH = 1
+const HUGS_PER_RE_READ = 3
 const STEP_MS = 38
 
 /** Eased ramp to `to`, sampled slowly enough that digits land instead of blur. */
@@ -93,10 +116,6 @@ function RollingAmount({ from, to }: { from: number; to: number }) {
   )
 }
 
-/** The point at which he stops being polite about it. At $50-200 a click from
- *  a $100 opening ask, that lands around the fourth or fifth invoice. */
-const OVER_THRESHOLD = 500
-
 /** Appears twice below, so it lives here rather than in both. */
 const FIGURE = 10
 
@@ -142,6 +161,7 @@ export default function PikachuModal({
   previous,
   invoices,
   won,
+  viaCatch,
   onHug,
   onClose,
 }: {
@@ -150,15 +170,22 @@ export default function PikachuModal({
   invoices: number
   /** Sticky once earned, so a hug cannot take the last state back. */
   won: boolean
+  /** False when reopened from a nav link rather than caught. */
+  viaCatch: boolean
   onHug: () => void
   onClose: () => void
 }) {
   const closeRef = useRef<HTMLButtonElement>(null)
-  const [scoffed, setScoffed] = useState(false)
+  /** One per encounter — he is not running a discount scheme. */
+  const [hugs, setHugs] = useState(0)
+  /** Rails he has already been asked about. None of them settle anything — he
+   *  answers in place of the delivery estimate and the invoice stays open. */
+  const [poked, setPoked] = useState<string[]>([])
   const final = won || amount >= FINAL_TIER
+  const hugLimit = viaCatch ? HUGS_PER_CATCH : HUGS_PER_RE_READ
   // Mutually exclusive: in the third state the anger is over, so the red
   // banner, the angry avatar and the angry confetti all stand down.
-  const over = !final && amount >= OVER_THRESHOLD
+  const over = !final && amount >= OVER_TIER
 
   useEffect(() => {
     closeRef.current?.focus()
@@ -176,6 +203,14 @@ export default function PikachuModal({
       document.body.style.overflow = overflow
     }
   }, [onClose])
+
+  // A hug settles a real encounter, so he lets you go once the heart and the
+  // roll have played out. A re-read has nothing to settle and stays open.
+  useEffect(() => {
+    if (!viaCatch || hugs === 0) return
+    const timer = setTimeout(onClose, HUG_EXIT_MS)
+    return () => clearTimeout(timer)
+  }, [viaCatch, hugs, onClose])
 
   return (
     <div
@@ -268,30 +303,31 @@ export default function PikachuModal({
 
         {!final && (
           <div className={styles.methods}>
-            {METHODS.map((method) => {
-              const anachronism = method.name === ANACHRONISM
-              return (
-                <button
-                  key={method.name}
-                  type="button"
-                  className={styles.method}
-                  onClick={anachronism ? () => setScoffed(true) : onClose}
+            {METHODS.map((method) => (
+              <button
+                key={method.name}
+                type="button"
+                className={styles.method}
+                onClick={() =>
+                  setPoked((names) =>
+                    names.includes(method.name) ? names : [...names, method.name]
+                  )
+                }
+              >
+                <span
+                  className={styles.badge}
+                  style={{ background: method.color }}
+                  aria-hidden="true"
                 >
-                  <span
-                    className={styles.badge}
-                    style={{ background: method.color }}
-                    aria-hidden="true"
-                  >
-                    {method.mark}
-                  </span>
-                  <span className={styles.methodName}>{method.name}</span>
-                  <span className={`meta ${styles.note}`}>
-                    {anachronism && scoffed ? RETORT : method.note}
-                  </span>
-                  <ArrowRight size={16} />
-                </button>
-              )
-            })}
+                  {method.mark}
+                </span>
+                <span className={styles.methodName}>{method.name}</span>
+                <span className={`meta ${styles.note}`}>
+                  {poked.includes(method.name) ? method.retort : method.note}
+                </span>
+                <ArrowRight size={16} />
+              </button>
+            ))}
           </div>
         )}
 
@@ -302,11 +338,25 @@ export default function PikachuModal({
             {/* His opinion of declining — there is nothing to decline any more. */}
             {!final && (
               <>
-                <span className={styles.frown} aria-hidden="true">
-                  &gt;:|
-                </span>
-                <button type="button" className={`btn ${styles.hug}`} onClick={onHug}>
+                <button
+                  type="button"
+                  className={`btn ${styles.hug}`}
+                  // Nothing to negotiate at the opening ask — a hug there floors
+                  // at the same figure and would animate nothing.
+                  disabled={hugs >= hugLimit || amount <= OPENING}
+                  onClick={() => {
+                    setHugs((count) => count + 1)
+                    onHug()
+                  }}
+                >
                   Hug
+                  {hugs > 0 && (
+                    // Keyed on the count so the animation replays rather than
+                    // sitting spent at opacity 0 after the first one.
+                    <span key={hugs} className={styles.heart} aria-hidden="true">
+                      ❤️
+                    </span>
+                  )}
                 </button>
               </>
             )}
@@ -331,6 +381,9 @@ export default function PikachuModal({
                 onClick={onClose}
               >
                 Decline
+                <span className={styles.frown} aria-hidden="true">
+                  &gt;:|
+                </span>
               </button>
             )}
           </div>
