@@ -15,7 +15,8 @@ export default function LocalTools() {
   const pathname = usePathname()
 
   if (process.env.NODE_ENV !== 'development') return null
-  if (!pathname || pathname.startsWith('/admin')) return null
+  // Hidden on the editor itself; the other /admin pages are ordinary pages.
+  if (!pathname || pathname.startsWith('/admin/write')) return null
 
   // A post's slug is its filename without .mdx — including the .draft of a
   // local one, so `/blog/foo.draft` edits `foo.draft.mdx`.
