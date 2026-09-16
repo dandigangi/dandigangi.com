@@ -13,6 +13,9 @@ const COLORS = [
   '#F5F4F1',
 ]
 
+/** Past the threshold the celebration curdles: mostly reds, a little ember. */
+const ANGRY_COLORS = ['#EE3524', '#C62817', '#FF4D6D', '#8E1B0F', '#FF8C42', '#FFD23F', '#F5F4F1']
+
 const COUNT = 140
 const GRAVITY = 0.13
 const DRAG = 0.992
@@ -37,11 +40,13 @@ type Piece = {
  * One burst, drawn on a canvas rather than as DOM nodes: 140 elements each
  * getting a transform every frame is the slow way to do this.
  */
-export default function Confetti() {
+export default function Confetti({ angry = false }: { angry?: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const palette = angry ? ANGRY_COLORS : COLORS
 
     const canvas = ref.current
     if (!canvas) return
@@ -77,7 +82,9 @@ export default function Confetti() {
         h: rand(8, 16),
         rot: rand(0, Math.PI * 2),
         vrot: rand(-0.24, 0.24),
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        // Weighted to the front of the palette, so the reds dominate rather
+        // than being one colour among seven.
+        color: palette[Math.floor(Math.random() ** (angry ? 1.9 : 1) * palette.length)],
         phase: rand(0, Math.PI * 2),
         spin: rand(0.08, 0.2),
       }
@@ -125,7 +132,7 @@ export default function Confetti() {
       cancelAnimationFrame(frame)
       window.removeEventListener('resize', resize)
     }
-  }, [])
+  }, [angry])
 
   return <canvas ref={ref} className={styles.canvas} aria-hidden="true" />
 }

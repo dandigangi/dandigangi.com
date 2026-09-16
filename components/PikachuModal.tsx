@@ -84,16 +84,26 @@ function RollingAmount({ from, to }: { from: number; to: number }) {
   )
 }
 
+/** The point at which he stops being polite about it. At $50-200 a click from
+ *  a $100 opening ask, that lands around the fourth or fifth invoice. */
+const OVER_THRESHOLD = 500
+
+const AVATAR = '/static/images/pikachu-avatar.jpg'
+const ANGRY_AVATAR = '/static/images/pikachu-avatar-angry.jpg'
+
 export default function PikachuModal({
   amount,
   previous,
+  invoices,
   onClose,
 }: {
   amount: number
   previous: number | null
+  invoices: number
   onClose: () => void
 }) {
   const closeRef = useRef<HTMLButtonElement>(null)
+  const over = amount >= OVER_THRESHOLD
 
   useEffect(() => {
     closeRef.current?.focus()
@@ -121,7 +131,7 @@ export default function PikachuModal({
         if (event.target === event.currentTarget) onClose()
       }}
     >
-      <Confetti />
+      <Confetti angry={over} />
 
       <div
         className={styles.modal}
@@ -129,9 +139,15 @@ export default function PikachuModal({
         aria-modal="true"
         aria-labelledby="pikachu-modal-title"
       >
-        <header className={styles.head}>
-          <span className="label" id="pikachu-modal-title">
-            Payment request
+        <header className={`${styles.head} ${over ? styles.headOver : ''}`}>
+          <span className={styles.headTitle} id="pikachu-modal-title">
+            <span className={styles.headTitleStrong}>Payment request</span>
+            {over && invoices > 0 && (
+              <span className={styles.headCount}>
+                {' '}
+                — {invoices} missed {invoices === 1 ? 'invoice' : 'invoices'}
+              </span>
+            )}
           </span>
           <button ref={closeRef} type="button" className={styles.close} onClick={onClose}>
             <span aria-hidden="true">×</span>
@@ -142,7 +158,7 @@ export default function PikachuModal({
         <div className={styles.body}>
           <div className={styles.identity}>
             <Image
-              src="/static/images/pikachu-avatar.jpg"
+              src={over ? ANGRY_AVATAR : AVATAR}
               alt=""
               width={240}
               height={240}
@@ -195,7 +211,11 @@ export default function PikachuModal({
             <span className={styles.frown} aria-hidden="true">
               &gt;:|
             </span>
-            <button type="button" className="btn" onClick={onClose}>
+            <button
+              type="button"
+              className={`btn ${styles.decline} ${over ? styles.declineOver : ''}`}
+              onClick={onClose}
+            >
               Decline
             </button>
           </div>

@@ -17,7 +17,13 @@
   width: min(100%, 680px);
   max-height: 100%;
   overflow-y: auto;
-  /* Always the dark treatment: it is Pikachu shaking you down, not a page. */
+  /* Always the dark treatment: it is Pikachu shaking you down, not a page. So
+     it pins the dark palette locally — otherwise in light mode every label,
+     rule and meta line inside inverts to near-black on black. */
+  --ink: #f5f4f1;
+  --soft: rgba(245, 244, 241, 0.62);
+  --line: rgba(245, 244, 241, 0.16);
+  --hover: rgba(245, 244, 241, 0.07);
   background: #000;
   color: #f5f4f1;
   border: 1px solid rgba(245, 244, 241, 0.16);
@@ -256,4 +262,75 @@
   .digit {
     animation: none;
   }
+}
+
+/* Declining is always a refusal, so it always reads red. Scoped under .foot so
+   these beat the global .btn and .btn:hover, which are a single class each and
+   would otherwise win on source order. */
+.foot .decline {
+  border-color: #ee3524;
+  background: none;
+  color: #ee3524;
+}
+
+.foot .decline:hover {
+  border-color: #ee3524;
+  background: #ee3524;
+  color: #fff;
+}
+
+/* Past $500 it stops being a polite no. */
+.foot .declineOver {
+  border-color: #ee3524;
+  background: #ee3524;
+  color: #fff;
+}
+
+.foot .declineOver:hover {
+  border-color: #c62817;
+  background: #c62817;
+  color: #fff;
+}
+
+/* The header goes with it, but the close control stays black so it still reads
+   as a control rather than part of the banner. */
+.headTitle {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.headTitleStrong {
+  font-weight: 400;
+}
+
+.headCount {
+  font-weight: 400;
+}
+
+.headOver {
+  background: #ee3524;
+  border-bottom-color: #ee3524;
+}
+
+/* On the red banner the soft grey label is unreadable — it goes solid white,
+   and the title itself takes weight so it holds against the fill. */
+.headOver .headTitle {
+  color: #fff;
+}
+
+.headOver .headTitleStrong {
+  font-weight: 600;
+}
+
+.headOver .close {
+  border-color: #000;
+  color: #000;
+}
+
+.headOver .close:hover {
+  background: #000;
+  color: #ee3524;
 }

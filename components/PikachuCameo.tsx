@@ -81,6 +81,7 @@ export default function PikachuCameo() {
   const [amount, setAmount] = useState(100)
   const pathname = usePathname()
   const [previous, setPrevious] = useState<number | null>(null)
+  const [invoices, setInvoices] = useState(0)
   const caught = useRef(false)
   // Lets the modal stop and restart the loop without re-running the effect,
   // which would reset every timer it owns.
@@ -174,9 +175,11 @@ export default function PikachuCameo() {
     // Each shakedown costs more than the last, cents and all.
     if (caught.current) {
       setPrevious(amount)
-      setAmount(Math.round((amount + rand(25, 75)) * 100) / 100)
+      setAmount(Math.round((amount + rand(50, 200)) * 100) / 100)
     }
     caught.current = true
+    // Only he raises an invoice — reopening from the footer is just a re-read.
+    setInvoices((count) => count + 1)
     show()
   }
 
@@ -209,7 +212,9 @@ export default function PikachuCameo() {
 
   return (
     <>
-      {open && <PikachuModal amount={amount} previous={previous} onClose={onClose} />}
+      {open && (
+        <PikachuModal amount={amount} previous={previous} invoices={invoices} onClose={onClose} />
+      )}
       {cameo?.path === pathname && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
     </>
   )
@@ -220,6 +225,7 @@ function Cameo({ cameo, shown, onCatch }: { cameo: Cameo; shown: boolean; onCatc
     <div
       key={cameo.id}
       className={`${styles.clip} ${styles[cameo.edge]}`}
+      data-print="hide"
       style={{ top: cameo.top, left: cameo.left, width: SIZE, height: SIZE }}
     >
       <button
