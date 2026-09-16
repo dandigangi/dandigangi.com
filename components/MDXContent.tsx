@@ -23,6 +23,14 @@ export default function MDXContent({
   code: string
   components?: MDXComponents
 }) {
+  /**
+   * A post with no body compiles to an empty string, and `new Function('')`
+   * returns undefined — so reading `.default` off it threw and took the whole
+   * page down with a 500. A post that is only a title is a legitimate thing to
+   * have on disk while it is being written, so it renders as nothing instead.
+   */
+  if (code.trim() === '') return null
+
   const Component = getMDXComponent(code)
   return <Component components={{ ...defaultComponents, ...components }} />
 }
