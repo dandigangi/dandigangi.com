@@ -183,6 +183,8 @@ export default function PikachuModal({
   const [poked, setPoked] = useState<string[]>([])
   const final = won || amount >= FINAL_TIER
   const hugLimit = viaCatch ? HUGS_PER_CATCH : HUGS_PER_RE_READ
+  /** Out of hugs — one after catching him, three when only re-reading. */
+  const spent = hugs >= hugLimit
   // Mutually exclusive: in the third state the anger is over, so the red
   // banner, the angry avatar and the angry confetti all stand down.
   const over = !final && amount >= OVER_TIER
@@ -343,7 +345,7 @@ export default function PikachuModal({
                   className={`btn ${styles.hug}`}
                   // Nothing to negotiate at the opening ask — a hug there floors
                   // at the same figure and would animate nothing.
-                  disabled={hugs >= hugLimit || amount <= OPENING}
+                  disabled={spent || amount <= OPENING}
                   onClick={() => {
                     setHugs((count) => count + 1)
                     onHug()
@@ -378,6 +380,9 @@ export default function PikachuModal({
               <button
                 type="button"
                 className={`btn ${styles.decline} ${over ? styles.declineOver : ''}`}
+                // Refusing stays open until the hugs are gone: on a re-read that
+                // is three of them, so one hug must not close the door.
+                disabled={spent}
                 onClick={onClose}
               >
                 Decline

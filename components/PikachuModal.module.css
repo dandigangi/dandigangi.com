@@ -255,10 +255,11 @@
 }
 
 /* Scoped to the button itself, not the row — hovering anywhere near the Hug
-   button used to summon it. */
-.foot .decline:hover .frown,
-.foot .decline:focus-visible .frown,
-.foot .decline:active .frown {
+   button used to summon it. A disabled button still matches :hover, hence the
+   guard: he has no opinion left to offer once you have hugged him. */
+.foot .decline:hover:not(:disabled) .frown,
+.foot .decline:focus-visible:not(:disabled) .frown,
+.foot .decline:active:not(:disabled) .frown {
   opacity: 1;
 }
 
@@ -318,7 +319,7 @@
   color: #ee3524;
 }
 
-.foot .decline:hover {
+.foot .decline:hover:not(:disabled) {
   border-color: #ee3524;
   background: #ee3524;
   color: #fff;
@@ -331,10 +332,26 @@
   color: #fff;
 }
 
-.foot .declineOver:hover {
+.foot .declineOver:hover:not(:disabled) {
   border-color: #c62817;
   background: #c62817;
   color: #fff;
+}
+
+/* Spent, like the hug that spent it. Both variants dim rather than vanish so
+   the refusal still reads as a road you chose not to take. */
+.foot .decline:disabled {
+  border-color: rgba(238, 53, 36, 0.32);
+  background: none;
+  color: rgba(238, 53, 36, 0.42);
+  cursor: default;
+}
+
+.foot .declineOver:disabled {
+  border-color: rgba(238, 53, 36, 0.34);
+  background: rgba(238, 53, 36, 0.34);
+  color: rgba(255, 255, 255, 0.58);
+  cursor: default;
 }
 
 /* The header goes with it, but the close control stays black so it still reads
