@@ -7,6 +7,7 @@ import {
   RESUME_PDF_URL,
   RESUME_PDF_ENABLED,
 } from '@/data/resume'
+import Image from 'next/image'
 import PageBand from '@/components/PageBand'
 import { ArrowRight } from '@/components/Icons'
 import { genPageMetadata } from 'app/seo'
@@ -19,11 +20,36 @@ export const metadata = genPageMetadata({
   alternates: { canonical: '/resume' },
 })
 
+/** Empty until the marks exist, so the layout is already reserving the space. */
+function RoleLogo({ src, name }: { src?: string; name: string }) {
+  return (
+    <div className={styles.logo}>
+      {src ? <Image src={src} alt="" width={30} height={30} /> : null}
+      <span className="srOnly">{name}</span>
+    </div>
+  )
+}
+
+/**
+ * The private build swaps in a personal address via RESUME_EMAIL, a
+ * server-only variable that is never committed and is never set on Vercel — so
+ * the deployed site and the public PDF always carry the Proton address.
+ */
+const contactEmail = process.env.RESUME_EMAIL || siteMetadata.email
+
 export default function Resume() {
   return (
     <>
       <PageBand title="Résumé" objectPosition="70% 35%">
         <div className={styles.bandActions}>
+          <a
+            href={siteMetadata.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btnBand"
+          >
+            LinkedIn
+          </a>
           {RESUME_PDF_ENABLED && (
             <a
               href={RESUME_PDF_URL}
@@ -34,19 +60,29 @@ export default function Resume() {
               Download PDF
             </a>
           )}
-          <a
-            href={siteMetadata.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btnBand"
-          >
-            LinkedIn
-          </a>
         </div>
       </PageBand>
 
+      {/* The band carries the name and actions on screen, but it is an image
+          and is dropped from print. Paper needs its own masthead. */}
+      <header className={styles.printHeader} data-print="only">
+        {/* Name and tagline share a row on the same baseline; role and contact
+            run underneath the pair. */}
+        <div className={styles.printTopRow}>
+          <h1 className={styles.printName}>{siteMetadata.author}</h1>
+          <p className={styles.printTagline}>{siteMetadata.tagline}</p>
+        </div>
+        <p className={styles.printRole}>{siteMetadata.role}</p>
+        <p className={styles.printContact}>
+          {siteMetadata.location} · {contactEmail} · {siteMetadata.siteUrl.replace('https://', '')}{' '}
+          · {siteMetadata.linkedin.replace('https://www.', '')}
+        </p>
+      </header>
+
       <div className="container">
-        <section className={`rail railSection`} data-cameo>
+        {/* Dropped from print: the masthead above already carries the role,
+            location and contact line. */}
+        <section className={`rail railSection`} data-cameo data-print="hide">
           <span className="label">Summary</span>
           <div>
             <p className={styles.lede}>{resumeSummary}</p>
@@ -64,7 +100,12 @@ export default function Resume() {
           <span className="label">Experience</span>
           <div>
             {resumeExperience.map((role) => (
-              <article key={`${role.company}-${role.dates}`} className={styles.role}>
+              <article
+                key={`${role.company}-${role.dates}`}
+                className={styles.role}
+                data-print-keep
+              >
+                <RoleLogo src={role.logo} name={role.company} />
                 <div className={styles.roleMain}>
                   <h2 className={styles.roleTitle}>{role.title}</h2>
                   <p className={styles.company}>
@@ -91,7 +132,7 @@ export default function Resume() {
         <section className={`rail railSection`} data-cameo>
           <span className="label">Education</span>
           <div>
-            <article className={styles.role}>
+            <article className={`${styles.role} ${styles.roleNoLogo}`} data-print-keep>
               <div className={styles.roleMain}>
                 <h2 className={styles.roleTitle}>{resumeEducation.credential}</h2>
                 <p className={styles.company}>{resumeEducation.institution}</p>
@@ -112,15 +153,15 @@ export default function Resume() {
 
         {/* Repeats the band's actions at the end of a long page, so the reader
             does not have to scroll back up to act on what they just read. */}
-        <div className={styles.cta}>
+        <div className={styles.cta} data-print="hide">
+          <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
+            LinkedIn <ArrowRight size={14} />
+          </a>
           {RESUME_PDF_ENABLED && (
             <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer" className="btn">
               Download PDF <ArrowRight size={14} />
             </a>
           )}
-          <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
-            LinkedIn <ArrowRight size={14} />
-          </a>
         </div>
       </div>
     </>

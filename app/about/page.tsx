@@ -3,6 +3,7 @@ import PageBand from '@/components/PageBand'
 import Portrait from '@/components/Portrait'
 import { genPageMetadata } from 'app/seo'
 import siteMetadata from '@/data/siteMetadata'
+import { RESUME_PDF_URL } from '@/data/resume'
 import {
   aboutOverview,
   aboutExperience,
@@ -128,6 +129,9 @@ export default function About() {
               className="btn"
             >
               LinkedIn
+            </a>
+            <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer" className="btn">
+              Download PDF
             </a>
             <div>
               <span className="label">Currently</span>

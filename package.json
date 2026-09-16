@@ -14,7 +14,8 @@
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true yarn build",
     "lint": "eslint app components lib scripts instrumentation-client.ts velite.config.ts",
-    "smoke": "node ./scripts/smoke.mjs"
+    "smoke": "node ./scripts/smoke.mjs",
+    "resume:pdf": "node ./scripts/resume-pdf.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

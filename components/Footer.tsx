@@ -17,7 +17,7 @@ export default function Footer() {
   const date = process.env.NEXT_PUBLIC_BUILD_DATE
 
   return (
-    <footer style={{ borderTop: '1px solid var(--line)' }}>
+    <footer style={{ borderTop: '1px solid var(--line)' }} data-print="hide">
       <div
         className="rail"
         style={{

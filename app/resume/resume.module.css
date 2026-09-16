@@ -40,6 +40,20 @@
   border-top: 1px solid var(--line);
 }
 
+.logo {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 .roleMain {
   flex: 1 1 320px;
   min-width: 0;
@@ -111,4 +125,192 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+/* Paper masthead. Hidden on screen by the [data-print='only'] rule in
+   print.css, where the band already carries this information. */
+.printHeader {
+  margin-bottom: 10mm;
+  padding-bottom: 5mm;
+  border-bottom: 1px solid var(--line);
+}
+
+.printName {
+  margin: 0;
+  font-size: 26pt;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.printRole {
+  margin: 3mm 0 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 10pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.printTopRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10mm;
+}
+
+.printTagline {
+  flex: 0 0 auto;
+  margin: 0;
+  text-align: right;
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5pt;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.78);
+}
+
+.printContact {
+  margin: 2mm 0 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5pt;
+  letter-spacing: 0.06em;
+  color: var(--soft);
+}
+
+/**
+ * Print scale. The screen sizes are clamp()ed against a viewport and are far
+ * too large on a page — none of them inherit from the root font size, so each
+ * one has to be restated in points.
+ */
+@media print {
+  .printHeader {
+    margin-bottom: 6mm;
+    padding-bottom: 3.5mm;
+  }
+
+  .printName {
+    font-size: 27pt;
+  }
+
+  .printRole {
+    margin-top: 2mm;
+    font-size: 8.5pt;
+  }
+
+  .printContact {
+    margin-top: 1.5mm;
+    font-size: 8pt;
+  }
+
+  .lede {
+    max-width: none;
+    margin-bottom: 2.5mm;
+    font-size: 10.5pt;
+    line-height: 1.35;
+  }
+
+  .summaryMeta {
+    gap: 1mm 4mm;
+  }
+
+  /* display:contents on .roleMain promotes its children into this grid, which
+     is what lets the date sit beside the company rather than out at the far
+     right of the row. */
+  .role {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'logo title title'
+      'logo company dates'
+      'logo bullets bullets';
+    column-gap: 5.5mm;
+    row-gap: 0;
+    max-width: none;
+    padding: 4.5mm 0;
+  }
+
+  .roleMain {
+    display: contents;
+  }
+
+  /* Education carries no mark, so it drops the logo track entirely rather than
+     reserving an empty one — otherwise it starts further right than Other. */
+  .roleNoLogo {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'title title'
+      'company dates'
+      'bullets bullets';
+  }
+
+  .logo {
+    grid-area: logo;
+  }
+
+  .roleTitle {
+    grid-area: title;
+  }
+
+  .company {
+    grid-area: company;
+  }
+
+  /* Both sit on the baseline of the row rather than one riding high above the
+     other — they are different sizes, so centring them looked misaligned. */
+  .company {
+    align-self: end;
+  }
+
+  .dates {
+    grid-area: dates;
+    margin-left: 0;
+    justify-self: end;
+    align-self: end;
+    text-align: right;
+  }
+
+  .achievements {
+    grid-area: bullets;
+    margin-top: 1.9mm;
+  }
+
+  .roleTitle {
+    margin-bottom: 0.8mm;
+    font-size: 12pt;
+    line-height: 1.15;
+  }
+
+  .company {
+    margin-bottom: 0;
+    font-size: 8pt;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    /* Print only: on screen the company sits on black, where this would be
+       unreadable. */
+    color: #4a2a6b;
+  }
+
+  .achievements {
+    max-width: none;
+    padding-left: 4.5mm;
+    font-size: 9pt;
+    line-height: 1.38;
+  }
+
+  .achievements li {
+    margin-bottom: 1mm;
+  }
+
+  .dates {
+    font-size: 6pt;
+    color: rgba(17, 17, 17, 0.5);
+  }
+
+  .other {
+    max-width: none;
+    gap: 1.5mm 8mm;
+    font-size: 9.5pt;
+  }
 }

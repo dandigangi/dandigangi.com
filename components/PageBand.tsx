@@ -17,7 +17,7 @@ export default function PageBand({
   children?: React.ReactNode
 }) {
   return (
-    <section className={`bleed ${styles.band}`}>
+    <section className={`bleed ${styles.band}`} data-print="hide">
       <div className={styles.imageWrap}>
         <Image
           src="/static/images/hero-render.jpg"

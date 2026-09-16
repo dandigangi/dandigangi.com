@@ -1,0 +1,114 @@
+/**
+ * Print / PDF rendering of /resume.
+ *
+ * The site already has a light palette, so this redeclares those tokens rather
+ * than overriding component styles one by one — the reason the old site's
+ * "!important everything" approach was so painful. Everything below is either a
+ * token value, a page-level box, or a break rule.
+ */
+
+/* Shown only on paper. Screen keeps the band, which carries the same content. */
+html [data-print='only'] {
+  display: none;
+}
+
+@media print {
+  :root,
+  :root[data-theme='dark'],
+  :root[data-theme='light'] {
+    /* Paper white rather than the light theme's #ededeb: a full-bleed tint
+       wastes ink and reads as a scan artefact. */
+    --bg: #ffffff;
+    --ink: #111111;
+    --soft: rgba(17, 17, 17, 0.7);
+    --line: rgba(17, 17, 17, 0.16);
+    --hover: transparent;
+    --read: rgba(17, 17, 17, 0.88);
+    --rail: 0px;
+    --gutter: 0px;
+    color-scheme: light;
+  }
+
+  @page {
+    margin: 13mm 14mm;
+  }
+
+  html,
+  body {
+    background: #ffffff;
+    /* Chrome prints a shorter measure than the screen; the design's clamps are
+       tuned for a viewport, not an A4 column. */
+    font-size: 10.5pt;
+  }
+
+  html [data-print='hide'] {
+    display: none;
+  }
+
+  html [data-print='only'] {
+    display: block;
+  }
+
+  .container {
+    max-width: none;
+  }
+
+  /* The rail stays, narrower than on screen: full-width sections read as a
+     wall of text, and the label gives the eye somewhere to land. */
+  .railSection {
+    display: flex;
+    /* The base rule wraps, which is right on screen and wrong here: Experience
+       is wide enough to push itself below its own label, while the shorter
+       sections stayed beside theirs. */
+    flex-wrap: nowrap;
+    gap: 4mm;
+    padding-top: 5mm;
+  }
+
+  .railSection > :first-child {
+    flex: 0 0 26mm;
+  }
+
+  .railSection > :last-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .label,
+  .meta {
+    font-size: 7.5pt;
+    letter-spacing: 0.14em;
+  }
+
+  /* Nothing on paper should be a hover target or a coloured link. */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Roles stay whole. break-after on their children reads as the tidier fix,
+     but .role is a grid and Chrome's fragmentation inside grid containers does
+     not honour it — a role was still being cut across the fold. This costs
+     some space at the foot of a page and is the only reliable option. */
+  [data-print-keep] {
+    break-inside: avoid;
+  }
+
+  /* What actually matters is that a heading never ends a page alone, and that
+     a single bullet is not cut in half. */
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  li {
+    break-inside: avoid;
+  }
+
+  p,
+  li {
+    orphans: 2;
+    widows: 2;
+  }
+}
