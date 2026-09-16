@@ -35,7 +35,7 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: '14px 34px',
+            gap: 'clamp(10px, 2.6vw, 34px) clamp(14px, 2.6vw, 34px)',
             listStyle: 'none',
             margin: 0,
             padding: 0,

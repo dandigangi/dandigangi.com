@@ -63,6 +63,17 @@
     --line: rgba(11, 11, 11, 0.16);
     --hover: rgba(11, 11, 11, 0.05);
     --logo: invert(1);
+    /* These two were missing, so a visitor whose OS is light and who has never
+       touched the toggle inherited the dark values: --read made blog body copy
+       near-white on a light page. Both light blocks must carry every token. */
+    --read: rgba(11, 11, 11, 0.86);
+    --scrim: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.66) 42%,
+      rgba(0, 0, 0, 0.12) 78%,
+      rgba(0, 0, 0, 0.32) 100%
+    );
     color-scheme: light;
   }
 }
@@ -227,7 +238,9 @@ a {
   /* Design specifies max 14px; bumped to 16px — 14 read too small in practice. */
   font-size: clamp(13px, 1.5vw, 16px);
   font-weight: 500;
-  letter-spacing: 0.2em;
+  /* Tracking is what costs the most width at phone sizes: five items at 0.2em
+     wrap onto a second line, at 0.12em they do not. */
+  letter-spacing: clamp(0.12em, 0.6vw, 0.2em);
   text-transform: uppercase;
   transition: opacity 0.15s ease;
 }
@@ -241,6 +254,12 @@ a {
   align-items: center;
   gap: 14px;
   padding: 18px 30px;
+  /* Required on <button>: without these iOS Safari paints its own button face
+     and colours the label system blue, ignoring the inherited theme. */
+  appearance: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
   border: 1px solid var(--soft);
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
