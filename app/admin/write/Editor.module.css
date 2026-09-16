@@ -1,0 +1,533 @@
+/*
+ * Local tool, not part of the site's design. It borrows the theme tokens so the
+ * preview reads true, but otherwise optimises for a full-height writing surface
+ * rather than for the site's rhythm.
+ */
+.shell {
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.rail {
+  display: flex;
+  flex: 0 0 260px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 12px;
+  overflow-y: auto;
+  border-right: 1px solid var(--line);
+}
+
+/* The same blue as the floating dock, so every control that belongs to the tool
+   rather than to the site reads as one family. */
+.railButton {
+  display: block;
+  padding: 13px 14px;
+  /* Explicit, or the anchor inherits the body's line-height and the button
+     takes the UA's `normal` — which made the two different heights. */
+  line-height: 1;
+  color: #fff;
+  background: #2563eb;
+  border: 1px solid #2563eb;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.railButton:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  padding: 9px 10px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+}
+
+.entry:hover {
+  background: var(--hover);
+}
+
+.current {
+  border-left-color: var(--ink);
+  background: var(--hover);
+}
+
+.entryTitle {
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.entryMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--soft);
+}
+
+.tagLocal,
+.tagHidden {
+  padding: 1px 5px;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Amber: on this machine only. The one state where nothing you do can escape. */
+.tagLocal {
+  color: #8a5a00;
+  border: 1px solid rgba(138, 90, 0, 0.5);
+}
+
+.tagHidden {
+  color: var(--soft);
+  border: 1px solid var(--line);
+}
+
+.main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.field {
+  display: flex;
+  flex: 1 1 180px;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.wide {
+  flex-basis: 100%;
+}
+
+.locked {
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0.7;
+}
+
+.field input {
+  padding: 7px 9px;
+  color: var(--ink);
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+  background: var(--hover);
+  border: 1px solid var(--line);
+}
+
+.field input:read-only {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.split {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.write {
+  flex: 1 1 50%;
+  min-width: 0;
+  padding: 24px;
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  tab-size: 2;
+  background: none;
+  border: 0;
+  border-right: 1px solid var(--line);
+  resize: none;
+  outline: none;
+}
+
+.preview {
+  flex: 1 1 50%;
+  min-width: 0;
+  padding: 24px 32px;
+  overflow-y: auto;
+}
+
+.preview h1:first-child {
+  margin-top: 0;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--line);
+}
+
+.state,
+.ok,
+.bad {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+}
+
+.state {
+  color: var(--soft);
+}
+
+.ok {
+  color: #12a150;
+}
+
+.bad {
+  color: #ee3524;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--soft);
+  cursor: pointer;
+}
+
+.save,
+.publish,
+.secondary {
+  padding: 8px 16px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid;
+}
+
+.save {
+  color: var(--bg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Green, because this is the button that makes a file committable. */
+.publish {
+  color: #fff;
+  background: #12a150;
+  border-color: #12a150;
+}
+
+.secondary {
+  color: var(--ink);
+  background: none;
+  border-color: var(--line);
+}
+
+.secondary:hover {
+  background: var(--hover);
+}
+
+.inlineBad {
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #ee3524;
+}
+
+.hint {
+  font-style: normal;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0.65;
+}
+
+/* The one state where the file cannot leave the machine, so it should be
+   unmissable: in the rail beside the title, and in the strip while editing. */
+.wip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  color: #fff;
+  background: #2563eb;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  border-radius: 3px;
+}
+
+/* Only the rail's copy needs to be pushed off the title it follows. */
+.entryTitle .wip {
+  margin-left: 7px;
+  vertical-align: 1px;
+}
+
+.overLimit {
+  border-color: #ee3524 !important;
+}
+
+.dirty {
+  margin-left: 8px;
+  padding: 1px 5px;
+  color: #8a5a00;
+  border: 1px solid rgba(138, 90, 0, 0.5);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.66);
+}
+
+.dialog {
+  width: min(100%, 460px);
+  padding: 24px;
+  color: #f5f4f1;
+  background: #000;
+  border: 1px solid rgba(245, 244, 241, 0.18);
+}
+
+.dialogHeading {
+  margin: 0 0 12px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.dialogBody {
+  margin: 0 0 22px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(245, 244, 241, 0.78);
+}
+
+.dialogBody code {
+  padding: 1px 4px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: #f5f4f1;
+  background: rgba(245, 244, 241, 0.1);
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.danger {
+  padding: 8px 16px;
+  color: #fff;
+  background: #ee3524;
+  border: 1px solid #ee3524;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* The View post link is an anchor wearing the secondary button's clothes. */
+a.secondary {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Destructive and unrecoverable, so it is outlined rather than filled — it
+   should not compete with Publish for a confident click. */
+.deleteDraft {
+  padding: 8px 16px;
+  color: #ee3524;
+  background: none;
+  border: 1px solid rgba(238, 53, 36, 0.55);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.deleteDraft:hover {
+  background: #ee3524;
+  border-color: #ee3524;
+  color: #fff;
+}
+
+/* Collapse controls. Text rather than glyphs: an arrow here would have to
+   explain itself, and there is room for two words. */
+.strip {
+  --strip-control: 26px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.toggleStrip {
+  display: inline-flex;
+  align-items: center;
+  height: var(--strip-control);
+  padding: 0 10px;
+  color: var(--soft);
+  background: none;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.toggleStrip:hover {
+  color: var(--ink);
+  background: var(--hover);
+}
+
+/* With the fields hidden the strip is all there is to say what this post is, so
+   it carries the same values the form would have shown. */
+.stripMeta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  margin-left: 6px;
+  overflow: hidden;
+  font-size: 12px;
+  color: var(--soft);
+  white-space: nowrap;
+}
+
+.stripTitle {
+  flex: 0 0 auto;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* The first thing allowed to lose its tail — everything left of it identifies
+   the post, and the summary is the only part that can be long. */
+.stripSummary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stripDot {
+  opacity: 0.45;
+}
+
+.metaHidden {
+  display: none;
+}
+
+/* The shared toggle is a fixed 34px square, so it is pulled onto the same
+   declared height as the text controls instead of being near them by accident.
+   The wrapper has to be flex too: left inline it forms a line box at the body's
+   1.65 line-height and the button aligns to the text baseline, sitting a couple
+   of pixels low however tall it is. */
+.themeToggle {
+  display: inline-flex;
+  line-height: 1;
+}
+
+.themeToggle button {
+  width: var(--strip-control);
+  height: var(--strip-control);
+}
+
+/* The strip's copy is the status for the whole bar, so it is set larger than
+   the one tucked in beside a title in the rail. */
+.stripWip {
+  margin-left: auto;
+  height: var(--strip-control);
+  padding: 0 11px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+
+/* Component source in the preview. Quieter than a real code block — it is a
+   placeholder for something that will render, not code the post is about. */
+.preview pre {
+  padding: 12px 14px;
+  overflow-x: auto;
+  background: var(--hover);
+  border-left: 3px solid #2563eb;
+}
+
+.preview pre code {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--soft);
+  background: none;
+}

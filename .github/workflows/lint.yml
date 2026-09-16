@@ -1,10 +1,11 @@
-# Lint only, deliberately.
+# Lint and tests, deliberately not the build.
 #
 # Vercel already builds every push and every branch, and never promotes a failed
 # build — so a workflow running `yarn build` would duplicate that and fail in the
-# same place, slower. What Vercel does not run is ESLint: Next 16 removed the
-# lint-during-build integration, so without this nothing checks it at all.
-name: Lint
+# same place, slower. What Vercel does not run is ESLint (Next 16 removed the
+# lint-during-build integration) or the test suite. The pre-commit hook runs the
+# tests too; this is the copy that cannot be skipped with --no-verify.
+name: Checks
 
 on:
   push:
@@ -12,7 +13,7 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,3 +35,8 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
+      # The frontmatter tests read every file in data/blog and assert each one
+      # survives an edit untouched, so they need the real posts, not fixtures.
+      - name: Test
+        run: yarn test

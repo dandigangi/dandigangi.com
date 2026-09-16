@@ -9,6 +9,8 @@ import siteMetadata from '@/data/siteMetadata'
 import ThemeScript from '@/components/ThemeScript'
 import Footer from '@/components/Footer'
 import PikachuCameo from '@/components/PikachuCameo'
+import SiteChrome from '@/components/SiteChrome'
+import LocalTools from '@/components/LocalTools'
 import Parallax from '@/components/Parallax'
 
 const archivo = Archivo({
@@ -103,8 +105,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             so the scroll listener has to run site-wide, not just on home. */}
         <Parallax />
         <main id="main-content">{children}</main>
-        <Footer />
-        <PikachuCameo />
+        <SiteChrome>
+          <Footer />
+          <PikachuCameo />
+          <LocalTools />
+        </SiteChrome>
         <VercelAnalytics />
       </body>
     </html>

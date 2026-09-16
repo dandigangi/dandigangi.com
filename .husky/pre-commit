@@ -1,1 +1,6 @@
 yarn lint-staged
+
+# The editor's frontmatter writer overwrites published posts, so this runs
+# before a commit rather than only in CI. It is ~2s; if it ever stops being
+# that, move it back to CI alone rather than living with --no-verify.
+yarn test

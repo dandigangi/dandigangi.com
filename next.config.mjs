@@ -54,7 +54,17 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  /**
+   * `dev.tsx` is a page extension only outside production, which is what keeps
+   * the local post editor off the live site. This is stronger than a runtime
+   * guard: in a production build Next never treats app/admin/write/page.dev.tsx as a
+   * route, so it is not compiled, not bundled, and absent from the manifest —
+   * along with the editor-only dependencies it imports.
+   */
+  pageExtensions:
+    process.env.NODE_ENV === 'production'
+      ? ['ts', 'tsx', 'js', 'jsx']
+      : ['ts', 'tsx', 'js', 'jsx', 'dev.tsx'],
   // Next 16 writes AGENTS.md/CLAUDE.md into the repo by default; this repo's
   // agent conventions are managed elsewhere.
   agentRules: false,
