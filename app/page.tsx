@@ -130,8 +130,11 @@ export default function Home() {
       <div className="container">
         <div className={styles.grid}>
           <div className={styles.column} data-cameo>
+            {/* A heading, not a span: these label the two sections under the
+                hero, and without them the page went h1 straight to the h3 post
+                titles. The class is unchanged, so nothing moves. */}
             <div className={`label ${styles.labelRow}`}>
-              <span>Latest writing</span>
+              <h2>Latest writing</h2>
               <span>01 — {String(listed.length).padStart(2, '0')}</span>
             </div>
             {listed.map((post) => (
@@ -143,7 +146,7 @@ export default function Home() {
             {featured ? <VideoCard post={featured} /> : null}
 
             <div className={`label ${styles.labelRow} ${styles.labelRowRight}`}>
-              <span>Projects</span>
+              <h2>Projects</h2>
             </div>
             <div className={styles.projects} data-cameo>
               {homeProjects.map((project) => (

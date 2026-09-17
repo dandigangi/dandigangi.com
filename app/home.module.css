@@ -111,6 +111,19 @@
   flex-direction: column;
 }
 
+/*
+ * The section labels are headings so the page has an outline — h1 used to run
+ * straight into the h3 post titles — but they must not look like headings. The
+ * document has no heading reset, so a bare h2 here would arrive at 1.5em, bold,
+ * with margins.
+ */
+.labelRow h2 {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
 .labelRow {
   display: flex;
   align-items: center;

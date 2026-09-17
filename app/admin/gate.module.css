@@ -181,3 +181,11 @@
   inset: 0;
   background: var(--scrim);
 }
+
+/* The dark-mode red manages only 3.5:1 on the light background. This one is
+   5.2:1 there, matching what #ee3524 gets on black. Same [data-theme] hook the
+   theme toggle uses, rather than light-dark(), which is newer than this
+   codebase's baseline. */
+:global([data-theme='light']) .error {
+  color: #c1200f;
+}

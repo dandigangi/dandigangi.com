@@ -48,19 +48,18 @@ export default function Footer() {
         >
           <span>
             dandigangi.com
-            {version ? <span style={{ opacity: 0.7 }}> v{version}</span> : null}
+            {version ? <span> v{version}</span> : null}
           </span>
           {hash ? (
             <a
               href={`${siteMetadata.siteRepo}/commit/${hash}`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ opacity: 0.7 }}
             >
               {date ? `${date} ` : ''}[{hash}]
             </a>
           ) : date ? (
-            <span style={{ opacity: 0.7 }}>{date}</span>
+            <span>{date}</span>
           ) : null}
 
           {/* Its own line under the stamp, and fainter still — findable rather
