@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import SiteNav from '@/components/SiteNav'
+import { PIKA_PASS } from '@/lib/pikaPass'
 import siteMetadata from '@/data/siteMetadata'
 import Gate from '../Gate'
 import PikaTheme from '../PikaTheme'
@@ -51,9 +53,15 @@ export default async function AdminGate({
   if (rest?.length && !isLulz(rest)) notFound()
 
   const lulz = isLulz(rest)
-  // Only reachable by guessing his name at the prompt, so it is only fetched by
-  // the people who earned it.
-  const pika = lulz && (await searchParams).pika === '1'
+  /**
+   * Two ways in, and both mean the same thing: the query param is the moment of
+   * the guess, the cookie is the hour that follows it. The param is kept as
+   * well as the cookie so that blocked cookies still get the reveal once.
+   *
+   * Only ever consulted on the lulz page — he is the punchline, not the prompt
+   * — and the cookie's own Path keeps it away from the rest of the site.
+   */
+  const pika = lulz && ((await searchParams).pika === '1' || (await cookies()).has(PIKA_PASS))
 
   return (
     <>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { grantPikaPass } from '@/lib/pikaPass'
 import styles from '../not-found.module.css'
 import gate from './gate.module.css'
 
@@ -179,6 +180,9 @@ export default function Gate() {
   }
 
   const start = (magic: boolean) => {
+    // Before the push, so the request that renders the lulz page already
+    // carries it and the server can put him up on the first paint.
+    if (magic) grantPikaPass()
     setIp(sessionIp())
     setPhase('connecting')
     timers.current.push(
