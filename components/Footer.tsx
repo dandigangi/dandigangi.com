@@ -67,7 +67,7 @@ export default function Footer() {
           <AdminLink />
         </div>
 
-        <nav>
+        <nav aria-label="Elsewhere">
           <ul
             style={{
               display: 'flex',

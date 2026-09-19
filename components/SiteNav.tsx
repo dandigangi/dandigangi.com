@@ -30,7 +30,7 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
         />
       </Link>
 
-      <nav>
+      <nav aria-label="Main">
         <ul
           style={{
             display: 'flex',

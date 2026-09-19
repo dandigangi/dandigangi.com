@@ -69,7 +69,10 @@ export default function Resume() {
         {/* Name and tagline share a row on the same baseline; role and contact
             run underneath the pair. */}
         <div className={styles.printTopRow}>
-          <h1 className={styles.printName}>{siteMetadata.author}</h1>
+          {/* The band above already carries the page's h1. On paper that band
+              is gone and this is the heading, but it is still the same page —
+              so it is a <p> and the document keeps exactly one h1. */}
+          <p className={styles.printName}>{siteMetadata.author}</p>
           <p className={styles.printTagline}>{siteMetadata.tagline}</p>
         </div>
         <p className={styles.printRole}>{siteMetadata.role}</p>
