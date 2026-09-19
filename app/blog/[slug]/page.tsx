@@ -28,7 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {}
 
   return {
-    title: post.title,
+    // The heading on the page is always post.title; this is the tab and the
+    // search result, which a long headline overflows.
+    title: post.seoTitle || post.title,
     description: post.summary,
     alternates: { canonical: post.canonicalUrl || post.permalink },
     openGraph: {

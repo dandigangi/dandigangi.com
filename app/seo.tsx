@@ -23,6 +23,9 @@ export function genPageMetadata({ title, description, image, ...rest }: PageSEOP
     // ships the same one — duplicate meta descriptions across the whole site.
     description: description || siteMetadata.description,
     openGraph: {
+      // The long form stays here on purpose: a social card is not truncated the
+      // way a search result is, and the extra context is worth having when a
+      // link turns up somewhere with no other attribution.
       title: `${title} - ${siteMetadata.title}`,
       description: description || siteMetadata.description,
       url: './',
@@ -32,7 +35,7 @@ export function genPageMetadata({ title, description, image, ...rest }: PageSEOP
       type: 'website',
     },
     twitter: {
-      title: `${title} | ${siteMetadata.title}`,
+      title: `${title} | ${siteMetadata.author}`,
       description: description || siteMetadata.description,
       card: 'summary_large_image',
       images: [ogImage],

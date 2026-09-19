@@ -32,6 +32,12 @@ const posts = defineCollection({
       tags: s.array(s.string()).default([]),
       draft: s.boolean().default(false),
       summary: s.string().optional(),
+      /**
+       * Overrides the <title> tag only — the on-page <h1> always renders the
+       * real `title`. For posts whose headline is a good headline and a bad
+       * search result, which is most of the podcast and livestream write-ups.
+       */
+      seoTitle: s.string().optional(),
       images: s.array(s.string()).optional(),
       layout: s.string().optional(),
       canonicalUrl: s.string().optional(),
