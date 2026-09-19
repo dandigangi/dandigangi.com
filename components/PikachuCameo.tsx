@@ -10,10 +10,12 @@ import {
   getTab,
   markCaught,
   raiseTab,
+  resetTab,
   softenTab,
   subscribe,
 } from '@/lib/pikachu'
 import PikachuModal from './PikachuModal'
+import Toast from './Toast'
 import styles from './PikachuCameo.module.css'
 
 type Edge = 'top' | 'bottom' | 'left' | 'right'
@@ -123,6 +125,17 @@ export default function PikachuCameo() {
   // navigation and the browser tab closing.
   const { amount, invoices, wonAt } = useSyncExternalStore(subscribe, getTab, getInitialTab)
   const [previous, setPrevious] = useState<number | null>(null)
+  const [toast, setToast] = useState(false)
+
+  /**
+   * Read by `onClose`, which has to keep a stable identity — so the won state
+   * reaches it through a ref rather than through its dependency list.
+   */
+  const won = wonAt !== null
+  const wonRef = useRef(won)
+  useEffect(() => {
+    wonRef.current = won
+  }, [won])
   /** Only a catch earns the chance to hug; reopening from a nav link is a
    *  re-read of the invoice, not a new encounter. */
   const [byCatch, setByCatch] = useState(false)
@@ -272,8 +285,21 @@ export default function PikachuCameo() {
    */
   const onClose = useCallback(() => {
     setOpen(false)
+
+    // Winning ends the game rather than becoming a state to live in: the tab
+    // goes back to the opening ask and the hero stands down, and the toast is
+    // the only thing left carrying the payout.
+    if (wonRef.current) {
+      resetTab()
+      setToast(true)
+    }
+
     loop.current?.start()
   }, [])
+
+  /** Stable for the same reason `onClose` is — the toast arms its own dismiss
+   *  timer off this identity. */
+  const hideToast = useCallback(() => setToast(false), [])
 
   return (
     <>
@@ -282,13 +308,14 @@ export default function PikachuCameo() {
           amount={amount}
           previous={previous}
           invoices={invoices}
-          won={wonAt !== null}
+          won={won}
           viaCatch={byCatch}
           onHug={onHug}
           onClose={onClose}
         />
       )}
       {cameo?.path === pathname && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
+      {toast && <Toast onClose={hideToast} />}
     </>
   )
 }

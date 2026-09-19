@@ -33,8 +33,8 @@ export default function Portrait() {
           onClick={() => {
             const next = !alter
             setAlter(next)
-            // A toggle, not a latch — but it cannot put the hero back once he
-            // has actually been caught. The store decides that.
+            // Stored so the photo survives navigating away and back. It goes no
+            // further than this frame — the hero swap is the tab's job alone.
             setAlterEgo(next)
           }}
           className={styles.toggle}

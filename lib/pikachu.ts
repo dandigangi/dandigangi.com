@@ -29,6 +29,47 @@ let everActive = false
  *  it is witnessing that change or arriving on a page where it already held. */
 let activatedAt = 0
 
+/**
+ * How long the hero swap outlives the catch that armed it.
+ *
+ * The tab persists and the swap does not, deliberately. Gating the hero on the
+ * stored figure alone meant one good run left every page yellow on every later
+ * visit, for people who were only here to read something.
+ */
+const ARM_MS = 5 * 60 * 1000
+
+/** When he was last caught, or 0. Never persisted, so a reload is a way out
+ *  too — but nobody should have to discover that. */
+let armedAt = 0
+let armTimer: ReturnType<typeof setTimeout> | null = null
+
+const armed = () => armedAt > 0 && Date.now() - armedAt < ARM_MS
+
+/**
+ * Catching him puts the swap in play and re-arms it if it had lapsed, which is
+ * what lets someone come back days later, click him once and pick up where the
+ * tab left off.
+ *
+ * The lapse has to push rather than be polled: `heroActive` is read through
+ * `useSyncExternalStore`, so a bare `Date.now()` comparison would repaint
+ * nothing at the deadline and the swap would linger until something unrelated
+ * happened to emit.
+ */
+const arm = () => {
+  armedAt = Date.now()
+  if (armTimer) clearTimeout(armTimer)
+  armTimer = setTimeout(() => {
+    armTimer = null
+    emit()
+  }, ARM_MS)
+}
+
+const disarm = () => {
+  armedAt = 0
+  if (armTimer) clearTimeout(armTimer)
+  armTimer = null
+}
+
 const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((listener) => listener())
 
@@ -44,13 +85,16 @@ export const isAlterEgo = () => alterEgo
 
 /**
  * Meeting him is not enough to take over the page — he has to have escalated
- * first, at the same figure that turns the modal red.
+ * first, at the same figure that turns the modal red. The tab is the only way
+ * in: the alter ego toggle deliberately does not count, because a button on
+ * /about that repaints every hero on the site is a bigger swing than a photo
+ * swap advertises.
  *
  * Derived from the tab rather than a flag of its own, so a hug that drops him
  * back under the line puts the abstract render back exactly as it puts the
  * modal back to black.
  */
-export const heroActive = () => alterEgo || getTab().amount >= OVER_TIER
+export const heroActive = () => armed() && getTab().amount >= OVER_TIER
 
 /** Derived too, or a reload with an escalated tab stored would never mount the
  *  layer that `heroActive` is about to switch on. */
@@ -74,11 +118,11 @@ export const markCaught = () => {
   changed(wasActive)
 }
 
+/** Portrait only — see heroActive for why this no longer reaches the hero. */
 export const setAlterEgo = (on: boolean) => {
   if (alterEgo === on) return
-  const wasActive = heroActive()
   alterEgo = on
-  changed(wasActive)
+  emit()
 }
 
 /**
@@ -107,8 +151,11 @@ export const OVER_TIER = 500
  *  store can stamp `wonAt` at the moment it is crossed. */
 export const FINAL_TIER = 2500
 
-/** How long the last state outlives the tab that earned it. After this the
- *  whole thing resets, so it can be found again. */
+/**
+ * A backstop, not the usual path out: dismissing the last state resets the tab
+ * outright (see resetTab). This only catches the person who closed the browser
+ * with that modal still open, so their stored win does not sit there forever.
+ */
 const WON_MS = 24 * 60 * 60 * 1000
 
 const STORE_KEY = 'dd:pk'
@@ -165,6 +212,9 @@ export const getInitialTab = (): Tab => INITIAL
 /** Raises the tab and counts the invoice. Only he may call this. */
 export const raiseTab = (amount: number) => {
   const wasActive = heroActive()
+  // Before the figure moves, so `changed` below sees the armed state that this
+  // catch has just established rather than the one it is replacing.
+  arm()
   tab = {
     amount,
     invoices: tab.invoices + 1,
@@ -174,6 +224,38 @@ export const raiseTab = (amount: number) => {
   persist()
   // Not emit(): crossing OVER_TIER is what switches the hero on, and only this
   // knows whether that just happened.
+  changed(wasActive)
+}
+
+/**
+ * Expires the hero window now instead of waiting it out. Exists for the local
+ * dev dock: the five-minute lapse is the one behaviour here that cannot be
+ * watched in a reasonable sitting, and the fade-out is worth seeing.
+ */
+export const lapseHero = () => {
+  if (!armed()) return
+  const wasActive = heroActive()
+  disarm()
+  changed(wasActive)
+}
+
+/**
+ * Back to the opening ask, as though he had never been found. Called when the
+ * last state is dismissed: winning is the end of the game, not somewhere to
+ * live afterwards, and the swap standing down is most of the point.
+ *
+ * Clears storage as well as memory, so the next visit starts the chase over
+ * rather than reopening on a settled invoice.
+ */
+export const resetTab = () => {
+  const wasActive = heroActive()
+  disarm()
+  tab = OPENING_TAB
+  try {
+    localStorage.removeItem(STORE_KEY)
+  } catch {
+    // Blocked storage. The in-memory reset still stands for this page.
+  }
   changed(wasActive)
 }
 

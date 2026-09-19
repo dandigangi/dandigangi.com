@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import siteMetadata from '@/data/siteMetadata'
 import { FINAL_TIER, OPENING, OVER_TIER } from '@/lib/pikachu'
+import { MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
 import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
 import styles from './PikachuModal.module.css'
@@ -135,26 +135,14 @@ const TEXT = [
   '4oCUIFlvdSBQaWNr',
   'U2VuZCBETQ==',
   'RW1haWw=',
-  'RWFzdGVyIEVnZyBHaWZ0Y2FyZCE=',
 ].map((line) =>
   new TextDecoder().decode(Uint8Array.from(atob(line), (character) => character.charCodeAt(0)))
 )
 
-const [T_HEAD, T_LABEL, T_LINE_1, T_LINE_2, T_ASIDE, T_ACT_X, T_ACT_MAIL, T_SUBJECT] = TEXT
+const [T_HEAD, T_LABEL, T_LINE_1, T_LINE_2, T_ASIDE, T_ACT_X, T_ACT_MAIL] = TEXT
 
 const AVATAR = '/static/images/pikachu-avatar.jpg'
 const ANGRY_AVATAR = '/static/images/pikachu-avatar-angry.jpg'
-
-/**
- * X's compose deep link only takes a numeric account id — a handle in
- * `recipient_id` does nothing.
- * https://developer.x.com/en/docs/x-for-websites/direct-message-button
- */
-const X_RECIPIENT_ID = '192625645'
-const X_DM_URL = `https://x.com/messages/compose?recipient_id=${X_RECIPIENT_ID}`
-
-/** Pre-filled so one of these is recognisable in the inbox without opening it. */
-const MAIL_URL = `mailto:${siteMetadata.email}?subject=${encodeURIComponent(T_SUBJECT)}`
 
 export default function PikachuModal({
   amount,
