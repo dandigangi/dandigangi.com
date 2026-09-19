@@ -81,18 +81,6 @@
   text-transform: uppercase;
 }
 
-.tagline {
-  display: inline-block;
-  padding: 10px 16px;
-  background: rgba(0, 0, 0, 0.2);
-  font-family: var(--font-mono), monospace;
-  font-size: clamp(13px, 2vw, 20px);
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(245, 244, 241, 0.85);
-}
-
 /* ---------- two-column body ---------- */
 
 /* A 1px gap over a --line background draws the column divider, and reflows to a

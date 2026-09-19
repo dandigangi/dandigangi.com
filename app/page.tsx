@@ -6,6 +6,7 @@ import { homeProjects } from '@/data/projects'
 import { getPublishedPosts, type Post } from '@/lib/blog'
 import { formatMonthYear, formatTag } from '@/lib/format'
 import PikachuHero from '@/components/PikachuHero'
+import Tagline from '@/components/Tagline'
 import SiteNav from '@/components/SiteNav'
 import { ArrowRight, PlayIcon } from '@/components/Icons'
 import styles from './home.module.css'
@@ -121,7 +122,7 @@ export default function Home() {
                 <br />
                 Engineering Manager
               </p>
-              <span className={styles.tagline}>{siteMetadata.tagline}</span>
+              <Tagline />
             </div>
           </div>
         </div>

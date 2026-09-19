@@ -1,0 +1,72 @@
+/*
+ * Was a span, and still has to look like one — the appearance reset and the
+ * inherited line-height are what keep the pill the exact size it was before
+ * clicking it did anything.
+ */
+.tagline {
+  display: inline-grid;
+  padding: 10px 16px;
+  border: 0;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(245, 244, 241, 0.85);
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(13px, 2vw, 20px);
+  font-weight: 400;
+  line-height: inherit;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tagline:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Both occupy the one grid cell, so the cell takes the sizer's dimensions and
+   the typed text paints on top of it. */
+.sizer,
+.typed {
+  grid-area: 1 / 1;
+}
+
+/*
+ * With JS the sizer is only a spacer and the typed layer paints over it.
+ * Without it, nothing ever fills that layer — so the sizer stays visible and is
+ * simply the tagline, and the caret that would blink forever goes away with it.
+ *
+ * The flag is set by the pre-paint script in <head>, so whichever of the two is
+ * right has been chosen before the browser draws either.
+ */
+:global(:root[data-js]) .sizer {
+  visibility: hidden;
+}
+
+:global(:root:not([data-js])) .typed {
+  display: none;
+}
+
+/* Sits in the slack the sizer is already holding — there is at least one
+   character's width spare until the line is finished, and then it is gone. */
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  background: currentColor;
+  vertical-align: text-bottom;
+  animation: caretBlink 1s steps(2, start) infinite;
+}
+
+@keyframes caretBlink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}
