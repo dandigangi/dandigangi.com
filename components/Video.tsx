@@ -3,7 +3,7 @@
  * so a hard 505px height only matched 16:9 at one viewport size and letterboxed
  * at every other.
  */
-const Video = ({ url, title }) => {
+export default function Video({ url, title }: { url: string; title?: string }) {
   return (
     <div
       style={{
@@ -14,14 +14,18 @@ const Video = ({ url, title }) => {
         border: '1px solid var(--line)',
       }}
     >
+      {/*
+       * Defaulted rather than required: an unnamed frame is a serious axe
+       * violation, and posts written before this prop existed do not pass one.
+       * A generic name beats no name; a specific one is still better, so pass
+       * `title` from the post where it is worth it.
+       */}
       <iframe
         src={url}
-        title={title}
+        title={title ?? 'Embedded video'}
         allowFullScreen
         style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
-      ></iframe>
+      />
     </div>
   )
 }
-
-export default Video

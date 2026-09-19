@@ -5,7 +5,7 @@
  * 152px is Spotify's compact player. At the old 352px the player rendered at
  * its natural height and left a large dead area below it.
  */
-const Spotify = ({ src, title }) => {
+export default function Spotify({ src, title }: { src: string; title?: string }) {
   return (
     <div
       style={{
@@ -15,18 +15,16 @@ const Spotify = ({ src, title }) => {
         border: '1px solid var(--line)',
       }}
     >
+      {/* Defaulted for the same reason as Video's — see the note there. */}
       <iframe
         allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture"
-        frameBorder="0"
         height="152"
         loading="lazy"
         src={src}
-        title={title}
+        title={title ?? 'Spotify player'}
         width="100%"
-        style={{ display: 'block' }}
-      ></iframe>
+        style={{ display: 'block', border: 0 }}
+      />
     </div>
   )
 }
-
-export default Spotify

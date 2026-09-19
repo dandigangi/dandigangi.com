@@ -1,0 +1,20 @@
+/* Reads as an aside in the prose rather than as an error page: the post around
+   it is fine, and this is the one hole in it. */
+.missing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px dashed var(--line);
+  color: var(--soft);
+  font-size: 0.9rem;
+}
+
+.name {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
