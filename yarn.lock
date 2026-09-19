@@ -2304,7 +2304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axe-core@npm:^4.10.0":
+"axe-core@npm:^4.10.0, axe-core@npm:^4.12.0":
   version: 4.13.0
   resolution: "axe-core@npm:4.13.0"
   checksum: 7788457bf83dfe91feebfb9229705e56fee2e188df95a67b936afd4c6da7aba5be049c50f87ee789a034983c7c5d922bcbd270a8c341afbd3ddb3823935c1659
@@ -2799,6 +2799,7 @@ __metadata:
     "@types/react-dom": ^19.0.0
     "@vercel/analytics": ^2.0.1
     "@vitejs/plugin-react": ^6.1.1
+    axe-core: ^4.12.0
     cross-env: ^7.0.3
     eslint: ^9.17.0
     eslint-config-next: 16.3.5

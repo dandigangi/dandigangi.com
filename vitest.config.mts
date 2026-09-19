@@ -11,7 +11,13 @@ import { resolve } from 'node:path'
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: { '@': resolve(import.meta.dirname, '.') },
+    alias: {
+      // Mirrors tsconfig's paths. '@/content' is the generated velite output
+      // and has to be listed ahead of the catch-all, or '@/content' resolves to
+      // a ./content directory that does not exist.
+      '@/content': resolve(import.meta.dirname, '.velite'),
+      '@': resolve(import.meta.dirname, '.'),
+    },
   },
   test: {
     environment: 'jsdom',
