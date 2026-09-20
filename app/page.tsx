@@ -122,7 +122,7 @@ export default function Home() {
                 <br />
                 Engineering Manager
               </p>
-              <Tagline />
+              <Tagline arrow />
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import {
 } from '@/data/resume'
 import Image from 'next/image'
 import PageBand from '@/components/PageBand'
+import Tagline from '@/components/Tagline'
 import { ArrowRight } from '@/components/Icons'
 import { genPageMetadata } from 'app/seo'
 import styles from './resume.module.css'
@@ -41,25 +42,30 @@ export default function Resume() {
   return (
     <>
       <PageBand title="Résumé" objectPosition="70% 35%">
-        <div className={styles.bandActions}>
-          <a
-            href={siteMetadata.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btnBand"
-          >
-            LinkedIn
-          </a>
-          {RESUME_PDF_ENABLED && (
+        {/* Column, because PageBand's bottom row lays its children out side by
+            side and the line belongs above the buttons rather than beside. */}
+        <div className={styles.bandStack}>
+          <Tagline />
+          <div className={styles.bandActions}>
             <a
-              href={RESUME_PDF_URL}
+              href={siteMetadata.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btnBand"
             >
-              Download PDF
+              LinkedIn
             </a>
-          )}
+            {RESUME_PDF_ENABLED && (
+              <a
+                href={RESUME_PDF_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btnBand"
+              >
+                Download PDF
+              </a>
+            )}
+          </div>
         </div>
       </PageBand>
 
