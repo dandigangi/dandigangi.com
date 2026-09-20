@@ -33,6 +33,11 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
+const HOLD = 4000
+
+/** Past the hold, so the next line has typed itself in. */
+const waitOutHold = () => act(() => void vi.advanceTimersByTime(HOLD + SPEED * 80))
+
 describe('Tagline', () => {
   it('carries the full line for screen readers before anything is typed', () => {
     render(<Tagline />)
@@ -75,6 +80,71 @@ describe('Tagline', () => {
       expect(next).not.toBe(current)
       current = next
     }
+  })
+
+  it('moves on by itself once a line has been read', () => {
+    render(<Tagline />)
+    typeItOut()
+    const button = screen.getByRole('button')
+    const firstLine = button.textContent
+
+    // Still holding just short of the interval.
+    act(() => void vi.advanceTimersByTime(HOLD - 100))
+    expect(button.textContent).toBe(firstLine)
+
+    waitOutHold()
+    expect(button.textContent).not.toBe(firstLine)
+  })
+
+  it('does not start the hold until the line has finished typing', () => {
+    render(<Tagline />)
+    // Mid-type: the hold must not already be counting, or a long line would be
+    // cut short by its own timer.
+    act(() => void vi.advanceTimersByTime(START_DELAY + SPEED * 3))
+    const partial = screen.getByRole('button').textContent
+
+    act(() => void vi.advanceTimersByTime(HOLD - 100))
+    expect(screen.getByRole('button').textContent).not.toBe(partial)
+  })
+
+  it('holds while the pointer is on it', async () => {
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    render(<Tagline />)
+    typeItOut()
+
+    const button = screen.getByRole('button')
+    await user.hover(button)
+    const held = button.textContent
+
+    waitOutHold()
+    // Paused: movement lasting more than five seconds has to be stoppable.
+    expect(button.textContent).toBe(held)
+
+    await user.unhover(button)
+    waitOutHold()
+    expect(button.textContent).not.toBe(held)
+  })
+
+  it('never rotates on its own when motion is reduced', () => {
+    setReducedMotion(true)
+    render(<Tagline />)
+    const before = screen.getByRole('button').textContent
+
+    waitOutHold()
+    waitOutHold()
+    expect(screen.getByRole('button').textContent).toBe(before)
+  })
+
+  it('shows the interaction hint only where it is asked for', () => {
+    const { container: bare } = render(<Tagline />)
+    expect(bare.querySelector('svg')).toBeNull()
+
+    const { container: hinted } = render(<Tagline arrow />)
+    const svg = hinted.querySelector('svg')
+    expect(svg).not.toBeNull()
+    // Decoration: it must not become a second thing to tab to or announce.
+    expect(svg).toHaveAttribute('aria-hidden', 'true')
+    expect(svg).toHaveAttribute('focusable', 'false')
   })
 
   it('reaches every line eventually', async () => {

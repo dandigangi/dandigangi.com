@@ -4,7 +4,9 @@
  * clicking it did anything.
  */
 .tagline {
-  display: inline-grid;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   padding: 10px 16px;
   border: 0;
   appearance: none;
@@ -17,18 +19,47 @@
   letter-spacing: 0.06em;
   text-align: left;
   text-transform: uppercase;
+}
+
+/* Only the interactive one reacts — TaglineStatic wears the same class for the
+   pill's look and must not look clickable. */
+button.tagline {
   cursor: pointer;
 }
 
-.tagline:hover {
+button.tagline:hover {
   background: rgba(0, 0, 0, 0.3);
 }
 
-/* Both occupy the one grid cell, so the cell takes the sizer's dimensions and
-   the typed text paints on top of it. */
+/* The two text layers share one grid cell, so the cell takes the sizer's
+   dimensions and the typed text paints on top of it. */
+.lines {
+  display: inline-grid;
+  min-width: 0;
+}
+
 .sizer,
 .typed {
   grid-area: 1 / 1;
+}
+
+/* Dimmed and never focusable — they say "this does something" and nothing
+   more. The pill itself is the control. */
+.arrow {
+  flex: none;
+  opacity: 0.45;
+  transition: opacity 0.15s ease;
+}
+
+button.tagline:hover .arrow,
+button.tagline:focus-visible .arrow {
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow {
+    transition: none;
+  }
 }
 
 /*
