@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import PageBand from '@/components/PageBand'
 import Portrait from '@/components/Portrait'
+import TaglineStatic from '@/components/TaglineStatic'
+import TaglineWheel from '@/components/TaglineWheel'
 import { genPageMetadata } from 'app/seo'
 import siteMetadata from '@/data/siteMetadata'
 import { RESUME_PDF_URL } from '@/data/resume'
@@ -39,7 +41,12 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function About() {
   return (
     <>
-      <PageBand title="About" objectPosition="30% 60%" />
+      {/* Same slot the home hero puts it in — PageBand's bottom row has the
+          identical flex layout over the same dark band, so it needs no
+          restyling to sit here. */}
+      <PageBand title="About" objectPosition="30% 60%">
+        <TaglineStatic />
+      </PageBand>
 
       <div className="container">
         {/* The sidebar is a page-level column, not part of Overview. Nesting it
@@ -49,8 +56,11 @@ export default function About() {
         <div className={styles.page}>
           <div className={styles.pageMain} data-cameo>
             <Section title="Overview">
+              <p className={styles.name}>{siteMetadata.author}</p>
               <p className={styles.lede}>{aboutOverview.lede}</p>
-              <blockquote className={styles.pullQuote}>{aboutOverview.pullQuote}</blockquote>
+              {/* Replaces a static blockquote that carried the canonical line
+                  on its own; the wheel cycles it and its siblings in place. */}
+              <TaglineWheel />
               <p className={styles.body}>{aboutOverview.support}</p>
             </Section>
 

@@ -1,6 +1,5 @@
 export const aboutOverview = {
   lede: "For over 20 years I've worked as a software engineer dedicated to delivering high quality software and solving complex problems. The last 9+ years I've held multiple engineering management and leadership roles.",
-  pullQuote: 'Build experiences, not software',
   support:
     'My core mission is building diverse, high performance teams that deliver exceptional products — business, customer, and experience first.',
   currently: 'Open to new roles',

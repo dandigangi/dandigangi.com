@@ -8,23 +8,30 @@
   line-height: 1.15;
 }
 
+/*
+ * The home page's name treatment, brought down to size. Not a heading: the band
+ * above already owns the page's h1 and the section owns its h2, so another one
+ * here would break the outline for the sake of a byline.
+ *
+ * Deliberately smaller than the lede it sits on. The name is there so the page
+ * is identifiably his without being read first — the sentence under it is the
+ * thing that matters.
+ */
+.name {
+  margin: 0 0 14px;
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
 .lede {
   margin: 0 0 28px;
   max-width: 760px;
   font-size: clamp(24px, 3vw, 34px);
   line-height: 1.3;
   letter-spacing: -0.02em;
-}
-
-.pullQuote {
-  margin: 0 0 28px;
-  padding: 18px 26px;
-  border-left: 2px solid var(--ink);
-  font-family: var(--font-mono), monospace;
-  font-size: clamp(15px, 1.8vw, 19px);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  line-height: 1.4;
 }
 
 .body {

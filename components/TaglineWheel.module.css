@@ -1,0 +1,152 @@
+/*
+ * Takes over from the About pull quote, so it keeps that block's rule, mono
+ * face and metrics — only now three lines deep with the middle one lit.
+ */
+.wheel {
+  --row: 2.2em;
+  /* The pull quote's own box: one line of content plus its 18px padding. The
+     rule is sized from this rather than from the block, so adding the two
+     ghost rows does not stretch it. */
+  --rule: calc(1.4em + 36px);
+
+  position: relative;
+  margin: 0 0 28px;
+  padding: 0 26px;
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(17px, 2vw, 21px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/*
+ * A pseudo-element rather than a border on .wheel: a border spans its element,
+ * and this has to stay the height of the lit line while the block around it is
+ * three rows tall.
+ */
+.wheel::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2px;
+  height: var(--rule);
+  transform: translateY(-50%);
+  background: var(--ink);
+}
+
+/*
+ * Exactly three rows tall, which is what clips the reel into a wheel. The mask
+ * is what makes the neighbours read as fading out of the page rather than as
+ * dimmed copies: they lose the top and bottom edges entirely and are only
+ * solid where the lit line sits.
+ */
+.window {
+  height: calc(3 * var(--row));
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 20%,
+    #000 42%,
+    #000 58%,
+    rgba(0, 0, 0, 0.35) 80%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 20%,
+    #000 42%,
+    #000 58%,
+    rgba(0, 0, 0, 0.35) 80%,
+    transparent 100%
+  );
+}
+
+.reel {
+  display: flex;
+  flex-direction: column;
+}
+
+.turning {
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/*
+ * Waiting lines sit slightly smaller and grow into place as they arrive, so the
+ * turn reads as depth rather than as text swapping. Scaled from the left edge,
+ * or they would drift horizontally as they grow.
+ */
+.line {
+  display: flex;
+  align-items: center;
+  height: var(--row);
+  color: var(--soft);
+  white-space: nowrap;
+  transform: scale(0.88);
+  transform-origin: left center;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+    color 0.5s ease;
+}
+
+.current {
+  color: var(--ink);
+  transform: scale(1);
+}
+
+/* Covers the block so the whole thing is the target, rather than asking anyone
+   to hit a line of text. */
+.hit {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.hit:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/*
+ * Reduced motion gets the centred line and nothing else: no turn, no ghosts,
+ * no mask. Same information, nothing moving — and with one row showing, the
+ * rule already matches the block.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .window {
+    height: var(--row);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .reel,
+  .line {
+    transition: none;
+  }
+
+  .line {
+    transform: none;
+  }
+
+  .line:not(.current) {
+    display: none;
+  }
+
+  .reel {
+    transform: none !important;
+  }
+}
+
+/* Long lines would otherwise force the column wider than the prose beside it. */
+@media (max-width: 620px) {
+  .wheel {
+    --row: 2em;
+
+    font-size: 15px;
+    padding-left: 18px;
+  }
+}
