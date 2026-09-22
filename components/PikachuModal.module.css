@@ -49,6 +49,14 @@
 .ringed {
   /* Never follows the theme, so the ring's inside is pinned black. */
   --ring-fill: #000;
+  /*
+   * The top edge runs alongside the green header, where a rainbow reads as a
+   * stray line rather than part of the frame. A solid border-color paints over
+   * the gradient — borders are drawn after backgrounds — so this covers that one
+   * side and leaves the other three ringed. Matches .headFinal exactly, or the
+   * corner where they meet shows the seam.
+   */
+  border-top-color: #12a150;
   animation:
     rise 240ms cubic-bezier(0.22, 1, 0.36, 1),
     spectrum 1.25s linear infinite;

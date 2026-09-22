@@ -19,7 +19,6 @@ import PikachuModal from './PikachuModal'
 import { allFound, claimPrize, hasClaimed, subscribe as eggsSubscribe, type Egg } from '@/lib/eggs'
 import EggToast from './EggToast'
 import PokeballThrow from './PokeballThrow'
-import Toast from './Toast'
 import styles from './PikachuCameo.module.css'
 
 type Edge = 'top' | 'bottom' | 'left' | 'right'
@@ -138,7 +137,6 @@ export default function PikachuCameo() {
    * catch, which is what sent me looking.
    */
   const [previous, setPrevious] = useState<{ amount: number; at: number } | null>(null)
-  const [toast, setToast] = useState(false)
   /** Where the ball is flying to, in viewport coordinates, or null. */
   const [throwAt, setThrowAt] = useState<{ x: number; y: number } | null>(null)
   /**
@@ -387,15 +385,10 @@ export default function PikachuCameo() {
       // reopens on the very next render.
       claimPrize()
       resetTab()
-      setToast(true)
     }
 
     loop.current?.start()
   }, [])
-
-  /** Stable for the same reason `onClose` is — the toast arms its own dismiss
-   *  timer off this identity. */
-  const hideToast = useCallback(() => setToast(false), [])
 
   return (
     <>
@@ -417,7 +410,6 @@ export default function PikachuCameo() {
       {/* Keyed, so a second milestone replaces the first outright rather than
           reusing a toast that has already been dismissed. */}
       {eggToast && <EggToast key={eggToast} egg={eggToast} show />}
-      {toast && <Toast onClose={hideToast} />}
     </>
   )
 }

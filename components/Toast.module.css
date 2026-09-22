@@ -1,11 +1,14 @@
 /*
- * Fixed and bottom-centre: it is spawned as the modal unmounts and outlives a
- * client-side navigation, so it cannot sit inside anything that moves with the
- * page. Below the modal's 100 and above the cameo's 40 and the dev tools' 60.
+ * Fixed and bottom-centre: it outlives a client-side navigation, so it cannot
+ * sit inside anything that moves with the page.
+ *
+ * Above the invoice modal's 100, not below it. The money eggs fire on the catch
+ * that crosses their figure, with the invoice already open — at a lower z-index
+ * they landed behind its scrim.
  */
 .toast {
   position: fixed;
-  z-index: 90;
+  z-index: 110;
   bottom: 24px;
   left: 50%;
   display: flex;
@@ -53,15 +56,6 @@
  * would jump from 0deg to 360deg with nothing in between.
  */
 
-/*
- * Above the modal's 100, unlike the prize toast, which only ever appears once
- * the modal has closed. The tier eggs fire on the catch that crosses them, with
- * the invoice still open — at z-index 90 they landed behind its scrim.
- */
-.aboveModal {
-  z-index: 110;
-}
-
 /* Emoji render at the font's own metrics and sit high in the line box; this
    pulls them back onto the text's baseline. */
 .mark {
@@ -85,12 +79,6 @@
   line-height: 1.45;
   letter-spacing: 0;
   text-transform: none;
-}
-
-.link {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
 }
 
 .close {

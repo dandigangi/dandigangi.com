@@ -1,33 +1,19 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
 import { veiled } from '@/lib/copy'
 import { openEggList } from './EggList'
 import styles from './Toast.module.css'
 
 /**
- * 'prize' is the send-off for finishing the Pikachu chase, and carries the two
- * ways to claim it. 'egg' is the lighter acknowledgement used by the smaller
- * eggs around the site — it says well spotted and gets out of the way.
+ * Long enough to be read, understood, and acted on: the count in it is a
+ * control, so it has to survive being noticed as one. The × is there for anyone
+ * who would rather not wait it out.
  */
-export type ToastVariant = 'prize' | 'egg'
+const DISMISS_MS = 9500
 
-/**
- * The prize toast has to outlast reading it *and* acting on one of its links —
- * a short toast with links in it is a tease. The egg toast is shorter, but not
- * by as much as it looks: the count in it is a control now, so it has to be
- * readable, understood as pressable, and pressed. The × is on both for anyone
- * who would rather not wait either out.
- */
-const DISMISS_MS: Record<ToastVariant, number> = { prize: 30000, egg: 9500 }
-
-/** Both toasts' copy, encoded for the reason in lib/copy.ts. Decode before editing. */
+/** Encoded for the reason in lib/copy.ts. Decode before editing. */
 const FOUND = veiled('WW91IGZvdW5kIGFuIGVhc3RlciBlZ2ch')
-const PRIZE_LEAD = veiled('WW91IGZvdW5kIG15IGVhc3RlciBlZ2chIE1ha2Ugc3VyZSB0byA=')
-const PRIZE_MAIL = veiled('ZW1haWw=')
-const PRIZE_OR = veiled('IG9yIA==')
-const PRIZE_DM = veiled('RE0gbWUgb24gWA==')
 
 /**
  * How long the outro runs. Subtracted from the dismiss time rather than added
@@ -46,12 +32,10 @@ export const EXIT_MS = 260
  */
 export default function Toast({
   onClose,
-  variant = 'prize',
   count,
   total,
 }: {
   onClose: () => void
-  variant?: ToastVariant
   /** Progress through the eggs, shown only when both are given. */
   count?: number
   total?: number
@@ -60,13 +44,13 @@ export default function Toast({
   const exit = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    const out = setTimeout(() => setLeaving(true), DISMISS_MS[variant] - EXIT_MS)
-    const gone = setTimeout(onClose, DISMISS_MS[variant])
+    const out = setTimeout(() => setLeaving(true), DISMISS_MS - EXIT_MS)
+    const gone = setTimeout(onClose, DISMISS_MS)
     return () => {
       clearTimeout(out)
       clearTimeout(gone)
     }
-  }, [onClose, variant])
+  }, [onClose])
 
   /** Dismissing by hand plays the same outro rather than cutting it. */
   const dismiss = useCallback(() => {
@@ -81,39 +65,21 @@ export default function Toast({
 
   return (
     <div
-      className={`spectrumRing ${styles.toast} ${
-        variant === 'egg' ? styles.aboveModal : ''
-      } ${leaving ? styles.leaving : ''}`}
+      className={`spectrumRing ${styles.toast} ${leaving ? styles.leaving : ''}`}
       role="status"
       aria-live="polite"
     >
       <span className={styles.mark} aria-hidden="true">
-        {variant === 'egg' ? '🐣' : '🎉👏'}
+        🐣
       </span>
       <p className={styles.text}>
-        {variant === 'egg' ? (
-          <>
-            {FOUND}{' '}
-            {hasProgress && (
-              /* The count is the way into the list — the toast is the only place
-                 it is guaranteed to be on screen at the moment one is found. */
-              <button type="button" className={styles.count} onClick={openEggList}>
-                ({count}/{total})
-              </button>
-            )}
-          </>
-        ) : (
-          <>
-            {PRIZE_LEAD}
-            <a href={MAIL_URL} className={styles.link}>
-              {PRIZE_MAIL}
-            </a>
-            {PRIZE_OR}
-            <a href={X_DM_URL} target="_blank" rel="noopener noreferrer" className={styles.link}>
-              {PRIZE_DM}
-            </a>
-            .
-          </>
+        {FOUND}{' '}
+        {hasProgress && (
+          /* The count is the way into the list — the toast is the only place it
+             is guaranteed to be on screen at the moment one is found. */
+          <button type="button" className={styles.count} onClick={openEggList}>
+            ({count}/{total})
+          </button>
         )}
       </p>
       <button type="button" className={styles.close} onClick={dismiss}>
