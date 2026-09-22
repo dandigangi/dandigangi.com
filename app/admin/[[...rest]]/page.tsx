@@ -44,26 +44,25 @@ export async function generateMetadata({
   }
 }
 
-export default async function AdminGate({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ rest?: string[] }>
-  searchParams: Promise<{ g?: string }>
-}) {
+export default async function AdminGate({ params }: { params: Promise<{ rest?: string[] }> }) {
   const { rest } = await params
   if (rest?.length && !isLulz(rest)) notFound()
 
   const lulz = isLulz(rest)
   /**
-   * Two ways in, and both mean the same thing: the query param is the moment of
-   * the guess, the cookie is the hour that follows it. The param is kept as
-   * well as the cookie so that blocked cookies still get the reveal once.
+   * One way in: a cookie only app/admin/auth sets, httpOnly, after checking the
+   * digest against one the browser never sees.
+   *
+   * There used to be a second — `?g=1` on the redirect — so that blocked
+   * cookies still got the reveal once. That convenience was the whole hole: a
+   * model given only the live site read the reward out of this page's
+   * pre-rendered payload without ever typing a password. Blocked cookies now
+   * mean no reveal, which is the right trade.
    *
    * Only ever consulted on the lulz page — he is the punchline, not the prompt
    * — and the cookie's own Path keeps it away from the rest of the site.
    */
-  const lit = lulz && ((await searchParams).g === '1' || (await cookies()).has(LIT_PASS))
+  const lit = lulz && (await cookies()).has(LIT_PASS)
 
   return (
     <>

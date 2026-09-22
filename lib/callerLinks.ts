@@ -23,8 +23,15 @@ const SUBJECT = new TextDecoder().decode(
   Uint8Array.from(atob('RWFzdGVyIEVnZyBHaWZ0Y2FyZCE='), (character) => character.charCodeAt(0))
 )
 
-/** Pre-filled so one of these is recognisable in the inbox without opening it. */
-export const MAIL_URL = `mailto:${siteMetadata.email}?subject=${encodeURIComponent(SUBJECT)}`
+/**
+ * Pre-filled so one of these is recognisable in the inbox without opening it,
+ * and carrying the claim code so it arrives with something checkable — see
+ * app/c/route.ts and scripts/verify-claim.mjs.
+ */
+export const mailUrl = (code: string | null) =>
+  `mailto:${siteMetadata.email}?subject=${encodeURIComponent(SUBJECT)}${
+    code ? `&body=${encodeURIComponent(`Code: ${code}`)}` : ''
+  }`
 
 /**
  * LinkedIn has no compose deep link that works for someone who is not already a

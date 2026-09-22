@@ -1,0 +1,73 @@
+import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto'
+import { NextResponse } from 'next/server'
+import { TOKENS, type Token } from '@/lib/ledger'
+
+/**
+ * Issues a claim code, and is honest about what that is worth.
+ *
+ * What it buys: a code in a claim email is one this server minted, and can be
+ * checked against the secret with scripts/verify-claim.mjs. Before this, a
+ * claim was an email saying "I won" and there was nothing to check it against.
+ *
+ * What it does not buy, and cannot: proof that whoever holds it earned it. The
+ * tally lives in localStorage, so anyone can write the full set into the
+ * console and ask for a code, and no amount of server-side anything fixes that
+ * while the hunt itself runs in the browser. A model given only the live site
+ * pointed this out as a bigger hole than everything it had just picked apart,
+ * and it was right. This closes fabrication, not forgery.
+ *
+ * Every issue is logged, so the count of codes out there is knowable.
+ */
+const SECRET = process.env.EGG_SECRET
+
+/** Six characters of MAC. Short enough to read down a phone, and it only has to
+ *  beat guessing by someone who does not have the secret. */
+const MAC_LENGTH = 6
+
+/*
+ * Hex, not base64url, for both halves — and that is not cosmetic. base64url's
+ * alphabet contains the hyphen this code is delimited with, so a nonce could
+ * and did come out as `VLz-yXBW`, which split into four parts and failed to
+ * verify against the secret that had just minted it.
+ */
+const mac = (nonce: string, secret: string) =>
+  createHmac('sha256', secret).update(nonce).digest('hex').slice(0, MAC_LENGTH)
+
+export async function POST(request: Request) {
+  if (!SECRET) {
+    // Fails shut. A code minted with a default secret verifies against nothing
+    // and would be worse than no code at all.
+    return NextResponse.json({ error: 'unconfigured' }, { status: 503 })
+  }
+
+  let held: string[] = []
+  try {
+    const body: unknown = await request.json()
+    if (typeof body === 'object' && body !== null) {
+      const { t } = body as { t?: unknown }
+      if (Array.isArray(t)) held = t.filter((id): id is string => typeof id === 'string')
+    }
+  } catch {
+    // No body, or not JSON.
+  }
+
+  // The nine on the board. The off-board two are not required to win and are
+  // not required here either.
+  const complete = TOKENS.every((token: Token) => held.includes(token))
+  if (!complete) return NextResponse.json({ error: 'incomplete' }, { status: 403 })
+
+  const nonce = randomBytes(5).toString('hex')
+  const code = `DDG-${nonce}-${mac(nonce, SECRET)}`
+  console.log(`[claim] issued ${code}`)
+
+  return NextResponse.json({ code }, { headers: { 'Cache-Control': 'no-store' } })
+}
+
+/** Exported for the verifier, so the two cannot drift apart. */
+export function verify(code: string, secret: string): boolean {
+  const parts = code.trim().split('-')
+  if (parts.length !== 3 || parts[0] !== 'DDG') return false
+  const expected = Buffer.from(mac(parts[1], secret))
+  const given = Buffer.from(parts[2])
+  return expected.length === given.length && timingSafeEqual(expected, given)
+}

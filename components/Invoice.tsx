@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { FINAL_TIER, OPENING, OVER_TIER, OFFER_FIGURE } from '@/lib/caller'
 import { veiled } from '@/lib/copy'
-import { T, type Token } from '@/lib/ledger'
-import { LINKEDIN_URL, MAIL_URL, X_DM_URL } from '@/lib/callerLinks'
+import { T, tokenList, type Token } from '@/lib/ledger'
+import { LINKEDIN_URL, mailUrl, X_DM_URL } from '@/lib/callerLinks'
 import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
 import styles from './Invoice.module.css'
@@ -205,6 +205,35 @@ export default function Invoice({
      why the prize modal turned up on reaching a figure — the win moved to the
      egg tally, and this was the half left behind. */
   const final = won
+
+  /**
+   * The claim code, asked for once the prize is on screen.
+   *
+   * It goes in the message so a claim arrives with something checkable against
+   * the secret — see app/c/route.ts, which is also candid about the limit: it
+   * proves the code came from the site, not that the holder earned it.
+   */
+  const [code, setCode] = useState<string | null>(null)
+  useEffect(() => {
+    if (!final || code) return
+    let live = true
+    fetch('/c', {
+      method: 'POST',
+      cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ t: tokenList().map((entry) => entry.egg) }),
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((body: { code?: string } | null) => {
+        if (live && body?.code) setCode(body.code)
+      })
+      // Offline, or the secret is not configured. The prize still shows; the
+      // message simply arrives without a code, as it always used to.
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [final, code])
   const hugLimit = viaCatch ? HUGS_PER_CATCH : HUGS_PER_RE_READ
   /** Out of hugs — one after catching him, three when only re-reading. */
   const spent = hugs >= hugLimit
@@ -408,7 +437,7 @@ export default function Invoice({
                   {T_ACT_IN}
                 </a>
                 <a
-                  href={MAIL_URL}
+                  href={mailUrl(code)}
                   className={`btn btnTone ${styles.claim}`}
                   onClick={() => rail('mail')}
                 >

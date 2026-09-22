@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { grantPikaPass } from '@/lib/pass'
 import { veiled } from '@/lib/copy'
 import { ROUNDS, hash } from '@/lib/hash'
 import { useLabels } from '@/components/useLabels'
@@ -65,11 +64,16 @@ const sessionIp = () => {
  * — it just decorates the refusal. Compared case-insensitively; nothing is
  * stored or sent either way.
  */
-/* The other instruction on the site, and hashed for the same reason as the
-   search trigger — see components/PostSearch.tsx. This is not authentication:
-   the real check is the POST below, and this only decides whether the joke
-   fires. */
-const MAGIC_HASH = 'q7e0oz.bcg31z'
+/*
+ * There is no expected digest here any more. It lives in app/admin/auth, where
+ * the browser cannot read it — so the bundle no longer contains anything that
+ * says what the answer is, and guessing is the only way in.
+ *
+ * This suffix is what keeps the gate separate from the blog search, which
+ * compares the same word and must keep its digest in the bundle to do it. See
+ * the note in app/admin/auth/route.ts.
+ */
+const GATE_SALT = ':a'
 
 /** Long enough to be a plausible rule, and a nudge at the only answer that
  *  changes anything — which happens to be exactly this many letters. */
@@ -110,11 +114,22 @@ const viewport = () => {
   }
 }
 
-const knock = () => {
+/**
+ * Posts the attempt and reports whether it was the right one.
+ *
+ * The decision moved to the server — see app/admin/auth/route.ts. What goes up
+ * is the digest, never the word, so nothing anyone types reaches request
+ * handling or an access log; and what comes back is the same decoy either way,
+ * so the answer is the cookie the server sets, not anything readable here.
+ *
+ * The padding around it is unchanged. It is there to make the attempt look like
+ * a real one in the network tab.
+ */
+const knock = async (digest: string): Promise<void> => {
   // Wrapped as well as caught: a throw from fetch() itself — a blocked origin,
   // an extension tearing it out — must not stop the page doing its thing.
   try {
-    void fetch('/admin/auth', {
+    await fetch('/admin/auth', {
       method: 'POST',
       cache: 'no-store',
       credentials: 'same-origin',
@@ -126,6 +141,7 @@ const knock = () => {
         'X-Request-Id': nonce(),
       },
       body: JSON.stringify({
+        h: digest,
         grant_type: 'password',
         client_id: 'dandigangi-web',
         scope: 'admin:read admin:write',
@@ -187,23 +203,25 @@ export default function Gate() {
       return
     }
 
-    knock()
-    start(hash(entered.toLowerCase(), ROUNDS) === MAGIC_HASH)
+    /*
+     * Fired and not awaited, deliberately. The theatre below runs on its own
+     * timers whatever the network does, and the answer is not in the response —
+     * it is the httpOnly cookie the server sets, which this page cannot read
+     * and therefore cannot leak. The lulz page is where it gets checked.
+     */
+    void knock(hash(`${entered.toLowerCase()}${GATE_SALT}`, ROUNDS))
+    start()
   }
 
-  const start = (magic: boolean) => {
-    // Before the push, so the request that renders the lulz page already
-    // carries it and the server can put him up on the first paint.
-    if (magic) grantPikaPass()
+  const start = () => {
     setIp(sessionIp())
     setPhase('connecting')
     timers.current.push(
       setTimeout(() => setPhase('validating'), CONNECT_MS),
       setTimeout(() => setPhase('settled'), CONNECT_MS + VALIDATE_MS),
-      setTimeout(
-        () => router.push(magic ? '/admin/lulz?g=1' : '/admin/lulz'),
-        CONNECT_MS + VALIDATE_MS + SETTLE_MS
-      )
+      // One destination. It used to carry ?g=1 on a correct guess, which meant
+      // the reward was claimable by typing the URL.
+      setTimeout(() => router.push('/admin/lulz'), CONNECT_MS + VALIDATE_MS + SETTLE_MS)
     )
   }
 
