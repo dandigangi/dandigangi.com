@@ -7,8 +7,6 @@ const load = async () => {
   return import('./caller')
 }
 
-const ARM_MS = 5 * 60 * 1000
-
 beforeEach(() => {
   vi.useFakeTimers()
   localStorage.clear()
@@ -39,27 +37,36 @@ describe('hero arming', () => {
     expect(pk.layerActive()).toBe(false)
   })
 
-  it('lapses on its own and tells its subscribers', async () => {
+  /**
+   * The swap is scoped to the page it happened on. Caller calls this on every
+   * route change; it used to be a five-minute timer, which browsed the site
+   * with you for several pages after the moment that earned it.
+   */
+  it('ends on the next page, and tells its subscribers', async () => {
     const pk = await load()
     const listener = vi.fn()
     pk.subscribe(listener)
     pk.raiseTab(700)
     listener.mockClear()
 
-    vi.advanceTimersByTime(ARM_MS - 1)
-    expect(pk.layerActive()).toBe(true)
-    expect(listener).not.toHaveBeenCalled()
-
-    vi.advanceTimersByTime(1)
+    pk.lapseLayer()
     expect(pk.layerActive()).toBe(false)
     // Pushed, not polled: without this the swap would linger on screen.
     expect(listener).toHaveBeenCalled()
   })
 
-  it('re-arms on a later catch, tab intact', async () => {
+  it('says nothing on a route change that had no swap up', async () => {
+    const pk = await load()
+    const listener = vi.fn()
+    pk.subscribe(listener)
+    pk.lapseLayer()
+    expect(listener).not.toHaveBeenCalled()
+  })
+
+  it('comes back on a later catch, tab intact', async () => {
     const pk = await load()
     pk.raiseTab(700)
-    vi.advanceTimersByTime(ARM_MS)
+    pk.lapseLayer()
     expect(pk.layerActive()).toBe(false)
 
     pk.raiseTab(pk.getTab().amount)
@@ -91,7 +98,7 @@ describe('hero arming', () => {
   it('is not armed by the alter ego toggle', async () => {
     const pk = await load()
     pk.raiseTab(700)
-    vi.advanceTimersByTime(ARM_MS)
+    pk.lapseLayer()
     pk.setAlt(true)
     expect(pk.layerActive()).toBe(false)
   })

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { FINAL_TIER, OPENING, OVER_TIER, OFFER_FIGURE } from '@/lib/caller'
 import { veiled } from '@/lib/copy'
-import { T, addToken, type Token } from '@/lib/ledger'
+import { T, type Token } from '@/lib/ledger'
 import { LINKEDIN_URL, MAIL_URL, X_DM_URL } from '@/lib/callerLinks'
 import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
@@ -183,16 +183,23 @@ export default function Invoice({
    * own prerequisite. See ASIDE in lib/eggs.ts.
    */
   const [rails, setRails] = useState<string[]>([])
+  /**
+   * Two things had to be got right here and both were wrong first time.
+   *
+   * The work is outside the updater. Updaters run during render, so calling the
+   * parent's setState from inside one is updating another component mid-render
+   * — React's own warning — and the toast never arrived.
+   *
+   * And it does not record the find itself. Blip captures whether the egg was
+   * already known when it mounts, so an egg recorded a moment before the toast
+   * is one the toast will decline to announce. Handing it the id and letting it
+   * do the recording is the same contract every other egg here uses.
+   */
   const rail = (name: string) => {
-    setRails((names) => {
-      if (names.includes(name)) return names
-      const next = [...names, name]
-      if (next.length === 3) {
-        addToken(T.rails)
-        onEgg(T.rails)
-      }
-      return next
-    })
+    if (rails.includes(name)) return
+    const next = [...rails, name]
+    setRails(next)
+    if (next.length === 3) onEgg(T.rails)
   }
   /* `won` alone. This used to also fire on `amount >= FINAL_TIER`, which is
      why the prize modal turned up on reaching a figure — the win moved to the
@@ -386,7 +393,7 @@ export default function Invoice({
                   href={X_DM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`btn ${styles.claim}`}
+                  className={`btn btnTone ${styles.claim}`}
                   onClick={() => rail('x')}
                 >
                   {T_ACT_X}
@@ -395,19 +402,23 @@ export default function Invoice({
                   href={LINKEDIN_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`btn ${styles.claim}`}
+                  className={`btn btnTone ${styles.claim}`}
                   onClick={() => rail('in')}
                 >
                   {T_ACT_IN}
                 </a>
-                <a href={MAIL_URL} className={`btn ${styles.claim}`} onClick={() => rail('mail')}>
+                <a
+                  href={MAIL_URL}
+                  className={`btn btnTone ${styles.claim}`}
+                  onClick={() => rail('mail')}
+                >
                   {T_ACT_MAIL}
                 </a>
               </>
             ) : (
               <button
                 type="button"
-                className={`btn ${styles.decline} ${over ? styles.declineOver : ''}`}
+                className={`btn btnTone ${styles.decline} ${over ? styles.declineOver : ''}`}
                 // Refusing stays open until the hugs are gone: on a re-read that
                 // is three of them, so one hug must not close the door.
                 disabled={spent}

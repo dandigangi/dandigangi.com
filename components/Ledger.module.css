@@ -218,7 +218,7 @@
   padding: 6px 0;
   border: 0;
   background: none;
-  color: var(--soft);
+  color: var(--ink);
   cursor: pointer;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 10px;
@@ -228,8 +228,10 @@
   transition: color 0.15s ease;
 }
 
+/* Red is what it does, not what it is — so it only turns on approach, and then
+   stays red for as long as it is armed. */
 .reset:hover {
-  color: var(--ink);
+  color: #ee3524;
 }
 
 .arming {

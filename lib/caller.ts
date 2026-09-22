@@ -41,44 +41,21 @@ let everActive = false
 let activatedAt = 0
 
 /**
- * How long the hero swap outlives the catch that armed it.
+ * Whether the hero swap is up, and it lives no longer than the page it happened
+ * on.
  *
- * The tab persists and the swap does not, deliberately. Gating the hero on the
- * stored figure alone meant one good run left every page yellow on every later
- * visit, for people who were only here to read something.
- */
-const ARM_MS = 5 * 60 * 1000
-
-/** When he was last caught, or 0. Never persisted, so a reload is a way out
- *  too — but nobody should have to discover that. */
-let armedAt = 0
-let armTimer: ReturnType<typeof setTimeout> | null = null
-
-const armed = () => armedAt > 0 && Date.now() - armedAt < ARM_MS
-
-/**
- * Catching him puts the swap in play and re-arms it if it had lapsed, which is
- * what lets someone come back days later, click him once and pick up where the
- * tab left off.
+ * This was a five-minute timer, which was the wrong shape twice over: it
+ * outlived the moment that earned it by several navigations, and it needed a
+ * setTimeout to push the expiry because nothing else would repaint at the
+ * deadline. Crossing the last milestone is a payoff, not a state — you see it,
+ * and then you carry on reading. Caller clears it on the next route change.
  *
- * The lapse has to push rather than be polled: `layerActive` is read through
- * `useSyncExternalStore`, so a bare `Date.now()` comparison would repaint
- * nothing at the deadline and the swap would linger until something unrelated
- * happened to emit.
+ * Never persisted, so a reload clears it too.
  */
-const arm = () => {
-  armedAt = Date.now()
-  if (armTimer) clearTimeout(armTimer)
-  armTimer = setTimeout(() => {
-    armTimer = null
-    emit()
-  }, ARM_MS)
-}
+let swap = false
 
 const disarm = () => {
-  armedAt = 0
-  if (armTimer) clearTimeout(armTimer)
-  armTimer = null
+  swap = false
 }
 
 const listeners = new Set<() => void>()
@@ -116,7 +93,7 @@ export const setHinted = (on: boolean) => {
  * back under the line puts the abstract render back exactly as it puts the
  * modal back to black.
  */
-export const layerActive = () => searchEgg || (armed() && getTab().amount >= FINAL_TIER)
+export const layerActive = () => searchEgg || swap
 
 /** Derived too, or a reload with an escalated tab stored would never mount the
  *  layer that `layerActive` is about to switch on. */
@@ -250,10 +227,9 @@ export const getInitialTab = (): Tab => INITIAL
 /** Raises the tab and counts the invoice. Only he may call this. */
 export const raiseTab = (amount: number) => {
   const wasActive = layerActive()
-  // Before the figure moves, so `changed` below sees the armed state that this
-  // catch has just established rather than the one it is replacing.
-  arm()
   tab = { amount, invoices: tab.invoices + 1 }
+  // After the figure moves: this is the crossing that puts the swap up.
+  if (tab.amount >= FINAL_TIER) swap = true
   persist()
   // Not emit(): crossing FINAL_TIER is what switches the hero on, and only this
   // knows whether that just happened.
@@ -266,7 +242,7 @@ export const raiseTab = (amount: number) => {
  * watched in a reasonable sitting, and the fade-out is worth seeing.
  */
 export const lapseLayer = () => {
-  if (!armed()) return
+  if (!swap) return
   const wasActive = layerActive()
   disarm()
   changed(wasActive)
@@ -324,6 +300,9 @@ export const softenTab = (by: number): boolean => {
   if (next === tab.amount) return false
   const wasActive = layerActive()
   tab = { ...tab, amount: next }
+  // A hug that drops him back under the line puts the abstract render back, the
+  // same way it puts the modal back to black.
+  if (tab.amount < FINAL_TIER) swap = false
   persist()
   changed(wasActive)
   return true

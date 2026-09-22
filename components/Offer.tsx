@@ -21,7 +21,7 @@ export default function Offer() {
   return (
     <button
       type="button"
-      className={`btn btnPrize ${styles.claim}`}
+      className={`btn btnPrize btnTone ${styles.claim}`}
       onClick={() => window.dispatchEvent(new CustomEvent(CALLER_OFFER))}
       data-print="hide"
     >

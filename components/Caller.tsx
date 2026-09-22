@@ -9,6 +9,7 @@ import {
   CALLER_OFFER,
   getInitialTab,
   getTab,
+  lapseLayer,
   markMet,
   raiseTab,
   resetTab,
@@ -358,6 +359,9 @@ export default function Caller() {
     // drops a cameo whose path no longer matches.
     loop.current?.stop()
     loop.current?.start()
+    // And the hero swap is scoped to the page it happened on: crossing the last
+    // milestone is a payoff to witness, not a state to browse the site in.
+    lapseLayer()
   }, [pathname])
 
   // Reopening from the footer must not add to the tab: only he gets to do that.

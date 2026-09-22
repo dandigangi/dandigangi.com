@@ -3,12 +3,25 @@
 import { useMemo } from 'react'
 import styles from './Drift.module.css'
 
-/** Where the stars start, how big, and how long they take. */
-type Star = { id: number; left: number; size: number; delay: number; fall: number }
+/** Where the stars start, how big, how long they take, and how far they turn. */
+type Star = {
+  id: number
+  left: number
+  size: number
+  delay: number
+  fall: number
+  /** Total rotation over the drop, signed. Rolled per star so no two agree. */
+  spin: number
+}
 
 const STAR = '/static/images/glint.gif'
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min)
+
+/** Either direction, evenly. A helper rather than an inline Math.random(),
+ *  which react-hooks/purity flags inside the memo below — rightly, and the memo
+ *  is impure on purpose; see the note on it. */
+const coin = () => (rand(0, 1) < 0.5 ? -1 : 1)
 
 /**
  * A handful of stars dropped down the page when Rainbow Road switches on, each
@@ -41,9 +54,14 @@ export default function Drift({ trigger }: { trigger: number }) {
       id: trigger * 100 + at,
       // Kept off the extreme edges: a star half off-screen reads as a glitch.
       left: rand(6, 90),
-      size: rand(26, 46),
-      delay: rand(0, 420),
-      fall: rand(1500, 2100),
+      // A wider spread than it looks: at the old 26–46 the set read as one size
+      // with noise on it, and depth needs the big ones to be properly big.
+      size: rand(20, 66),
+      delay: rand(0, 520),
+      fall: rand(1400, 2800),
+      // Half turn to two and a half, either way round. Below a half it reads as
+      // a wobble; much past this and a sprite this small is just blur.
+      spin: rand(180, 900) * coin(),
     }))
   }, [trigger])
 
@@ -61,6 +79,7 @@ export default function Drift({ trigger }: { trigger: number }) {
               '--size': `${star.size}px`,
               '--delay': `${star.delay}ms`,
               '--fall': `${star.fall}ms`,
+              '--spin': `${star.spin}deg`,
             } as React.CSSProperties
           }
         >

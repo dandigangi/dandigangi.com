@@ -165,7 +165,7 @@ export default function Ledger() {
              tally stays complete, so without this there would be none. */
           <button
             type="button"
-            className={`btn btnPrize ${styles.claim}`}
+            className={`btn btnPrize btnTone ${styles.claim}`}
             onClick={() => {
               close()
               window.dispatchEvent(new CustomEvent(CALLER_OFFER))

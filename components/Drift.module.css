@@ -21,7 +21,14 @@
   top: 0;
   width: var(--size);
   height: var(--size);
-  animation: drop var(--fall) var(--delay) cubic-bezier(0.45, 0, 0.7, 0.35) forwards;
+  /*
+   * `both`, not `forwards`. Each star waits out its own --delay before it
+   * starts, and with only `forwards` the browser paints it at its static top: 0
+   * for that whole wait — so the set flashed across the top of the viewport,
+   * vanished as the animation took over at -12vh, and only then fell. `both`
+   * adds backwards fill, which holds the 0% frame through the delay.
+   */
+  animation: drop var(--fall) var(--delay) cubic-bezier(0.45, 0, 0.7, 0.35) both;
   /* Pixel art: the browser's smoothing turns a 32px sprite into mush. */
   image-rendering: pixelated;
 }
@@ -32,6 +39,11 @@
   height: auto;
 }
 
+/*
+ * The rotation is a fraction of each star's own --spin rather than a fixed
+ * number of degrees, so the turn keeps pace with the fall it belongs to: they
+ * all reach the floor together in their own time and none of them snaps.
+ */
 @keyframes drop {
   0% {
     top: -12vh;
@@ -40,13 +52,13 @@
   /* The floor. Accelerating in, so it arrives rather than drifts. */
   60% {
     top: calc(100vh - var(--size));
-    transform: rotate(180deg);
+    transform: rotate(calc(var(--spin) * 0.43));
     animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
   }
   /* The bounce, decelerating out of it. */
   78% {
     top: calc(72vh - var(--size));
-    transform: rotate(280deg);
+    transform: rotate(calc(var(--spin) * 0.67));
     animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0.4);
   }
   /* Down again and straight off the bottom. Hidden at the end rather than
@@ -54,7 +66,7 @@
      visible: hidden sprite is one the browser stops painting. */
   100% {
     top: 115vh;
-    transform: rotate(420deg);
+    transform: rotate(var(--spin));
     visibility: hidden;
   }
 }

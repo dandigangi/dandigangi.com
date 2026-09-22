@@ -90,7 +90,7 @@
  * which nothing animates, and every button inherits a frozen gradient. The ring
  * appears but never turns. Same trap as --spectrum; see css/globals.css.
  */
-:root[data-trail] .btn,
+:root[data-trail] .btn:not(.btnTone),
 :root[data-trail] .chip {
   border: 1px solid transparent;
   background:
@@ -111,28 +111,33 @@
 }
 
 /*
- * The one button that hands something over keeps its green fill. The rule above
- * repaints every .btn with the page background, which on black left dark-on-dark
- * text — the ring turned merrily around an invisible label.
+ * Buttons that carry a colour of their own — the green that hands something
+ * over, the red that refuses — keep it, and keep a plain border with it. A
+ * rainbow ring around a green button at rest reads as decoration competing with
+ * the colour that is doing the actual work.
+ *
+ * The ring comes back as a hover state, through `border-image` rather than the
+ * two-background trick above: that trick has to repaint the background to work,
+ * which is the one thing these must not lose. `border-image` ignores
+ * border-radius, and .btn has none, so here it costs nothing.
  */
-:root[data-trail] .btnPrize,
-:root[data-trail] .btnPrize:hover {
-  background:
-    linear-gradient(#3fb950, #3fb950) padding-box,
-    conic-gradient(
-        from var(--angle),
-        var(--rb-red),
-        var(--rb-orange),
-        var(--rb-yellow),
-        var(--rb-green),
-        var(--rb-blue),
-        var(--rb-indigo),
-        var(--rb-violet),
-        var(--rb-red)
-      )
-      border-box;
-  color: #04120a;
-  -webkit-text-fill-color: #04120a;
+:root[data-trail] .btnTone:hover,
+:root[data-trail] .btnTone:focus-visible,
+:root[data-trail] .btnTone:active {
+  border-color: transparent;
+  border-image: conic-gradient(
+      from var(--angle),
+      var(--rb-red),
+      var(--rb-orange),
+      var(--rb-yellow),
+      var(--rb-green),
+      var(--rb-blue),
+      var(--rb-indigo),
+      var(--rb-violet),
+      var(--rb-red)
+    )
+    1;
+  animation: hueSpin 1.25s linear infinite;
 }
 
 /*
@@ -274,9 +279,9 @@
     auto;
   -webkit-background-clip: text, padding-box;
   background-clip: text, padding-box;
-  /* A touch more than the ordinary nav carries: the plate is visible here, and
-     at the ordinary padding the letters sat right on its edge. */
-  padding: 10px 13px;
+  /* A good deal more than the ordinary nav carries: the plate is visible here,
+     and at the ordinary padding the letters sat right on its edge. */
+  padding: 10px 17px;
 }
 
 /*
