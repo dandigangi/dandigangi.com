@@ -81,8 +81,11 @@ export default function PostSearch({
    */
   useEffect(() => {
     const initial = new URLSearchParams(window.location.search).get(PARAM)
+    // One query is not restored, and it is the one worth typing yourself. A
+    // link that hands it over turns a thing you find into a thing you are told.
+    const restorable = initial && initial.trim().toLowerCase() !== EGG
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the rule is right in general; here the whole point is to read a client-only source after hydration rather than during it.
-    if (initial) setQuery(initial)
+    if (restorable) setQuery(initial)
   }, [])
 
   /**
@@ -108,13 +111,15 @@ export default function PostSearch({
       return
     }
     const url = new URL(window.location.href)
-    if (query) url.searchParams.set(PARAM, query)
+    // Same word, the other direction: it never reaches the URL in the first
+    // place, so there is no link to share and nothing in anyone's history.
+    if (query && !egg) url.searchParams.set(PARAM, query)
     else url.searchParams.delete(PARAM)
     const next = `${url.pathname}${url.search}${url.hash}`
     if (next !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
       window.history.replaceState(window.history.state, '', next)
     }
-  }, [query])
+  }, [query, egg])
 
   /**
    * The hero lives in PageBand, well outside this subtree, so it is told through
