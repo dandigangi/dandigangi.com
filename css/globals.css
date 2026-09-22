@@ -55,10 +55,38 @@
   --rb-indigo: #a5b4fc;
   --rb-violet: #e879f9;
 
+  /*
+   * The travelling rainbow ring, shared by the toast, the egg list and the
+   * prize modal. Used as the border-box layer of a two-background paint: a
+   * gradient cannot be a border-color, and the usual pseudo-element trick
+   * cannot follow a large border-radius without a second element.
+   *
+   * Each surface declares its own `background` and `animation` rather than
+   * inheriting a utility class, because they all need a different fill and a
+   * different entry animation beside this one.
+   */
+  --spectrum: conic-gradient(
+    from var(--angle),
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-red)
+  );
+
   --par-hero: 0px;
   --par-band: 0px;
 
   color-scheme: dark;
+}
+
+@keyframes spectrum {
+  to {
+    --angle: 360deg;
+  }
 }
 
 [data-theme='light'] {

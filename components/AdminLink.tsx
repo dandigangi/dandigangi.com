@@ -1,26 +1,17 @@
-'use client'
-
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import styles from './Footer.module.css'
 
 /**
- * The faint way in. A client component only so it can tell whether you are
- * already under /admin — opening a new tab from the page you are standing on
- * leaves a duplicate behind, which is worse than just navigating.
+ * The faint way in. Navigates in place rather than opening a tab — it goes to a
+ * page on this site, and the arrow that used to say otherwise has gone with it.
+ *
+ * No longer a client component: it only needed to be one to tell whether you
+ * were already under /admin, which mattered only for the new-tab decision.
  */
 export default function AdminLink() {
-  const pathname = usePathname()
-  const inside = pathname?.startsWith('/admin') ?? false
-
   return (
-    <Link
-      href="/admin"
-      className={styles.admin}
-      target={inside ? undefined : '_blank'}
-      rel={inside ? undefined : 'noopener noreferrer'}
-    >
-      Admin <span aria-hidden="true">↗</span>
+    <Link href="/admin" className={styles.admin}>
+      Admin
     </Link>
   )
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { FINAL_TIER, OPENING, OVER_TIER } from '@/lib/pikachu'
-import { MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
+import { LINKEDIN_URL, MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
 import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
 import styles from './PikachuModal.module.css'
@@ -133,13 +133,14 @@ const TEXT = [
   'WW914oCZcmUgZGVkaWNhdGlvbiBpcyBpbXByZXNzaXZlLg==',
   'SeKAmWQgbGlrZSB0byBzZW5kIHlvdSBhIHt9IGdpZnQgY2FyZCBvZiB5b3VyIGNob2ljZS4=',
   '4oCUIFlvdSBQaWNr',
-  'U2VuZCBETQ==',
+  'RE0gb24gWA==',
+  'RE0gb24gTGlua2VkSW4=',
   'RW1haWw=',
 ].map((line) =>
   new TextDecoder().decode(Uint8Array.from(atob(line), (character) => character.charCodeAt(0)))
 )
 
-const [T_HEAD, T_LABEL, T_LINE_1, T_LINE_2, T_ASIDE, T_ACT_X, T_ACT_MAIL] = TEXT
+const [T_HEAD, T_LABEL, T_LINE_1, T_LINE_2, T_ASIDE, T_ACT_X, T_ACT_IN, T_ACT_MAIL] = TEXT
 
 const AVATAR = '/static/images/pikachu-avatar.jpg'
 const ANGRY_AVATAR = '/static/images/pikachu-avatar-angry.jpg'
@@ -362,6 +363,14 @@ export default function PikachuModal({
                   className={`btn ${styles.claim}`}
                 >
                   {T_ACT_X}
+                </a>
+                <a
+                  href={LINKEDIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`btn ${styles.claim}`}
+                >
+                  {T_ACT_IN}
                 </a>
                 <a href={MAIL_URL} className={`btn ${styles.claim}`}>
                   {T_ACT_MAIL}

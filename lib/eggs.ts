@@ -51,11 +51,11 @@ const NAMES: Record<Egg, string> = {
 
 export const eggName = (egg: Egg): string => veiled(NAMES[egg])
 
-/** The found ones, in registry order, for listing. */
-export const foundList = (): Egg[] => {
+/** The found ones with their timestamps, in the order they were found. */
+export const foundList = (): { egg: Egg; at: number }[] => {
   if (typeof window === 'undefined') return []
   load()
-  return EGGS.filter((egg) => found.has(egg))
+  return [...found.entries()].map(([egg, at]) => ({ egg, at })).sort((a, b) => a.at - b.at)
 }
 
 // Opaque on purpose: "dd:eggs" sitting in localStorage is an invitation.
@@ -69,7 +69,8 @@ const CLAIM_KEY = 'dd:x2'
  * rendering this unmounts on a client-side navigation and has to be able to ask
  * what happened while it was gone.
  */
-let found = new Set<Egg>()
+/** Egg -> when it was found. A Map rather than a Set so the list can say when. */
+let found = new Map<Egg, number>()
 let claimed = false
 let read = false
 
@@ -93,9 +94,22 @@ const load = () => {
     const raw = localStorage.getItem(STORE_KEY)
     if (!raw) return
     const saved: unknown = JSON.parse(raw)
-    // Filtered rather than trusted: a stale name from an egg that has since been
-    // removed would otherwise count toward a total that no longer includes it.
-    if (Array.isArray(saved)) found = new Set(saved.filter(isEgg))
+    /*
+     * Two shapes. The current one is [id, timestamp] pairs; the first version
+     * stored bare ids, and those are kept with an unknown time rather than
+     * dropped — losing a find to a format change would be the worse trade.
+     *
+     * Filtered rather than trusted either way: a stale id from an egg that has
+     * since been removed would count toward a total that no longer includes it.
+     */
+    if (Array.isArray(saved)) {
+      for (const entry of saved) {
+        if (typeof entry === 'string' && isEgg(entry)) found.set(entry, 0)
+        else if (Array.isArray(entry) && isEgg(entry[0])) {
+          found.set(entry[0], typeof entry[1] === 'number' ? entry[1] : 0)
+        }
+      }
+    }
     claimed = localStorage.getItem(CLAIM_KEY) === '1'
   } catch {
     // Private mode, blocked storage, or a value written by an older shape.
@@ -150,7 +164,7 @@ export const findEgg = (egg: Egg): void => {
   if (typeof window === 'undefined') return
   load()
   if (found.has(egg)) return
-  found.add(egg)
+  found.set(egg, Date.now())
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify([...found]))
   } catch {
@@ -161,7 +175,7 @@ export const findEgg = (egg: Egg): void => {
 
 /** Back to nothing found. The dev dock's reset calls this. */
 export const resetEggs = (): void => {
-  found = new Set()
+  found = new Map()
   claimed = false
   read = true
   try {

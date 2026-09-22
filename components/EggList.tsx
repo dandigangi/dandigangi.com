@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
-import { TOTAL_EGGS, eggName, foundEggs, foundList, subscribe, type Egg } from '@/lib/eggs'
+import { TOTAL_EGGS, allFound, eggName, foundEggs, foundList, subscribe } from '@/lib/eggs'
+import { PIKACHU_PRIZE } from '@/lib/pikachu'
 import styles from './EggList.module.css'
 
 /**
@@ -13,6 +14,17 @@ import styles from './EggList.module.css'
 export const EGG_LIST_OPEN = 'dd:eggs-open'
 
 export const openEggList = () => window.dispatchEvent(new CustomEvent(EGG_LIST_OPEN))
+
+/** "22 Sep, 03:24". Short enough to sit on one line beside the name. */
+const when = (at: number) =>
+  at === 0
+    ? ''
+    : new Date(at).toLocaleString(undefined, {
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
 
 /**
  * What has been found, and how much is left. Mounted once in the layout and
@@ -26,6 +38,7 @@ export const openEggList = () => window.dispatchEvent(new CustomEvent(EGG_LIST_O
 export default function EggList() {
   const [open, setOpen] = useState(false)
   const found = useSyncExternalStore(subscribe, foundEggs, () => 0)
+  const complete = useSyncExternalStore(subscribe, allFound, () => false)
 
   const close = useCallback(() => setOpen(false), [])
 
@@ -54,21 +67,28 @@ export default function EggList() {
     >
       <div className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="egg-list">
         <header className={styles.head}>
-          <h2 className={styles.title} id="egg-list">
-            {veiled('RWFzdGVyIGVnZ3M=')}
-          </h2>
-          <p className={styles.score}>
-            {found} of {TOTAL_EGGS} found
-          </p>
+          <div>
+            <h2 className={styles.title} id="egg-list">
+              {veiled('RWFzdGVyIGVnZ3M=')}
+            </h2>
+            <p className={styles.score}>
+              {found} of {TOTAL_EGGS} found
+            </p>
+          </div>
+          <button type="button" className={styles.x} onClick={close}>
+            <span aria-hidden="true">×</span>
+            <span className="srOnly">Close</span>
+          </button>
         </header>
 
         <ol className={styles.list}>
-          {unlocked.map((egg: Egg) => (
+          {unlocked.map(({ egg, at }) => (
             <li key={egg} className={styles.row}>
               <span className={styles.mark} aria-hidden="true">
                 🐣
               </span>
               <span className={styles.name}>{eggName(egg)}</span>
+              <span className={styles.at}>{when(at)}</span>
             </li>
           ))}
 
@@ -82,6 +102,21 @@ export default function EggList() {
             </li>
           ))}
         </ol>
+
+        {complete && (
+          /* A way back to the prize once the modal has been dismissed — the
+             tally stays complete, so without this there would be none. */
+          <button
+            type="button"
+            className={`btn ${styles.claim}`}
+            onClick={() => {
+              close()
+              window.dispatchEvent(new CustomEvent(PIKACHU_PRIZE))
+            }}
+          >
+            Claim Your Prize
+          </button>
+        )}
 
         <button type="button" className={`btn ${styles.close}`} onClick={close}>
           Close

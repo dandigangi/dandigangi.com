@@ -129,3 +129,39 @@ describe('the prize', () => {
     expect(listener).toHaveBeenCalled()
   })
 })
+
+describe('when each was found', () => {
+  it('stamps a find and keeps the stamp across a reload', async () => {
+    const first = await load()
+    first.findEgg('search')
+    const at = first.foundList()[0].at
+    expect(at).toBeGreaterThan(0)
+
+    const second = await load()
+    expect(second.foundList()[0]).toEqual({ egg: 'search', at })
+  })
+
+  /**
+   * The first version stored bare ids. Those are kept with an unknown time
+   * rather than dropped — losing someone's finds to a format change would be
+   * the worse trade.
+   */
+  it('keeps finds written in the older id-only shape', async () => {
+    localStorage.setItem('dd:x1', JSON.stringify(['search', 'admin']))
+    const eggs = await load()
+    expect(eggs.foundEggs()).toBe(2)
+    expect(eggs.foundList().every((entry) => entry.at === 0)).toBe(true)
+  })
+
+  it('lists them in the order they were found', async () => {
+    const eggs = await load()
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-09-22T03:00:00Z'))
+    eggs.findEgg('admin')
+    vi.setSystemTime(new Date('2026-09-22T04:00:00Z'))
+    eggs.findEgg('search')
+    vi.useRealTimers()
+
+    expect(eggs.foundList().map((entry) => entry.egg)).toEqual(['admin', 'search'])
+  })
+})

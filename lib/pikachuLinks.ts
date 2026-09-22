@@ -25,3 +25,10 @@ const SUBJECT = new TextDecoder().decode(
 
 /** Pre-filled so one of these is recognisable in the inbox without opening it. */
 export const MAIL_URL = `mailto:${siteMetadata.email}?subject=${encodeURIComponent(SUBJECT)}`
+
+/**
+ * LinkedIn has no compose deep link that works for someone who is not already a
+ * connection, so this is the profile — one click short of a message, which is
+ * as close as the platform allows.
+ */
+export const LINKEDIN_URL = siteMetadata.linkedin

@@ -6,6 +6,9 @@
 /** Reopens the invoice without adding to the tab — clicking him does that. */
 export const PIKACHU_OPEN = 'pikachu:open'
 
+/** Reopens the prize, for anyone who dismissed it and wants another look. */
+export const PIKACHU_PRIZE = 'pikachu:prize'
+
 /**
  * Module state, because an event only reaches whoever was mounted when it
  * fired. Anything inside a page unmounts on a client-side navigation and has to

@@ -54,27 +54,10 @@
 .toast {
   background:
     linear-gradient(var(--bg), var(--bg)) padding-box,
-    conic-gradient(
-        from var(--angle),
-        var(--rb-red),
-        var(--rb-orange),
-        var(--rb-yellow),
-        var(--rb-green),
-        var(--rb-blue),
-        var(--rb-indigo),
-        var(--rb-violet),
-        var(--rb-red)
-      )
-      border-box;
+    var(--spectrum) border-box;
   animation:
     toastIn 240ms ease-out,
-    spectrum 6s linear infinite;
-}
-
-@keyframes spectrum {
-  to {
-    --angle: 360deg;
-  }
+    spectrum 2.4s linear infinite;
 }
 
 /*
@@ -150,7 +133,7 @@
 .leaving {
   animation:
     toastOut var(--toast-exit, 260ms) ease-in forwards,
-    spectrum 6s linear infinite;
+    spectrum 2.4s linear infinite;
 }
 
 @keyframes toastOut {

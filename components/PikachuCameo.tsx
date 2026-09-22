@@ -6,6 +6,7 @@ import Image from 'next/image'
 import {
   MONEY_TIERS,
   PIKACHU_OPEN,
+  PIKACHU_PRIZE,
   getInitialTab,
   getTab,
   markCaught,
@@ -163,12 +164,14 @@ export default function PikachuCameo() {
     () => allFound() && !hasClaimed(),
     () => false
   )
+  /** Asked for again from the egg list, after it has already been collected. */
+  const [reopened, setReopened] = useState(false)
 
   /**
    * Read by `onClose`, which has to keep a stable identity — so the won state
    * reaches it through a ref rather than through its dependency list.
    */
-  const won = prize
+  const won = prize || reopened
   const wonRef = useRef(won)
   useEffect(() => {
     wonRef.current = won
@@ -361,6 +364,12 @@ export default function PikachuCameo() {
     return () => window.removeEventListener(PIKACHU_OPEN, onOpen)
   }, [])
 
+  useEffect(() => {
+    const onPrize = () => setReopened(true)
+    window.addEventListener(PIKACHU_PRIZE, onPrize)
+    return () => window.removeEventListener(PIKACHU_PRIZE, onPrize)
+  }, [])
+
   /**
    * Stable, and it has to be: the modal focuses its close button and arms the
    * hug's exit timer off this identity. A fresh function each render would
@@ -372,6 +381,7 @@ export default function PikachuCameo() {
     // Winning ends the game rather than becoming a state to live in: the tab
     // goes back to the opening ask and the hero stands down, and the toast is
     // the only thing left carrying the payout.
+    setReopened(false)
     if (wonRef.current) {
       // Marked collected before the reset, or `prize` stays true and the modal
       // reopens on the very next render.
@@ -389,7 +399,7 @@ export default function PikachuCameo() {
 
   return (
     <>
-      {(open || prize) && (
+      {(open || prize || reopened) && (
         <PikachuModal
           amount={amount}
           // Only when it still describes the invoice on screen. Anything else
