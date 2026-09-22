@@ -23,6 +23,9 @@ const MISS = veiled('Tm90aGluZyBtYXRjaGVzIOKAnHBpa2FjaHXigJ0gZXhjZXB0')
 const NUDGE = veiled('LiBUcnkgdGhyb3dpbmcgYSBQb2vDqWJhbGwh')
 const THROW_LABEL = veiled('VGhyb3cgYSBQb2vDqWJhbGwgYXQgUGlrYWNodQ==')
 
+/** The query-string key. Short, and the one every other blog URL already uses. */
+const PARAM = 'q'
+
 export type SearchEntry = {
   slug: string
   title: string
@@ -63,6 +66,55 @@ export default function PostSearch({
   const [query, setQuery] = useState('')
   const trimmed = query.trim().toLowerCase()
   const egg = trimmed === EGG
+
+  /**
+   * Seeded from ?q= after mount rather than in the initial state.
+   *
+   * These pages are statically generated, so the server has no query string and
+   * rendering the filtered list straight away would be a hydration mismatch —
+   * the server would send the full list and the client would send four results.
+   * An effect costs one frame of the server list and cannot disagree with it.
+   *
+   * Read off `location` rather than through `useSearchParams`, which opts the
+   * whole route out of static rendering unless it is wrapped in Suspense. There
+   * is nothing here worth that.
+   */
+  useEffect(() => {
+    const initial = new URLSearchParams(window.location.search).get(PARAM)
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the rule is right in general; here the whole point is to read a client-only source after hydration rather than during it.
+    if (initial) setQuery(initial)
+  }, [])
+
+  /**
+   * And written back on every change, so the URL is always the one to share.
+   *
+   * `replaceState`, not a router navigation: this is a box you type into, and
+   * pushing an entry per keystroke would turn the back button into an undo key
+   * for the last twenty characters. It also skips the re-render a navigation
+   * would cost on every letter.
+   *
+   * An empty box drops the parameter rather than leaving `?q=` behind.
+   */
+  const mounted = useRef(false)
+  useEffect(() => {
+    /*
+     * Skipped on mount, and it has to be. Both effects run in the same commit,
+     * so without this the write would fire with the empty initial state and
+     * strip the very ?q= the read above had just picked up, before the
+     * re-render put it back.
+     */
+    if (!mounted.current) {
+      mounted.current = true
+      return
+    }
+    const url = new URL(window.location.href)
+    if (query) url.searchParams.set(PARAM, query)
+    else url.searchParams.delete(PARAM)
+    const next = `${url.pathname}${url.search}${url.hash}`
+    if (next !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
+      window.history.replaceState(window.history.state, '', next)
+    }
+  }, [query])
 
   /**
    * The hero lives in PageBand, well outside this subtree, so it is told through
