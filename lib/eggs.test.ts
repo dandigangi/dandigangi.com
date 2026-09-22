@@ -165,3 +165,36 @@ describe('when each was found', () => {
     expect(eggs.foundList().map((entry) => entry.egg)).toEqual(['admin', 'search'])
   })
 })
+
+describe('a visitor who played the old version', () => {
+  /**
+   * There is no server-side state to clear and no way to reach into someone's
+   * browser — the only lever is which key the code reads. Pointing it at a new
+   * one is the migration: nobody has that key yet, so everybody starts at zero.
+   */
+  it('starts from nothing, whatever the old key held', async () => {
+    localStorage.setItem(
+      'dd:x1',
+      JSON.stringify([
+        ['search', 1],
+        ['admin', 2],
+      ])
+    )
+    localStorage.setItem('dd:x2', '1')
+
+    const eggs = await load()
+    expect(eggs.foundEggs()).toBe(0)
+    expect(eggs.hasClaimed()).toBe(false)
+  })
+
+  it('clears the old keys rather than leaving them behind', async () => {
+    localStorage.setItem('dd:x1', JSON.stringify([['search', 1]]))
+    localStorage.setItem('dd:x2', '1')
+
+    const eggs = await load()
+    eggs.foundEggs() // first read is what triggers the cleanup
+
+    expect(localStorage.getItem('dd:x1')).toBeNull()
+    expect(localStorage.getItem('dd:x2')).toBeNull()
+  })
+})

@@ -123,6 +123,15 @@ const load = () => {
   if (read) return
   read = true
   try {
+    /*
+     * Both of these come before the early return below, and that ordering is
+     * the whole point. Someone arriving from the previous version has no new
+     * key at all, so `raw` is null and anything after that check never runs —
+     * which was exactly the case the cleanup existed for.
+     */
+    for (const key of RETIRED) localStorage.removeItem(key)
+    claimed = localStorage.getItem(CLAIM_KEY) === '1'
+
     const raw = localStorage.getItem(STORE_KEY)
     if (!raw) return
     const saved: unknown = JSON.parse(raw)
@@ -142,8 +151,6 @@ const load = () => {
         }
       }
     }
-    claimed = localStorage.getItem(CLAIM_KEY) === '1'
-    for (const key of RETIRED) localStorage.removeItem(key)
   } catch {
     // Private mode, blocked storage, or a value written by an older shape.
   }
