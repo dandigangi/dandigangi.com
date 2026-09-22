@@ -68,8 +68,3 @@ glance there is usually a comment saying which thing bit me and when. A few
 of them are load-bearing enough that changing the line without reading the
 comment will quietly break something — the CSS custom-property notes in
 `css/globals.css` especially.
-
-## Licence
-
-Code is MIT (see `LICENSE`). The writing, images, and design are mine and are
-not covered by it.
