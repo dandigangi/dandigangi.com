@@ -218,7 +218,7 @@ export default function PikachuModal({
       <Confetti tone={final ? 'calm' : over ? 'angry' : 'default'} />
 
       <div
-        className={`spectrumRing ${styles.modal}`}
+        className={`${styles.modal} ${final ? `spectrumRing ${styles.ringed}` : styles.plain}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="pikachu-modal-title"
