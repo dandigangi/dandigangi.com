@@ -241,6 +241,12 @@
   padding: calc(clamp(18px, 3vw, 24px) + 20px) clamp(18px, 3vw, 28px) clamp(18px, 3vw, 24px);
 }
 
+/* The claim box and the buttons under it are two separate asks; at the footer's
+   own gap they read as one block. */
+.foot > :global([class*='ClaimCode']) {
+  margin-bottom: 14px;
+}
+
 .declineWrap {
   display: flex;
   /* Two actions in the third state do not fit one phone-width line. */

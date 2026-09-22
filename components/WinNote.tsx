@@ -21,8 +21,17 @@ export default function WinNote() {
   return (
     <div className={styles.note}>
       <h2 className={styles.head}>
-        {veiled('WW91IHdvbiB0aGUgRWFzdGVyIEVnZyBjb250ZXN0IGFuZCBhIA==')}${OFFER_FIGURE}{' '}
-        {veiled('Z2lmdCBjYXJkLg==')}
+        {claim.claimed ? (
+          <>
+            {veiled('WW91ciBkZWRpY2F0aW9uIGlzIGltcHJlc3NpdmUgYnV0Li4u')}{' '}
+            {veiled('c29tZW9uZSBlbHNlIGFscmVhZHkgd29uLg==')}
+          </>
+        ) : (
+          <>
+            {veiled('WW91IHdvbiB0aGUgRWFzdGVyIEVnZyBjb250ZXN0IGFuZCBhIA==')}${OFFER_FIGURE}{' '}
+            {veiled('Z2lmdCBjYXJkLg==')}
+          </>
+        )}
       </h2>
       <p className={styles.body}>
         {veiled(

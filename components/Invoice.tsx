@@ -311,9 +311,24 @@ export default function Invoice({
           <p className={styles.quote}>
             {final ? (
               <>
-                {T_LINE_1}
-                <br />
-                {T_LINE_2.replace('{}', money(FIGURE, 0))}
+                {/* Someone got there first. Said plainly rather than softened —
+                    they finished the same hunt and deserve the real answer. */}
+                {claim?.claimed ? (
+                  <>
+                    {veiled('WW91ciBkZWRpY2F0aW9uIGlzIGltcHJlc3NpdmUgYnV0Li4u')}{' '}
+                    {veiled('c29tZW9uZSBlbHNlIGFscmVhZHkgd29uLg==')}
+                    <br />
+                    {veiled(
+                      'TGV0IG1lIGtub3cgc3RpbGwgYW5kIG1heWJlIEkgY2FuIHNlbmQgeW91IHNvbWV0aGluZyBlbHNlLg=='
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {T_LINE_1}
+                    <br />
+                    {T_LINE_2.replace('{}', money(FIGURE, 0))}
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -395,7 +410,10 @@ export default function Invoice({
 
             {/* Shared with the contact form — one component, one code. */}
             {final && (
-              <ClaimCode code={claim?.code ?? null} label={veiled('WW91ciBjbGFpbSBjb2Rl')} />
+              <ClaimCode
+                code={claim?.code ?? null}
+                label={veiled(claim?.claimed ? 'QWxyZWFkeSBjbGFpbWVk' : 'WW91ciBjbGFpbSBjb2Rl')}
+              />
             )}
 
             {final ? (

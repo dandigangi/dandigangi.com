@@ -21,6 +21,23 @@ import { TOKENS, type Token } from '@/lib/ledger'
 const SECRET = process.env.EGG_SECRET
 
 /**
+ * Set this once the prize has actually been handed over, and everyone who
+ * finishes afterwards is told so instead of being minted a code.
+ *
+ * An environment variable rather than a store, deliberately. A real
+ * first-past-the-post needs durable state and a service to hold it, and this is
+ * one gift card — you know when you have paid it out, and flipping a variable
+ * is the whole mechanism. It does mean two people finishing in the same minute
+ * both get a code, which is what the Discord pings are for: they are timestamped
+ * and they arrive in order.
+ */
+const CLAIMED = process.env.PRIZE_CLAIMED === '1'
+
+/** What the losers get, and it is not a real code — it verifies against
+ *  nothing, which is the point: it cannot be mistaken for a winning claim. */
+const CONSOLATION = 'HOW-DID-I-LOSE'
+
+/**
  * Optional. Any endpoint that accepts a JSON POST — a Slack or Discord incoming
  * webhook, a Zapier or Make catch hook, a Pipedream URL.
  *
@@ -44,8 +61,8 @@ const ping = (code: string, request: Request) => {
     // `text` is what Slack renders; `content` is what Discord renders. Sending
     // both means one payload works for either without a setting to get wrong.
     body: JSON.stringify({
-      text: `🐣 Someone just won the easter egg hunt. Code: ${code} (from ${where})`,
-      content: `🐣 Someone just won the easter egg hunt. Code: ${code} (from ${where})`,
+      text: `🐣 Someone finished the easter egg hunt. Code: ${code} (from ${where})`,
+      content: `🐣 Someone finished the easter egg hunt. Code: ${code} (from ${where})`,
     }),
   }).catch(() => {
     // Down, blocked, or a bad URL. The claim stands regardless.
@@ -87,6 +104,15 @@ export async function POST(request: Request) {
   // not required here either.
   const complete = TOKENS.every((token: Token) => held.includes(token))
   if (!complete) return NextResponse.json({ error: 'incomplete' }, { status: 403 })
+
+  if (CLAIMED) {
+    console.log('[claim] late finisher, prize already gone')
+    ping(CONSOLATION, request)
+    return NextResponse.json(
+      { code: CONSOLATION, claimed: true },
+      { headers: { 'Cache-Control': 'no-store' } }
+    )
+  }
 
   const nonce = randomBytes(5).toString('hex')
   const code = `DDG-${nonce}-${mac(nonce, SECRET)}`

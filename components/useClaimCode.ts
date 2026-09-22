@@ -15,7 +15,7 @@ import { allTokens, subscribe, tokenList } from '@/lib/ledger'
  * unreachable. Every caller is expected to render nothing in that case; the
  * claim still works without it, as it did before there were codes.
  */
-export type Claim = { code: string }
+export type Claim = { code: string; claimed: boolean }
 
 let cached: Claim | null = null
 let inflight: Promise<void> | null = null
@@ -44,8 +44,8 @@ export function useClaimCode(): Claim | null {
             body: JSON.stringify({ t: tokenList().map((entry) => entry.egg) }),
           })
             .then((response) => (response.ok ? response.json() : null))
-            .then((body: { code?: string } | null) => {
-              if (body?.code) cached = { code: body.code }
+            .then((body: { code?: string; claimed?: boolean } | null) => {
+              if (body?.code) cached = { code: body.code, claimed: body.claimed === true }
             })
             .catch(() => {
               // Offline, or the secret is not configured. Nothing to show.
