@@ -19,7 +19,9 @@
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: clamp(13px, 1.5vw, 16px);
   font-weight: 600;
-  letter-spacing: clamp(0.12em, 0.4vw, 0.2em);
+  /* Tighter than the nav links beside it. "Claim Your Prize" is three words
+     where they are one, and at their tracking it ran the full width of the row. */
+  letter-spacing: clamp(0.05em, 0.15vw, 0.09em);
   line-height: 1.2;
   text-transform: uppercase;
   transition: background-color 0.15s ease;
