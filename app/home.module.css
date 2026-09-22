@@ -26,6 +26,17 @@
   .hero {
     min-height: clamp(380px, 52vh, 460px);
   }
+
+  /*
+   * The viewport-width term collapses to nothing on a phone — 10.8vw of 390px
+   * is 42px — so the clamp floor is what actually renders, and after the 10%
+   * trim that floor left the name looking incidental on the one screen where it
+   * is the entire hero. A vw term steep enough to matter at this width, with a
+   * floor under it.
+   */
+  .name {
+    font-size: clamp(60px, 16vw, 96px);
+  }
 }
 
 /* The wrapper carries the overscan and the parallax transform; next/image's
@@ -57,7 +68,10 @@
   flex-direction: column;
   justify-content: space-between;
   padding-top: 26px;
-  padding-bottom: 52px;
+  /* 34px, matching PageBand's inner. It was 52px, which is why the home hero
+     carried noticeably more dead space under the tagline than every other page
+     did under its buttons. */
+  padding-bottom: 34px;
   /* The band stays black in both themes, so band text does not follow theme. */
   color: #f5f4f1;
 }
