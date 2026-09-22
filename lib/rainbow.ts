@@ -36,7 +36,8 @@ const hash = (value: string): number => {
 /** The longest phrase, which is all the buffer ever needs to hold. */
 const BUFFER = Math.max(...HASHED.map(([length]) => length))
 
-const STORE_KEY = 'dd:x3'
+const STORE_KEY = 'dd:e3'
+const RETIRED = 'dd:x3'
 
 /** Set on <html>, which is what every rule in css/rainbow.css hangs off. */
 const FLAG = 'data-rainbow'
@@ -58,6 +59,7 @@ const load = () => {
   if (read) return
   read = true
   try {
+    localStorage.removeItem(RETIRED)
     on = localStorage.getItem(STORE_KEY) === '1'
   } catch {
     // Private mode. It just will not be remembered between visits.

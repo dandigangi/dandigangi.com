@@ -183,7 +183,10 @@ export const MONEY_TIERS = [
   { at: FINAL_TIER, egg: 'final' },
 ] as const
 
-const STORE_KEY = 'dd:pk'
+/* Bumped alongside the egg tally — a tab carried over from before tonight is
+   money owed in a game whose rules have changed. See lib/eggs.ts. */
+const STORE_KEY = 'dd:pk2'
+const RETIRED = 'dd:pk'
 
 const OPENING_TAB: Tab = { amount: OPENING, invoices: 0 }
 
@@ -202,6 +205,7 @@ const persist = () => {
 
 const stored = (): Tab | null => {
   try {
+    localStorage.removeItem(RETIRED)
     const raw = localStorage.getItem(STORE_KEY)
     if (!raw) return null
     const saved: unknown = JSON.parse(atob(raw))

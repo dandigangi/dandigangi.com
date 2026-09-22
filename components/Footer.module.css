@@ -14,12 +14,19 @@
   width: fit-content;
 }
 
-/* Admin and the egg count share a line. Admin stays at its own 0.34 — it is
-   meant to be findable rather than offered. */
+/* Admin and the egg count share a line, separated by a rule rather than space
+   alone — at this size two greys side by side read as one wrapped label. */
 .adminRow {
   display: inline-flex;
   align-items: baseline;
-  gap: 12px;
+  gap: 10px;
+}
+
+.adminRow > * + *::before {
+  content: '—';
+  margin-right: 10px;
+  color: var(--soft);
+  opacity: 0.5;
 }
 
 /* Full strength, unlike everything around it: by the time this exists you have

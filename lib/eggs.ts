@@ -64,7 +64,7 @@ const NAMES: Record<Egg, string> = {
   wheel: 'VHVybmVkIHRoZSB3aG9sZSB0YWdsaW5lIHdoZWVs',
   hidden: 'Rm91bmQgdGhlIGNoaXAgdGhhdCBpcyBub3QgdGhlcmU=',
   alterego: 'TWV0IHRoZSBhbHRlciBlZ28=',
-  rainbow: 'U0VDUkVUIFJBSU5CT1cgUk9BRCEh',
+  rainbow: 'W1NFQ1JFVF0gUkFJTkJPVyBST0FEIERJU0NPVkVSRUQ=',
 }
 
 export const eggName = (egg: Egg): string => veiled(NAMES[egg])
@@ -84,8 +84,17 @@ export const foundList = (): { egg: Egg; at: number }[] => {
 // Opaque on purpose: "dd:eggs" sitting in localStorage is an invitation.
 import { veiled } from './copy'
 
-const STORE_KEY = 'dd:x1'
-const CLAIM_KEY = 'dd:x2'
+/*
+ * Bumped Sep 2026. The eggs changed shape enough — tiers moved, one was split
+ * in two, a secret was added — that a tally written before then describes a
+ * game that no longer exists. A new key is the whole migration: everyone starts
+ * from nothing, which is the only state that is correct for all of them.
+ *
+ * The retired keys are removed on first read rather than left to rot.
+ */
+const STORE_KEY = 'dd:e1'
+const CLAIM_KEY = 'dd:e2'
+const RETIRED = ['dd:x1', 'dd:x2']
 
 /**
  * Module state over an event, for the same reason the Pikachu tab is: anything
@@ -134,6 +143,7 @@ const load = () => {
       }
     }
     claimed = localStorage.getItem(CLAIM_KEY) === '1'
+    for (const key of RETIRED) localStorage.removeItem(key)
   } catch {
     // Private mode, blocked storage, or a value written by an older shape.
   }

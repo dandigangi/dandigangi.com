@@ -109,7 +109,72 @@
 
 .name {
   font-size: 15px;
+  font-weight: 600;
   line-height: 1.4;
+}
+
+/*
+ * The secret's row runs its rainbow whether or not Rainbow Road is switched on
+ * — finding it is permanent, and the row is the record of that rather than a
+ * reflection of the current mode.
+ *
+ * The keyframes are declared in this file because CSS Modules scopes animation
+ * names: a module referencing a globally-defined block compiles to a name that
+ * does not exist and the animation silently never runs.
+ */
+.secretName {
+  background: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-red)
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: secretShine 2.5s linear infinite;
+}
+
+@keyframes secretShine {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+/* The footer label once every egg is in. Same treatment as the secret's row,
+   and the same reason the keyframes are declared locally. */
+.linkDone {
+  background: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-red)
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: secretShine 2.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secretName,
+  .linkDone {
+    animation: none;
+  }
 }
 
 /* The ones still out there, all identical on purpose. */
@@ -138,6 +203,35 @@
 .close {
   width: 100%;
   justify-content: center;
+}
+
+/*
+ * A link, not a button: it sits under the way out and should read as the
+ * smaller, rarer thing. It only looks dangerous once it is armed.
+ */
+.reset {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  color: var(--soft);
+  cursor: pointer;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  transition: color 0.15s ease;
+}
+
+.reset:hover {
+  color: var(--ink);
+}
+
+.arming {
+  color: #ee3524;
 }
 
 /*

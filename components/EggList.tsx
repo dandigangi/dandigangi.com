@@ -2,7 +2,17 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
-import { EXTRA, totalEggs, allFound, eggName, foundEggs, foundList, subscribe } from '@/lib/eggs'
+import {
+  EXTRA,
+  totalEggs,
+  allFound,
+  eggName,
+  foundEggs,
+  foundList,
+  resetEggs,
+  subscribe,
+} from '@/lib/eggs'
+import { setRainbow } from '@/lib/rainbow'
 import { PIKACHU_PRIZE } from '@/lib/pikachu'
 import styles from './EggList.module.css'
 
@@ -41,6 +51,22 @@ export default function EggList() {
   const complete = useSyncExternalStore(subscribe, allFound, () => false)
 
   const close = useCallback(() => setOpen(false), [])
+  /**
+   * Two-step, not a second modal: the first press turns this control into its
+   * own confirmation and the second carries it out. A dialog on top of a dialog
+   * to ask about a dialog is worse than the mistake it prevents, and the
+   * question belongs where the answer is.
+   *
+   * It backs out on its own after a few seconds, so a stray press cannot leave
+   * a primed destructive control sitting there.
+   */
+  const [arming, setArming] = useState(false)
+
+  useEffect(() => {
+    if (!arming) return
+    const timer = setTimeout(() => setArming(false), 4000)
+    return () => clearTimeout(timer)
+  }, [arming])
 
   useEffect(() => {
     const show = () => setOpen(true)
@@ -93,7 +119,9 @@ export default function EggList() {
               <span className={styles.mark} aria-hidden="true">
                 {egg === EXTRA ? '🌈' : '🐣'}
               </span>
-              <span className={styles.name}>{eggName(egg)}</span>
+              <span className={`${styles.name} ${egg === EXTRA ? styles.secretName : ''}`}>
+                {eggName(egg)}
+              </span>
               <span className={styles.at}>{when(at)}</span>
             </li>
           ))}
@@ -127,6 +155,23 @@ export default function EggList() {
         <button type="button" className={`btn ${styles.close}`} onClick={close}>
           Close
         </button>
+
+        <button
+          type="button"
+          className={`${styles.reset} ${arming ? styles.arming : ''}`}
+          onClick={() => {
+            if (!arming) {
+              setArming(true)
+              return
+            }
+            resetEggs()
+            setRainbow(false)
+            setArming(false)
+            close()
+          }}
+        >
+          {arming ? 'Press again to clear all of them' : 'Reset eggs'}
+        </button>
       </div>
     </div>
   )
@@ -135,11 +180,16 @@ export default function EggList() {
 /** The footer's way in. Absent until there is something to show. */
 export function EggListLink({ className }: { className?: string }) {
   const found = useSyncExternalStore(subscribe, foundEggs, () => 0)
+  const complete = useSyncExternalStore(subscribe, allFound, () => false)
   if (found === 0) return null
 
   return (
     <button type="button" className={className} onClick={openEggList}>
-      🐣 {found}/{totalEggs()}
+      {/* The egg hatches once the set is complete, and the label goes with it. */}
+      <span aria-hidden="true">{complete ? '🐣' : '🥚'}</span>{' '}
+      <span className={complete ? styles.linkDone : undefined}>
+        {veiled('RUFTVEVSIEVHR1M=')} {found}/{totalEggs()}
+      </span>
     </button>
   )
 }
