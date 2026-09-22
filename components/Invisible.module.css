@@ -1,0 +1,48 @@
+/*
+ * `color: transparent` rather than opacity: opacity fades the selection
+ * highlight along with the glyphs, so selecting the line showed nothing.
+ */
+.hidden {
+  color: transparent;
+  cursor: default;
+}
+
+.hidden::selection {
+  color: var(--ink);
+}
+
+/* The same gradient css/trail.css paints on headings in Rainbow Road. */
+.shown {
+  font-weight: 800;
+  background: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-red)
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: hueSlide 2.5s linear infinite;
+}
+
+/* Redeclared, not borrowed from trail.css: CSS Modules scopes the name in
+   `animation`, so a global keyframes block never matches. */
+@keyframes hueSlide {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shown {
+    animation: none;
+  }
+}
