@@ -122,7 +122,7 @@
  * names: a module referencing a globally-defined block compiles to a name that
  * does not exist and the animation silently never runs.
  */
-.secretName {
+.shine {
   background: linear-gradient(
     90deg,
     var(--rb-red),
@@ -139,10 +139,10 @@
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  animation: secretShine 2.5s linear infinite;
+  animation: shineRun 2.5s linear infinite;
 }
 
-@keyframes secretShine {
+@keyframes shineRun {
   to {
     background-position: 200% 0;
   }
@@ -167,11 +167,11 @@
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  animation: secretShine 2.5s linear infinite;
+  animation: shineRun 2.5s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .secretName,
+  .shine,
   .linkDone {
     animation: none;
   }
@@ -245,7 +245,7 @@
  * silently never runs. That is exactly what happened twice: the ring looked
  * like it had slowed down when it had simply stopped.
  *
- * The paint stays shared on the global `.spectrumRing`; only this three-line
+ * The paint stays shared on the global `.halo`; only this three-line
  * block is duplicated, because it is the part that cannot be.
  */
 @keyframes spectrum {

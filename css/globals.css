@@ -82,7 +82,7 @@
  * `--ring-fill` is the inside; it defaults to the page but the prize modal
  * pins black, since it never follows the theme.
  */
-.spectrumRing {
+.halo {
   border: 1px solid transparent;
   background:
     linear-gradient(var(--ring-fill, var(--bg)), var(--ring-fill, var(--bg))) padding-box,
@@ -525,7 +525,7 @@ a {
 
 /*
  * The one control on the site that hands something over. Defined here rather
- * than in each module that uses it, because css/rainbow.css has to be able to
+ * than in each module that uses it, because css/trail.css has to be able to
  * exempt it by name — a global stylesheet cannot reliably match a hashed module
  * class, and matching by substring breaks the moment a file is renamed.
  */

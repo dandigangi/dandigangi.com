@@ -1,40 +1,34 @@
 'use client'
 
 import { useEffect, useState, useSyncExternalStore } from 'react'
-import { EXTRA } from '@/lib/eggs'
-import {
-  isRainbow,
-  press,
-  rainbowToggles,
-  restoreRainbow,
-  setRainbow,
-  subscribe,
-} from '@/lib/rainbow'
-import EggToast from './EggToast'
-import StarFall from './StarFall'
+import { veiled } from '@/lib/copy'
+import { EXTRA } from '@/lib/ledger'
+import { isTrail, press, trailToggles, restoreTrail, setTrail, subscribe } from '@/lib/trail'
+import Blip from './Blip'
+import Drift from './Drift'
 
 /**
  * The tenth egg, and the only one nothing on the page hints at.
  *
  * Listens for a phrase being typed anywhere, then flips the whole site into
- * Rainbow Road — see css/rainbow.css, which hangs off `data-rainbow` on <html>.
+ * Rainbow Road — see css/trail.css, which hangs off `data-trail` on <html>.
  * Typing it again turns it off, because a site that has permanently become a
  * rainbow with no way back is a prank rather than an easter egg.
  *
  * Renders nothing but its own toast.
  */
-export default function RainbowRoad() {
+export default function Trail() {
   const [found, setFound] = useState(false)
   /**
    * Read from the store rather than counted here, so the stars fall however the
    * mode was flipped — the phrase, the footer link, or the egg list. Held in
    * component state it only ever saw the first of those.
    */
-  const arrivals = useSyncExternalStore(subscribe, rainbowToggles, () => 0)
+  const arrivals = useSyncExternalStore(subscribe, trailToggles, () => 0)
 
   // Re-paints the stored state onto a freshly loaded document. The attribute
   // lives on <html>, which React does not own, so it has to be put back by hand.
-  useEffect(restoreRainbow, [])
+  useEffect(restoreTrail, [])
 
   useEffect(() => {
     const onPress = (event: KeyboardEvent) => {
@@ -49,7 +43,7 @@ export default function RainbowRoad() {
       if (event.metaKey || event.ctrlKey || event.altKey) return
 
       if (!press(event.key)) return
-      setRainbow(!isRainbow())
+      setTrail(!isTrail())
       setFound(true)
     }
 
@@ -59,8 +53,8 @@ export default function RainbowRoad() {
 
   return (
     <>
-      <EggToast egg={EXTRA} show={found} />
-      <StarFall trigger={arrivals} />
+      <Blip egg={EXTRA} show={found} />
+      <Drift trigger={arrivals} />
     </>
   )
 }
@@ -70,19 +64,19 @@ export default function RainbowRoad() {
  * phrase to stop. Absent while it is off — there is nothing to turn off, and a
  * rainbow sitting in the footer of an ordinary page is a clue nobody asked for.
  */
-export function RainbowOffLink({ className }: { className?: string }) {
-  const on = useSyncExternalStore(subscribe, isRainbow, () => false)
+export function TrailOffLink({ className }: { className?: string }) {
+  const on = useSyncExternalStore(subscribe, isTrail, () => false)
   if (!on) return null
 
   return (
     <button
       type="button"
       className={className}
-      onClick={() => setRainbow(false)}
-      title="Turn off Rainbow Road"
+      onClick={() => setTrail(false)}
+      title={veiled('VHVybiBvZmYgUmFpbmJvdyBSb2Fk')}
     >
       <span aria-hidden="true">🌈</span>
-      <span className="srOnly">Turn off Rainbow Road</span>
+      <span className="srOnly">{veiled('VHVybiBvZmYgUmFpbmJvdyBSb2Fk')}</span>
     </button>
   )
 }

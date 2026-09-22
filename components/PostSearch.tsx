@@ -3,11 +3,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { formatFullDate, formatTag } from '@/lib/format'
-import { setSearchEgg } from '@/lib/pikachu'
+import { setHinted } from '@/lib/caller'
 import { veiled } from '@/lib/copy'
-import EggToast from './EggToast'
-import PokeballThrow from './PokeballThrow'
+import Blip from './Blip'
+import Toss from './Toss'
 import styles from './PostSearch.module.css'
+import { T } from '@/lib/ledger'
 
 /**
  * Type his name and the hero above you goes yellow, for exactly as long as it
@@ -70,8 +71,8 @@ export default function PostSearch({
    * leave every later page yellow.
    */
   useEffect(() => {
-    setSearchEgg(egg)
-    return () => setSearchEgg(false)
+    setHinted(egg)
+    return () => setHinted(false)
   }, [egg])
 
   const results = useMemo(() => {
@@ -130,9 +131,9 @@ export default function PostSearch({
           autoComplete="off"
         />
         {trimmed ? (
-          <span className={`label ${caught ? styles.eggLabel : ''}`} aria-live="polite">
+          <span className={`label ${caught ? styles.tally : ''}`} aria-live="polite">
             {caught ? (
-              '1 Pokémon'
+              veiled('MSBQb2vDqW1vbg==')
             ) : (
               <>
                 {results.length} {results.length === 1 ? 'result' : 'results'}
@@ -152,27 +153,27 @@ export default function PostSearch({
        * the sprite is thrown the search toast has already done its job, and on
        * any later visit neither says anything at all.
        */}
-      <EggToast egg="search" show={egg && !spriteEgg} />
-      <EggToast egg="sprite" show={spriteEgg} />
+      <Blip egg={T.probe} show={egg && !spriteEgg} />
+      <Blip egg={T.toss} show={spriteEgg} />
 
       {balls.map((ball) => (
-        <PokeballThrow key={ball.id} x={ball.x} y={ball.y} onDone={() => landed(ball.id)} />
+        <Toss key={ball.id} x={ball.x} y={ball.y} onDone={() => landed(ball.id)} />
       ))}
 
       {trimmed ? (
         <div className={styles.results}>
           {caught ? (
-            <p className={`${styles.empty} ${styles.eggEmpty}`}>
+            <p className={`${styles.empty} ${styles.miss}`}>
               {MISS}{' '}
               <button
                 type="button"
                 ref={sprite}
-                className={styles.eggSprite}
+                className={styles.spr}
                 onClick={throwBall}
                 aria-label={THROW_LABEL}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/static/images/pikachu.png" alt="" />
+                <img src="/static/images/sprite-a.png" alt="" />
               </button>
               {NUDGE}
             </p>

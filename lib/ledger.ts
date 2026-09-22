@@ -13,22 +13,57 @@
  * discovery too, but it never says so, and a counter that moves without telling
  * you is worse than no counter.
  */
-export const EGGS = [
-  'pikachu',
-  'angry',
-  'final',
-  'search',
-  'admin',
-  'sprite',
-  'wheel',
-  'hidden',
-  'alterego',
+/**
+ * The ids, and why they look like this.
+ *
+ * They used to read 'pikachu', 'search', 'admin', 'wheel', 'hidden',
+ * 'alterego' — which is most of a walkthrough, sitting in the shipped bundle as
+ * plain strings and in localStorage where anyone can read it. The ids are
+ * opaque now; this table is the only place that says what they are, and
+ * comments do not survive the build.
+ *
+ *   met   — meeting him for the first time
+ *   tier1 — pushing the tab past the figure that turns him red
+ *   tier2 — pushing it past the last milestone
+ *   probe — searching the blog for him
+ *   gate  — guessing the admin password
+ *   toss  — throwing at the sprite the search turns up
+ *   dial  — turning the tagline wheel all the way round by hand
+ *   tail  — the chip at the end of the tag row that is not there
+ *   twin  — the alter ego
+ *   arc   — the secret, typed
+ *   rails — trying every way to collect the prize
+ */
+export const T = {
+  met: 'q1',
+  tier1: 'q2',
+  tier2: 'q3',
+  probe: 'q4',
+  gate: 'q5',
+  toss: 'q6',
+  dial: 'q7',
+  tail: 'q8',
+  twin: 'q9',
+  arc: 'qa',
+  rails: 'qb',
+} as const
+
+export const TOKENS = [
+  T.met,
+  T.tier1,
+  T.tier2,
+  T.probe,
+  T.gate,
+  T.toss,
+  T.dial,
+  T.tail,
+  T.twin,
 ] as const
 
 /**
  * The ones that are not on the board.
  *
- * Deliberately outside EGGS: until one of these is found there is nothing to
+ * Deliberately outside TOKENS: until one of these is found there is nothing to
  * say it exists — the count reads out of nine, the list has nine rows, and
  * nothing hints at more. Finding one adds it to both, at the top.
  *
@@ -41,21 +76,21 @@ export const EGGS = [
  * Named blandly because export names survive minification and ship in the
  * bundle; `SECRET` sitting in there was an invitation to go looking.
  */
-export const OFF_BOARD = ['rainbow', 'paid'] as const
+export const ASIDE = [T.arc, T.rails] as const
 
 /** The one with a mark of its own in the list. */
-export const EXTRA = 'rainbow' as const
+export const EXTRA = T.arc
 
-const ALL = [...EGGS, ...OFF_BOARD] as const
+const ALL = [...TOKENS, ...ASIDE] as const
 
-export type Egg = (typeof ALL)[number]
+export type Token = (typeof ALL)[number]
 
 /**
  * Nine, or ten once the secret is out. A function rather than a constant
  * because it genuinely changes — every caller reads it through the store, so
  * the denominator updates the moment it is found.
  */
-export const totalEggs = (): number => EGGS.length + OFF_BOARD.filter((egg) => hasEgg(egg)).length
+export const tokenTotal = (): number => TOKENS.length + ASIDE.filter((egg) => hasToken(egg)).length
 
 /**
  * What each one is called once it has been found. Encoded for the reason in
@@ -63,29 +98,29 @@ export const totalEggs = (): number => EGGS.length + OFF_BOARD.filter((egg) => h
  * thing the bundle must not hand over. Only ever rendered for eggs already in
  * the tally; the rest show as blanks.
  */
-const NAMES: Record<Egg, string> = {
-  pikachu: 'TWV0IFBpa2FjaHU=',
-  angry: 'UHVzaGVkIGhpbSBwYXN0ICQyNTA=',
-  final: 'UHVzaGVkIGhpbSBwYXN0ICQ1MDA=',
-  search: 'U2VhcmNoZWQgdGhlIGJsb2cgZm9yIGhpbQ==',
-  admin: 'R3Vlc3NlZCB0aGUgYWRtaW4gcGFzc3dvcmQ=',
-  sprite: 'VGhyZXcgYSBQb2tlYmFsbCBhdCBoaW0=',
-  wheel: 'VHVybmVkIHRoZSB3aG9sZSB0YWdsaW5lIHdoZWVs',
-  hidden: 'Rm91bmQgdGhlIGNoaXAgdGhhdCBpcyBub3QgdGhlcmU=',
-  alterego: 'TWV0IHRoZSBhbHRlciBlZ28=',
-  rainbow: 'W1NFQ1JFVF0gUkFJTkJPVyBST0FEIERJU0NPVkVSRUQ=',
-  paid: 'VHJpZWQgZXZlcnkgd2F5IHRvIGdldCBwYWlk',
+const NAMES: Record<Token, string> = {
+  [T.met]: 'TWV0IFBpa2FjaHU=',
+  [T.tier1]: 'UHVzaGVkIGhpbSBwYXN0ICQyNTA=',
+  [T.tier2]: 'UHVzaGVkIGhpbSBwYXN0ICQ1MDA=',
+  [T.probe]: 'U2VhcmNoZWQgdGhlIGJsb2cgZm9yIGhpbQ==',
+  [T.gate]: 'R3Vlc3NlZCB0aGUgYWRtaW4gcGFzc3dvcmQ=',
+  [T.toss]: 'VGhyZXcgYSBQb2tlYmFsbCBhdCBoaW0=',
+  [T.dial]: 'VHVybmVkIHRoZSB3aG9sZSB0YWdsaW5lIHdoZWVs',
+  [T.tail]: 'Rm91bmQgdGhlIGNoaXAgdGhhdCBpcyBub3QgdGhlcmU=',
+  [T.twin]: 'TWV0IHRoZSBhbHRlciBlZ28=',
+  [T.arc]: 'W1NFQ1JFVF0gUkFJTkJPVyBST0FEIERJU0NPVkVSRUQ=',
+  [T.rails]: 'VHJpZWQgZXZlcnkgd2F5IHRvIGdldCBwYWlk',
 }
 
-export const eggName = (egg: Egg): string => veiled(NAMES[egg])
+export const tokenLabel = (egg: Token): string => veiled(NAMES[egg])
 
 /** The found ones with their timestamps, in the order they were found. */
-export const foundList = (): { egg: Egg; at: number }[] => {
+export const tokenList = (): { egg: Token; at: number }[] => {
   if (typeof window === 'undefined') return []
   load()
   const entries = [...found.entries()].map(([egg, at]) => ({ egg, at })).sort((a, b) => a.at - b.at)
   // The off-board ones go to the top however late they turned up.
-  const off = (egg: Egg) => (OFF_BOARD as readonly string[]).includes(egg)
+  const off = (egg: Token) => (ASIDE as readonly string[]).includes(egg)
   return [
     ...entries.filter((entry) => off(entry.egg)),
     ...entries.filter((entry) => !off(entry.egg)),
@@ -113,8 +148,8 @@ const RETIRED = ['dd:x1', 'dd:x2']
  * rendering this unmounts on a client-side navigation and has to be able to ask
  * what happened while it was gone.
  */
-/** Egg -> when it was found. A Map rather than a Set so the list can say when. */
-let found = new Map<Egg, number>()
+/** Token -> when it was found. A Map rather than a Set so the list can say when. */
+let found = new Map<Token, number>()
 let claimed = false
 let read = false
 
@@ -128,7 +163,7 @@ export const subscribe = (listener: () => void) => {
   }
 }
 
-const isEgg = (value: unknown): value is Egg => ALL.includes(value as Egg)
+const isEgg = (value: unknown): value is Token => ALL.includes(value as Token)
 
 /** Read once per page load, then kept in memory. */
 const load = () => {
@@ -171,7 +206,7 @@ const load = () => {
 }
 
 /** Whether one particular egg is already in the tally. */
-export const hasEgg = (egg: Egg): boolean => {
+export const hasToken = (egg: Token): boolean => {
   if (typeof window === 'undefined') return false
   load()
   return found.has(egg)
@@ -183,21 +218,21 @@ export const hasEgg = (egg: Egg): boolean => {
  * Compared against the live total, so someone who has turned up the secret has
  * to find that one too — it counts once it exists.
  */
-export const allFound = (): boolean => foundEggs() === totalEggs()
+export const allTokens = (): boolean => tokenCount() === tokenTotal()
 
 /**
  * Whether the prize has already been collected. Persisted, or the modal would
  * reopen on every load for anyone who has finished — the set stays complete
  * afterwards, so completeness alone cannot be the condition.
  */
-export const hasClaimed = (): boolean => {
+export const offerSettled = (): boolean => {
   if (typeof window === 'undefined') return false
   load()
   return claimed
 }
 
 /** Called when the prize modal is dismissed. */
-export const claimPrize = (): void => {
+export const settleOffer = (): void => {
   if (claimed) return
   claimed = true
   try {
@@ -209,7 +244,7 @@ export const claimPrize = (): void => {
 }
 
 /** How many have been found. Safe before hydration — returns 0 on the server. */
-export const foundEggs = (): number => {
+export const tokenCount = (): number => {
   if (typeof window === 'undefined') return 0
   load()
   return found.size
@@ -219,7 +254,7 @@ export const foundEggs = (): number => {
  * Records an egg. Idempotent, so a component that re-renders or remounts cannot
  * inflate the count, and only emits when something actually changed.
  */
-export const findEgg = (egg: Egg): void => {
+export const addToken = (egg: Token): void => {
   if (typeof window === 'undefined') return
   load()
   if (found.has(egg)) return
@@ -234,7 +269,7 @@ export const findEgg = (egg: Egg): void => {
 }
 
 /** Back to nothing found. The dev dock's reset calls this. */
-export const resetEggs = (): void => {
+export const clearTokens = (): void => {
   found = new Map()
   claimed = false
   read = true

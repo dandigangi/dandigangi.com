@@ -2,12 +2,12 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it } from 'vitest'
 import PostSearch, { type SearchEntry } from './PostSearch'
-import { resetEggs } from '@/lib/eggs'
+import { clearTokens } from '@/lib/ledger'
 
 // A toast announces a NEW find; start every case from nothing found.
 beforeEach(() => {
   localStorage.clear()
-  resetEggs()
+  clearTokens()
 })
 
 const index: SearchEntry[] = [

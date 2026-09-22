@@ -5,7 +5,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { homeProjects } from '@/data/projects'
 import { getPublishedPosts, type Post } from '@/lib/blog'
 import { formatMonthYear, formatTag } from '@/lib/format'
-import PikachuHero from '@/components/PikachuHero'
+import Backdrop from '@/components/Backdrop'
 import Tagline from '@/components/Tagline'
 import SiteNav from '@/components/SiteNav'
 import { ArrowRight, PlayIcon } from '@/components/Icons'
@@ -105,7 +105,7 @@ export default function Home() {
             sizes="100vw"
             style={{ objectFit: 'cover', objectPosition: '62% 45%' }}
           />
-          <PikachuHero objectPosition="50% 30%" />
+          <Backdrop objectPosition="50% 30%" />
         </div>
         <div className={styles.heroScrim} />
         <div className={`rail ${styles.heroInner}`}>

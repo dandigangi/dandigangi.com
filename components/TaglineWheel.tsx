@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { TAGLINES } from '@/lib/taglines'
-import EggToast from './EggToast'
+import Blip from './Blip'
 import styles from './TaglineWheel.module.css'
+import { T } from '@/lib/ledger'
 
 /** How long a line sits centred before the wheel turns. Shorter than the hero
  *  pill's: the neighbours are already on screen, so a turn is a small expected
@@ -151,7 +152,7 @@ export default function TaglineWheel() {
         <span className="srOnly">{current} — show another</span>
       </button>
 
-      <EggToast egg="wheel" show={wheelEgg} />
+      <Blip egg={T.dial} show={wheelEgg} />
     </div>
   )
 }

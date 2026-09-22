@@ -6,7 +6,7 @@ import PageBand from './PageBand'
 import Pagination from './Pagination'
 import PostList from './PostList'
 import PostSearch, { type SearchEntry } from './PostSearch'
-import TagRowEnd from './TagRowEnd'
+import ChipTail from './ChipTail'
 import styles from './BlogIndex.module.css'
 
 export default function BlogIndex({
@@ -84,7 +84,7 @@ export default function BlogIndex({
                 {formatTag(tag)} ({count})
               </Link>
             ))}
-            <TagRowEnd />
+            <ChipTail />
           </div>
         </div>
 

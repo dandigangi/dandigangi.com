@@ -2,23 +2,23 @@
 
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import Image from 'next/image'
-import { heroActive, heroEverActive, justActivated, subscribe } from '@/lib/pikachu'
-import styles from './PikachuHero.module.css'
+import { layerActive, layerEverActive, justActivated, subscribe } from '@/lib/caller'
+import styles from './Backdrop.module.css'
 
 /**
  * Replaces the abstract render once someone has met him. Gated on `ever` rather
  * than on `on`, so it is never downloaded by people who do not trigger it, but
  * stays mounted afterwards — an unmounted element cannot transition away.
  */
-export default function PikachuHero({ objectPosition = '50% 34%' }: { objectPosition?: string }) {
+export default function Backdrop({ objectPosition = '50% 34%' }: { objectPosition?: string }) {
   // The server snapshot is always false: the store only exists on the client.
-  const ever = useSyncExternalStore(subscribe, heroEverActive, () => false)
+  const ever = useSyncExternalStore(subscribe, layerEverActive, () => false)
   if (!ever) return null
   return <Layer objectPosition={objectPosition} />
 }
 
 function Layer({ objectPosition }: { objectPosition: string }) {
-  const on = useSyncExternalStore(subscribe, heroActive, () => false)
+  const on = useSyncExternalStore(subscribe, layerActive, () => false)
 
   /**
    * This element mounts in two situations: the moment someone switches the hero
@@ -37,7 +37,7 @@ function Layer({ objectPosition }: { objectPosition: string }) {
 
   return (
     <Image
-      src="/static/images/pikachu-hero.jpg"
+      src="/static/images/layer-a.jpg"
       alt=""
       fill
       sizes="100vw"

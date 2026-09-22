@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { PIKA_PASS, PIKA_PASS_MS, grantPikaPass } from './pikaPass'
+import { PIKA_PASS, PIKA_PASS_MS, grantPikaPass } from './pass'
 
 /**
  * document.cookie in jsdom actually stores, but it will not report Max-Age or

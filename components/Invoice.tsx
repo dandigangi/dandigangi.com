@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { FINAL_TIER, OPENING, OVER_TIER, PRIZE_FIGURE } from '@/lib/pikachu'
-import { findEgg, type Egg } from '@/lib/eggs'
-import { LINKEDIN_URL, MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
+import { FINAL_TIER, OPENING, OVER_TIER, OFFER_FIGURE } from '@/lib/caller'
+import { veiled } from '@/lib/copy'
+import { T, addToken, type Token } from '@/lib/ledger'
+import { LINKEDIN_URL, MAIL_URL, X_DM_URL } from '@/lib/callerLinks'
 import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
-import styles from './PikachuModal.module.css'
+import styles from './Invoice.module.css'
 
 /**
  * Brand marks are a coloured badge and a letterform rather than the real
@@ -118,7 +119,7 @@ function RollingAmount({ from, to }: { from: number; to: number }) {
 }
 
 /** The egg list quotes the same figure — see lib/pikachu.ts. */
-const FIGURE = PRIZE_FIGURE
+const FIGURE = OFFER_FIGURE
 
 /**
  * Base64, and the names around it are deliberately bland.
@@ -143,10 +144,10 @@ const TEXT = [
 
 const [T_HEAD, T_LABEL, T_LINE_1, T_LINE_2, T_ASIDE, T_ACT_X, T_ACT_IN, T_ACT_MAIL] = TEXT
 
-const AVATAR = '/static/images/pikachu-avatar.jpg'
-const ANGRY_AVATAR = '/static/images/pikachu-avatar-angry.jpg'
+const AVATAR = '/static/images/face-a.jpg'
+const ANGRY_AVATAR = '/static/images/face-b.jpg'
 
-export default function PikachuModal({
+export default function Invoice({
   amount,
   previous,
   invoices,
@@ -165,7 +166,7 @@ export default function PikachuModal({
   viaCatch: boolean
   onHug: () => void
   /** Announced by the cameo, which owns the toast. */
-  onEgg: (egg: Egg) => void
+  onEgg: (egg: Token) => void
   onClose: () => void
 }) {
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -179,7 +180,7 @@ export default function PikachuModal({
    *
    * Its own discovery, and deliberately off the board — it is only reachable
    * from inside the prize, so counting it toward the prize would make it its
-   * own prerequisite. See OFF_BOARD in lib/eggs.ts.
+   * own prerequisite. See ASIDE in lib/eggs.ts.
    */
   const [rails, setRails] = useState<string[]>([])
   const rail = (name: string) => {
@@ -187,8 +188,8 @@ export default function PikachuModal({
       if (names.includes(name)) return names
       const next = [...names, name]
       if (next.length === 3) {
-        findEgg('paid')
-        onEgg('paid')
+        addToken(T.rails)
+        onEgg(T.rails)
       }
       return next
     })
@@ -241,15 +242,15 @@ export default function PikachuModal({
       <Confetti tone={final ? 'calm' : over ? 'angry' : 'default'} />
 
       <div
-        className={`${styles.modal} ${final ? `spectrumRing ${styles.ringed}` : styles.plain}`}
+        className={`${styles.modal} ${final ? `halo ${styles.ringed}` : styles.plain}`}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="pikachu-modal-title"
+        aria-labelledby="iv-t"
       >
         <header
           className={`${styles.head} ${over ? styles.headOver : ''} ${final ? styles.headFinal : ''}`}
         >
-          <span className={styles.headTitle} id="pikachu-modal-title">
+          <span className={styles.headTitle} id="iv-t">
             <span className={styles.headTitleStrong}>{final ? T_HEAD : 'Payment request'}</span>
             {/* The running tally is the joke of the shakedown; on the third
                 banner it only contradicts the headline. */}
@@ -274,7 +275,9 @@ export default function PikachuModal({
             />
             {/* Centred against the avatar rather than sitting on its top edge. */}
             <div className={styles.amountCol}>
-              <span className="label">{final ? T_LABEL : 'Requested by Pikachu'}</span>
+              <span className="label">
+                {final ? T_LABEL : veiled('UmVxdWVzdGVkIGJ5IFBpa2FjaHU=')}
+              </span>
               {final ? (
                 // No roll and no struck-through previous: this is not the
                 // running tab, it is a flat figure that replaces it.

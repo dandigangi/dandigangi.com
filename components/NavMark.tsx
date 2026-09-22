@@ -1,8 +1,8 @@
 'use client'
 
 import { useSyncExternalStore } from 'react'
-import { isRainbow, subscribe } from '@/lib/rainbow'
-import styles from './NavStar.module.css'
+import { isTrail, subscribe } from '@/lib/trail'
+import styles from './NavMark.module.css'
 
 /**
  * Rides beside the mark while Rainbow Road is on, and is absent otherwise —
@@ -11,14 +11,14 @@ import styles from './NavStar.module.css'
  * Slightly under the mark's height so it reads as a companion rather than a
  * second logo.
  */
-export default function NavStar({ size }: { size: number }) {
-  const on = useSyncExternalStore(subscribe, isRainbow, () => false)
+export default function NavMark({ size }: { size: number }) {
+  const on = useSyncExternalStore(subscribe, isTrail, () => false)
   if (!on) return null
 
   return (
     /* eslint-disable-next-line @next/next/no-img-element */
     <img
-      src="/static/images/star.gif"
+      src="/static/images/glint.gif"
       alt=""
       aria-hidden="true"
       width={size}

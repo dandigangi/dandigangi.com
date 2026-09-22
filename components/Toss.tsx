@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { isRainbow, subscribe as rainbowSubscribe } from '@/lib/rainbow'
-import Pokeball from './Pokeball'
-import styles from './PokeballThrow.module.css'
+import { isTrail, subscribe as rainbowSubscribe } from '@/lib/trail'
+import Orb from './Orb'
+import styles from './Toss.module.css'
 
 /** Flight, then the moment it connects. Kept here so the whole thing can be
  *  sped up or slowed down from one place if it ever feels long. */
@@ -23,18 +23,10 @@ const IMPACT_MS = 220
  *
  * `x` and `y` are viewport coordinates of the point it should land on.
  */
-export default function PokeballThrow({
-  x,
-  y,
-  onDone,
-}: {
-  x: number
-  y: number
-  onDone: () => void
-}) {
+export default function Toss({ x, y, onDone }: { x: number; y: number; onDone: () => void }) {
   const [landed, setLanded] = useState(false)
   /** On Rainbow Road you throw a star. Server snapshot false, as ever. */
-  const starry = useSyncExternalStore(rainbowSubscribe, isRainbow, () => false)
+  const starry = useSyncExternalStore(rainbowSubscribe, isTrail, () => false)
 
   /**
    * Through a ref so the timers below can be armed exactly once. The parent
@@ -89,14 +81,14 @@ export default function PokeballThrow({
               {starry ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src="/static/images/star.gif"
+                  src="/static/images/glint.gif"
                   alt=""
                   width={46}
                   height={46}
                   className={styles.star}
                 />
               ) : (
-                <Pokeball />
+                <Orb />
               )}
             </div>
           </div>

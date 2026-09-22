@@ -5,21 +5,28 @@ import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import {
   MONEY_TIERS,
-  PIKACHU_OPEN,
-  PIKACHU_PRIZE,
+  CALLER_OPEN,
+  CALLER_OFFER,
   getInitialTab,
   getTab,
-  markCaught,
+  markMet,
   raiseTab,
   resetTab,
   softenTab,
   subscribe,
-} from '@/lib/pikachu'
-import PikachuModal from './PikachuModal'
-import { allFound, claimPrize, hasClaimed, subscribe as eggsSubscribe, type Egg } from '@/lib/eggs'
-import EggToast from './EggToast'
-import PokeballThrow from './PokeballThrow'
-import styles from './PikachuCameo.module.css'
+} from '@/lib/caller'
+import Invoice from './Invoice'
+import {
+  T,
+  allTokens,
+  settleOffer,
+  offerSettled,
+  subscribe as eggsSubscribe,
+  type Token,
+} from '@/lib/ledger'
+import Blip from './Blip'
+import Toss from './Toss'
+import styles from './Caller.module.css'
 
 type Edge = 'top' | 'bottom' | 'left' | 'right'
 
@@ -34,7 +41,7 @@ type Cameo = {
   path: string
 }
 
-const SRC = '/static/images/pikachu.png'
+const SRC = '/static/images/sprite-a.png'
 const NATURAL = { width: 320, height: 258 }
 
 /** Box side. Square so the 90° edges fit the same footprint as the 180° ones. */
@@ -119,7 +126,7 @@ function candidates(): { rect: DOMRect; edges: Edge[] }[] {
     .filter((entry) => entry.edges.length > 0)
 }
 
-export default function PikachuCameo() {
+export default function Caller() {
   const [cameo, setCameo] = useState<Cameo | null>(null)
   const [shown, setShown] = useState(false)
   const [open, setOpen] = useState(false)
@@ -145,7 +152,7 @@ export default function PikachuCameo() {
    * gone in under a second, and the toast should outlive it.
    */
   /** Which egg the toast is currently announcing, or null. */
-  const [eggToast, setEggToast] = useState<Egg | null>(null)
+  const [eggToast, setEggToast] = useState<Token | null>(null)
 
   /**
    * The prize is now the reward for finding every easter egg, not for reaching a
@@ -153,13 +160,13 @@ export default function PikachuCameo() {
    * than held in state, so the modal appears the instant the last egg lands
    * without an effect having to notice and push it open.
    *
-   * `hasClaimed` is what stops it reappearing on every load afterwards: the set
+   * `offerSettled` is what stops it reappearing on every load afterwards: the set
    * stays complete once it is complete, so completeness alone cannot be the
    * condition.
    */
   const prize = useSyncExternalStore(
     eggsSubscribe,
-    () => allFound() && !hasClaimed(),
+    () => allTokens() && !offerSettled(),
     () => false
   )
   /** Asked for again from the egg list, after it has already been collected. */
@@ -291,7 +298,7 @@ export default function PikachuCameo() {
       loop.current?.stop()
       // Only the first one announces itself — meeting him is the discovery, and
       // every catch after it is just the tab going up.
-      if (getTab().invoices === 0) setEggToast('pikachu')
+      if (getTab().invoices === 0) setEggToast(T.met)
       setThrowAt({
         // The cameo is positioned in page coordinates; the ball is fixed.
         x: cameo.left - window.scrollX + SIZE / 2,
@@ -319,7 +326,7 @@ export default function PikachuCameo() {
     /*
      * Each figure he passes is its own discovery. Checked as crossings rather
      * than "is over", so a hug that drops back under and a later catch that
-     * climbs past again do not announce the same thing twice — findEgg is
+     * climbs past again do not announce the same thing twice — addToken is
      * idempotent either way, but the toast is not.
      *
      * Highest first, and only one: clearing two in a single jump is one moment,
@@ -364,14 +371,14 @@ export default function PikachuCameo() {
 
   useEffect(() => {
     const onOpen = () => show(false)
-    window.addEventListener(PIKACHU_OPEN, onOpen)
-    return () => window.removeEventListener(PIKACHU_OPEN, onOpen)
+    window.addEventListener(CALLER_OPEN, onOpen)
+    return () => window.removeEventListener(CALLER_OPEN, onOpen)
   }, [])
 
   useEffect(() => {
     const onPrize = () => setReopened(true)
-    window.addEventListener(PIKACHU_PRIZE, onPrize)
-    return () => window.removeEventListener(PIKACHU_PRIZE, onPrize)
+    window.addEventListener(CALLER_OFFER, onPrize)
+    return () => window.removeEventListener(CALLER_OFFER, onPrize)
   }, [])
 
   /**
@@ -389,7 +396,7 @@ export default function PikachuCameo() {
     if (wonRef.current) {
       // Marked collected before the reset, or `prize` stays true and the modal
       // reopens on the very next render.
-      claimPrize()
+      settleOffer()
       resetTab()
     }
 
@@ -399,7 +406,7 @@ export default function PikachuCameo() {
   return (
     <>
       {(open || prize || reopened) && (
-        <PikachuModal
+        <Invoice
           amount={amount}
           // Only when it still describes the invoice on screen. Anything else
           // is a leftover from a run that has since been reset.
@@ -413,10 +420,10 @@ export default function PikachuCameo() {
         />
       )}
       {cameo?.path === pathname && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
-      {throwAt && <PokeballThrow x={throwAt.x} y={throwAt.y} onDone={onThrowDone} />}
+      {throwAt && <Toss x={throwAt.x} y={throwAt.y} onDone={onThrowDone} />}
       {/* Keyed, so a second milestone replaces the first outright rather than
           reusing a toast that has already been dismissed. */}
-      {eggToast && <EggToast key={eggToast} egg={eggToast} show />}
+      {eggToast && <Blip key={eggToast} egg={eggToast} show />}
     </>
   )
 }
@@ -443,7 +450,7 @@ function Cameo({ cameo, shown, onCatch }: { cameo: Cameo; shown: boolean; onCatc
         style={{ transitionDuration: `${cameo.slide}ms` }}
         aria-label="Pikachu"
         onClick={() => {
-          markCaught()
+          markMet()
           onCatch()
         }}
       >

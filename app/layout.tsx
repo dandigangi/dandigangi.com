@@ -1,7 +1,7 @@
 import '@/css/globals.css'
 import '@/css/print.css'
 import '@/css/prism.css'
-import '@/css/rainbow.css'
+import '@/css/trail.css'
 
 import type { Metadata } from 'next'
 import { Archivo, IBM_Plex_Mono } from 'next/font/google'
@@ -9,9 +9,9 @@ import { Analytics as VercelAnalytics } from '@vercel/analytics/react'
 import siteMetadata from '@/data/siteMetadata'
 import ThemeScript from '@/components/ThemeScript'
 import Footer from '@/components/Footer'
-import EggList from '@/components/EggList'
-import RainbowRoad from '@/components/RainbowRoad'
-import PikachuCameo from '@/components/PikachuCameo'
+import Ledger from '@/components/Ledger'
+import Trail from '@/components/Trail'
+import Caller from '@/components/Caller'
 import SiteChrome from '@/components/SiteChrome'
 import LocalTools from '@/components/LocalTools'
 import Parallax from '@/components/Parallax'
@@ -133,9 +133,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main-content">{children}</main>
         <SiteChrome>
           <Footer />
-          <PikachuCameo />
-          <EggList />
-          <RainbowRoad />
+          <Caller />
+          <Ledger />
+          <Trail />
           <LocalTools />
         </SiteChrome>
         <VercelAnalytics />

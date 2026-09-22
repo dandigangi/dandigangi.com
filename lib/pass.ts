@@ -34,7 +34,7 @@ export const grantPikaPass = () => {
 
 /** Forgets the guess. Only the local dev dock calls this — the pass otherwise
  *  expires on its own `max-age`. */
-export const clearPikaPass = () => {
+export const clearPass = () => {
   try {
     document.cookie = `${PIKA_PASS}=; path=${PATH}; max-age=0; SameSite=Lax`
   } catch {

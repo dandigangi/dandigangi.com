@@ -1,12 +1,12 @@
 'use client'
 
 import { useMemo } from 'react'
-import styles from './StarFall.module.css'
+import styles from './Drift.module.css'
 
 /** Where the stars start, how big, and how long they take. */
 type Star = { id: number; left: number; size: number; delay: number; fall: number }
 
-const STAR = '/static/images/star.gif'
+const STAR = '/static/images/glint.gif'
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min)
 
@@ -23,7 +23,7 @@ const rand = (min: number, max: number) => min + Math.random() * (max - min)
  * render that also happens on the server is a hydration mismatch by
  * construction.
  */
-export default function StarFall({ trigger }: { trigger: number }) {
+export default function Drift({ trigger }: { trigger: number }) {
   /*
    * Derived, not set from an effect. `trigger` is zero on every server render
    * and only ever climbs from a keypress, so the random values here cannot

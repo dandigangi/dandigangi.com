@@ -3,12 +3,12 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { resetAll } from '@/lib/pikachu'
-import { EGGS, EXTRA, findEgg, hasEgg, resetEggs, type Egg } from '@/lib/eggs'
-import { useEggCount, useEggTotal } from './useEggs'
-import EggToast from './EggToast'
-import { clearPikaPass } from '@/lib/pikaPass'
-import { isRainbow, setRainbow } from '@/lib/rainbow'
+import { resetAll } from '@/lib/caller'
+import { TOKENS, EXTRA, addToken, hasToken, clearTokens, type Token } from '@/lib/ledger'
+import { useTokenCount, useTokenTotal } from './useLedger'
+import Blip from './Blip'
+import { clearPass } from '@/lib/pass'
+import { isTrail, setTrail } from '@/lib/trail'
 import styles from './LocalTools.module.css'
 
 /**
@@ -68,10 +68,10 @@ export default function LocalTools() {
   const hidden = useSyncExternalStore(subscribeDock, readDock, dockOnServer)
   // Server snapshot is 0: the tally is in localStorage, so it cannot be known
   // before hydration, and 0 is what the markup has to say until then.
-  const eggs = useEggCount()
-  const total = useEggTotal()
+  const eggs = useTokenCount()
+  const total = useTokenTotal()
   /** The one the dock just granted, so its toast announces like any other. */
-  const [granted, setGranted] = useState<Egg | null>(null)
+  const [granted, setGranted] = useState<Token | null>(null)
 
   /**
    * Finding these for real means a blog search, a password, a wheel, and
@@ -79,23 +79,23 @@ export default function LocalTools() {
    * looking at. These drive the same store the real triggers do, so what they
    * set up is what the site would have arrived at on its own.
    *
-   * The toast is left to EggToast rather than recorded here first: it only
+   * The toast is left to Blip rather than recorded here first: it only
    * announces a find that was new when it mounted, so granting the egg before
    * mounting it would be silent.
    */
   const grantOne = () => {
-    const next = EGGS.find((egg) => !hasEgg(egg))
+    const next = TOKENS.find((egg) => !hasToken(egg))
     if (next) setGranted(next)
   }
 
   /** The nine on the board. The secret is not one of them — see below. */
   const grantAll = () => {
     setGranted(null)
-    for (const egg of EGGS) findEgg(egg)
+    for (const egg of TOKENS) addToken(egg)
   }
 
   /**
-   * The secret, which "Find all" deliberately leaves alone: it is outside EGGS,
+   * The secret, which "Find all" deliberately leaves alone: it is outside TOKENS,
    * and granting it there would move the denominator to ten every time you used
    * the shortcut, which is the one thing that is supposed to stay hidden.
    *
@@ -105,8 +105,8 @@ export default function LocalTools() {
    * found either way; this switches the mode, not the discovery.
    */
   const grantSecret = () => {
-    const next = !isRainbow()
-    setRainbow(next)
+    const next = !isTrail()
+    setTrail(next)
     if (next) setGranted(EXTRA)
   }
 
@@ -185,9 +185,9 @@ export default function LocalTools() {
         className={styles.button}
         onClick={() => {
           resetAll()
-          clearPikaPass()
-          resetEggs()
-          setRainbow(false)
+          clearPass()
+          clearTokens()
+          setTrail(false)
         }}
       >
         Reset Eggs
@@ -224,7 +224,7 @@ export default function LocalTools() {
 
       {/* Keyed, so granting a second one replaces a toast already on screen
           rather than reusing one that has been dismissed. */}
-      {granted && <EggToast key={granted} egg={granted} show />}
+      {granted && <Blip key={granted} egg={granted} show />}
     </div>
   )
 }

@@ -3,14 +3,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
-import EggToast from '@/components/EggToast'
+import Blip from '@/components/Blip'
 import SiteNav from '@/components/SiteNav'
-import { PIKA_PASS } from '@/lib/pikaPass'
+import { PIKA_PASS } from '@/lib/pass'
 import siteMetadata from '@/data/siteMetadata'
 import Gate from '../Gate'
 import PikaTheme from '../PikaTheme'
 import gate from '../gate.module.css'
 import styles from '../../not-found.module.css'
+import { T } from '@/lib/ledger'
 
 /**
  * /admin gets the joke and /admin/lulz its punchline. Anything else below
@@ -71,12 +72,12 @@ export default async function AdminGate({
       {/* Same acknowledgement the blog-search egg gets. Rendered here rather
           than on the gate: the gate navigates away a couple of seconds after
           the guess lands, which would cut the toast off mid-read. */}
-      <EggToast egg="admin" show={pika} />
+      <Blip egg={T.gate} show={pika} />
 
       {pika && (
         <div className={gate.pikaLayer} aria-hidden="true">
           <Image
-            src="/static/images/pikachu-hero.jpg"
+            src="/static/images/layer-a.jpg"
             alt=""
             fill
             priority

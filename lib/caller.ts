@@ -1,4 +1,5 @@
 import { expireIfStale, touch } from './stale'
+import { T } from '@/lib/ledger'
 
 /**
  * Window events rather than shared React state: the cameo lives at the end of
@@ -6,10 +7,10 @@ import { expireIfStale, touch } from './stale'
  * the two have no common client ancestor to hold a provider.
  */
 /** Reopens the invoice without adding to the tab — clicking him does that. */
-export const PIKACHU_OPEN = 'pikachu:open'
+export const CALLER_OPEN = 'dd:co'
 
 /** Reopens the prize, for anyone who dismissed it and wants another look. */
-export const PIKACHU_PRIZE = 'pikachu:prize'
+export const CALLER_OFFER = 'dd:cf'
 
 /**
  * Module state, because an event only reaches whoever was mounted when it
@@ -17,7 +18,7 @@ export const PIKACHU_PRIZE = 'pikachu:prize'
  * be able to ask what happened while it was gone.
  *
  * `caught` is permanent and only opens the footer link — you met him, that is
- * that. The hero swap is a separate, higher bar: see heroActive below.
+ * that. The hero swap is a separate, higher bar: see layerActive below.
  */
 let caught = false
 let alterEgo = false
@@ -60,7 +61,7 @@ const armed = () => armedAt > 0 && Date.now() - armedAt < ARM_MS
  * what lets someone come back days later, click him once and pick up where the
  * tab left off.
  *
- * The lapse has to push rather than be polled: `heroActive` is read through
+ * The lapse has to push rather than be polled: `layerActive` is read through
  * `useSyncExternalStore`, so a bare `Date.now()` comparison would repaint
  * nothing at the deadline and the swap would linger until something unrelated
  * happened to emit.
@@ -90,14 +91,14 @@ export const subscribe = (listener: () => void) => {
   }
 }
 
-export const hasCaught = () => caught
-export const isAlterEgo = () => alterEgo
-export const isSearchEgg = () => searchEgg
+export const hasMet = () => caught
+export const isAlt = () => alterEgo
+export const isHinted = () => searchEgg
 
 /** Driven by the blog search. Transient — never persisted, never counted. */
-export const setSearchEgg = (on: boolean) => {
+export const setHinted = (on: boolean) => {
   if (searchEgg === on) return
-  const wasActive = heroActive()
+  const wasActive = layerActive()
   searchEgg = on
   changed(wasActive)
 }
@@ -115,14 +116,14 @@ export const setSearchEgg = (on: boolean) => {
  * back under the line puts the abstract render back exactly as it puts the
  * modal back to black.
  */
-export const heroActive = () => searchEgg || (armed() && getTab().amount >= FINAL_TIER)
+export const layerActive = () => searchEgg || (armed() && getTab().amount >= FINAL_TIER)
 
 /** Derived too, or a reload with an escalated tab stored would never mount the
- *  layer that `heroActive` is about to switch on. */
-export const heroEverActive = () => everActive || heroActive()
+ *  layer that `layerActive` is about to switch on. */
+export const layerEverActive = () => everActive || layerActive()
 
 const changed = (wasActive: boolean) => {
-  if (heroActive()) {
+  if (layerActive()) {
     everActive = true
     if (!wasActive) activatedAt = Date.now()
   }
@@ -132,15 +133,15 @@ const changed = (wasActive: boolean) => {
 /** Within a couple of frames of the layer switching on. */
 export const justActivated = () => Date.now() - activatedAt < 150
 
-export const markCaught = () => {
+export const markMet = () => {
   if (caught) return
-  const wasActive = heroActive()
+  const wasActive = layerActive()
   caught = true
   changed(wasActive)
 }
 
-/** Portrait only — see heroActive for why this no longer reaches the hero. */
-export const setAlterEgo = (on: boolean) => {
+/** Portrait only — see layerActive for why this no longer reaches the hero. */
+export const setAlt = (on: boolean) => {
   if (alterEgo === on) return
   alterEgo = on
   emit()
@@ -183,15 +184,15 @@ export const FINAL_TIER = 500
  * figure written out in two components is a figure that will disagree with
  * itself the first time one of them is edited.
  */
-export const PRIZE_FIGURE = 50
+export const OFFER_FIGURE = 50
 
 /**
  * The three crossings worth an egg, in order. Kept here rather than in the
  * cameo so the figures and the ids that depend on them cannot drift apart.
  */
 export const MONEY_TIERS = [
-  { at: OVER_TIER, egg: 'angry' },
-  { at: FINAL_TIER, egg: 'final' },
+  { at: OVER_TIER, egg: T.tier1 },
+  { at: FINAL_TIER, egg: T.tier2 },
 ] as const
 
 /* Bumped alongside the egg tally — a tab carried over from before tonight is
@@ -248,7 +249,7 @@ export const getInitialTab = (): Tab => INITIAL
 
 /** Raises the tab and counts the invoice. Only he may call this. */
 export const raiseTab = (amount: number) => {
-  const wasActive = heroActive()
+  const wasActive = layerActive()
   // Before the figure moves, so `changed` below sees the armed state that this
   // catch has just established rather than the one it is replacing.
   arm()
@@ -264,9 +265,9 @@ export const raiseTab = (amount: number) => {
  * dev dock: the five-minute lapse is the one behaviour here that cannot be
  * watched in a reasonable sitting, and the fade-out is worth seeing.
  */
-export const lapseHero = () => {
+export const lapseLayer = () => {
   if (!armed()) return
-  const wasActive = heroActive()
+  const wasActive = layerActive()
   disarm()
   changed(wasActive)
 }
@@ -280,7 +281,7 @@ export const lapseHero = () => {
  * rather than reopening on a settled invoice.
  */
 export const resetTab = () => {
-  const wasActive = heroActive()
+  const wasActive = layerActive()
   disarm()
   tab = OPENING_TAB
   try {
@@ -301,7 +302,7 @@ export const resetTab = () => {
  * transparent; the next trigger mounts it fresh and fades in properly.
  */
 export const resetAll = () => {
-  const wasActive = heroActive()
+  const wasActive = layerActive()
   disarm()
   caught = false
   alterEgo = false
@@ -321,7 +322,7 @@ export const resetAll = () => {
 export const softenTab = (by: number): boolean => {
   const next = Math.max(OPENING, Math.round((tab.amount - by) * 100) / 100)
   if (next === tab.amount) return false
-  const wasActive = heroActive()
+  const wasActive = layerActive()
   tab = { ...tab, amount: next }
   persist()
   changed(wasActive)

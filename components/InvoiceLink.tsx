@@ -1,14 +1,15 @@
 'use client'
 
 import { useSyncExternalStore } from 'react'
-import { PIKACHU_OPEN, hasCaught, subscribe } from '@/lib/pikachu'
-import styles from './PayPikachuLink.module.css'
+import { veiled } from '@/lib/copy'
+import { CALLER_OPEN, hasMet, subscribe } from '@/lib/caller'
+import styles from './InvoiceLink.module.css'
 
 /**
  * Only appears once someone has actually met him — until then there is nothing
  * to pay and the link would give the joke away.
  */
-export default function PayPikachuLink({
+export default function InvoiceLink({
   fontSize,
   tone = 'brand',
 }: {
@@ -25,7 +26,7 @@ export default function PayPikachuLink({
    *
    * The server snapshot is false: the store only exists on the client.
    */
-  const met = useSyncExternalStore(subscribe, hasCaught, () => false)
+  const met = useSyncExternalStore(subscribe, hasMet, () => false)
 
   if (!met) return null
 
@@ -35,9 +36,9 @@ export default function PayPikachuLink({
         type="button"
         className={`navLink ${styles.pay} ${tone === 'plain' ? styles.plain : ''}`}
         style={fontSize ? { fontSize } : undefined}
-        onClick={() => window.dispatchEvent(new CustomEvent(PIKACHU_OPEN))}
+        onClick={() => window.dispatchEvent(new CustomEvent(CALLER_OPEN))}
       >
-        Pay Pikachu
+        {veiled('UGF5IFBpa2FjaHU=')}
       </button>
     </li>
   )

@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import navLinks from '@/data/navLinks'
 import siteMetadata from '@/data/siteMetadata'
-import PayPikachuLink from './PayPikachuLink'
+import InvoiceLink from './InvoiceLink'
 import ThemeToggle from './ThemeToggle'
 import { LinkedInIcon, XIcon, GitHubIcon, MailIcon } from './Icons'
 import AdminLink from './AdminLink'
-import { EggListLink } from './EggList'
-import { RainbowOffLink } from './RainbowRoad'
+import { LedgerLink } from './Ledger'
+import { TrailOffLink } from './Trail'
 import footer from './Footer.module.css'
 
 const socials = [
@@ -71,8 +71,8 @@ export default function Footer() {
               there is nothing left to keep quiet about. */}
           <span className={footer.adminRow}>
             <AdminLink />
-            <EggListLink className={footer.eggs} />
-            <RainbowOffLink className={footer.eggs} />
+            <LedgerLink className={footer.aside} />
+            <TrailOffLink className={footer.aside} />
           </span>
         </div>
 
@@ -88,7 +88,7 @@ export default function Footer() {
               padding: 0,
             }}
           >
-            <PayPikachuLink fontSize={13} />
+            <InvoiceLink fontSize={13} />
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="navLink" style={{ fontSize: 13 }}>

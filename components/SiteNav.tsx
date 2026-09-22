@@ -3,8 +3,8 @@ import navLinks from '@/data/navLinks'
 import { getPublishedPosts } from '@/lib/blog'
 import { projects } from '@/data/projects'
 import MobileNav from './MobileNav'
-import NavStar from './NavStar'
-import PayPikachuLink from './PayPikachuLink'
+import NavMark from './NavMark'
+import InvoiceLink from './InvoiceLink'
 import styles from './SiteNav.module.css'
 
 /**
@@ -52,7 +52,7 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
           />
         </Link>
 
-        <NavStar size={Math.round(logoHeight * 0.85)} />
+        <NavMark size={Math.round(logoHeight * 0.85)} />
       </span>
 
       <nav aria-label="Main" className={styles.links}>
@@ -76,7 +76,7 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
             </li>
           ))}
           {/* Last, after Contact — he is not part of the site's navigation. */}
-          <PayPikachuLink tone="plain" />
+          <InvoiceLink tone="plain" />
         </ul>
       </nav>
 

@@ -21,7 +21,7 @@
      stays a pill if the copy ever wraps to two lines rather than turning into
      a rounded rectangle with odd corners. */
   border-radius: 999px;
-  /* No `background` here: .spectrumRing paints both layers, and a flat one
+  /* No `background` here: .halo paints both layers, and a flat one
      declared in this rule would win the cascade and bury the ring. */
   /*
    * Three layers rather than one: a tight contact shadow to lift the edge off
@@ -36,7 +36,7 @@
     0 10px 24px rgba(0, 0, 0, 0.26),
     0 28px 64px rgba(0, 0, 0, 0.32);
   transform: translateX(-50%);
-  /* The ring's paint comes from .spectrumRing; this drives it. */
+  /* The ring's paint comes from .halo; this drives it. */
   animation:
     toastIn 240ms ease-out,
     spectrum 1.25s linear infinite;
@@ -165,7 +165,7 @@
  * silently never runs. That is exactly what happened twice: the ring looked
  * like it had slowed down when it had simply stopped.
  *
- * The paint stays shared on the global `.spectrumRing`; only this three-line
+ * The paint stays shared on the global `.halo`; only this three-line
  * block is duplicated, because it is the part that cannot be.
  */
 @keyframes spectrum {

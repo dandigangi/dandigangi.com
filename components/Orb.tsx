@@ -7,7 +7,7 @@
  * rotating it spins around the middle of the ball with no transform-origin
  * fiddling at the call site.
  */
-export default function Pokeball({ size = 46 }: { size?: number }) {
+export default function Orb({ size = 46 }: { size?: number }) {
   return (
     <svg
       width={size}

@@ -1,8 +1,8 @@
 /*
  * Rainbow Road.
  *
- * Everything here hangs off `data-rainbow` on <html>, set by components/
- * RainbowRoad.tsx when the phrase is typed. Nothing in this file costs anything
+ * Everything here hangs off `data-trail` on <html>, set by components/
+ * Trail.tsx when the phrase is typed. Nothing in this file costs anything
  * until that attribute exists.
  *
  * Two effects, used throughout:
@@ -11,7 +11,7 @@
  *    conic ring used for borders: a conic gradient across a line of text puts
  *    every hue in one corner and reads as a smear rather than a sweep.
  *
- *  - Borders. The same two-background trick .spectrumRing uses, repeated here
+ *  - Borders. The same two-background trick .halo uses, repeated here
  *    rather than shared, because these rules need to beat module styles that
  *    already set their own border and background.
  *
@@ -19,13 +19,13 @@
  * file to read, delete, or lift.
  */
 
-@keyframes rainbowSlide {
+@keyframes hueSlide {
   to {
     background-position: 200% 0;
   }
 }
 
-@keyframes rainbowSpin {
+@keyframes hueSpin {
   to {
     --angle: 360deg;
   }
@@ -49,12 +49,12 @@
  * taglines. `-webkit-text-fill-color` as well as `color`, because WebKit only
  * honours the former once the background is clipped to the text.
  */
-:root[data-rainbow] h1,
-:root[data-rainbow] h2,
-:root[data-rainbow] .navLink,
-:root[data-rainbow] [class*='tagline'],
-:root[data-rainbow] [class*='name'],
-:root[data-rainbow] [class*='title'] {
+:root[data-trail] h1,
+:root[data-trail] h2,
+:root[data-trail] .navLink,
+:root[data-trail] [class*='tagline'],
+:root[data-trail] [class*='name'],
+:root[data-trail] [class*='title'] {
   background: linear-gradient(
     90deg,
     var(--rb-red),
@@ -71,13 +71,13 @@
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  animation: rainbowSlide 2.5s linear infinite;
+  animation: hueSlide 2.5s linear infinite;
 }
 
 /* The band sits on a photograph, so its titles need the shadow taken off —
    a drop shadow under clipped text paints as a grey ghost of the glyphs. */
-:root[data-rainbow] [class*='PageBand'] h1,
-:root[data-rainbow] [class*='SiteNav'] {
+:root[data-trail] [class*='PageBand'] h1,
+:root[data-trail] [class*='SiteNav'] {
   text-shadow: none;
 }
 
@@ -90,8 +90,8 @@
  * which nothing animates, and every button inherits a frozen gradient. The ring
  * appears but never turns. Same trap as --spectrum; see css/globals.css.
  */
-:root[data-rainbow] .btn,
-:root[data-rainbow] .chip {
+:root[data-trail] .btn,
+:root[data-trail] .chip {
   border: 1px solid transparent;
   background:
     linear-gradient(var(--bg), var(--bg)) padding-box,
@@ -107,7 +107,7 @@
         var(--rb-red)
       )
       border-box;
-  animation: rainbowSpin 1.25s linear infinite;
+  animation: hueSpin 1.25s linear infinite;
 }
 
 /*
@@ -115,8 +115,8 @@
  * repaints every .btn with the page background, which on black left dark-on-dark
  * text — the ring turned merrily around an invisible label.
  */
-:root[data-rainbow] .btnPrize,
-:root[data-rainbow] .btnPrize:hover {
+:root[data-trail] .btnPrize,
+:root[data-trail] .btnPrize:hover {
   background:
     linear-gradient(#3fb950, #3fb950) padding-box,
     conic-gradient(
@@ -139,7 +139,7 @@
  * Hover still has to read as hover. Inverting the fill rather than the border
  * keeps the ring turning underneath while the button clearly changes state.
  */
-:root[data-rainbow] .btn:hover {
+:root[data-trail] .btn:hover {
   background:
     linear-gradient(var(--ink), var(--ink)) padding-box,
     conic-gradient(
@@ -166,10 +166,10 @@
  * of these have — and `border-image-slice: 1` is what makes it fill rather than
  * tile the corners.
  */
-:root[data-rainbow] hr,
-:root[data-rainbow] footer,
-:root[data-rainbow] .hairlineRow + .hairlineRow,
-:root[data-rainbow] [class*='channel'] + [class*='channel'] {
+:root[data-trail] hr,
+:root[data-trail] footer,
+:root[data-trail] .hairlineRow + .hairlineRow,
+:root[data-trail] [class*='channel'] + [class*='channel'] {
   border-image: linear-gradient(
       90deg,
       var(--rb-red),
@@ -185,7 +185,7 @@
 }
 
 /* A strip across the very top, so the mode announces itself before you scroll. */
-:root[data-rainbow] body::before {
+:root[data-trail] body::before {
   content: '';
   position: fixed;
   top: 0;
@@ -205,7 +205,7 @@
     var(--rb-red)
   );
   background-size: 200% 100%;
-  animation: rainbowSlide 2.5s linear infinite;
+  animation: hueSlide 2.5s linear infinite;
   pointer-events: none;
 }
 
@@ -215,9 +215,9 @@
  * readable more than it has to be festive. The marks are emoji — clipping a
  * background to those erases them entirely.
  */
-:root[data-rainbow] [class*='EggList'] [class*='name']:not([data-shine]),
-:root[data-rainbow] [class*='EggList'] [class*='title'],
-:root[data-rainbow] [class*='EggList'] [class*='mark'] {
+:root[data-trail] [class*='Ledger'] [class*='name']:not([data-shine]),
+:root[data-trail] [class*='Ledger'] [class*='title'],
+:root[data-trail] [class*='Ledger'] [class*='mark'] {
   background: none;
   color: var(--ink);
   -webkit-text-fill-color: currentcolor;
@@ -228,7 +228,7 @@
  * The one thing that does not get it: the invisible chip at the end of the tag
  * row. Painting it would hand over an egg for free.
  */
-:root[data-rainbow] [class*='TagRowEnd'][class*='spacer'] {
+:root[data-trail] [class*='ChipTail'][class*='spacer'] {
   background: none;
   color: transparent;
   -webkit-text-fill-color: transparent;
@@ -240,7 +240,7 @@
  * keeps that here — the ring above would otherwise repaint it like any other
  * chip and lose what it is.
  */
-:root[data-rainbow] [class*='TagRowEnd'][class*='revealed'] {
+:root[data-trail] [class*='ChipTail'][class*='revealed'] {
   border: 1px solid var(--pika);
   background: none;
   color: var(--pika);
@@ -252,7 +252,7 @@
  * The nav sits on the graphic band, where rainbow text on a busy render loses
  * its edges. A flat black plate behind each link gives it something to sit on.
  */
-:root[data-rainbow] [class*='SiteNav'] .navLink {
+:root[data-trail] [class*='SiteNav'] .navLink {
   /* Two layers: the rainbow clipped to the glyphs, a flat black plate behind
      it. One layer cannot do both, and the band's render otherwise shows through
      the letters and eats their edges. */
@@ -288,9 +288,9 @@
  * so its hairline and its own nav links want the darkened ramp like everything
  * else on a light page.
  */
-[data-theme='light']:root[data-rainbow] [class*='PageBand'],
-[data-theme='light']:root[data-rainbow] [class*='hero'],
-[data-theme='light']:root[data-rainbow] [class*='SiteNav'] .navLink {
+[data-theme='light']:root[data-trail] [class*='PageBand'],
+[data-theme='light']:root[data-trail] [class*='hero'],
+[data-theme='light']:root[data-trail] [class*='SiteNav'] .navLink {
   --rb-red: #ff5c5c;
   --rb-orange: #ff9f45;
   --rb-yellow: #ffd23f;
@@ -301,15 +301,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root[data-rainbow] h1,
-  :root[data-rainbow] h2,
-  :root[data-rainbow] .navLink,
-  :root[data-rainbow] [class*='tagline'],
-  :root[data-rainbow] [class*='name'],
-  :root[data-rainbow] [class*='title'],
-  :root[data-rainbow] .btn,
-  :root[data-rainbow] .chip,
-  :root[data-rainbow] body::before {
+  :root[data-trail] h1,
+  :root[data-trail] h2,
+  :root[data-trail] .navLink,
+  :root[data-trail] [class*='tagline'],
+  :root[data-trail] [class*='name'],
+  :root[data-trail] [class*='title'],
+  :root[data-trail] .btn,
+  :root[data-trail] .chip,
+  :root[data-trail] body::before {
     /* The colour stays; only the travelling stops. */
     animation: none;
   }
@@ -322,11 +322,9 @@
  * and a rule written against [data-theme='light'] alone misses those readers.
  */
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme='dark']):not([data-theme='light'])[data-rainbow] [class*='PageBand'],
-  :root:not([data-theme='dark']):not([data-theme='light'])[data-rainbow] [class*='hero'],
-  :root:not([data-theme='dark']):not([data-theme='light'])[data-rainbow]
-    [class*='SiteNav']
-    .navLink {
+  :root:not([data-theme='dark']):not([data-theme='light'])[data-trail] [class*='PageBand'],
+  :root:not([data-theme='dark']):not([data-theme='light'])[data-trail] [class*='hero'],
+  :root:not([data-theme='dark']):not([data-theme='light'])[data-trail] [class*='SiteNav'] .navLink {
     --rb-red: #ff5c5c;
     --rb-orange: #ff9f45;
     --rb-yellow: #ffd23f;

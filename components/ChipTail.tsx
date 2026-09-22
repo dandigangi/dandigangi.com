@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { veiled } from '@/lib/copy'
-import EggToast from './EggToast'
-import styles from './TagRowEnd.module.css'
+import Blip from './Blip'
+import styles from './ChipTail.module.css'
+import { T } from '@/lib/ledger'
 
 /**
  * The last thing in a tag row, and the only one you cannot see — until you find
@@ -24,7 +25,7 @@ import styles from './TagRowEnd.module.css'
  *
  * The bland name is deliberate too: in the browser this is a `spacer`.
  */
-export default function TagRowEnd() {
+export default function ChipTail() {
   const [found, setFound] = useState(false)
   const name = veiled('UGlrYWNodQ==')
 
@@ -32,7 +33,7 @@ export default function TagRowEnd() {
     return (
       <>
         <span className={styles.revealed}>{name}</span>
-        <EggToast egg="hidden" show />
+        <Blip egg={T.tail} show />
       </>
     )
   }

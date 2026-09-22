@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { veiled } from '@/lib/copy'
-import { openEggList } from './EggList'
+import { openLedger } from './Ledger'
 import styles from './Toast.module.css'
 
 /**
@@ -65,7 +65,7 @@ export default function Toast({
 
   return (
     <div
-      className={`spectrumRing ${styles.toast} ${leaving ? styles.leaving : ''}`}
+      className={`halo ${styles.toast} ${leaving ? styles.leaving : ''}`}
       role="status"
       aria-live="polite"
     >
@@ -77,7 +77,7 @@ export default function Toast({
         {hasProgress && (
           /* The count is the way into the list — the toast is the only place it
              is guaranteed to be on screen at the moment one is found. */
-          <button type="button" className={styles.count} onClick={openEggList}>
+          <button type="button" className={styles.count} onClick={openLedger}>
             ({count}/{total})
           </button>
         )}

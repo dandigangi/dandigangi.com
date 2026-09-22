@@ -1,7 +1,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import { speakingTopics } from '@/data/about'
 import PageBand from '@/components/PageBand'
-import PrizeLink from '@/components/PrizeLink'
+import Offer from '@/components/Offer'
 import { genPageMetadata } from 'app/seo'
 import styles from './contact.module.css'
 
@@ -41,7 +41,7 @@ export default function Contact() {
               or developer platforms.
             </p>
 
-            <PrizeLink />
+            <Offer />
 
             <div className={styles.channels}>
               {channels.map((channel) => {

@@ -1,9 +1,10 @@
 'use client'
 
 import { useSyncExternalStore } from 'react'
-import { allFound, subscribe } from '@/lib/eggs'
-import { PIKACHU_PRIZE } from '@/lib/pikachu'
-import styles from './PrizeLink.module.css'
+import { veiled } from '@/lib/copy'
+import { allTokens, subscribe } from '@/lib/ledger'
+import { CALLER_OFFER } from '@/lib/caller'
+import styles from './Offer.module.css'
 
 /**
  * The way to collect from a page that has nothing else to do with the hunt.
@@ -13,18 +14,18 @@ import styles from './PrizeLink.module.css'
  * reader who is here to send an email. It opens the same modal the egg list
  * does, by the same event.
  */
-export default function PrizeLink() {
-  const complete = useSyncExternalStore(subscribe, allFound, () => false)
+export default function Offer() {
+  const complete = useSyncExternalStore(subscribe, allTokens, () => false)
   if (!complete) return null
 
   return (
     <button
       type="button"
       className={`btn btnPrize ${styles.claim}`}
-      onClick={() => window.dispatchEvent(new CustomEvent(PIKACHU_PRIZE))}
+      onClick={() => window.dispatchEvent(new CustomEvent(CALLER_OFFER))}
       data-print="hide"
     >
-      Claim Your Prize
+      {veiled('Q2xhaW0gWW91ciBQcml6ZQ==')}
     </button>
   )
 }

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import PikachuHero from './PikachuHero'
+import Backdrop from './Backdrop'
 import SiteNav from './SiteNav'
 import styles from './PageBand.module.css'
 
@@ -65,7 +65,7 @@ export default function PageBand({
           sizes="100vw"
           style={{ objectFit: 'cover', objectPosition }}
         />
-        <PikachuHero objectPosition="50% 49%" />
+        <Backdrop objectPosition="50% 49%" />
       </div>
       <div className={styles.scrim} />
       <div className={`rail ${styles.inner}`}>

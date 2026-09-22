@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { getTagCounts, getTagHues } from '@/lib/blog'
 import { formatTag } from '@/lib/format'
-import TagRowEnd from '@/components/TagRowEnd'
+import ChipTail from '@/components/ChipTail'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
 import styles from './tags.module.css'
@@ -29,7 +29,7 @@ export default function TagsPage() {
               {formatTag(tag)} ({count})
             </Link>
           ))}
-          <TagRowEnd />
+          <ChipTail />
         </div>
       </div>
     </>

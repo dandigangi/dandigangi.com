@@ -41,8 +41,8 @@ const BUFFER = Math.max(...HASHED.map(([length]) => length))
 const STORE_KEY = 'dd:e3'
 const RETIRED = 'dd:x3'
 
-/** Set on <html>, which is what every rule in css/rainbow.css hangs off. */
-const FLAG = 'data-rainbow'
+/** Set on <html>, which is what every rule in css/trail.css hangs off. */
+const FLAG = 'data-trail'
 
 let on = false
 let read = false
@@ -58,7 +58,7 @@ let read = false
  */
 let toggles = 0
 
-export const rainbowToggles = (): number => toggles
+export const trailToggles = (): number => toggles
 
 const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((listener) => listener())
@@ -82,7 +82,7 @@ const load = () => {
   }
 }
 
-export const isRainbow = (): boolean => {
+export const isTrail = (): boolean => {
   if (typeof window === 'undefined') return false
   load()
   return on
@@ -95,7 +95,7 @@ const paint = () => {
   else root.removeAttribute(FLAG)
 }
 
-export const setRainbow = (next: boolean): void => {
+export const setTrail = (next: boolean): void => {
   load()
   if (on === next) return
   on = next
@@ -114,7 +114,7 @@ export const setRainbow = (next: boolean): void => {
 }
 
 /** Re-applies the stored state to a freshly loaded document. */
-export const restoreRainbow = (): void => {
+export const restoreTrail = (): void => {
   load()
   paint()
 }

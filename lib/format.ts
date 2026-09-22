@@ -19,7 +19,6 @@ const INITIALISMS = new Set([
   'html',
   'js',
   'llm',
-  'qa',
   'seo',
   'ui',
   'ux',

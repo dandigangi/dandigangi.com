@@ -114,12 +114,12 @@
  * about 1.2:1. Using the token rather than a literal is what keeps the light
  * case legible for free.
  */
-.eggEmpty,
-.eggLabel {
+.miss,
+.tally {
   color: var(--pika);
 }
 
-.eggEmpty {
+.miss {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -129,7 +129,7 @@
 
 /* Sized to the line rather than to a fixed box, so he sits on the text baseline
    at any of the clamped body sizes. */
-.eggSprite {
+.spr {
   display: inline-flex;
   align-items: center;
   height: 1.51em;
@@ -141,7 +141,7 @@
   transition: transform 0.12s ease;
 }
 
-.eggSprite img {
+.spr img {
   height: 100%;
   width: auto;
   display: block;
@@ -149,21 +149,21 @@
 
 /* He flinches. The line tells you to throw something at him, so the target has
    to read as a target. */
-.eggSprite:hover {
+.spr:hover {
   transform: translateY(-2px) scale(1.08);
 }
 
-.eggSprite:active {
+.spr:active {
   transform: translateY(1px) scale(0.94);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .eggSprite {
+  .spr {
     transition: none;
   }
 
-  .eggSprite:hover,
-  .eggSprite:active {
+  .spr:hover,
+  .spr:active {
     transform: none;
   }
 }

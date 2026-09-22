@@ -2,20 +2,25 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
-import { EXTRA, allFound, eggName, foundList, resetEggs, subscribe } from '@/lib/eggs'
-import { useEggCount, useEggTotal } from './useEggs'
-import { isRainbow, setRainbow, subscribe as rainbowSubscribe } from '@/lib/rainbow'
-import { PIKACHU_PRIZE, PRIZE_FIGURE, resetAll } from '@/lib/pikachu'
-import styles from './EggList.module.css'
+import { EXTRA, allTokens, tokenLabel, tokenList, clearTokens, subscribe } from '@/lib/ledger'
+import { useTokenCount, useTokenTotal } from './useLedger'
+import { isTrail, setTrail, subscribe as rainbowSubscribe } from '@/lib/trail'
+import { CALLER_OFFER, OFFER_FIGURE, resetAll } from '@/lib/caller'
+import styles from './Ledger.module.css'
 
 /**
  * Opens the list from anywhere. A window event rather than shared state for the
  * same reason the Pikachu store uses one: the two things that open it — the
  * footer link and the count inside a toast — have no common client ancestor.
  */
-export const EGG_LIST_OPEN = 'dd:eggs-open'
+export const LEDGER_OPEN = 'dd:lo'
 
-export const openEggList = () => window.dispatchEvent(new CustomEvent(EGG_LIST_OPEN))
+/* Split out because they are read in two places each, and a base64 blob inline
+   in a ternary is unreadable even by the standards of this file. */
+const OFF_ROAD = 'VHVybiBvZmYgUmFpbmJvdyBSb2Fk'
+const ON_ROAD = 'VHVybiBvbiBSYWluYm93IFJvYWQ='
+
+export const openLedger = () => window.dispatchEvent(new CustomEvent(LEDGER_OPEN))
 
 /** "22 Sep, 03:24". Short enough to sit on one line beside the name. */
 const when = (at: number) =>
@@ -37,12 +42,12 @@ const when = (at: number) =>
  * list of ten specific things you have not done yet is a walkthrough, and the
  * whole point is that you go and look.
  */
-export default function EggList() {
+export default function Ledger() {
   const [open, setOpen] = useState(false)
-  const found = useEggCount()
-  const total = useEggTotal()
-  const complete = useSyncExternalStore(subscribe, allFound, () => false)
-  const rainbow = useSyncExternalStore(rainbowSubscribe, isRainbow, () => false)
+  const found = useTokenCount()
+  const total = useTokenTotal()
+  const complete = useSyncExternalStore(subscribe, allTokens, () => false)
+  const rainbow = useSyncExternalStore(rainbowSubscribe, isTrail, () => false)
 
   /**
    * Two-step, not a second modal: the first press turns this control into its
@@ -64,8 +69,8 @@ export default function EggList() {
 
   useEffect(() => {
     const show = () => setOpen(true)
-    window.addEventListener(EGG_LIST_OPEN, show)
-    return () => window.removeEventListener(EGG_LIST_OPEN, show)
+    window.addEventListener(LEDGER_OPEN, show)
+    return () => window.removeEventListener(LEDGER_OPEN, show)
   }, [])
 
   useEffect(() => {
@@ -77,7 +82,7 @@ export default function EggList() {
 
   if (!open) return null
 
-  const unlocked = foundList()
+  const unlocked = tokenList()
   const remaining = total - unlocked.length
 
   return (
@@ -86,21 +91,22 @@ export default function EggList() {
       onClick={(event) => event.target === event.currentTarget && close()}
     >
       <div
-        className={`spectrumRing ${styles.dialog}`}
+        className={`halo ${styles.dialog}`}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="egg-list"
+        aria-labelledby="lg-t"
       >
         <header className={styles.head}>
           <div>
-            <h2 className={styles.title} id="egg-list">
+            <h2 className={styles.title} id="lg-t">
               {veiled('RWFzdGVyIGVnZ3M=')}
             </h2>
             <p className={styles.score}>
               {found} of {total} found
             </p>
             <p className={styles.stakes}>
-              If you find all {total}, you will win a ${PRIZE_FIGURE} gift card.
+              {veiled('SWYgeW91IGZpbmQgYWxs')} {total}, {veiled('eW91IHdpbGwgd2luIGE=')} $
+              {OFFER_FIGURE} {veiled('Z2lmdCBjYXJkLg==')}
             </p>
           </div>
           <button type="button" className={styles.x} onClick={close}>
@@ -118,28 +124,26 @@ export default function EggList() {
                 <button
                   type="button"
                   className={`${styles.mark} ${styles.markButton}`}
-                  onClick={() => setRainbow(!rainbow)}
-                  title={rainbow ? 'Turn off Rainbow Road' : 'Turn on Rainbow Road'}
+                  onClick={() => setTrail(!rainbow)}
+                  title={veiled(rainbow ? OFF_ROAD : ON_ROAD)}
                 >
                   <span aria-hidden="true">🌈</span>
-                  <span className="srOnly">
-                    {rainbow ? 'Turn off Rainbow Road' : 'Turn on Rainbow Road'}
-                  </span>
+                  <span className="srOnly">{veiled(rainbow ? OFF_ROAD : ON_ROAD)}</span>
                 </button>
               ) : (
                 <span className={styles.mark} aria-hidden="true">
                   🐣
                 </span>
               )}
-              {/* data-shine, not the class name: the rule in css/rainbow.css that
+              {/* data-shine, not the class name: the rule in css/trail.css that
                   flattens this dialog's text has to exempt it, and a global
                   stylesheet can only match a hashed module class by substring —
                   which breaks the moment the file is renamed. */}
               <span
-                className={`${styles.name} ${egg === EXTRA ? styles.secretName : ''}`}
+                className={`${styles.name} ${egg === EXTRA ? styles.shine : ''}`}
                 data-shine={egg === EXTRA ? '' : undefined}
               >
-                {eggName(egg)}
+                {tokenLabel(egg)}
               </span>
               <span className={styles.at}>{when(at)}</span>
             </li>
@@ -164,10 +168,10 @@ export default function EggList() {
             className={`btn btnPrize ${styles.claim}`}
             onClick={() => {
               close()
-              window.dispatchEvent(new CustomEvent(PIKACHU_PRIZE))
+              window.dispatchEvent(new CustomEvent(CALLER_OFFER))
             }}
           >
-            Claim Your Prize
+            {veiled('Q2xhaW0gWW91ciBQcml6ZQ==')}
           </button>
         )}
 
@@ -184,8 +188,8 @@ export default function EggList() {
                 setArming(true)
                 return
               }
-              resetEggs()
-              setRainbow(false)
+              clearTokens()
+              setTrail(false)
               // The tally is not the whole game: the tab, the catch, and the
               // hero swap all live in the Pikachu store, and clearing only the
               // eggs left a Pay Pikachu link in the footer of a site that had
@@ -195,7 +199,7 @@ export default function EggList() {
               close()
             }}
           >
-            {arming ? 'Press again to clear all of them' : 'Reset eggs'}
+            {veiled(arming ? 'UHJlc3MgYWdhaW4gdG8gY2xlYXIgYWxsIG9mIHRoZW0=' : 'UmVzZXQgZWdncw==')}
           </button>
 
           {/* No confirmation on this one, deliberately: it is one keystroke to
@@ -205,8 +209,8 @@ export default function EggList() {
               <span className={styles.dash} aria-hidden="true">
                 —
               </span>
-              <button type="button" className={styles.reset} onClick={() => setRainbow(false)}>
-                Turn off Rainbow Mode
+              <button type="button" className={styles.reset} onClick={() => setTrail(false)}>
+                {veiled('VHVybiBvZmYgUmFpbmJvdyBNb2Rl')}
               </button>
             </>
           )}
@@ -217,14 +221,14 @@ export default function EggList() {
 }
 
 /** The footer's way in. Absent until there is something to show. */
-export function EggListLink({ className }: { className?: string }) {
-  const found = useEggCount()
-  const total = useEggTotal()
-  const complete = useSyncExternalStore(subscribe, allFound, () => false)
+export function LedgerLink({ className }: { className?: string }) {
+  const found = useTokenCount()
+  const total = useTokenTotal()
+  const complete = useSyncExternalStore(subscribe, allTokens, () => false)
   if (found === 0) return null
 
   return (
-    <button type="button" className={className} onClick={openEggList}>
+    <button type="button" className={className} onClick={openLedger}>
       {/* The egg hatches once the set is complete, and the label goes with it. */}
       <span aria-hidden="true">{complete ? '🐣' : '🥚'}</span>{' '}
       <span className={complete ? styles.linkDone : undefined}>

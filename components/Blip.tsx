@@ -1,8 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
-import { findEgg, hasEgg, type Egg } from '@/lib/eggs'
-import { useEggCount, useEggTotal } from './useEggs'
+import { addToken, hasToken, type Token } from '@/lib/ledger'
+import { useTokenCount, useTokenTotal } from './useLedger'
 import Toast from './Toast'
 
 /**
@@ -13,7 +13,7 @@ import Toast from './Toast'
  * Once dismissed it stays dismissed for the life of this mount, so retyping the
  * trigger does not fire it again. Finding a thing twice is not finding it twice.
  */
-export default function EggToast({ egg, show }: { egg: Egg; show: boolean }) {
+export default function Blip({ egg, show }: { egg: Token; show: boolean }) {
   const [dismissed, setDismissed] = useState(false)
 
   /**
@@ -22,18 +22,18 @@ export default function EggToast({ egg, show }: { egg: Egg; show: boolean }) {
    * toast announces a discovery, not a trigger. Without it, every visit to a
    * page you have already solved re-congratulates you for it.
    */
-  const [alreadyKnown] = useState(() => hasEgg(egg))
+  const [alreadyKnown] = useState(() => hasToken(egg))
   // Stable, because Toast restarts its own dismiss timer whenever this changes.
   const close = useCallback(() => setDismissed(true), [])
 
   /**
    * Recorded in an effect and read back through the store, rather than set into
-   * state here: `findEgg` is the thing that changes, and driving the number off
+   * state here: `addToken` is the thing that changes, and driving the number off
    * the store means every other mounted counter agrees with this one without
    * anything having to tell them.
    */
   useEffect(() => {
-    if (show) findEgg(egg)
+    if (show) addToken(egg)
   }, [show, egg])
 
   /**
@@ -44,8 +44,8 @@ export default function EggToast({ egg, show }: { egg: Egg; show: boolean }) {
    * the one thing it must never say, and which any count matching the server
    * would have to say.
    */
-  const found = useEggCount()
-  const total = useEggTotal()
+  const found = useTokenCount()
+  const total = useTokenTotal()
 
   if (!show || dismissed || alreadyKnown) return null
   return <Toast count={found} total={total} onClose={close} />

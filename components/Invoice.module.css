@@ -39,7 +39,7 @@
 
 /*
  * The two edges, kept as separate classes rather than one with an override.
- * `.spectrumRing` is a global and this file's rules are injected after it, so a
+ * `.halo` is a global and this file's rules are injected after it, so a
  * background declared in `.modal` would win the cascade and bury the ring — the
  * only way they can coexist is by never both applying.
  */
@@ -646,7 +646,7 @@
  * silently never runs. That is exactly what happened twice: the ring looked
  * like it had slowed down when it had simply stopped.
  *
- * The paint stays shared on the global `.spectrumRing`; only this three-line
+ * The paint stays shared on the global `.halo`; only this three-line
  * block is duplicated, because it is the part that cannot be.
  */
 @keyframes spectrum {

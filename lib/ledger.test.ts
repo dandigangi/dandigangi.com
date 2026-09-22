@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { T } from '@/lib/ledger'
 
 /** Module state outlives an import, so each case gets a fresh one. */
 const load = async () => {
   vi.resetModules()
-  return import('./eggs')
+  return import('./ledger')
 }
 
 beforeEach(() => localStorage.clear())
@@ -11,30 +12,30 @@ beforeEach(() => localStorage.clear())
 describe('the egg tally', () => {
   it('starts at nothing found', async () => {
     const eggs = await load()
-    expect(eggs.foundEggs()).toBe(0)
+    expect(eggs.tokenCount()).toBe(0)
   })
 
   it('counts each egg once, however many times it fires', async () => {
     const eggs = await load()
-    eggs.findEgg('search')
-    eggs.findEgg('search')
-    eggs.findEgg('search')
-    expect(eggs.foundEggs()).toBe(1)
+    eggs.addToken(T.probe)
+    eggs.addToken(T.probe)
+    eggs.addToken(T.probe)
+    expect(eggs.tokenCount()).toBe(1)
   })
 
   it('counts the eggs separately', async () => {
     const eggs = await load()
-    eggs.findEgg('search')
-    eggs.findEgg('admin')
-    expect(eggs.foundEggs()).toBe(2)
+    eggs.addToken(T.probe)
+    eggs.addToken(T.gate)
+    expect(eggs.tokenCount()).toBe(2)
   })
 
   it('survives a reload', async () => {
     const first = await load()
-    first.findEgg('pikachu')
+    first.addToken(T.met)
 
     const second = await load()
-    expect(second.foundEggs()).toBe(1)
+    expect(second.tokenCount()).toBe(1)
   })
 
   /**
@@ -42,21 +43,21 @@ describe('the egg tally', () => {
    * egg that has since been removed would push the count past the total.
    */
   it('ignores a stored name that is no longer an egg', async () => {
-    localStorage.setItem('dd:e1', JSON.stringify(['search', 'retired-egg']))
+    localStorage.setItem('dd:e1', JSON.stringify([T.probe, 'retired-egg']))
     const eggs = await load()
-    expect(eggs.foundEggs()).toBe(1)
+    expect(eggs.tokenCount()).toBe(1)
   })
 
   it('shrugs off a corrupt value rather than throwing', async () => {
     localStorage.setItem('dd:e1', 'not json')
     const eggs = await load()
-    expect(eggs.foundEggs()).toBe(0)
+    expect(eggs.tokenCount()).toBe(0)
   })
 
   it('never reports more found than exist', async () => {
     const eggs = await load()
-    for (const egg of eggs.EGGS) eggs.findEgg(egg)
-    expect(eggs.foundEggs()).toBe(eggs.totalEggs())
+    for (const egg of eggs.TOKENS) eggs.addToken(egg)
+    expect(eggs.tokenCount()).toBe(eggs.tokenTotal())
   })
 
   it('notifies subscribers, but only when something changed', async () => {
@@ -64,36 +65,36 @@ describe('the egg tally', () => {
     const listener = vi.fn()
     eggs.subscribe(listener)
 
-    eggs.findEgg('search')
+    eggs.addToken(T.probe)
     expect(listener).toHaveBeenCalledTimes(1)
 
-    eggs.findEgg('search')
+    eggs.addToken(T.probe)
     expect(listener).toHaveBeenCalledTimes(1)
   })
 
   it('resets, in memory and in storage', async () => {
     const first = await load()
-    first.findEgg('search')
-    first.findEgg('admin')
-    first.resetEggs()
+    first.addToken(T.probe)
+    first.addToken(T.gate)
+    first.clearTokens()
 
-    expect(first.foundEggs()).toBe(0)
+    expect(first.tokenCount()).toBe(0)
     expect(localStorage.getItem('dd:e1')).toBeNull()
 
     const second = await load()
-    expect(second.foundEggs()).toBe(0)
+    expect(second.tokenCount()).toBe(0)
   })
 })
 
 describe('the prize', () => {
   it('is not due until every egg is found', async () => {
     const eggs = await load()
-    for (const egg of eggs.EGGS.slice(0, -1)) eggs.findEgg(egg)
-    expect(eggs.allFound()).toBe(false)
+    for (const egg of eggs.TOKENS.slice(0, -1)) eggs.addToken(egg)
+    expect(eggs.allTokens()).toBe(false)
 
-    eggs.findEgg(eggs.EGGS[eggs.EGGS.length - 1])
-    expect(eggs.allFound()).toBe(true)
-    expect(eggs.hasClaimed()).toBe(false)
+    eggs.addToken(eggs.TOKENS[eggs.TOKENS.length - 1])
+    expect(eggs.allTokens()).toBe(true)
+    expect(eggs.offerSettled()).toBe(false)
   })
 
   /**
@@ -102,30 +103,30 @@ describe('the prize', () => {
    */
   it('stays collected across a reload', async () => {
     const first = await load()
-    for (const egg of first.EGGS) first.findEgg(egg)
-    first.claimPrize()
-    expect(first.hasClaimed()).toBe(true)
+    for (const egg of first.TOKENS) first.addToken(egg)
+    first.settleOffer()
+    expect(first.offerSettled()).toBe(true)
 
     const second = await load()
-    expect(second.allFound()).toBe(true)
-    expect(second.hasClaimed()).toBe(true)
+    expect(second.allTokens()).toBe(true)
+    expect(second.offerSettled()).toBe(true)
   })
 
   it('is due again after a reset', async () => {
     const eggs = await load()
-    for (const egg of eggs.EGGS) eggs.findEgg(egg)
-    eggs.claimPrize()
+    for (const egg of eggs.TOKENS) eggs.addToken(egg)
+    eggs.settleOffer()
 
-    eggs.resetEggs()
-    expect(eggs.allFound()).toBe(false)
-    expect(eggs.hasClaimed()).toBe(false)
+    eggs.clearTokens()
+    expect(eggs.allTokens()).toBe(false)
+    expect(eggs.offerSettled()).toBe(false)
   })
 
   it('notifies subscribers when collected, so the modal can close itself', async () => {
     const eggs = await load()
     const listener = vi.fn()
     eggs.subscribe(listener)
-    eggs.claimPrize()
+    eggs.settleOffer()
     expect(listener).toHaveBeenCalled()
   })
 })
@@ -133,12 +134,12 @@ describe('the prize', () => {
 describe('when each was found', () => {
   it('stamps a find and keeps the stamp across a reload', async () => {
     const first = await load()
-    first.findEgg('search')
-    const at = first.foundList()[0].at
+    first.addToken(T.probe)
+    const at = first.tokenList()[0].at
     expect(at).toBeGreaterThan(0)
 
     const second = await load()
-    expect(second.foundList()[0]).toEqual({ egg: 'search', at })
+    expect(second.tokenList()[0]).toEqual({ egg: T.probe, at })
   })
 
   /**
@@ -147,22 +148,22 @@ describe('when each was found', () => {
    * the worse trade.
    */
   it('keeps finds written in the older id-only shape', async () => {
-    localStorage.setItem('dd:e1', JSON.stringify(['search', 'admin']))
+    localStorage.setItem('dd:e1', JSON.stringify([T.probe, T.gate]))
     const eggs = await load()
-    expect(eggs.foundEggs()).toBe(2)
-    expect(eggs.foundList().every((entry) => entry.at === 0)).toBe(true)
+    expect(eggs.tokenCount()).toBe(2)
+    expect(eggs.tokenList().every((entry) => entry.at === 0)).toBe(true)
   })
 
   it('lists them in the order they were found', async () => {
     const eggs = await load()
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-09-22T03:00:00Z'))
-    eggs.findEgg('admin')
+    eggs.addToken(T.gate)
     vi.setSystemTime(new Date('2026-09-22T04:00:00Z'))
-    eggs.findEgg('search')
+    eggs.addToken(T.probe)
     vi.useRealTimers()
 
-    expect(eggs.foundList().map((entry) => entry.egg)).toEqual(['admin', 'search'])
+    expect(eggs.tokenList().map((entry) => entry.egg)).toEqual([T.gate, T.probe])
   })
 })
 
@@ -176,23 +177,23 @@ describe('a visitor who played the old version', () => {
     localStorage.setItem(
       'dd:x1',
       JSON.stringify([
-        ['search', 1],
-        ['admin', 2],
+        [T.probe, 1],
+        [T.gate, 2],
       ])
     )
     localStorage.setItem('dd:x2', '1')
 
     const eggs = await load()
-    expect(eggs.foundEggs()).toBe(0)
-    expect(eggs.hasClaimed()).toBe(false)
+    expect(eggs.tokenCount()).toBe(0)
+    expect(eggs.offerSettled()).toBe(false)
   })
 
   it('clears the old keys rather than leaving them behind', async () => {
-    localStorage.setItem('dd:x1', JSON.stringify([['search', 1]]))
+    localStorage.setItem('dd:x1', JSON.stringify([[T.probe, 1]]))
     localStorage.setItem('dd:x2', '1')
 
     const eggs = await load()
-    eggs.foundEggs() // first read is what triggers the cleanup
+    eggs.tokenCount() // first read is what triggers the cleanup
 
     expect(localStorage.getItem('dd:x1')).toBeNull()
     expect(localStorage.getItem('dd:x2')).toBeNull()

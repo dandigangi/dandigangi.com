@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { T } from '@/lib/ledger'
 
 const load = async () => {
   vi.resetModules()
@@ -50,15 +51,15 @@ describe('the fourteen-day window', () => {
   })
 
   it('expires the tally end to end, not just the timestamp', async () => {
-    const eggs = await import('./eggs')
-    eggs.resetEggs()
-    eggs.findEgg('search')
-    expect(eggs.foundEggs()).toBe(1)
+    const eggs = await import('./ledger')
+    eggs.clearTokens()
+    eggs.addToken(T.probe)
+    expect(eggs.tokenCount()).toBe(1)
 
     // Wind the clock back on the last write, then reload as a returning visitor.
     localStorage.setItem('dd:e4', String(Date.now() - 20 * DAY))
     vi.resetModules()
-    const fresh = await import('./eggs')
-    expect(fresh.foundEggs()).toBe(0)
+    const fresh = await import('./ledger')
+    expect(fresh.tokenCount()).toBe(0)
   })
 })

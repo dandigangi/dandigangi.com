@@ -2,10 +2,11 @@
 
 import { useState, useSyncExternalStore } from 'react'
 import Image from 'next/image'
-import { isAlterEgo, setAlterEgo, subscribe as isAlterEgoSubscribe } from '@/lib/pikachu'
-import EggToast from './EggToast'
+import { isAlt, setAlt, subscribe as isAlterEgoSubscribe } from '@/lib/caller'
+import Blip from './Blip'
 import { ArrowRight } from './Icons'
 import styles from './Portrait.module.css'
+import { T } from '@/lib/ledger'
 
 const REAL = '/static/images/dan-digangi-portrait.jpg'
 const ALTER = '/static/images/dan-digangi-alter-ego.jpg'
@@ -21,7 +22,7 @@ const ALTER = '/static/images/dan-digangi-alter-ego.jpg'
 export default function Portrait() {
   // Read through the store rather than seeded from it once, so clearing the
   // state puts the real photo back instead of stranding the alter ego.
-  const alter = useSyncExternalStore(isAlterEgoSubscribe, isAlterEgo, () => false)
+  const alter = useSyncExternalStore(isAlterEgoSubscribe, isAlt, () => false)
   /** Latched on the first press, so the toast outlives the swap that earned it. */
   const [found, setFound] = useState(false)
   /**
@@ -64,7 +65,7 @@ export default function Portrait() {
           onClick={() => {
             setPressed(true)
             setFound(true)
-            setAlterEgo(!alter)
+            setAlt(!alter)
           }}
           className={styles.toggle}
           aria-pressed={alter}
@@ -73,7 +74,7 @@ export default function Portrait() {
         </button>
       </div>
       <span className="meta">Dan DiGangi · Chicago</span>
-      <EggToast egg="alterego" show={found} />
+      <Blip egg={T.twin} show={found} />
     </div>
   )
 }

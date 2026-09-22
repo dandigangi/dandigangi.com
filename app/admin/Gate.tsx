@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { grantPikaPass } from '@/lib/pikaPass'
+import { grantPikaPass } from '@/lib/pass'
 import { veiled } from '@/lib/copy'
 import styles from '../not-found.module.css'
 import gate from './gate.module.css'
@@ -172,7 +172,10 @@ export default function Gate() {
       return
     }
     if (entered.length < MIN_LENGTH) {
-      setError(`Minimum ${MIN_LENGTH} characters and possibly a Pokemon.`)
+      // Split around the figure so it cannot drift from MIN_LENGTH.
+      setError(
+        `${veiled('TWluaW11bSA=')}${MIN_LENGTH}${veiled('IGNoYXJhY3RlcnMgYW5kIHBvc3NpYmx5IGEgUG9rZW1vbi4=')}`
+      )
       return
     }
 
