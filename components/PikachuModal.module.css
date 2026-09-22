@@ -575,6 +575,31 @@
 }
 
 /*
+ * The prize state only, and after the block above so it wins.
+ *
+ * That block caps these at 200px and shares the width equally, which two
+ * buttons wear fine and three do not: "DM on LinkedIn" needs about 201px, so it
+ * broke over two lines inside a box the same size as the one-word buttons
+ * beside it. Stacked and full width instead — at this size they are the only
+ * thing on screen worth pressing, and a row of thirds is not worth defending.
+ *
+ * Scoped to `.soleAction`, which is only on the wrapper in the third state, so
+ * the invoice keeps decline and hug side by side as a pair.
+ */
+@media (max-width: 580px) {
+  .foot .soleAction {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .foot .soleAction .claim {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+/*
  * One beat, not a shower. The glyph carries its own colour, so no `color`
  * here — and the U+FE0F after it is what forces emoji presentation rather
  * than the flat text heart some platforms default to.
