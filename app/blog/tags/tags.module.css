@@ -1,0 +1,14 @@
+/* This page is nothing but the tag list, so its chips run a size up — matching
+   the filter row on /blog rather than the incidental chips elsewhere. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 72px;
+  padding-bottom: 110px;
+}
+
+.chips :global(.chip) {
+  padding: 11px 18px;
+  font-size: 13px;
+}

@@ -12,3 +12,11 @@
 .logo {
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55));
 }
+
+/* Below the breakpoint the sheet is the nav. Both are in the markup — this is
+   the only thing that decides which one is used. */
+@media (max-width: 560px) {
+  .links {
+    display: none;
+  }
+}

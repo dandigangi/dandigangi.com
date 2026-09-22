@@ -66,6 +66,29 @@ export async function listPosts(): Promise<PostSummary[]> {
   })
 }
 
+/**
+ * Every tag already in use, with the number of posts carrying it. Counted over
+ * the files on disk rather than over Velite's output, so a tag that only exists
+ * on a local draft or a future-dated post is still offered — those are exactly
+ * the posts being written when the picker is open.
+ */
+export async function listTags(): Promise<{ tag: string; count: number }[]> {
+  assertLocal()
+  const names = (await readdir(DIR)).filter((name) => name.endsWith('.mdx'))
+  const counts = new Map<string, number>()
+
+  await Promise.all(
+    names.map(async (file) => {
+      const post = parsePost(await readFile(join(DIR, file), 'utf8'))
+      for (const tag of post.tags) counts.set(tag, (counts.get(tag) ?? 0) + 1)
+    })
+  )
+
+  return [...counts]
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
+}
+
 export async function readPost(file: string): Promise<PostContent> {
   assertLocal()
   const post = parsePost(await readFile(join(DIR, safeName(file)), 'utf8'))

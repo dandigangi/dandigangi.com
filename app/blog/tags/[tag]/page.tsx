@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { getPublishedPosts, getTagCounts, POSTS_PER_PAGE } from '@/lib/blog'
+import { getPostsByTag, getTagCounts, POSTS_PER_PAGE } from '@/lib/blog'
 import { formatTag } from '@/lib/format'
 import BlogIndex from '@/components/BlogIndex'
 import { genPageMetadata } from 'app/seo'
@@ -15,7 +15,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag } = await params
   const label = formatTag(decodeURIComponent(tag))
   return genPageMetadata({
-    title: label,
+    // "Engineering Management" alone is ambiguous in a tab strip or a search
+    // result — it reads as a page about the topic rather than an index of posts.
+    title: `${label} Blog Posts`,
     description: `Posts tagged ${label}.`,
     alternates: { canonical: `/blog/tags/${tag}` },
   })
@@ -24,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function TagPage({ params }: Props) {
   const { tag } = await params
   const decoded = decodeURIComponent(tag)
-  const posts = getPublishedPosts().filter((post) => post.tags.includes(decoded))
+  const posts = getPostsByTag(decoded)
 
   if (posts.length === 0) notFound()
 

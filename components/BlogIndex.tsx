@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import type { Post } from '@/lib/blog'
 import { getPublishedPosts, getTagCounts } from '@/lib/blog'
+import { formatTag } from '@/lib/format'
 import PageBand from './PageBand'
+import Pagination from './Pagination'
 import PostList from './PostList'
 import PostSearch, { type SearchEntry } from './PostSearch'
 import styles from './BlogIndex.module.css'
-
-const TAG_CHIP_COUNT = 12
 
 export default function BlogIndex({
   posts,
@@ -39,36 +39,53 @@ export default function BlogIndex({
     date: post.date,
     permalink: post.permalink,
   }))
-  const topTags = Object.entries(getTagCounts())
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .slice(0, TAG_CHIP_COUNT)
+  /**
+   * Every tag, not a top-N slice. The row was capped at 12, which did two bad
+   * things at once: a new or rarely-used tag was simply missing from the filter
+   * row, and landing on that tag's own page highlighted nothing at all — "All"
+   * read as inactive and no chip was marked, so the page looked unfiltered.
+   *
+   * Fifteen tags wrap to two rows. If the vocabulary ever grows past what reads
+   * as a filter row, the fix is to prune tags rather than to hide them here.
+   */
+  const tags = Object.entries(getTagCounts()).sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+  )
 
   return (
     <>
-      <PageBand title={title} objectPosition="20% 40%" />
+      <PageBand
+        title={title}
+        titleSuffix={activeTag ? 'Blog Posts' : undefined}
+        compact={Boolean(activeTag)}
+        objectPosition="20% 40%"
+      />
 
       <div className={`container ${styles.body}`}>
         <div className={`rail ${styles.filters}`}>
           <span className="label">Tags</span>
           <div className={styles.chips}>
+            {/* No hue: "All" is the absence of a filter, so it keeps the plain
+                white treatment the rainbow runs against. */}
             <Link href="/blog" className="chip" data-active={!activeTag}>
               All ({allCount})
             </Link>
-            {topTags.map(([tag, count]) => (
+            {tags.map(([tag, count], index) => (
               <Link
                 key={tag}
                 href={`/blog/tags/${tag}`}
                 className="chip"
+                data-hue={index % 7}
                 data-active={activeTag === tag}
               >
-                {tag} ({count})
+                {formatTag(tag)} ({count})
               </Link>
             ))}
           </div>
         </div>
 
         <div className="rail">
-          <PostSearch index={searchIndex}>
+          <PostSearch index={searchIndex} scopeNote={activeTag ? formatTag(activeTag) : undefined}>
             <PostList posts={posts} />
           </PostSearch>
         </div>
@@ -76,20 +93,9 @@ export default function BlogIndex({
         {totalPages > 1 && (
           <div className={`rail ${styles.pagination}`}>
             <span className="label">
-              {page} of {totalPages}
+              Page {page} of {totalPages}
             </span>
-            <div className={styles.pageLinks}>
-              {page > 1 && (
-                <Link href={page === 2 ? basePath : `${basePath}/page/${page - 1}`} className="btn">
-                  ← Previous
-                </Link>
-              )}
-              {page < totalPages && (
-                <Link href={`${basePath}/page/${page + 1}`} className="btn">
-                  Next →
-                </Link>
-              )}
-            </div>
+            <Pagination page={page} totalPages={totalPages} basePath={basePath} />
           </div>
         )}
       </div>

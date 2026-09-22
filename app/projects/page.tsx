@@ -1,5 +1,5 @@
-import Image from 'next/image'
 import PageBand from '@/components/PageBand'
+import ProjectTable from '@/components/ProjectTable'
 import siteMetadata from '@/data/siteMetadata'
 import { projects } from '@/data/projects'
 import { genPageMetadata } from 'app/seo'
@@ -28,7 +28,9 @@ const structuredData = {
         '@type': 'CreativeWork',
         name: project.title,
         description: project.description,
-        url: project.url,
+        // A project with no URL yet is still a real entry; omitting the key is
+        // correct, an empty string is not.
+        ...(project.url ? { url: project.url } : {}),
         author: { '@type': 'Person', name: siteMetadata.author },
       },
     })),
@@ -43,53 +45,19 @@ export default function Projects() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <PageBand title="Projects" objectPosition="50% 45%" />
+      <PageBand title="Projects" titleSuffix="Selected work" compact objectPosition="80% 30%" />
 
       <div className="container">
-        <section className={`rail railSection ${styles.intro}`}>
-          <span className="label">Selected work</span>
+        <div className={`rail ${styles.intro}`}>
           <p className={styles.lede}>
             Platform and product work I led or built + the side projects I keep coming back to.
           </p>
-        </section>
-
-        {/* Two-up grid of the home page's video-card treatment: square art on
-            the left, body on the right. The 1px gap over a --line background
-            is what draws the hairlines between cells. */}
-        <div className={styles.grid} data-cameo>
-          {projects.map((project) => (
-            <a
-              key={project.slug}
-              id={project.slug}
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.card}
-            >
-              <div className={styles.thumbWrap}>
-                <Image
-                  src={project.image}
-                  alt=""
-                  fill
-                  sizes="(max-width: 700px) 40vw, 200px"
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <div className={styles.body}>
-                <span className="meta">{project.eyebrow}</span>
-                <h2 className={styles.cardTitle}>{project.title}</h2>
-                <p className={styles.cardDescription}>{project.description}</p>
-                {/* A span, not an anchor: the card already is one and anchors
-                    cannot nest. It is the affordance, not the link. */}
-                <span className={styles.linkRow}>
-                  <span>{project.linkLabel}</span>
-                  <span aria-hidden="true">↗</span>
-                </span>
-              </div>
-            </a>
-          ))}
-          {projects.length % 2 === 1 && <div className={styles.filler} aria-hidden="true" />}
+          {/* Derived, not written down — the count and the row numbers come from
+              the same collection, so they cannot disagree. */}
+          <span className="label">{String(projects.length).padStart(2, '0')} entries</span>
         </div>
+
+        <ProjectTable projects={projects} />
       </div>
     </>
   )

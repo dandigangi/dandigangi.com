@@ -158,7 +158,9 @@ export default function Home() {
                   href={`/projects#${project.slug}`}
                   className={styles.project}
                 >
-                  <span className="meta">{project.eyebrow}</span>
+                  {/* The controlled `type` replaces the old free-text eyebrow —
+                      one vocabulary now drives this, the table, and its sort. */}
+                  <span className="meta">{project.type}</span>
                   <h3 className={styles.projectTitle}>{project.title}</h3>
                   <p className={styles.projectDescription}>{project.description}</p>
                 </Link>

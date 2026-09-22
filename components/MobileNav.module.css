@@ -1,0 +1,178 @@
+/*
+ * Hidden entirely above the breakpoint — the desktop link row is the real nav
+ * and stays in the markup. Only one of the two is ever visible.
+ */
+.wrap {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .wrap {
+    display: block;
+  }
+}
+
+.toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  /* Above the sheet, so the control that opened it is the control that closes it. */
+  position: relative;
+  z-index: 101;
+}
+
+.bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #f5f4f1;
+  /* The band render is busy enough in places that a 1px hairline loses its
+     edges — the same reason SiteNav carries a text-shadow. */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  transition: transform 0.2s ease;
+}
+
+/*
+ * Fixed while open, at the coordinates the button occupies at the top of the
+ * band (26px of band padding + half the 36px mark). "In place" is only true if
+ * you opened the menu from the top of the page; pinning it keeps the ✕ reachable
+ * when you did not.
+ */
+.toggle[data-open='true'] {
+  position: fixed;
+  top: 33px;
+  right: var(--rail);
+}
+
+/* Bar centres sit 8px apart at 2px tall with a 6px gap, so 4px each closes them
+   into a single ✕. This tracks the bar height — change one, change both. */
+.toggle[data-open='true'] .bar:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.toggle[data-open='true'] .bar:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+/*
+ * A scrim rather than an opaque panel: at 93% the band render still reads
+ * through the top of the sheet, so opening the menu dims the page instead of
+ * replacing it.
+ */
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 92px 24px 30px;
+  background: rgba(0, 0, 0, 0.93);
+  color: #f5f4f1;
+  overflow-y: auto;
+}
+
+.sheet:focus {
+  outline: none;
+}
+
+/* Matches the band: 26px of top padding, on the rail. Absolute so it does not
+   push the menu label down. */
+.sheetLogo {
+  position: absolute;
+  top: 26px;
+  left: var(--rail);
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.menuLabel {
+  /* Overrides the shared .label colour: the sheet is always dark, whatever the
+     theme, so --soft would resolve to near-black in light mode. */
+  margin-bottom: 18px;
+  color: rgba(245, 244, 241, 0.62);
+  letter-spacing: 0.24em;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * Each link carries a rule in the next cascade hue, reusing the projects ramp so
+ * the menu reads as part of the same system rather than a separate component.
+ */
+.item {
+  border-top: 2px solid var(--link-hue);
+}
+
+/* Closes the list — without it the last link's underside is an open edge. */
+.item:last-child {
+  border-bottom: 1px solid rgba(245, 244, 241, 0.14);
+}
+
+/*
+ * Display scale, not nav scale. This is the whole screen, so it should read like
+ * the site's type rather than like a shrunken desktop nav.
+ */
+.link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #f5f4f1;
+}
+
+.count {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: rgba(245, 244, 241, 0.5);
+}
+
+/* Pinned to the bottom of the sheet — `margin-top: auto` rather than absolute,
+   so a short viewport pushes it down the scroll instead of over the links. */
+.foot {
+  margin-top: auto;
+  padding-top: 26px;
+  border-top: 1px solid rgba(245, 244, 241, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.social {
+  display: inline-flex;
+  color: #f5f4f1;
+}
+
+/* The theme toggle sits opposite the icons, as it does in the footer. */
+.socials > :last-child {
+  margin-left: auto;
+}
+
+.byline {
+  color: rgba(245, 244, 241, 0.5);
+}

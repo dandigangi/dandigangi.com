@@ -1,0 +1,81 @@
+.nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+}
+
+/* Prev and Next keep their box when they are unavailable rather than being
+   removed: dropping one shifted the whole strip sideways between pages. */
+.step {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 18px;
+  border: 1px solid var(--line);
+  color: var(--soft);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.step:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.pages {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Square, and wide enough for three digits before it has to grow — otherwise
+     the strip reflows the moment the count crosses 10. */
+  min-width: 42px;
+  height: 42px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  color: var(--soft);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.page:hover {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.current {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+.gap {
+  padding: 0 4px;
+  color: var(--soft);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}

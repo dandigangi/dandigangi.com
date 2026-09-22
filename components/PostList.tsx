@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Post } from '@/lib/blog'
-import { formatFullDate } from '@/lib/format'
+import { formatFullDate, formatTag } from '@/lib/format'
 import styles from './PostList.module.css'
 
 export default function PostList({ posts }: { posts: Post[] }) {
@@ -22,7 +22,7 @@ export default function PostList({ posts }: { posts: Post[] }) {
           </div>
           <div className={`meta ${styles.rowMeta}`}>
             {formatFullDate(post.date)}
-            {post.tags[0] ? ` · ${post.tags[0]}` : ''}
+            {post.tags[0] ? ` · ${formatTag(post.tags[0])}` : ''}
           </div>
         </Link>
       ))}

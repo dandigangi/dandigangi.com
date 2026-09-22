@@ -46,7 +46,14 @@ vi.mock('./actions', () => ({
   discard: (...args: Parameters<typeof discard>) => discard(...args),
   readPost: vi.fn(),
   listPosts: () => listPosts(),
+  listTags: vi.fn(),
 }))
+
+const tagOptions = [
+  { tag: 'engineering-management', count: 9 },
+  { tag: 'job-search', count: 5 },
+  { tag: 'one', count: 1 },
+]
 
 const summaries: PostSummary[] = [
   {
@@ -83,8 +90,11 @@ const published: PostContent = { ...localDraft, file: 'a-post.mdx', title: 'A Po
 
 const setup = (initialPost: PostContent | null = null) => ({
   user: userEvent.setup(),
-  ...render(<Editor initial={summaries} initialPost={initialPost} />),
+  ...render(<Editor initial={summaries} initialPost={initialPost} tagOptions={tagOptions} />),
 })
+
+/** The picker is a combobox, not one of the plain labelled inputs above. */
+const tagInput = () => screen.getByRole('combobox')
 
 const field = (name: string) =>
   screen
@@ -157,22 +167,65 @@ describe('a new post', () => {
   })
 })
 
-describe('tags', () => {
-  it('accepts commas and spaces as they are typed', async () => {
-    const { user } = setup()
-    await user.type(field('Tags'), 'hiring, job search')
-    expect(field('Tags')).toHaveValue('hiring, job search')
+describe('the tag picker', () => {
+  it('offers the tags already in use, minus the ones on this post', async () => {
+    const { user } = setup(localDraft)
+    await user.click(tagInput())
+
+    const menu = within(screen.getByRole('listbox'))
+    expect(menu.getByRole('option', { name: /engineering-management/ })).toBeInTheDocument()
+    // 'one' is already on localDraft.
+    expect(menu.queryByRole('option', { name: /^one/ })).not.toBeInTheDocument()
   })
 
-  it('normalises to kebab-case on the way to disk', async () => {
+  it('adds an existing tag by clicking it', async () => {
     const { user } = setup(localDraft)
-    await user.clear(field('Tags'))
-    await user.type(field('Tags'), 'Job Search, Mental Health')
+    await user.click(tagInput())
+    await user.click(screen.getByRole('option', { name: /job-search/ }))
+
+    expect(screen.getByRole('button', { name: 'Remove job-search' })).toBeInTheDocument()
+  })
+
+  it('filters the menu as you type', async () => {
+    const { user } = setup()
+    await user.type(tagInput(), 'job')
+
+    const menu = within(screen.getByRole('listbox'))
+    expect(menu.getByRole('option', { name: /job-search/ })).toBeInTheDocument()
+    expect(menu.queryByRole('option', { name: /engineering-management/ })).not.toBeInTheDocument()
+  })
+
+  it('offers to create a tag that does not exist yet, kebab-cased', async () => {
+    const { user } = setup()
+    await user.type(tagInput(), 'Mental Health')
+
+    const create = screen.getByRole('option', { name: /create/i })
+    expect(create).toHaveTextContent('mental-health')
+    await user.click(create)
+    expect(screen.getByRole('button', { name: 'Remove mental-health' })).toBeInTheDocument()
+  })
+
+  it('does not offer to create a tag that already exists', async () => {
+    const { user } = setup()
+    await user.type(tagInput(), 'job-search')
+    expect(screen.queryByRole('option', { name: /create/i })).not.toBeInTheDocument()
+  })
+
+  it('removes a tag', async () => {
+    const { user } = setup(localDraft)
+    await user.click(screen.getByRole('button', { name: 'Remove one' }))
+    expect(screen.queryByRole('button', { name: 'Remove one' })).not.toBeInTheDocument()
+  })
+
+  it('hands the chosen tags to the save as an array', async () => {
+    const { user } = setup(localDraft)
+    await user.click(tagInput())
+    await user.click(screen.getByRole('option', { name: /job-search/ }))
     await user.click(saveButton())
     await confirm(user, /^save$/i)
 
     expect(save).toHaveBeenCalled()
-    expect(save.mock.calls[0][2].tags).toEqual(['job-search', 'mental-health'])
+    expect(save.mock.calls[0][2].tags).toEqual(['one', 'job-search'])
   })
 })
 
@@ -240,6 +293,37 @@ describe('a published post', () => {
     const { user } = setup(published)
     await user.clear(screen.getByTestId('body'))
     expect(saveButton()).toBeDisabled()
+  })
+})
+
+describe('the date note', () => {
+  /** Relative to the real clock, so these do not rot into the past. */
+  const offsetDay = (days: number) =>
+    new Date(Date.now() + days * 86_400_000).toISOString().slice(0, 10)
+
+  const withDate = (date: string) => setup({ ...localDraft, date })
+
+  it('says a future date keeps the post off the site', () => {
+    const date = offsetDay(9)
+    withDate(date)
+    expect(
+      screen.getByText(new RegExp(`stays hidden from the site until ${date}`))
+    ).toBeInTheDocument()
+  })
+
+  it('counts the days until a scheduled post appears', () => {
+    withDate(offsetDay(1))
+    expect(screen.getByText(/1 day out/)).toBeInTheDocument()
+  })
+
+  it('says a past date publishes immediately', () => {
+    withDate(offsetDay(-3))
+    expect(screen.getByText(/backdated 3 days — publishes immediately/)).toBeInTheDocument()
+  })
+
+  it('calls today today', () => {
+    withDate(offsetDay(0))
+    expect(screen.getByText(/today — live as soon as it is committed/)).toBeInTheDocument()
   })
 })
 

@@ -24,8 +24,13 @@
   background: var(--hover);
 }
 
+/* Capped, not free-flowing. On a 1600px container an unbounded title ran three
+   times the width of the summary under it and stopped short of the meta by a
+   few characters, so every long-titled row read as a different layout from the
+   short ones. The cap keeps the column edge consistent down the list. */
 .rowMain {
   flex: 1 1 320px;
+  max-width: 860px;
   min-width: 0;
 }
 
@@ -35,6 +40,8 @@
   font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.03em;
+  /* Evens the last line rather than leaving one orphaned word under a full one. */
+  text-wrap: balance;
 }
 
 .summary {
@@ -45,8 +52,11 @@
   color: var(--soft);
 }
 
+/* A fixed floor rather than shrink-to-fit: the date is a constant width, so
+   letting the tag squeeze it produced a ragged right column. */
 .rowMeta {
-  flex: 0 1 auto;
+  flex: 0 0 auto;
+  min-width: 200px;
   margin-left: auto;
   text-align: right;
 }

@@ -35,7 +35,7 @@ const SRC = '/static/images/pikachu.png'
 const NATURAL = { width: 320, height: 258 }
 
 /** Box side. Square so the 90° edges fit the same footprint as the 180° ones. */
-const SIZE = 43
+const SIZE = 39
 
 /**
  * He is wider than he is tall, so at SIZE across he leaves this much empty at

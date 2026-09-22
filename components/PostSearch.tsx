@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { formatFullDate } from '@/lib/format'
+import { formatFullDate, formatTag } from '@/lib/format'
 import styles from './PostSearch.module.css'
 
 export type SearchEntry = {
@@ -25,9 +25,17 @@ export type SearchEntry = {
  */
 export default function PostSearch({
   index,
+  scopeNote,
   children,
 }: {
   index: SearchEntry[]
+  /**
+   * The tag whose page this is, when there is one. Search stays global there —
+   * a box that can only find the four posts already listed below it is not
+   * worth the width — but it has to say so, or a query silently leaves the tag
+   * you thought you were inside.
+   */
+  scopeNote?: string
   children: React.ReactNode
 }) {
   const [query, setQuery] = useState('')
@@ -52,13 +60,14 @@ export default function PostSearch({
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search posts"
+          placeholder={scopeNote ? 'Search all posts' : 'Search posts'}
           className={styles.input}
           autoComplete="off"
         />
         {trimmed ? (
           <span className="label" aria-live="polite">
             {results.length} {results.length === 1 ? 'result' : 'results'}
+            {scopeNote ? ` across all tags, not just ${scopeNote}` : ''}
           </span>
         ) : null}
       </div>
@@ -78,7 +87,7 @@ export default function PostSearch({
                 </div>
                 <div className={`meta ${styles.rowMeta}`}>
                   {formatFullDate(post.date)}
-                  {post.tags[0] ? ` · ${post.tags[0]}` : ''}
+                  {post.tags[0] ? ` · ${formatTag(post.tags[0])}` : ''}
                 </div>
               </Link>
             ))

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { listPosts, readPost } from './actions'
+import { listPosts, listTags, readPost } from './actions'
 import Editor from './Editor'
 
 /**
@@ -24,7 +24,7 @@ export default async function WritePage({
   searchParams: Promise<{ file?: string }>
 }) {
   const { file } = await searchParams
-  const posts = await listPosts()
+  const [posts, tagOptions] = await Promise.all([listPosts(), listTags()])
 
   /**
    * Read here rather than in the client. Fetching it after mount meant either an
@@ -39,5 +39,5 @@ export default async function WritePage({
   const known = posts.some((post) => post.file === file)
   const initialPost = known && file ? await readPost(file) : null
 
-  return <Editor initial={posts} initialPost={initialPost} />
+  return <Editor initial={posts} initialPost={initialPost} tagOptions={tagOptions} />
 }

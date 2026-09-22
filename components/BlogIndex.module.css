@@ -13,6 +13,13 @@
   gap: 10px;
 }
 
+/* The filter row is the page's primary navigation, so its chips run a size up
+   from the default — which stays where it is for the incidental ones. */
+.chips :global(.chip) {
+  padding: 11px 18px;
+  font-size: 13px;
+}
+
 /* The bottom gap before the footer lives here, not on .pagination — a tag page
    with a single page of results renders no pagination at all, which left the
    list butted straight against the footer. */
@@ -27,10 +34,6 @@
   flex-wrap: wrap;
   gap: 20px 40px;
   padding-top: 48px;
-}
-
-.pageLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
 }

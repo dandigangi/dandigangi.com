@@ -1,13 +1,27 @@
 import Link from 'next/link'
 import navLinks from '@/data/navLinks'
+import { getPublishedPosts } from '@/lib/blog'
+import { projects } from '@/data/projects'
+import MobileNav from './MobileNav'
 import PayPikachuLink from './PayPikachuLink'
 import styles from './SiteNav.module.css'
 
 /**
- * Logo + primary nav. Used inside the home hero and inside the black bar that
- * tops every other page, so it never sets its own background.
+ * Logo + primary nav. Used inside the home hero and inside the band that tops
+ * every other page, so it never sets its own background.
+ *
+ * Below 560px the link row is hidden and MobileNav's sheet takes over. Both are
+ * rendered: the row stays in the server markup so a crawler always sees the real
+ * navigation, and only CSS decides which one a reader gets.
  */
 export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
+  // Counted here rather than inside MobileNav, which is a client component —
+  // only the two numbers cross the boundary, not the post index.
+  const counts = {
+    '/blog': getPublishedPosts().length,
+    '/projects': projects.length,
+  }
+
   return (
     <div
       className={styles.nav}
@@ -30,7 +44,7 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
         />
       </Link>
 
-      <nav aria-label="Main">
+      <nav aria-label="Main" className={styles.links}>
         <ul
           style={{
             display: 'flex',
@@ -52,6 +66,8 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
           <PayPikachuLink tone="plain" />
         </ul>
       </nav>
+
+      <MobileNav counts={counts} />
     </div>
   )
 }

@@ -31,12 +31,20 @@ describe('formatFullDate', () => {
 })
 
 describe('formatTag', () => {
-  it('turns a slug into a label', () => {
-    expect(formatTag('eng-management')).toBe('Eng management')
+  it('title-cases every word, not just the first', () => {
+    expect(formatTag('engineering-management')).toBe('Engineering Management')
   })
 
   it('leaves a single word alone but capitalised', () => {
     expect(formatTag('leadership')).toBe('Leadership')
+  })
+
+  it('uppercases an initialism rather than title-casing it', () => {
+    expect(formatTag('ai')).toBe('AI')
+  })
+
+  it('only matches an initialism as a whole word', () => {
+    expect(formatTag('said-and-done')).toBe('Said And Done')
   })
 
   it('handles an empty tag without throwing', () => {

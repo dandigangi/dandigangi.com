@@ -1,0 +1,413 @@
+/*
+ * A registry, not a card grid. The page this replaces repeated one glass
+ * thumbnail on every row, which read as a loading state and made five different
+ * projects look identical — so this drops imagery entirely and leans on density.
+ *
+ * The grid is declared once and inherited by the header and every row, so the
+ * two can never drift out of alignment.
+ */
+.table {
+  padding-left: var(--rail);
+  padding-right: var(--rail);
+  padding-bottom: clamp(64px, 9vw, 110px);
+}
+
+.head,
+.row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 150px 110px 120px;
+  gap: 6px 24px;
+  align-items: start;
+}
+
+/* Puts type, year and the CTA straight onto the row grid at desktop and tablet.
+   On a phone it becomes a real flex row — see the bottom of this file. */
+.metaGroup {
+  display: contents;
+}
+
+/*
+ * Carries the rows' inset, so its rule ends on the same edge as the six
+ * coloured ones. Without it the header hairline stopped 40px short of them and
+ * the right edge of the table read as ragged. The matching horizontal padding
+ * is what keeps the column tracks lined up with the rows despite the negative
+ * margin — the same trick, applied to both, is the whole point.
+ */
+.head {
+  margin: 0 -20px;
+  padding: 0 20px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.headCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--soft);
+  text-align: left;
+}
+
+.sortButton {
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.sortButton:hover {
+  color: var(--ink);
+}
+
+/* Stacked, not side by side: side by side they read as two separate controls
+   and doubled the header's height budget. */
+.arrows {
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 8px;
+  line-height: 0.6;
+  color: var(--soft);
+  opacity: 0.55;
+}
+
+.arrows [data-on='true'] {
+  color: var(--ink);
+  opacity: 1;
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  /* The home page deep-links to these anchors. */
+  scroll-margin-top: 90px;
+}
+
+/*
+ * Inset tint: the hover background extends past the text while the text stays
+ * on the rail. Same trick the blog list uses.
+ */
+.row {
+  margin: 0 -20px;
+  padding: 26px 20px;
+  /* 2px and in the row's own hue — it is the page's only colour and has to
+     survive being scanned at speed rather than hovered. */
+  border-bottom: 2px solid var(--hue);
+  transition: background-color 0.15s ease;
+
+  /*
+   * One ramp per theme. The hues are computed on the server, where the theme is
+   * not yet known, so both ride on the element and CSS picks between them — the
+   * dark stops run 1.2–2:1 on #EDEDEB and the yellow is invisible there.
+   */
+  --hue: var(--row-hue);
+}
+
+[data-theme='light'] .row {
+  --hue: var(--row-hue-light);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']):not([data-theme='light']) .row {
+    --hue: var(--row-hue-light);
+  }
+}
+
+.row:hover:not(.rowSoon),
+.row:focus-visible:not(.rowSoon),
+.row:active:not(.rowSoon) {
+  /* 8% of the row's own hue. color-mix keeps one source of truth for the hue
+     rather than shipping a second rgba() per row from the server. */
+  background: color-mix(in srgb, var(--hue) 8%, transparent);
+}
+
+/*
+ * Type, Year and the arrow lift from --soft to full strength. Focus and active
+ * are in here too, not just hover: a keyboard user never triggers hover, and on
+ * a touch screen the tap is the only interaction there is.
+ */
+.row:hover:not(.rowSoon) .meta,
+.row:hover:not(.rowSoon) .cta,
+.row:focus-visible:not(.rowSoon) .meta,
+.row:focus-visible:not(.rowSoon) .cta,
+.row:active:not(.rowSoon) .meta,
+.row:active:not(.rowSoon) .cta {
+  color: var(--ink);
+}
+
+.number {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--hue);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  min-width: 0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.description {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+/* Pulled back against the parent's 13px gap so the domain sits 7px under the
+   description rather than a full gap away — it belongs to the link, not the prose. */
+.domain {
+  margin-top: -6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--soft);
+  opacity: 0.8;
+}
+
+.meta {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  color: var(--soft);
+  transition: color 0.15s ease;
+}
+
+.type {
+  text-transform: uppercase;
+}
+
+.cta {
+  font-size: 17px;
+  line-height: 1;
+  text-align: right;
+  color: var(--soft);
+  transition: color 0.15s ease;
+}
+
+/*
+ * Not an error state — a real project that simply is not clickable yet. The
+ * number and the coloured rule stay at full strength for exactly that reason;
+ * only the things that promise somewhere to go are dimmed.
+ */
+.rowSoon {
+  cursor: default;
+}
+
+.rowSoon .meta {
+  opacity: 0.66;
+}
+
+.soon {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--soft);
+}
+
+/* Desktop and tablet sort from the header row. */
+.phoneSort {
+  display: none;
+}
+
+/* ---------- tablet ---------- */
+
+/*
+ * Five columns down to three. The № column disappears and its number moves
+ * inline with the title — that is what buys back the width — and Type and Year
+ * stack in one cell, because two narrow tracks looked wrong well before they
+ * stopped fitting.
+ *
+ * 900px rather than lower: the description column starves before anything else
+ * breaks.
+ */
+@media (max-width: 900px) {
+  .table {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .head,
+  .row {
+    grid-template-columns: minmax(0, 1fr) 130px 100px;
+  }
+
+  .row {
+    margin: 0 -16px;
+    padding: 22px 16px;
+  }
+
+  /* The inset narrows with the rows', or the two rules diverge again. */
+  .head {
+    margin: 0 -16px;
+    padding: 0 16px 12px;
+  }
+
+  /* The empty № header cell and the Year control both fold away — Year is now
+     stacked under Type inside one cell, so it has no column to label. */
+  .head > :first-child,
+  .head > :nth-child(4) {
+    display: none;
+  }
+
+  .number {
+    /* Inline with the title rather than in a track of its own. */
+    grid-column: 1;
+    grid-row: 1;
+    align-self: baseline;
+  }
+
+  .main {
+    grid-column: 1;
+    grid-row: 1;
+    /* Hangs the whole block off the number that now sits beside it. */
+    padding-left: 36px;
+  }
+
+  .title {
+    /* Pulled back out so only the wrapped lines indent, per the design. */
+    margin-left: -36px;
+    font-size: 22px;
+  }
+
+  .description {
+    font-size: 14.5px;
+  }
+
+  .metaGroup {
+    display: contents;
+  }
+
+  .type,
+  .year {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .year {
+    margin-top: 22px;
+  }
+
+  .cta,
+  .soon {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+/* ---------- phone ---------- */
+
+/*
+ * Stacked blocks, everything hanging off the number, and the meta collapsed to
+ * one line. The coloured rule and the cascade survive — per the design that is
+ * the one thing not to compromise at any size.
+ */
+@media (max-width: 560px) {
+  .table {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* Sort arrows cannot survive at this width; one control replaces the header. */
+  .head {
+    display: none;
+  }
+
+  .phoneSort {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .phoneSortButton {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+
+  /* Two tracks: the number, then everything else. Explicit placement below, so
+     nothing here needs absolute positioning. */
+  .row {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px 12px;
+    margin: 0;
+    padding: 20px 0 22px;
+  }
+
+  .number {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 12px;
+    align-self: baseline;
+  }
+
+  .main {
+    display: contents;
+  }
+
+  .title {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    padding: 0;
+    font-size: 21px;
+  }
+
+  .description {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  /* A real element again, so Type · Year and the arrow share one line. */
+  .metaGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .type::after {
+    content: ' ·';
+  }
+
+  /* Pushes the arrow — or "Coming soon" — to the far end of the meta line. */
+  .cta,
+  .soon {
+    margin-left: auto;
+  }
+
+  .domain {
+    grid-column: 2;
+    grid-row: 4;
+    margin-top: 0;
+    font-size: 10px;
+  }
+}

@@ -58,9 +58,60 @@
 
 .title {
   margin: 0 0 0 -0.05em;
-  font-size: clamp(44px, 9vw, 104px);
+  /* Ceiling is set per page by PageBand from the title's length; the clamp still
+     owns the viewport response. The fallback is the design's original value. */
+  font-size: clamp(36px, 9vw, var(--band-title-max, 104px));
   font-weight: 700;
   line-height: 0.86;
   letter-spacing: -0.05em;
   text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/*
+ * The about page's name treatment, one weight lighter. It rides the title's own
+ * font-size so it stays in proportion as the title shrinks, rather than needing
+ * a second set of steps of its own.
+ */
+.titleSuffix {
+  display: inline-block;
+  margin-left: 0.4em;
+  font-size: 0.3em;
+  /* 400, per the design handoff — one step lighter than the About byline, which
+     is what keeps it reading as a companion rather than a second title. */
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  vertical-align: baseline;
+  opacity: 0.72;
+}
+
+/*
+ * The band is sized for a desktop viewport, and 38vh of an 844px phone is 321px
+ * — over half the screen before any content. These bring it back to the heights
+ * the design specifies, and stack the suffix under the title once there is no
+ * longer room beside it.
+ */
+@media (max-width: 900px) {
+  .band {
+    min-height: 260px;
+  }
+
+  .titleSuffix {
+    display: block;
+    margin-left: 0;
+    margin-top: 10px;
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 560px) {
+  .band {
+    min-height: 225px;
+  }
+
+  .titleSuffix {
+    margin-top: 8px;
+    font-size: 15px;
+  }
 }

@@ -93,7 +93,9 @@ const nextConfig = {
         destination: '/blog/tags/engineering-management',
         permanent: true,
       },
-      { source: '/blog/tags/ai', destination: '/blog/tags/software-engineering', permanent: true },
+      // /blog/tags/ai used to redirect here too. The tag is live again as of
+      // Sep 2026, so the redirect is gone — a 308 on a URL that now has a real
+      // page is the one redirect that cannot be left in place "just in case".
       {
         source: '/blog/tags/productivity',
         destination: '/blog/tags/software-engineering',

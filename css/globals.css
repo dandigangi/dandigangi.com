@@ -32,6 +32,18 @@
   --gutter: clamp(16px, 3vw, 32px);
   --container: 1600px;
 
+  /* Tag-chip rainbow. Two sets, because a hue that reads on black is invisible
+     on #ededeb and vice versa — yellow is the extreme case in both directions.
+     Each value is tuned to roughly the same ~4.5:1 the rest of the palette
+     holds, so the effect never costs legibility. */
+  --rb-red: #ff5c5c;
+  --rb-orange: #ff9f45;
+  --rb-yellow: #ffd23f;
+  --rb-green: #4ade80;
+  --rb-blue: #38bdf8;
+  --rb-indigo: #a5b4fc;
+  --rb-violet: #e879f9;
+
   --par-hero: 0px;
   --par-band: 0px;
 
@@ -49,6 +61,13 @@
      lighter and it stops being readable well before it stops being yellow. */
   --pika: #8a5a00;
   --read: rgba(11, 11, 11, 0.86);
+  --rb-red: #c0261f;
+  --rb-orange: #96490a;
+  --rb-yellow: #745500;
+  --rb-green: #146c43;
+  --rb-blue: #0b5f9e;
+  --rb-indigo: #4338ca;
+  --rb-violet: #8b2fc9;
   --scrim: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0.9) 0%,
@@ -75,6 +94,13 @@
        light blocks must carry every token. */
     --pika: #8a5a00;
     --read: rgba(11, 11, 11, 0.86);
+    --rb-red: #c0261f;
+    --rb-orange: #96490a;
+    --rb-yellow: #745500;
+    --rb-green: #146c43;
+    --rb-blue: #0b5f9e;
+    --rb-indigo: #4338ca;
+    --rb-violet: #8b2fc9;
     --scrim: linear-gradient(
       90deg,
       rgba(0, 0, 0, 0.9) 0%,
@@ -360,8 +386,40 @@ a {
 
 .chip:hover,
 .chip[data-active='true'] {
-  border-color: var(--ink);
-  color: var(--ink);
+  border-color: var(--chip-accent, var(--ink));
+  color: var(--chip-accent, var(--ink));
+}
+
+/*
+ * The tag rows run a rainbow down their length: not a gradient inside any one
+ * chip, but each chip taking the next hue, so hovering along the row walks the
+ * spectrum. Applied by position rather than by tag name — the order is whatever
+ * the list happens to be, and a tag that moves simply takes the hue of its new
+ * slot.
+ *
+ * Seven steps, then it repeats. The unfiltered "All" chip carries no hue on
+ * purpose: it is the baseline the colours are read against.
+ */
+.chip[data-hue='0'] {
+  --chip-accent: var(--rb-red);
+}
+.chip[data-hue='1'] {
+  --chip-accent: var(--rb-orange);
+}
+.chip[data-hue='2'] {
+  --chip-accent: var(--rb-yellow);
+}
+.chip[data-hue='3'] {
+  --chip-accent: var(--rb-green);
+}
+.chip[data-hue='4'] {
+  --chip-accent: var(--rb-blue);
+}
+.chip[data-hue='5'] {
+  --chip-accent: var(--rb-indigo);
+}
+.chip[data-hue='6'] {
+  --chip-accent: var(--rb-violet);
 }
 
 .srOnly {

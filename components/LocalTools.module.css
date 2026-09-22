@@ -12,6 +12,11 @@
 }
 
 .button {
+  /* Held just off full strength so the page underneath stays readable through
+     the dock — it covers the bottom-right corner of whatever is being checked.
+     Not applied to .hide or .peek: those are the way back to the dock, and a
+     control you have to hunt for is the one bug this dock has already had. */
+  opacity: 0.875;
   /* Both read as one control, so they match rather than sizing to their labels. */
   display: inline-flex;
   align-items: center;
@@ -33,27 +38,6 @@
 .button:hover {
   background: #1d4ed8;
   border-color: #1d4ed8;
-}
-
-/* The Pikachu state jumps read as one strip of small controls, distinct from
-   the two editor buttons above them. */
-.row {
-  display: flex;
-  gap: 6px;
-}
-
-.small {
-  min-width: 0;
-  padding: 9px 12px;
-  background: #7c3aed;
-  border-color: #7c3aed;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-}
-
-.small:hover {
-  background: #6d28d9;
-  border-color: #6d28d9;
 }
 
 /* Top of the stack visually, because .dock is column-reverse. Deliberately
@@ -100,4 +84,18 @@
 .peek:hover {
   background: #1d4ed8;
   border-color: #1d4ed8;
+}
+
+/* Same swap ThemeToggle does, on text rather than icons. Dark is the default,
+   so the "switch to light" label is the one that shows unless light is active. */
+.whenLight {
+  display: none;
+}
+
+:global([data-theme='light']) .whenDark {
+  display: none;
+}
+
+:global([data-theme='light']) .whenLight {
+  display: inline;
 }

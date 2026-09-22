@@ -1,6 +1,7 @@
 'use client'
 
 import { SunIcon, MoonIcon } from './Icons'
+import { toggleTheme } from '@/lib/theme'
 import styles from './ThemeToggle.module.css'
 
 /**
@@ -9,21 +10,10 @@ import styles from './ThemeToggle.module.css'
  * theme ThemeScript resolved before paint.
  */
 export default function ThemeToggle() {
-  const toggle = () => {
-    const root = document.documentElement
-    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'
-    root.setAttribute('data-theme', next)
-    try {
-      localStorage.setItem('theme', next)
-    } catch {
-      // Private browsing or blocked storage — the toggle still works for this page view.
-    }
-  }
-
   return (
     <button
       type="button"
-      onClick={toggle}
+      onClick={toggleTheme}
       aria-label="Toggle colour theme"
       className={styles.button}
     >

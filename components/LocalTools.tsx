@@ -3,15 +3,7 @@
 import { useEffect, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import {
-  FINAL_TIER,
-  OVER_TIER,
-  PIKACHU_OPEN,
-  lapseHero,
-  markCaught,
-  raiseTab,
-  resetTab,
-} from '@/lib/pikachu'
+import { toggleTheme } from '@/lib/theme'
 import styles from './LocalTools.module.css'
 
 /**
@@ -51,8 +43,14 @@ const setDock = (hidden: boolean) => {
 }
 
 /**
- * Local-only shortcuts into the post editor, parked in the corner rather than
- * in the nav — the nav is the real site's, and these are not part of it.
+ * Local-only shortcuts, parked in the corner rather than in the nav — the nav is
+ * the real site's, and these are not part of it.
+ *
+ * This also carried jumps into the Pikachu states (Hero on, Lapse, Win, Reset);
+ * they were scaffolding for building that feature, and a dev dock that covers
+ * the bottom-right corner of every page has to earn its width. The states are
+ * still reachable through the site itself, which is the thing actually worth
+ * testing.
  *
  * The NODE_ENV test is first so the whole component folds away in a production
  * build, where /write does not exist as a route at all.
@@ -82,11 +80,6 @@ export default function LocalTools() {
   // Hidden on the editor itself; the other /admin pages are ordinary pages.
   if (!pathname || pathname.startsWith('/admin/write')) return null
 
-  // A post's slug is its filename without .mdx — including the .draft of a
-  // local one, so `/blog/foo.draft` edits `foo.draft.mdx`.
-  const slug = pathname.startsWith('/blog/') ? pathname.slice('/blog/'.length) : null
-  const editable = slug && !slug.includes('/') ? `${decodeURIComponent(slug)}.mdx` : null
-
   if (hidden) {
     return (
       <button
@@ -101,6 +94,11 @@ export default function LocalTools() {
     )
   }
 
+  // A post's slug is its filename without .mdx — including the .draft of a
+  // local one, so `/blog/foo.draft` edits `foo.draft.mdx`.
+  const slug = pathname.startsWith('/blog/') ? pathname.slice('/blog/'.length) : null
+  const editable = slug && !slug.includes('/') ? `${decodeURIComponent(slug)}.mdx` : null
+
   return (
     <div className={styles.dock} data-print="hide">
       <button
@@ -111,6 +109,9 @@ export default function LocalTools() {
       >
         hide ×
       </button>
+      {/* Only on a post page, and it is the whole reason the dock is worth
+          having there — it opens the editor already pointed at what you are
+          reading, rather than at the post list. */}
       {editable && (
         <Link href={`/admin/write?file=${encodeURIComponent(editable)}`} className={styles.button}>
           Edit this post
@@ -119,60 +120,25 @@ export default function LocalTools() {
       <Link href="/admin/write" className={styles.button}>
         Write
       </Link>
-      <PikachuTools />
+      <ThemeJump />
     </div>
   )
 }
 
 /**
- * Jumps straight to the states that are otherwise a lot of clicking to reach:
- * sixteen catches to the last state, and five real minutes to watch the hero
- * window lapse.
+ * The site's theme toggle lives in the footer, which is a scroll away on most
+ * pages and suppressed entirely on the editor. Checking a change in both themes
+ * is the single most common thing this dock is open for, so it gets a control
+ * that is always in the same place.
  *
- * These drive the store through its ordinary exports rather than writing
- * storage directly, so what they set up is the same thing the site would have
- * arrived at on its own.
+ * Both labels are rendered and swapped by CSS on [data-theme], the same trick
+ * ThemeToggle uses — no state, so nothing to mismatch on hydration.
  */
-function PikachuTools() {
+function ThemeJump() {
   return (
-    <div className={styles.row}>
-      <button
-        type="button"
-        className={`${styles.button} ${styles.small}`}
-        // Over the tier and freshly armed: the swap should be on everywhere it
-        // exists — home, about, projects, resume, contact, blog/tags.
-        onClick={() => {
-          markCaught()
-          raiseTab(OVER_TIER + 100)
-        }}
-      >
-        Hero on
-      </button>
-      <button
-        type="button"
-        className={`${styles.button} ${styles.small}`}
-        // The lapse, without the wait. Watch it fade rather than cut.
-        onClick={lapseHero}
-      >
-        Lapse
-      </button>
-      <button
-        type="button"
-        className={`${styles.button} ${styles.small}`}
-        // Past the last tier, then reopened rather than caught — so the modal
-        // comes up won without waiting for him to appear. Closing it is what
-        // fires the reset and the toast.
-        onClick={() => {
-          markCaught()
-          raiseTab(FINAL_TIER + 100)
-          window.dispatchEvent(new CustomEvent(PIKACHU_OPEN))
-        }}
-      >
-        Win
-      </button>
-      <button type="button" className={`${styles.button} ${styles.small}`} onClick={resetTab}>
-        Reset
-      </button>
-    </div>
+    <button type="button" className={styles.button} onClick={() => toggleTheme()}>
+      <span className={styles.whenDark}>Light mode</span>
+      <span className={styles.whenLight}>Dark mode</span>
+    </button>
   )
 }

@@ -37,6 +37,12 @@ export function getTagCounts(): Record<string, number> {
   return counts
 }
 
+/** Published posts carrying `tag`, newest first. Tags are matched exactly — they
+ *  are URL segments, so there is only ever one spelling of each. */
+export function getPostsByTag(tag: string): Post[] {
+  return getPublishedPosts().filter((post) => post.tags.includes(tag))
+}
+
 export function getAdjacentPosts(slug: string): { prev?: Post; next?: Post } {
   const published = getPublishedPosts()
   const index = published.findIndex((p) => p.slug === slug)

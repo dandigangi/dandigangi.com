@@ -3,6 +3,7 @@ import { getTagCounts } from '@/lib/blog'
 import { formatTag } from '@/lib/format'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
+import styles from './tags.module.css'
 
 export const metadata = genPageMetadata({
   title: 'Tags',
@@ -20,18 +21,9 @@ export default function TagsPage() {
       <PageBand title="Tags" objectPosition="45% 50%" />
 
       <div className="container">
-        <div
-          className="rail"
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 12,
-            paddingTop: 72,
-            paddingBottom: 110,
-          }}
-        >
-          {tags.map(([tag, count]) => (
-            <Link key={tag} href={`/blog/tags/${tag}`} className="chip">
+        <div className={`rail ${styles.chips}`}>
+          {tags.map(([tag, count], index) => (
+            <Link key={tag} href={`/blog/tags/${tag}`} className="chip" data-hue={index % 7}>
               {formatTag(tag)} ({count})
             </Link>
           ))}

@@ -20,7 +20,9 @@
 .name {
   margin: 0 0 14px;
   font-size: clamp(20px, 2.4vw, 28px);
-  font-weight: 700;
+  /* 500, not 700: at this size the bold weight competed with the lede under it,
+     which is the sentence that actually matters on this page. */
+  font-weight: 500;
   line-height: 1;
   letter-spacing: -0.04em;
   text-transform: uppercase;

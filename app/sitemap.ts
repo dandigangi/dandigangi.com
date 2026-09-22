@@ -38,12 +38,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: latestPostDate,
   }))
 
-  const tagRoutes = Object.keys(getTagCounts()).map((tag) => {
+  const tagRoutes = Object.entries(getTagCounts()).flatMap(([tag, count]) => {
     const newest = published.find((post) => post.tags.includes(tag))
-    return {
-      url: `${siteUrl}/blog/tags/${tag}`,
-      lastModified: newest?.lastmod || newest?.date,
-    }
+    const lastModified = newest?.lastmod || newest?.date
+    const tagPages = Math.ceil(count / POSTS_PER_PAGE)
+    return [
+      { url: `${siteUrl}/blog/tags/${tag}`, lastModified },
+      ...Array.from({ length: Math.max(tagPages - 1, 0) }, (_, i) => ({
+        url: `${siteUrl}/blog/tags/${tag}/page/${i + 2}`,
+        lastModified,
+      })),
+    ]
   })
 
   return [...staticRoutes, ...postRoutes, ...paginatedRoutes, ...tagRoutes]

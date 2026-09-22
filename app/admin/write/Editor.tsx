@@ -13,11 +13,42 @@ import {
   type PostContent,
   type PostSummary,
 } from './actions'
+import TagPicker, { type TagOption } from './TagPicker'
 import ThemeToggle from '@/components/ThemeToggle'
 import type { ManagedFields } from '@/lib/frontmatter'
 import styles from './Editor.module.css'
 
 const today = () => new Date().toISOString().slice(0, 10)
+
+const DAY_MS = 86_400_000
+
+/**
+ * What the chosen date actually means for the live site.
+ *
+ * `getPublishedPosts` hides anything dated later than today in UTC, so a future
+ * date is a scheduled publish — useful, and completely silent until now. This
+ * says it out loud, because a post that simply never appeared was indistinguishable
+ * from a broken one. The comparison is UTC on both sides to match that filter.
+ */
+function dateNote(date: string): { text: string; tone: 'ok' | 'warn' } | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null
+
+  const days = Math.round(
+    (Date.parse(`${date}T00:00:00Z`) - Date.parse(`${today()}T00:00:00Z`)) / DAY_MS
+  )
+  if (Number.isNaN(days)) return null
+
+  const plural = (n: number) => `${n} day${n === 1 ? '' : 's'}`
+
+  if (days === 0) return { text: 'today — live as soon as it is committed', tone: 'ok' }
+  if (days > 0) {
+    return {
+      text: `${plural(days)} out — stays hidden from the site until ${date}`,
+      tone: 'warn',
+    }
+  }
+  return { text: `backdated ${plural(-days)} — publishes immediately`, tone: 'ok' }
+}
 
 /**
  * Where Google starts truncating a meta description. Not a hard limit — the
@@ -42,29 +73,6 @@ const clean = (value: string) =>
     .slice(0, 80)
 
 const settle = (value: string) => clean(value).replace(/-+$/, '')
-
-/**
- * Tags live as the raw text you typed, not as the parsed array. Deriving the
- * field's value back from the array meant every comma and space was parsed away
- * the instant it was typed, so neither could ever be entered.
- *
- * On the way to disk they are normalised to kebab-case, because a tag is used
- * verbatim as a URL segment — `/blog/tags/<tag>` — and every tag on the site is
- * already written that way. "Job Search" and "job search" both become
- * `job-search` rather than starting a third spelling of the same tag.
- */
-const parseTags = (text: string) =>
-  text
-    .split(',')
-    .map((tag) =>
-      tag
-        .trim()
-        .toLowerCase()
-        .replace(/['’]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-    )
-    .filter(Boolean)
 
 const BLANK: PostContent = {
   file: '',
@@ -100,25 +108,28 @@ type Ask = {
   go: () => void
 }
 
-const snapshot = (post: PostContent, tagText: string) =>
-  JSON.stringify([post.title, post.date, post.summary, post.draft, post.body, tagText])
+const snapshot = (post: PostContent, tags: string[]) =>
+  JSON.stringify([post.title, post.date, post.summary, post.draft, post.body, tags])
 
 const baseSlug = (file: string) => file.replace(/(\.draft)?\.mdx$/, '')
 
 export default function Editor({
   initial,
   initialPost,
+  tagOptions,
 }: {
   initial: PostSummary[]
   /** Read on the server when arriving from the Edit control on a post page. */
   initialPost: PostContent | null
+  /** Every tag already in use, counted across data/blog. Read on the server. */
+  tagOptions: TagOption[]
 }) {
   const start = initialPost ?? BLANK
-  const startTags = start.tags.join(', ')
+  const startTags = start.tags
 
   const [posts, setPosts] = useState(initial)
   const [post, setPost] = useState<PostContent>(start)
-  const [tagText, setTagText] = useState(startTags)
+  const [tags, setTags] = useState<string[]>(startTags)
   const [slugOverride, setSlugOverride] = useState<string | null>(null)
   const [fileSlug, setFileSlug] = useState(initialPost ? baseSlug(initialPost.file) : '')
   const [mode, setMode] = useState<Mode>(initialPost ? 'editing' : 'new')
@@ -132,7 +143,7 @@ export default function Editor({
   const set = <K extends keyof PostContent>(key: K, value: PostContent[K]) =>
     setPost((current) => ({ ...current, [key]: value }))
 
-  const dirty = snapshot(post, tagText) !== saved
+  const dirty = snapshot(post, tags) !== saved
 
   // The browser's own dialog, which a page cannot style. It only covers closing
   // the tab or going back; moving between posts is handled by the confirm below,
@@ -145,13 +156,12 @@ export default function Editor({
   }, [dirty])
 
   const load = (loaded: PostContent, file: string) => {
-    const tags = loaded.tags.join(', ')
     setPost(loaded)
-    setTagText(tags)
+    setTags(loaded.tags)
     setFileSlug(baseSlug(file))
     setSlugOverride(null)
     setMode('editing')
-    setSaved(snapshot(loaded, tags))
+    setSaved(snapshot(loaded, loaded.tags))
     setNote(null)
   }
 
@@ -188,11 +198,11 @@ export default function Editor({
       title: post.title,
       date: post.date,
       lastmod: mode === 'editing' ? today() : post.date,
-      tags: parseTags(tagText),
+      tags,
       draft: post.draft,
       summary: post.summary,
     }),
-    [post, tagText, mode]
+    [post, tags, mode]
   )
 
   /** Guards anything that would throw away unsaved work. */
@@ -220,11 +230,11 @@ export default function Editor({
   const startNew = () =>
     leaving('Starting a new post', () => {
       setPost(BLANK)
-      setTagText('')
+      setTags([])
       setSlugOverride(null)
       setFileSlug('')
       setMode('new')
-      setSaved(snapshot(BLANK, ''))
+      setSaved(snapshot(BLANK, []))
       setNote(null)
     })
 
@@ -244,10 +254,10 @@ export default function Editor({
         ...post,
         file: result.file,
         local: result.file.endsWith('.draft.mdx'),
-        tags: parseTags(tagText),
+        tags,
       }
       setPost(next)
-      setSaved(snapshot(next, tagText))
+      setSaved(snapshot(next, tags))
       setFileSlug(baseSlug(result.file))
       setMode('editing')
       setNote(
@@ -308,11 +318,11 @@ export default function Editor({
   /** Reset to a blank new post — the file the editor was pointed at is gone. */
   const blank = () => {
     setPost(BLANK)
-    setTagText('')
+    setTags([])
     setSlugOverride(null)
     setFileSlug('')
     setMode('new')
-    setSaved(snapshot(BLANK, ''))
+    setSaved(snapshot(BLANK, []))
   }
 
   const confirmDiscard = () =>
@@ -347,6 +357,7 @@ export default function Editor({
   const bodyEmpty = post.body.trim() === ''
   const canSave =
     post.title.trim() !== '' && finalSlug !== '' && !slugError && !bodyEmpty && !pending
+  const dateMeaning = dateNote(post.date)
   const over = post.summary.length > SUMMARY_LIMIT
   const liveUrl = post.file ? `/blog/${post.file.replace(/\.mdx$/, '')}` : null
 
@@ -412,10 +423,10 @@ export default function Editor({
               <span className={styles.stripTitle}>{post.title || 'Untitled'}</span>
               <span className={styles.stripDot}>·</span>
               <span>{post.date}</span>
-              {parseTags(tagText).length > 0 && (
+              {tags.length > 0 && (
                 <>
                   <span className={styles.stripDot}>·</span>
-                  <span>{parseTags(tagText).join(', ')}</span>
+                  <span>{tags.join(', ')}</span>
                 </>
               )}
               {post.summary && (
@@ -457,6 +468,12 @@ export default function Editor({
             <span>
               Date
               {slugLocked && <em className={styles.locked}> — fixed once published</em>}
+              {dateMeaning && (
+                <em className={dateMeaning.tone === 'warn' ? styles.inlineWarn : styles.hint}>
+                  {' '}
+                  — {dateMeaning.text}
+                </em>
+              )}
             </span>
             <input
               type="date"
@@ -466,14 +483,7 @@ export default function Editor({
             />
           </label>
 
-          <label className={styles.field}>
-            <span>Tags</span>
-            <input
-              value={tagText}
-              placeholder="comma, separated"
-              onChange={(event) => setTagText(event.target.value)}
-            />
-          </label>
+          <TagPicker value={tags} options={tagOptions} onChange={setTags} />
 
           <label className={`${styles.field} ${styles.wide}`}>
             <span>

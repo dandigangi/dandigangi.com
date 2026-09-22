@@ -5,10 +5,36 @@ export function formatMonthYear(date: string): string {
     .toUpperCase()
 }
 
-/** "eng-management" -> "Eng management" */
+/**
+ * Initialisms that are wrong in title case. Kept as a set rather than a regex
+ * so adding one is a one-word edit, and matched on the whole word only — "ai"
+ * is AI, but "said" is not "sAId".
+ */
+const INITIALISMS = new Set([
+  'ai',
+  'api',
+  'ci',
+  'cd',
+  'css',
+  'html',
+  'js',
+  'llm',
+  'qa',
+  'seo',
+  'ui',
+  'ux',
+])
+
+/** "engineering-management" -> "Engineering Management", "ai" -> "AI" */
 export function formatTag(tag: string): string {
-  const spaced = tag.replace(/-/g, ' ')
-  return spaced.charAt(0).toUpperCase() + spaced.slice(1)
+  return tag
+    .split('-')
+    .map((word) =>
+      INITIALISMS.has(word.toLowerCase())
+        ? word.toUpperCase()
+        : word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join(' ')
 }
 
 /** "Mar 14 2026" — the blog index meta format. */
