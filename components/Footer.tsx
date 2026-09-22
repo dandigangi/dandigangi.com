@@ -53,14 +53,13 @@ export default function Footer() {
             dandigangi.com
             {version ? <span> v{version}</span> : null}
           </span>
+          {/* Text, not a link. It pointed at the commit on GitHub, and that
+              repository is private — so for everyone but me it was a 404 with a
+              build hash in it. The stamp still identifies the deploy. */}
           {hash ? (
-            <a
-              href={`${siteMetadata.siteRepo}/commit/${hash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <span>
               {date ? `${date} ` : ''}[{hash}]
-            </a>
+            </span>
           ) : date ? (
             <span>{date}</span>
           ) : null}

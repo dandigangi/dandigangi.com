@@ -209,7 +209,7 @@ export default function Invoice({
      egg tally, and this was the half left behind. */
   const final = won
 
-  const code = useClaimCode()
+  const claim = useClaimCode()
   const hugLimit = viaCatch ? HUGS_PER_CATCH : HUGS_PER_RE_READ
   /** Out of hugs — one after catching him, three when only re-reading. */
   const spent = hugs >= hugLimit
@@ -394,7 +394,9 @@ export default function Invoice({
             )}
 
             {/* Shared with the contact form — one component, one code. */}
-            {final && <ClaimCode code={code} label={veiled('WW91ciBjbGFpbSBjb2Rl')} />}
+            {final && (
+              <ClaimCode code={claim?.code ?? null} label={veiled('WW91ciBjbGFpbSBjb2Rl')} />
+            )}
 
             {final ? (
               <>

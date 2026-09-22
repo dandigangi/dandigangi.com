@@ -8,25 +8,31 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  padding: 14px 16px;
+  padding: 20px 26px;
   border: 1px solid var(--line);
   border-radius: 2px;
   cursor: pointer;
   transition:
     border-color 0.15s ease,
-    background-color 0.15s ease;
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .box:hover,
-.box:active,
-.copied {
-  border-color: var(--ink);
+.box:active {
+  border-color: #3fb950;
 }
 
-/* Held after a copy as well as on hover, so the box confirms the thing
-   happened even once the pointer has moved away. */
-.copied {
-  background: var(--hover);
+/*
+ * Green, held after the pointer has moved away. A border flick is the same
+ * signal as a hover and reads as one; a filled box is unmistakably "that
+ * happened", which is what the one thing they have to take with them deserves.
+ */
+.copied,
+.copied:hover {
+  border-color: #3fb950;
+  background: #3fb950;
+  color: #fff;
 }
 
 .row {
@@ -40,7 +46,7 @@
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 16px;
   letter-spacing: 0.06em;
-  color: var(--ink);
+  color: inherit;
   /* One gesture for anyone who ignores both the box and the button. */
   user-select: all;
   /* A code plus a button is wider than a phone. Wrapping beats a scrollbar. */
@@ -64,10 +70,16 @@
     border-color 0.15s ease;
 }
 
-.box:hover .copy,
-.copied .copy {
+.box:hover .copy {
   color: var(--ink);
-  border-color: var(--ink);
+  border-color: #3fb950;
+}
+
+.copied .copy,
+.copied .note,
+.copied :global(.label) {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .note {

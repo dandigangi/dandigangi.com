@@ -1,6 +1,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import { speakingTopics } from '@/data/about'
 import ContactForm from '@/components/ContactForm'
+import WinNote from '@/components/WinNote'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
 import styles from './contact.module.css'
@@ -40,6 +41,8 @@ export default function Contact() {
               Open to senior engineering leadership roles, and always happy to talk hiring, teams,
               or developer platforms.
             </p>
+
+            <WinNote />
 
             <ContactForm />
 
