@@ -8,7 +8,11 @@
  * "looking", and nothing client-side can raise it further: anything the browser
  * renders, the bundle contains.
  *
- * The repo itself is private, so this and the file names are the whole surface.
+ * How much this is worth depends entirely on whether the repository is
+ * readable, and that is not a question this file can answer. If it is, the
+ * comments throughout lib/ and components/ describe every surprise in plain
+ * English on purpose — so none of this defends anything, and it is not trying
+ * to. It defends the bundle, which is a different and much smaller claim.
  *
  * Encode a string before putting it here; decode one before editing it.
  */

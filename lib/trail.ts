@@ -9,14 +9,20 @@ import { expireIfStale, touch } from './stale'
  *
  * Hashed, not encoded. Everything else on this site that needs hiding ships
  * base64, which keeps it out of a grep — but base64 is not a secret, and
- * anything reading this file, a person or a model, decodes it in a moment. This
- * one has no plaintext anywhere else on the site to give it away, so it is the
- * one worth actually protecting: only lengths and hashes are stored, and the
- * phrases cannot be read back out of them.
+ * anything reading this file, a person or a model, decodes it in a moment.
  *
- * FNV-1a, which is not a cryptographic hash and does not need to be. It is not
- * guarding anything of value — it only has to be worth more effort than the
- * joke is, which a brute-force over candidate phrases already is.
+ * This comment used to claim the phrases could not be read back out of the
+ * hashes. They can, and were: pointed at the built bundle with nothing else to
+ * go on, a model reimplemented FNV-1a and guessed four of the six in minutes.
+ * That is the expected result, not a surprise — the search space is short
+ * phrases a person might plausibly type about a rainbow, and a fast hash over a
+ * small guessable set is a speed bump by construction.
+ *
+ * What it actually buys is that the phrases are not sitting in the bundle to be
+ * grepped or decoded, so finding them costs deliberate effort rather than
+ * curiosity. That is the whole claim. Anything stronger would need the check to
+ * happen somewhere the visitor cannot read, and none of this is worth a server
+ * round trip.
  */
 const HASHED: [length: number, hashes: number[]][] = [
   [9, [3322859397]],
