@@ -4,7 +4,7 @@ The site deploys continuously, so these are dated rather than tagged. The
 version in `package.json` marks the design generation, not a release cadence —
 the footer's build stamp is what identifies a given deploy.
 
-## Unreleased
+## 2.0.x — since 2026-09-14
 
 Everything since the 2.0 foundation landed. Most of it is the v2 build-out.
 
@@ -87,12 +87,9 @@ foundation. Content moved to a typed collection compiled at build time, styling
 moved to CSS Modules over a small set of design tokens, and nearly every route
 became statically generated.
 
-## 1.x — 2023-09 to 2026-03
+## 1.x — 2023-05 to 2026-03
 
-The first Next.js version. Grew a blog with tags and feeds, a projects page, a
-résumé, structured data and Open Graph metadata, canonical URLs, pagination,
-dark and light themes, and a long tail of content and accessibility fixes.
-
-## 0.x — 2023-05
-
-The original site, built with Astro.
+The first version, also Next.js. Grew a blog with tags and feeds, a projects
+page, a résumé, structured data and Open Graph metadata, canonical URLs,
+pagination, dark and light themes, and a long tail of content and accessibility
+fixes.
