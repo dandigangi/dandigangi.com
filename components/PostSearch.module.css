@@ -116,7 +116,7 @@
  */
 .miss,
 .tally {
-  color: var(--pika);
+  color: var(--mark);
 }
 
 .miss {

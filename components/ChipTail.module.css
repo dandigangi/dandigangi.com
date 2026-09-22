@@ -33,15 +33,15 @@
  * press. Pressing it again would do nothing, and a control that does nothing is
  * worse than a label.
  *
- * --pika is contrast-tuned in both themes (it drops to #8a5a00 on the light
+ * --mark is contrast-tuned in both themes (it drops to #8a5a00 on the light
  * ground, where the bright value reads at about 1.2:1), so this is legible
  * without a second colour.
  */
 .revealed {
   display: inline-block;
   padding: 11px 18px;
-  border: 1px solid var(--pika);
-  color: var(--pika);
+  border: 1px solid var(--mark);
+  color: var(--mark);
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 13px;
   letter-spacing: 0.16em;

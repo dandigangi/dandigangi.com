@@ -24,7 +24,7 @@
   --logo: none;
   /* His yellow. Only legible on a dark ground — the light blocks below take it
      right down, because #ffd23f on #ededeb is 1.2:1. */
-  --pika: #ffd23f;
+  --mark: #ffd23f;
   /* Long-form reading colour. Brighter than --soft, which stays as the design
      tuned it for labels and summaries. Raising opacity on a dark ground raises
      contrast, so this is safer than --soft, not looser. */
@@ -109,7 +109,7 @@
   --logo: invert(1);
   /* 5.1:1 on --bg, matching the ~5:1 the --soft values are tuned to. Any
      lighter and it stops being readable well before it stops being yellow. */
-  --pika: #8a5a00;
+  --mark: #8a5a00;
   --read: rgba(11, 11, 11, 0.86);
   --rb-red: #c0261f;
   --rb-orange: #96490a;
@@ -140,9 +140,9 @@
     --logo: invert(1);
     /* These were missing once before, so a visitor whose OS is light and who
        had never touched the toggle inherited the dark values: --read made blog
-       body copy near-white on a light page, and --pika was invisible. Both
+       body copy near-white on a light page, and --mark was invisible. Both
        light blocks must carry every token. */
-    --pika: #8a5a00;
+    --mark: #8a5a00;
     --read: rgba(11, 11, 11, 0.86);
     --rb-red: #c0261f;
     --rb-orange: #96490a;
@@ -163,12 +163,12 @@
 }
 
 /*
- * Set by app/admin/PikaTheme.tsx while the full-bleed image is up. The header
+ * Set by app/admin/LitTheme.tsx while the full-bleed image is up. The header
  * band and the footer live outside that page's markup, so pinning the dark
  * palette at the root is the only way to reach all three — otherwise light mode
  * puts near-black text on a dimmed photograph.
  */
-:root[data-pika] {
+:root[data-lit] {
   --bg: #000000;
   --ink: #f5f4f1;
   --soft: rgba(245, 244, 241, 0.72);
@@ -179,14 +179,14 @@
 
 /* The band is opaque black everywhere else; here it would cut a bar across the
    top of the image. */
-:root[data-pika] .bleed {
+:root[data-lit] .bleed {
   background: transparent;
 }
 
 /* The footer has no background of its own — it sits on the body's, which is the
    canvas, which the image is painting over. So it needs one, or Pikachu shows
    through the build stamp. */
-:root[data-pika] footer {
+:root[data-lit] footer {
   background: var(--bg);
 }
 
@@ -195,13 +195,13 @@
  * partway down and the image reappears underneath it. This page is short enough
  * to leave that gap on any normal screen.
  */
-:root[data-pika] body {
+:root[data-lit] body {
   display: flex;
   min-height: 100dvh;
   flex-direction: column;
 }
 
-:root[data-pika] body > main {
+:root[data-lit] body > main {
   flex: 1 0 auto;
 }
 

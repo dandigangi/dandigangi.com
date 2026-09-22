@@ -9,11 +9,11 @@
  * and there is no timestamp to validate on the way back in. Nothing is stored
  * in it — its presence is the whole payload.
  */
-export const PIKA_PASS = 'dd_pika'
+export const LIT_PASS = 'dd_g'
 
 /** Long enough to survive a reload and a wander round the site, short enough
  *  that coming back tomorrow means guessing again. */
-export const PIKA_PASS_MS = 60 * 60 * 1000
+export const LIT_PASS_MS = 60 * 60 * 1000
 
 /**
  * Scoped to /admin so it is never sent with a request for anything else — the
@@ -26,7 +26,7 @@ const PATH = '/admin'
 export const grantPikaPass = () => {
   try {
     const secure = location.protocol === 'https:' ? '; Secure' : ''
-    document.cookie = `${PIKA_PASS}=1; Max-Age=${PIKA_PASS_MS / 1000}; Path=${PATH}; SameSite=Lax${secure}`
+    document.cookie = `${LIT_PASS}=1; Max-Age=${LIT_PASS_MS / 1000}; Path=${PATH}; SameSite=Lax${secure}`
   } catch {
     // Blocked cookies. The `?pika=1` on the redirect still shows him once.
   }
@@ -36,7 +36,7 @@ export const grantPikaPass = () => {
  *  expires on its own `max-age`. */
 export const clearPass = () => {
   try {
-    document.cookie = `${PIKA_PASS}=; path=${PATH}; max-age=0; SameSite=Lax`
+    document.cookie = `${LIT_PASS}=; path=${PATH}; max-age=0; SameSite=Lax`
   } catch {
     // Blocked cookies. There was nothing to clear in that case anyway.
   }

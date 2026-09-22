@@ -246,10 +246,10 @@
  * chip and lose what it is.
  */
 :root[data-trail] [class*='ChipTail'][class*='revealed'] {
-  border: 1px solid var(--pika);
+  border: 1px solid var(--mark);
   background: none;
-  color: var(--pika);
-  -webkit-text-fill-color: var(--pika);
+  color: var(--mark);
+  -webkit-text-fill-color: var(--mark);
   animation: none;
 }
 

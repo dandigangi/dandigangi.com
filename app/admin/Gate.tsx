@@ -30,7 +30,7 @@ const fakeIp = () =>
     Math.floor(Math.random() * 254) + 1,
   ].join('.')
 
-const IP_KEY = 'dd:gate-ip'
+const IP_KEY = 'dd:gi'
 const IP_SHAPE = /^\d{1,3}(\.\d{1,3}){3}$/
 
 /**
@@ -198,7 +198,7 @@ export default function Gate() {
       setTimeout(() => setPhase('validating'), CONNECT_MS),
       setTimeout(() => setPhase('settled'), CONNECT_MS + VALIDATE_MS),
       setTimeout(
-        () => router.push(magic ? '/admin/lulz?pika=1' : '/admin/lulz'),
+        () => router.push(magic ? '/admin/lulz?g=1' : '/admin/lulz'),
         CONNECT_MS + VALIDATE_MS + SETTLE_MS
       )
     )

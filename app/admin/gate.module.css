@@ -168,7 +168,7 @@
  * markup and could not be lifted with it. Below the canvas it is simply behind
  * all three.
  */
-.pikaLayer {
+.litLayer {
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -176,7 +176,7 @@
 
 /* The page's own scrim token, so the text keeps the contrast the rest of the
    site's banded sections have over a photograph. */
-.pikaScrim {
+.litScrim {
   position: absolute;
   inset: 0;
   background: var(--scrim);

@@ -6,7 +6,7 @@
   cursor: pointer;
   /* His yellow, the same one the confetti leads with — via the token, because
      it has to go much darker in light mode to stay readable. */
-  color: var(--pika);
+  color: var(--mark);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

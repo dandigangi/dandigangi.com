@@ -10,12 +10,12 @@ import { useEffect } from 'react'
  * text would be sitting on a dimmed photograph. Setting the attribute here lets
  * one rule in globals.css cover all three.
  */
-export default function PikaTheme() {
+export default function LitTheme() {
   useEffect(() => {
     const root = document.documentElement
-    root.dataset.pika = 'true'
+    root.dataset.lit = 'true'
     return () => {
-      delete root.dataset.pika
+      delete root.dataset.lit
     }
   }, [])
 

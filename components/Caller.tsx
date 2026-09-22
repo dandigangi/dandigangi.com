@@ -464,7 +464,7 @@ function Cameo({ cameo, shown, onCatch }: { cameo: Cameo; shown: boolean; onCatc
           width={NATURAL.width}
           height={NATURAL.height}
           sizes={`${SIZE * 2}px`}
-          className={styles.pika}
+          className={styles.art}
           draggable={false}
         />
       </button>

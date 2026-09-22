@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
-import { EXTRA, allTokens, tokenLabel, tokenList, clearTokens, subscribe } from '@/lib/ledger'
+import { EXTRA, allTokens, tokenList, clearTokens, subscribe } from '@/lib/ledger'
+import { useLabels } from './useLabels'
 import { useTokenCount, useTokenTotal } from './useLedger'
 import { isTrail, setTrail, subscribe as rainbowSubscribe } from '@/lib/trail'
 import { CALLER_OFFER, OFFER_FIGURE, resetAll } from '@/lib/caller'
@@ -80,9 +81,18 @@ export default function Ledger() {
     return () => document.removeEventListener('keydown', onKey)
   }, [open, close])
 
+  /*
+   * Above the early return, because hooks have to be. Asked for only while the
+   * dialog is open, so a visitor who never opens it never makes the request —
+   * and the cache means reopening it makes none either.
+   */
+  const unlocked = open ? tokenList() : []
+  // Names are fetched, not shipped — see app/l/route.ts. Until they land the
+  // row is still a row: its mark, and when it was found.
+  const names = useLabels(unlocked.map((entry) => entry.egg))
+
   if (!open) return null
 
-  const unlocked = tokenList()
   const remaining = total - unlocked.length
 
   return (
@@ -143,7 +153,7 @@ export default function Ledger() {
                 className={`${styles.name} ${egg === EXTRA ? styles.shine : ''}`}
                 data-shine={egg === EXTRA ? '' : undefined}
               >
-                {tokenLabel(egg)}
+                {names.get(egg) ?? ''}
               </span>
               <span className={styles.at}>{when(at)}</span>
             </li>

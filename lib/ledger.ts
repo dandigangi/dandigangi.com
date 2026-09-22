@@ -92,27 +92,14 @@ export type Token = (typeof ALL)[number]
  */
 export const tokenTotal = (): number => TOKENS.length + ASIDE.filter((egg) => hasToken(egg)).length
 
-/**
- * What each one is called once it has been found. Encoded for the reason in
- * lib/copy.ts — decoded together these are a walkthrough, which is the one
- * thing the bundle must not hand over. Only ever rendered for eggs already in
- * the tally; the rest show as blanks.
+/*
+ * The names for these live in app/l/route.ts, not here.
+ *
+ * They were in this file as base64 and shipped to every visitor, which handed
+ * over a complete inventory of what exists for the cost of one decode pass.
+ * The ids below are opaque and stay client-side because the counting needs
+ * them; the words that say what they mean do not.
  */
-const NAMES: Record<Token, string> = {
-  [T.met]: 'TWV0IFBpa2FjaHU=',
-  [T.tier1]: 'UHVzaGVkIGhpbSBwYXN0ICQyNTA=',
-  [T.tier2]: 'UHVzaGVkIGhpbSBwYXN0ICQ1MDA=',
-  [T.probe]: 'U2VhcmNoZWQgdGhlIGJsb2cgZm9yIGhpbQ==',
-  [T.gate]: 'R3Vlc3NlZCB0aGUgYWRtaW4gcGFzc3dvcmQ=',
-  [T.toss]: 'VGhyZXcgYSBQb2tlYmFsbCBhdCBoaW0=',
-  [T.dial]: 'VHVybmVkIHRoZSB3aG9sZSB0YWdsaW5lIHdoZWVs',
-  [T.tail]: 'Rm91bmQgdGhlIGNoaXAgdGhhdCBpcyBub3QgdGhlcmU=',
-  [T.twin]: 'TWV0IHRoZSBhbHRlciBlZ28=',
-  [T.arc]: 'W1NFQ1JFVF0gUkFJTkJPVyBST0FEIERJU0NPVkVSRUQ=',
-  [T.rails]: 'VHJpZWQgZXZlcnkgd2F5IHRvIGdldCBwYWlk',
-}
-
-export const tokenLabel = (egg: Token): string => veiled(NAMES[egg])
 
 /** The found ones with their timestamps, in the order they were found. */
 export const tokenList = (): { egg: Token; at: number }[] => {

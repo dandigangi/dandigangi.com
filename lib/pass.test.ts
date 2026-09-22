@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { PIKA_PASS, PIKA_PASS_MS, grantPikaPass } from './pass'
+import { LIT_PASS, LIT_PASS_MS, grantPikaPass } from './pass'
 
 /**
  * document.cookie in jsdom actually stores, but it will not report Max-Age or
@@ -20,8 +20,8 @@ afterEach(() => vi.restoreAllMocks())
 describe('grantPikaPass', () => {
   it('expires after an hour, which is the whole point', () => {
     grantPikaPass()
-    expect(PIKA_PASS_MS).toBe(60 * 60 * 1000)
-    expect(written[0]).toContain(`Max-Age=${PIKA_PASS_MS / 1000}`)
+    expect(LIT_PASS_MS).toBe(60 * 60 * 1000)
+    expect(written[0]).toContain(`Max-Age=${LIT_PASS_MS / 1000}`)
   })
 
   it('is scoped to /admin so it never rides along with the rest of the site', () => {
@@ -32,7 +32,7 @@ describe('grantPikaPass', () => {
 
   it('carries no payload beyond existing', () => {
     grantPikaPass()
-    expect(written[0]).toMatch(new RegExp(`^${PIKA_PASS}=1;`))
+    expect(written[0]).toMatch(new RegExp(`^${LIT_PASS}=1;`))
   })
 
   it('omits Secure on http so it still works on localhost', () => {

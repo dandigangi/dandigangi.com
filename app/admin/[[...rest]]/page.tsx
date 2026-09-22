@@ -5,10 +5,10 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import Blip from '@/components/Blip'
 import SiteNav from '@/components/SiteNav'
-import { PIKA_PASS } from '@/lib/pass'
+import { LIT_PASS } from '@/lib/pass'
 import siteMetadata from '@/data/siteMetadata'
 import Gate from '../Gate'
-import PikaTheme from '../PikaTheme'
+import LitTheme from '../LitTheme'
 import gate from '../gate.module.css'
 import styles from '../../not-found.module.css'
 import { T } from '@/lib/ledger'
@@ -49,7 +49,7 @@ export default async function AdminGate({
   searchParams,
 }: {
   params: Promise<{ rest?: string[] }>
-  searchParams: Promise<{ pika?: string }>
+  searchParams: Promise<{ g?: string }>
 }) {
   const { rest } = await params
   if (rest?.length && !isLulz(rest)) notFound()
@@ -63,19 +63,19 @@ export default async function AdminGate({
    * Only ever consulted on the lulz page — he is the punchline, not the prompt
    * — and the cookie's own Path keeps it away from the rest of the site.
    */
-  const pika = lulz && ((await searchParams).pika === '1' || (await cookies()).has(PIKA_PASS))
+  const lit = lulz && ((await searchParams).g === '1' || (await cookies()).has(LIT_PASS))
 
   return (
     <>
-      {pika && <PikaTheme />}
+      {lit && <LitTheme />}
 
       {/* Same acknowledgement the blog-search egg gets. Rendered here rather
           than on the gate: the gate navigates away a couple of seconds after
           the guess lands, which would cut the toast off mid-read. */}
-      <Blip egg={T.gate} show={pika} />
+      <Blip egg={T.gate} show={lit} />
 
-      {pika && (
-        <div className={gate.pikaLayer} aria-hidden="true">
+      {lit && (
+        <div className={gate.litLayer} aria-hidden="true">
           <Image
             src="/static/images/layer-a.jpg"
             alt=""
@@ -84,7 +84,7 @@ export default async function AdminGate({
             sizes="100vw"
             style={{ objectFit: 'cover', objectPosition: '50% 28%' }}
           />
-          <div className={gate.pikaScrim} />
+          <div className={gate.litScrim} />
         </div>
       )}
 
