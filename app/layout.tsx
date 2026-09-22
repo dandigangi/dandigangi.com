@@ -1,6 +1,7 @@
 import '@/css/globals.css'
 import '@/css/print.css'
 import '@/css/prism.css'
+import '@/css/rainbow.css'
 
 import type { Metadata } from 'next'
 import { Archivo, IBM_Plex_Mono } from 'next/font/google'
@@ -9,6 +10,7 @@ import siteMetadata from '@/data/siteMetadata'
 import ThemeScript from '@/components/ThemeScript'
 import Footer from '@/components/Footer'
 import EggList from '@/components/EggList'
+import RainbowRoad from '@/components/RainbowRoad'
 import PikachuCameo from '@/components/PikachuCameo'
 import SiteChrome from '@/components/SiteChrome'
 import LocalTools from '@/components/LocalTools'
@@ -133,6 +135,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <PikachuCameo />
           <EggList />
+          <RainbowRoad />
           <LocalTools />
         </SiteChrome>
         <VercelAnalytics />

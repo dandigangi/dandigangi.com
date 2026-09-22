@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { resetAll } from '@/lib/pikachu'
 import {
   EGGS,
-  TOTAL_EGGS,
+  totalEggs,
   findEgg,
   foundEggs,
   hasEgg,
@@ -185,7 +185,7 @@ export default function LocalTools() {
           the dock's old purple so it reads as one of these tools rather than
           something the site would ever show a visitor. */}
       <span className={styles.tally}>
-        🥚 {eggs}/{TOTAL_EGGS} found
+        🥚 {eggs}/{totalEggs()} found
       </span>
 
       <div className={styles.row}>
@@ -193,7 +193,7 @@ export default function LocalTools() {
           type="button"
           className={`${styles.button} ${styles.small}`}
           onClick={grantOne}
-          disabled={eggs >= TOTAL_EGGS}
+          disabled={eggs >= totalEggs()}
         >
           +1 egg
         </button>
@@ -201,7 +201,7 @@ export default function LocalTools() {
           type="button"
           className={`${styles.button} ${styles.small}`}
           onClick={grantAll}
-          disabled={eggs >= TOTAL_EGGS}
+          disabled={eggs >= totalEggs()}
         >
           Find all
         </button>

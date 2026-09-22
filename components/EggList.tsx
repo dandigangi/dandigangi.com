@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
-import { TOTAL_EGGS, allFound, eggName, foundEggs, foundList, subscribe } from '@/lib/eggs'
+import { totalEggs, allFound, eggName, foundEggs, foundList, subscribe } from '@/lib/eggs'
 import { PIKACHU_PRIZE } from '@/lib/pikachu'
 import styles from './EggList.module.css'
 
@@ -58,7 +58,7 @@ export default function EggList() {
   if (!open) return null
 
   const unlocked = foundList()
-  const remaining = TOTAL_EGGS - unlocked.length
+  const remaining = totalEggs() - unlocked.length
 
   return (
     <div
@@ -77,7 +77,7 @@ export default function EggList() {
               {veiled('RWFzdGVyIGVnZ3M=')}
             </h2>
             <p className={styles.score}>
-              {found} of {TOTAL_EGGS} found
+              {found} of {totalEggs()} found
             </p>
           </div>
           <button type="button" className={styles.x} onClick={close}>
@@ -138,7 +138,7 @@ export function EggListLink({ className }: { className?: string }) {
 
   return (
     <button type="button" className={className} onClick={openEggList}>
-      🐣 {found}/{TOTAL_EGGS}
+      🐣 {found}/{totalEggs()}
     </button>
   )
 }

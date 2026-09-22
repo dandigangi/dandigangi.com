@@ -5,12 +5,13 @@
  * No hover or focus state on purpose: lighting up as the cursor approaches is
  * the site pointing at it, which is the opposite of the idea.
  */
+/* The same grey as the build stamp it sits under — findable by reading the
+   footer rather than by noticing something faint. */
 .admin {
   display: inline-flex;
   align-items: baseline;
   gap: 5px;
   width: fit-content;
-  opacity: 0.34;
 }
 
 /* Admin and the egg count share a line. Admin stays at its own 0.34 — it is
@@ -21,19 +22,14 @@
   gap: 12px;
 }
 
-/* Reads at the same weight as the build stamp above it: once you have found
-   one, this is ordinary information rather than a secret. */
+/* Full strength, unlike everything around it: by the time this exists you have
+   found something, and it is the one line here worth drawing the eye. */
 .eggs {
   padding: 0;
   border: 0;
   background: none;
-  color: inherit;
+  color: var(--ink);
   cursor: pointer;
   font: inherit;
   letter-spacing: inherit;
-  opacity: 0.8;
-}
-
-.eggs:hover {
-  opacity: 1;
 }

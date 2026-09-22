@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { TAGLINES } from '@/lib/taglines'
-import { ArrowRight } from './Icons'
 import styles from './Tagline.module.css'
 
 /** Enough for the hero image to have settled before anything starts moving. */
@@ -18,7 +17,7 @@ const SPEED_MS = 26
 /** How long a finished line holds before the next one types itself in. Longer
  *  than the wheel's, because retyping a line is a louder move than turning a
  *  row and wants more of a gap around it. */
-const HOLD_MS = 4000
+const HOLD_MS = 2600
 
 const MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 
@@ -42,15 +41,12 @@ const motionOnServer = () => false
 /**
  * The tagline, typed in on load, cycling on its own, and swappable by hand.
  *
- * `arrow` adds the interaction hint, and the home hero is the only caller that
- * asks for it.
- *
  * A button rather than a span: clicking it does something, so it needs to be
  * reachable from the keyboard and to say so to assistive tech. The typing is
  * decoration — the line itself is in the markup for screen readers and
  * crawlers throughout, and is never exposed mid-word.
  */
-export default function Tagline({ arrow = false }: { arrow?: boolean } = {}) {
+export default function Tagline() {
   const reduced = useSyncExternalStore(subscribeMotion, readMotion, motionOnServer)
   const [index, setIndex] = useState(0)
   const [typed, setTyped] = useState('')
@@ -135,13 +131,6 @@ export default function Tagline({ arrow = false }: { arrow?: boolean } = {}) {
         </span>
       </span>
 
-      {/*
-       * Decoration, not a control: the whole pill is the button, and the arrow
-       * is the cheapest way to say it can be poked. Opted into rather than on
-       * by default — only the home hero wears it, so the hint is made once
-       * rather than repeated on every band that carries the line.
-       */}
-      {arrow && <ArrowRight size={12} className={styles.arrow} />}
       <span className="srOnly">{full}</span>
     </button>
   )

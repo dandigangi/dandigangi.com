@@ -25,9 +25,28 @@ export const EGGS = [
   'alterego',
 ] as const
 
-export type Egg = (typeof EGGS)[number]
+/**
+ * The one that is not on the board.
+ *
+ * Deliberately outside EGGS: until it is found there is nothing to say it
+ * exists — the count reads out of nine, the list has nine rows, and nothing
+ * hints at a tenth. Finding it adds it to both, at the top.
+ *
+ * Named blandly because the export name survives minification and ships in the
+ * bundle; `SECRET` sitting in there was an invitation to go looking.
+ */
+export const EXTRA = 'rainbow' as const
 
-export const TOTAL_EGGS = EGGS.length
+const ALL = [...EGGS, EXTRA] as const
+
+export type Egg = (typeof ALL)[number]
+
+/**
+ * Nine, or ten once the secret is out. A function rather than a constant
+ * because it genuinely changes — every caller reads it through the store, so
+ * the denominator updates the moment it is found.
+ */
+export const totalEggs = (): number => EGGS.length + (hasEgg(EXTRA) ? 1 : 0)
 
 /**
  * What each one is called once it has been found. Encoded for the reason in
@@ -45,6 +64,7 @@ const NAMES: Record<Egg, string> = {
   wheel: 'VHVybmVkIHRoZSB3aG9sZSB0YWdsaW5lIHdoZWVs',
   hidden: 'Rm91bmQgdGhlIGNoaXAgdGhhdCBpcyBub3QgdGhlcmU=',
   alterego: 'TWV0IHRoZSBhbHRlciBlZ28=',
+  rainbow: '8J+MiCBbU0VDUkVUXSBSYWluYm93IFJvYWQ=',
 }
 
 export const eggName = (egg: Egg): string => veiled(NAMES[egg])
@@ -53,7 +73,12 @@ export const eggName = (egg: Egg): string => veiled(NAMES[egg])
 export const foundList = (): { egg: Egg; at: number }[] => {
   if (typeof window === 'undefined') return []
   load()
-  return [...found.entries()].map(([egg, at]) => ({ egg, at })).sort((a, b) => a.at - b.at)
+  const entries = [...found.entries()].map(([egg, at]) => ({ egg, at })).sort((a, b) => a.at - b.at)
+  // The secret goes to the top however late it turned up.
+  return [
+    ...entries.filter((entry) => entry.egg === EXTRA),
+    ...entries.filter((entry) => entry.egg !== EXTRA),
+  ]
 }
 
 // Opaque on purpose: "dd:eggs" sitting in localStorage is an invitation.
@@ -82,7 +107,7 @@ export const subscribe = (listener: () => void) => {
   }
 }
 
-const isEgg = (value: unknown): value is Egg => EGGS.includes(value as Egg)
+const isEgg = (value: unknown): value is Egg => ALL.includes(value as Egg)
 
 /** Read once per page load, then kept in memory. */
 const load = () => {
@@ -121,8 +146,13 @@ export const hasEgg = (egg: Egg): boolean => {
   return found.has(egg)
 }
 
-/** Every egg found. What the prize now hangs on, in place of a figure on the tab. */
-export const allFound = (): boolean => foundEggs() === TOTAL_EGGS
+/**
+ * Every egg found. What the prize hangs on, in place of a figure on the tab.
+ *
+ * Compared against the live total, so someone who has turned up the secret has
+ * to find that one too — it counts once it exists.
+ */
+export const allFound = (): boolean => foundEggs() === totalEggs()
 
 /**
  * Whether the prize has already been collected. Persisted, or the modal would

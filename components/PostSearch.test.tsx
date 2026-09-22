@@ -106,11 +106,11 @@ describe('throwing at the sprite', () => {
     await user.type(screen.getByRole('searchbox'), 'pikachu')
     await user.click(screen.getByRole('button', { name: /Throw a Pokéball at Pikachu/ }))
 
-    const { TOTAL_EGGS, foundEggs } = await import('@/lib/eggs')
+    const { totalEggs, foundEggs } = await import('@/lib/eggs')
     // The search egg fired on typing; this is the second.
     expect(foundEggs()).toBe(2)
     // And only one toast is on screen — the later find replaces the earlier.
     expect(screen.getAllByRole('status')).toHaveLength(1)
-    expect(await screen.findByText(`(2/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
+    expect(await screen.findByText(`(2/${totalEggs()})`, { exact: false })).toBeInTheDocument()
   })
 })

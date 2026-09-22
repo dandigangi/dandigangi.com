@@ -1,0 +1,164 @@
+/*
+ * Rainbow Road.
+ *
+ * Everything here hangs off `data-rainbow` on <html>, set by components/
+ * RainbowRoad.tsx when the phrase is typed. Nothing in this file costs anything
+ * until that attribute exists.
+ *
+ * Two effects, used throughout:
+ *
+ *  - Text. A linear rainbow clipped to the glyphs and slid sideways. Not the
+ *    conic ring used for borders: a conic gradient across a line of text puts
+ *    every hue in one corner and reads as a smear rather than a sweep.
+ *
+ *  - Borders. The same two-background trick .spectrumRing uses, repeated here
+ *    rather than shared, because these rules need to beat module styles that
+ *    already set their own border and background.
+ *
+ * `@keyframes` live here rather than in globals.css so the whole effect is one
+ * file to read, delete, or lift.
+ */
+
+@keyframes rainbowSlide {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes rainbowSpin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+:root[data-rainbow] {
+  --road: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-red)
+  );
+  --road-ring: conic-gradient(
+    from var(--angle),
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-red)
+  );
+}
+
+/* ---------- text ---------- */
+
+/*
+ * Page titles, the home name, section headings, every nav link, and the
+ * taglines. `-webkit-text-fill-color` as well as `color`, because WebKit only
+ * honours the former once the background is clipped to the text.
+ */
+:root[data-rainbow] h1,
+:root[data-rainbow] h2,
+:root[data-rainbow] .navLink,
+:root[data-rainbow] [class*='tagline'],
+:root[data-rainbow] [class*='name'],
+:root[data-rainbow] [class*='title'] {
+  background: var(--road);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowSlide 2.5s linear infinite;
+}
+
+/* The band sits on a photograph, so its titles need the shadow taken off —
+   a drop shadow under clipped text paints as a grey ghost of the glyphs. */
+:root[data-rainbow] [class*='PageBand'] h1,
+:root[data-rainbow] [class*='SiteNav'] {
+  text-shadow: none;
+}
+
+/* ---------- borders ---------- */
+
+:root[data-rainbow] .btn,
+:root[data-rainbow] .chip {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--bg), var(--bg)) padding-box,
+    var(--road-ring) border-box;
+  animation: rainbowSpin 1.25s linear infinite;
+}
+
+/*
+ * Hover still has to read as hover. Inverting the fill rather than the border
+ * keeps the ring turning underneath while the button clearly changes state.
+ */
+:root[data-rainbow] .btn:hover {
+  background:
+    linear-gradient(var(--ink), var(--ink)) padding-box,
+    var(--road-ring) border-box;
+  color: var(--bg);
+  -webkit-text-fill-color: var(--bg);
+}
+
+/* ---------- the road itself ---------- */
+
+/*
+ * Every hairline on the site. `border-image` is the only way to put a gradient
+ * on a border that is one side of a box — it ignores border-radius, which none
+ * of these have — and `border-image-slice: 1` is what makes it fill rather than
+ * tile the corners.
+ */
+:root[data-rainbow] hr,
+:root[data-rainbow] footer,
+:root[data-rainbow] .hairlineRow + .hairlineRow {
+  border-image: var(--road) 1;
+}
+
+/* A strip across the very top, so the mode announces itself before you scroll. */
+:root[data-rainbow] body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  z-index: 300;
+  background: var(--road);
+  background-size: 200% 100%;
+  animation: rainbowSlide 2.5s linear infinite;
+  pointer-events: none;
+}
+
+/*
+ * The one thing that does not get it: the invisible chip at the end of the tag
+ * row. Painting it would hand over an egg for free.
+ */
+:root[data-rainbow] [class*='TagRowEnd'] {
+  background: none;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-rainbow] h1,
+  :root[data-rainbow] h2,
+  :root[data-rainbow] .navLink,
+  :root[data-rainbow] [class*='tagline'],
+  :root[data-rainbow] [class*='name'],
+  :root[data-rainbow] [class*='title'],
+  :root[data-rainbow] .btn,
+  :root[data-rainbow] .chip,
+  :root[data-rainbow] body::before {
+    /* The colour stays; only the travelling stops. */
+    animation: none;
+  }
+}

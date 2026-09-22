@@ -56,7 +56,7 @@ describe('the egg tally', () => {
   it('never reports more found than exist', async () => {
     const eggs = await load()
     for (const egg of eggs.EGGS) eggs.findEgg(egg)
-    expect(eggs.foundEggs()).toBe(eggs.TOTAL_EGGS)
+    expect(eggs.foundEggs()).toBe(eggs.totalEggs())
   })
 
   it('notifies subscribers, but only when something changed', async () => {

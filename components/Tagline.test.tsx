@@ -33,7 +33,7 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-const HOLD = 4000
+const HOLD = 2600
 
 /** Past the hold, so the next line has typed itself in. */
 const waitOutHold = () => act(() => void vi.advanceTimersByTime(HOLD + SPEED * 80))
@@ -135,16 +135,10 @@ describe('Tagline', () => {
     expect(screen.getByRole('button').textContent).toBe(before)
   })
 
-  it('shows the interaction hint only where it is asked for', () => {
-    const { container: bare } = render(<Tagline />)
-    expect(bare.querySelector('svg')).toBeNull()
-
-    const { container: hinted } = render(<Tagline arrow />)
-    const svg = hinted.querySelector('svg')
-    expect(svg).not.toBeNull()
-    // Decoration: it must not become a second thing to tab to or announce.
-    expect(svg).toHaveAttribute('aria-hidden', 'true')
-    expect(svg).toHaveAttribute('focusable', 'false')
+  /** The pill is the whole control; nothing decorative sits inside it. */
+  it('carries no icon', () => {
+    const { container } = render(<Tagline />)
+    expect(container.querySelector('svg')).toBeNull()
   })
 
   it('reaches every line eventually', async () => {

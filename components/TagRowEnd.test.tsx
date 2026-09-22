@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it } from 'vitest'
 import TagRowEnd from './TagRowEnd'
-import { foundEggs, resetEggs, TOTAL_EGGS } from '@/lib/eggs'
+import { foundEggs, resetEggs, totalEggs } from '@/lib/eggs'
 
 // The tally is module state, so clearing storage alone leaves it behind.
 beforeEach(() => {
@@ -41,7 +41,7 @@ describe('TagRowEnd', () => {
     await user.click(screen.getByRole('button', { name: 'Pikachu' }))
 
     expect(foundEggs()).toBe(1)
-    expect(await screen.findByText(`(1/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
+    expect(await screen.findByText(`(1/${totalEggs()})`, { exact: false })).toBeInTheDocument()
   })
 
   /** The toast announces a discovery, not a trigger. */

@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
-import { TOTAL_EGGS, findEgg, foundEggs, hasEgg, subscribe, type Egg } from '@/lib/eggs'
+import { totalEggs, findEgg, foundEggs, hasEgg, subscribe, type Egg } from '@/lib/eggs'
 import Toast from './Toast'
 
 /**
@@ -46,5 +46,5 @@ export default function EggToast({ egg, show }: { egg: Egg; show: boolean }) {
   const found = useSyncExternalStore(subscribe, foundEggs, () => null)
 
   if (!show || dismissed || alreadyKnown) return null
-  return <Toast count={found ?? undefined} total={TOTAL_EGGS} onClose={close} />
+  return <Toast count={found ?? undefined} total={totalEggs()} onClose={close} />
 }
