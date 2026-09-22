@@ -263,6 +263,8 @@ export const clearTokens = (): void => {
   try {
     localStorage.removeItem(STORE_KEY)
     localStorage.removeItem(CLAIM_KEY)
+    // The minted code goes with the tally that earned it.
+    localStorage.removeItem('dd:f5')
   } catch {
     // The in-memory reset still stands for this page.
   }
