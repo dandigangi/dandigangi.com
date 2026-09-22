@@ -182,6 +182,7 @@ export default function Invoice({
    * from inside the prize, so counting it toward the prize would make it its
    * own prerequisite. See ASIDE in lib/eggs.ts.
    */
+  const [copied, setCopied] = useState(false)
   const [rails, setRails] = useState<string[]>([])
   /**
    * Two things had to be got right here and both were wrong first time.
@@ -416,6 +417,37 @@ export default function Invoice({
                 </button>
               </>
             )}
+
+            {/* The code, where the person who earned it can see it. Two of the
+                three ways out of here are a DM, and neither can be pre-filled —
+                so without this the code only ever reached anyone who picked
+                email, and a claim by DM arrived with nothing to check. */}
+            {final && code && (
+              <div className={styles.codeBox}>
+                <span className="label">{veiled('WW91ciBjbGFpbSBjb2Rl')}</span>
+                <div className={styles.codeRow}>
+                  <code className={styles.code}>{code}</code>
+                  <button
+                    type="button"
+                    className={styles.copy}
+                    onClick={() => {
+                      navigator.clipboard?.writeText(code).then(
+                        () => setCopied(true),
+                        () => setCopied(false)
+                      )
+                    }}
+                  >
+                    {copied ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+                <p className={styles.codeNote}>
+                  {veiled(
+                    'U2VuZCB0aGlzIGNsYWltIGNvZGUgd2l0aCB5b3VyIG1lc3NhZ2UsIGhvd2V2ZXIgeW91IHJlYWNoIG91dCAtLSBJIGNhbm5vdCB2ZXJpZnkgYSB3aW4gd2l0aG91dCBpdC4='
+                  )}
+                </p>
+              </div>
+            )}
+
             {final ? (
               <>
                 <a

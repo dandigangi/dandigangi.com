@@ -247,7 +247,9 @@ export function LedgerLink({ className }: { className?: string }) {
     <button type="button" className={className} onClick={openLedger}>
       {/* The egg hatches once the set is complete, and the label goes with it. */}
       <span aria-hidden="true">{complete ? '🐣' : '🥚'}</span>{' '}
-      <span className={complete ? styles.linkDone : undefined}>
+      {/* Always the gradient, whether or not the mode is on and whether or not
+          the set is complete. It is the one thing in the footer worth a look. */}
+      <span className={styles.linkDone}>
         {veiled('RUFTVEVSIEVHR1M=')} {found}/{total}
       </span>
     </button>

@@ -3,7 +3,17 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './ContactForm.module.css'
 
-type State = 'idle' | 'sending' | 'sent' | 'error'
+type State = 'idle' | 'sending' | 'sent' | 'invalid' | 'error'
+
+/**
+ * Told apart on purpose. "Fix what you typed" and "my end broke" are different
+ * problems with different next steps, and one message for both sends people
+ * looking in the wrong place — a rejected address reads as a broken site.
+ */
+const MESSAGES: Record<'invalid' | 'error', string> = {
+  invalid: 'Check the fields — I need a name, a real email, and a message.',
+  error: 'That didn’t send. Email me directly and I’ll get it.',
+}
 
 /**
  * A short form for anyone who would rather not open their mail client.
@@ -46,7 +56,9 @@ export default function ContactForm() {
           t: opened.current,
         }),
       })
-      setState(response.ok ? 'sent' : 'error')
+      if (response.ok) setState('sent')
+      // 400 is the only status that means the person can fix it themselves.
+      else setState(response.status === 400 ? 'invalid' : 'error')
     } catch {
       setState('error')
     }
@@ -94,9 +106,9 @@ export default function ContactForm() {
         <button type="submit" className="btn" disabled={state === 'sending'}>
           {state === 'sending' ? 'Sending…' : 'Send'}
         </button>
-        {state === 'error' && (
+        {(state === 'error' || state === 'invalid') && (
           <span className={styles.error} role="alert">
-            That didn&rsquo;t send. Email me directly and I&rsquo;ll get it.
+            {MESSAGES[state]}
           </span>
         )}
       </div>
