@@ -90,6 +90,22 @@
     width: 100%;
     justify-content: flex-start;
   }
+
+  /*
+   * Stacking costs height that the row layout did not need, so the band has to
+   * grow with it. Left at the row's floor, the content filled the box exactly,
+   * `justify-content: space-between` had no slack to distribute, and the nav sat
+   * straight on top of the title with the buttons hard against the bottom edge.
+   */
+  .band {
+    min-height: clamp(320px, 46vh, 420px);
+  }
+
+  .inner {
+    padding-top: 30px;
+    padding-bottom: 46px;
+    gap: 30px;
+  }
 }
 
 .title {
@@ -130,7 +146,7 @@
  */
 @media (max-width: 900px) {
   .band {
-    min-height: 260px;
+    min-height: clamp(300px, 42vh, 360px);
   }
 
   .titleSuffix {
@@ -143,7 +159,11 @@
 
 @media (max-width: 560px) {
   .band {
-    min-height: 225px;
+    min-height: clamp(270px, 38vh, 310px);
+  }
+
+  .inner {
+    padding-bottom: 38px;
   }
 
   .titleSuffix {

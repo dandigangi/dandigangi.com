@@ -10,6 +10,24 @@
   flex-direction: column;
 }
 
+/*
+ * 76vh is most of a phone screen before a single word of the page below it, and
+ * the name is the only thing in there — so the floor comes down on smaller
+ * viewports. Still min-height, so the content can push it back out if it needs
+ * to; this only stops the hero reserving space it has nothing to put in.
+ */
+@media (max-width: 900px) {
+  .hero {
+    min-height: clamp(420px, 58vh, 540px);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    min-height: clamp(380px, 52vh, 460px);
+  }
+}
+
 /* The wrapper carries the overscan and the parallax transform; next/image's
    `fill` sets its own inline positioning and would otherwise override them. */
 .heroImageWrap {
