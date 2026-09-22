@@ -15,8 +15,7 @@ import { allTokens, subscribe, tokenList } from '@/lib/ledger'
  * unreachable. Every caller is expected to render nothing in that case; the
  * claim still works without it, as it did before there were codes.
  */
-/** The code, and the address that only a winner is given. */
-export type Claim = { code: string; to: string }
+export type Claim = { code: string }
 
 let cached: Claim | null = null
 let inflight: Promise<void> | null = null
@@ -45,8 +44,8 @@ export function useClaimCode(): Claim | null {
             body: JSON.stringify({ t: tokenList().map((entry) => entry.egg) }),
           })
             .then((response) => (response.ok ? response.json() : null))
-            .then((body: { code?: string; to?: string } | null) => {
-              if (body?.code && body.to) cached = { code: body.code, to: body.to }
+            .then((body: { code?: string } | null) => {
+              if (body?.code) cached = { code: body.code }
             })
             .catch(() => {
               // Offline, or the secret is not configured. Nothing to show.

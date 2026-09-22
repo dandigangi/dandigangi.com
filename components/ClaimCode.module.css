@@ -20,19 +20,17 @@
 
 .box:hover,
 .box:active {
-  border-color: #3fb950;
+  border-color: var(--ink);
 }
 
 /*
- * Green, held after the pointer has moved away. A border flick is the same
- * signal as a hover and reads as one; a filled box is unmistakably "that
- * happened", which is what the one thing they have to take with them deserves.
+ * Green, and only the border. Held after the pointer has moved away, so the
+ * confirmation outlives the gesture — white says "you can do something here",
+ * green says "it is done", and the two must not be the same colour.
  */
 .copied,
 .copied:hover {
   border-color: #3fb950;
-  background: #3fb950;
-  color: #fff;
 }
 
 .row {
@@ -72,14 +70,13 @@
 
 .box:hover .copy {
   color: var(--ink);
-  border-color: #3fb950;
+  border-color: var(--ink);
 }
 
 .copied .copy,
-.copied .note,
-.copied :global(.label) {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.5);
+.copied:hover .copy {
+  color: #3fb950;
+  border-color: #3fb950;
 }
 
 .note {

@@ -116,7 +116,7 @@ export default function Ledger() {
         <header className={styles.head}>
           <div>
             <h2 className={styles.title} id="lg-t">
-              {veiled('RWFzdGVyIGVnZ3M=')}
+              {veiled('RWFzdGVyIEVnZ3M=')}
             </h2>
             <p className={styles.score}>
               {found} of {total} found

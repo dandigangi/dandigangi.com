@@ -21,27 +21,21 @@ export default function WinNote() {
   return (
     <div className={styles.note}>
       <h2 className={styles.head}>
-        {veiled('Q29uZ3JhdHMh')} {veiled('WW91IHdvbiB0aGUgRWFzdGVyIEVnZyBjb250ZXN0IGFuZCBhIA==')}$
-        {OFFER_FIGURE} {veiled('Z2lmdCBjYXJkLg==')}
+        {veiled('WW91IHdvbiB0aGUgRWFzdGVyIEVnZyBjb250ZXN0IGFuZCBhIA==')}${OFFER_FIGURE}{' '}
+        {veiled('Z2lmdCBjYXJkLg==')}
       </h2>
       <p className={styles.body}>
         {veiled(
-          'VGhhbmtzIGZvciBwbGF5aW5nIG15IGdhbWUsIFBhcmNpdmlsLiBSZWFjaCBvdXQgdG8gbWUgZm9yIHlvdXIgcHJpemUg'
+          'VGhhbmtzIGZvciBwbGF5aW5nIG15IGdhbWUsIFBhcnppdmFsLiBSZWFjaCBvdXQgdG8gbWUgYmVsb3cgb3IgRE0gbWUgb24g'
         )}
-        {/* The address is the link, never the text — so it is not on the page
-            for anything reading it, only in an href a winner just earned. */}
-        <a href={`mailto:${claim.to}`} className={styles.mail}>
-          {veiled('aGVyZQ==')}
-        </a>
-        {veiled('IG9yIA==')}
         <a href={X_DM_URL} target="_blank" rel="noopener noreferrer" className={styles.mail}>
-          {veiled('RE0gbWUgb24gWA==')}
+          {veiled('WA==')}
         </a>
         {veiled('LCA=')}
         <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className={styles.mail}>
-          {veiled('RE0gbWUgb24gTGlua2VkSW4=')}
+          {veiled('TGlua2VkSW4=')}
         </a>
-        {veiled('IHdpdGggeW91ciBjbGFpbSBjb2RlLg==')}
+        {veiled('IHcvIHlvdXIgY2xhaW0gY29kZS4=')}
       </p>
     </div>
   )

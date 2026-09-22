@@ -88,27 +88,12 @@ export async function POST(request: Request) {
   const complete = TOKENS.every((token: Token) => held.includes(token))
   if (!complete) return NextResponse.json({ error: 'incomplete' }, { status: 403 })
 
-  /*
-   * The address that is not on the page.
-   *
-   * Returned here rather than rendered anywhere, and from this route rather
-   * than the copy one, because this is the only endpoint that asks for the full
-   * set first. So it is not in the bundle, not in the static HTML, and not
-   * reachable by anything that does not run JavaScript — which is every scraper
-   * worth worrying about.
-   *
-   * Not a guarantee, and worth being straight about: anyone who forges the
-   * tally in localStorage can ask for it. That is a far higher bar than reading
-   * it off a page, which is the whole ask.
-   */
-  const to = 'me@dandigangi.com'
-
   const nonce = randomBytes(5).toString('hex')
   const code = `DDG-${nonce}-${mac(nonce, SECRET)}`
   console.log(`[claim] issued ${code}`)
   ping(code, request)
 
-  return NextResponse.json({ code, to }, { headers: { 'Cache-Control': 'no-store' } })
+  return NextResponse.json({ code }, { headers: { 'Cache-Control': 'no-store' } })
 }
 
 /** Exported for the verifier, so the two cannot drift apart. */
