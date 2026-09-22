@@ -9,7 +9,21 @@
   display: inline-block;
   width: 96px;
   height: 39px;
+  padding: 0;
+  border: 0;
+  background: none;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/*
+ * The one state where it is visible. It is in the tab order and it is
+ * announced, so a keyboard user has to be able to see where they are — an
+ * invisible focus stop is a trap. A mouse press never triggers this, which is
+ * what keeps the puzzle intact for everyone else.
+ */
+.spacer:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -4px;
 }

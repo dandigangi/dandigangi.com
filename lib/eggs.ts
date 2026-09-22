@@ -70,6 +70,13 @@ const load = () => {
   }
 }
 
+/** Whether one particular egg is already in the tally. */
+export const hasEgg = (egg: Egg): boolean => {
+  if (typeof window === 'undefined') return false
+  load()
+  return found.has(egg)
+}
+
 /** Every egg found. What the prize now hangs on, in place of a figure on the tab. */
 export const allFound = (): boolean => foundEggs() === TOTAL_EGGS
 

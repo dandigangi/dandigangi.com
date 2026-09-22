@@ -1,7 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import PostSearch, { type SearchEntry } from './PostSearch'
+import { resetEggs } from '@/lib/eggs'
+
+// A toast announces a NEW find; start every case from nothing found.
+beforeEach(() => {
+  localStorage.clear()
+  resetEggs()
+})
 
 const index: SearchEntry[] = [
   {
@@ -99,8 +106,11 @@ describe('throwing at the sprite', () => {
     await user.type(screen.getByRole('searchbox'), 'pikachu')
     await user.click(screen.getByRole('button', { name: /Throw a Pokéball at Pikachu/ }))
 
-    const { TOTAL_EGGS } = await import('@/lib/eggs')
+    const { TOTAL_EGGS, foundEggs } = await import('@/lib/eggs')
     // The search egg fired on typing; this is the second.
+    expect(foundEggs()).toBe(2)
+    // And only one toast is on screen — the later find replaces the earlier.
+    expect(screen.getAllByRole('status')).toHaveLength(1)
     expect(await screen.findByText(`(2/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
   })
 })

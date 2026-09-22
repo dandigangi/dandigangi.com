@@ -18,6 +18,9 @@ import styles from './LocalTools.module.css'
  * The server snapshot is always "open", so there is nothing to mismatch on
  * hydration; a collapsed dock expands for one frame and then folds away.
  */
+/** Segments under /blog that are sections rather than posts. */
+const RESERVED = new Set(['tags', 'page'])
+
 const DOCK_KEY = 'dd:devdock'
 const DOCK_EVENT = 'dd:devdock'
 
@@ -102,8 +105,14 @@ export default function LocalTools() {
 
   // A post's slug is its filename without .mdx — including the .draft of a
   // local one, so `/blog/foo.draft` edits `foo.draft.mdx`.
+  //
+  // `/blog/tags` and `/blog/page` are sections, not posts. Deeper ones —
+  // `/blog/tags/ai`, `/blog/page/2` — are excluded by the slash test already;
+  // these two are the bare segments that slip past it and offered to edit a
+  // `tags.mdx` that does not exist.
   const slug = pathname.startsWith('/blog/') ? pathname.slice('/blog/'.length) : null
-  const editable = slug && !slug.includes('/') ? `${decodeURIComponent(slug)}.mdx` : null
+  const isPost = slug !== null && slug !== '' && !slug.includes('/') && !RESERVED.has(slug)
+  const editable = isPost ? `${decodeURIComponent(slug)}.mdx` : null
 
   return (
     <div className={styles.dock} data-print="hide">

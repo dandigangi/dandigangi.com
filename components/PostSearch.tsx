@@ -143,13 +143,17 @@ export default function PostSearch({
         ) : null}
       </div>
 
-      {/* One at a time: both are fixed to the same spot, and the sprite egg is
-          the later discovery, so it takes over once it has been found. */}
-      {spriteEgg ? (
-        <EggToast key="sprite" egg="sprite" show />
-      ) : (
-        <EggToast egg="search" show={egg} />
-      )}
+      {/*
+       * Both are fixed to the same spot, so the later find hides the earlier
+       * one rather than landing on top of it. This used to be an outright
+       * either-or, which meant that once the sprite egg had been found and
+       * dismissed, typing his name never announced anything again all visit.
+       * It is safe now only because a toast announces a *new* find: by the time
+       * the sprite is thrown the search toast has already done its job, and on
+       * any later visit neither says anything at all.
+       */}
+      <EggToast egg="search" show={egg && !spriteEgg} />
+      <EggToast egg="sprite" show={spriteEgg} />
 
       {balls.map((ball) => (
         <PokeballThrow key={ball.id} x={ball.x} y={ball.y} onDone={() => landed(ball.id)} />

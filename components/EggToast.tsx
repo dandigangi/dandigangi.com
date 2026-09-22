@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
-import { TOTAL_EGGS, findEgg, foundEggs, subscribe, type Egg } from '@/lib/eggs'
+import { TOTAL_EGGS, findEgg, foundEggs, hasEgg, subscribe, type Egg } from '@/lib/eggs'
 import Toast from './Toast'
 
 /**
@@ -14,6 +14,14 @@ import Toast from './Toast'
  */
 export default function EggToast({ egg, show }: { egg: Egg; show: boolean }) {
   const [dismissed, setDismissed] = useState(false)
+
+  /**
+   * Whether this egg was already in the tally when the page loaded. Captured
+   * once, so re-triggering something you found last week says nothing — the
+   * toast announces a discovery, not a trigger. Without it, every visit to a
+   * page you have already solved re-congratulates you for it.
+   */
+  const [alreadyKnown] = useState(() => hasEgg(egg))
   // Stable, because Toast restarts its own dismiss timer whenever this changes.
   const close = useCallback(() => setDismissed(true), [])
 
@@ -37,6 +45,6 @@ export default function EggToast({ egg, show }: { egg: Egg; show: boolean }) {
    */
   const found = useSyncExternalStore(subscribe, foundEggs, () => null)
 
-  if (!show || dismissed) return null
+  if (!show || dismissed || alreadyKnown) return null
   return <Toast variant="egg" count={found ?? undefined} total={TOTAL_EGGS} onClose={close} />
 }

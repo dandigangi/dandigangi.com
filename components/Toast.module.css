@@ -53,11 +53,21 @@
   line-height: 1;
 }
 
+/*
+ * Sets its own type rather than inheriting it. The toast is fixed, but it is
+ * still mounted wherever the thing that triggered it lives — inside the About
+ * tagline wheel, that meant picking up the wheel's mono and uppercase and
+ * rendering as a different component from the same toast on every other page.
+ */
 .text {
   margin: 0;
   color: var(--ink);
+  font-family: var(--font-display), system-ui, sans-serif;
   font-size: 0.95rem;
+  font-weight: 400;
   line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .link {

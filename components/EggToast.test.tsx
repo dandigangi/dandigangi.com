@@ -1,7 +1,15 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import EggToast from './EggToast'
+import { resetEggs } from '@/lib/eggs'
+
+// A toast announces a NEW find, so every case starts from nothing found. The
+// tally is module state, so clearing storage alone would leave it behind.
+beforeEach(() => {
+  localStorage.clear()
+  resetEggs()
+})
 
 describe('EggToast', () => {
   it('shows nothing until the egg is found', () => {
@@ -42,9 +50,6 @@ describe('the egg count', () => {
 
   /** The whole point of the counter is that it climbs, so walk it. */
   it('climbs one at a time as each egg is found, and stops at the total', async () => {
-    const { resetEggs } = await import('@/lib/eggs')
-    resetEggs()
-
     // Driven off the real registry, so adding a sixth egg fails here rather
     // than quietly leaving the assertion behind.
     const { EGGS, TOTAL_EGGS } = await import('@/lib/eggs')
@@ -57,22 +62,20 @@ describe('the egg count', () => {
     }
   })
 
-  it('does not climb when the same egg is found again', async () => {
-    const { resetEggs } = await import('@/lib/eggs')
-    resetEggs()
-
+  it('says nothing the second time the same egg is triggered', async () => {
     const { TOTAL_EGGS } = await import('@/lib/eggs')
     const first = render(<EggToast egg="search" show />)
     expect(await screen.findByText(`(1/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
     first.unmount()
 
+    // Re-triggering something already in the tally is not a discovery.
     render(<EggToast egg="search" show />)
-    expect(await screen.findByText(`(1/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })
 
   /** Reset Pikachu clears the tally too, or the count is stuck forever. */
   it('starts over after a reset', async () => {
-    const { findEgg, resetEggs, foundEggs, TOTAL_EGGS } = await import('@/lib/eggs')
+    const { findEgg, foundEggs, TOTAL_EGGS } = await import('@/lib/eggs')
     findEgg('search')
     findEgg('admin')
     expect(foundEggs()).toBe(2)
