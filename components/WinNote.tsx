@@ -2,6 +2,7 @@
 
 import { veiled } from '@/lib/copy'
 import { OFFER_FIGURE } from '@/lib/caller'
+import { LINKEDIN_URL, X_DM_URL } from '@/lib/callerLinks'
 import { useClaimCode } from './useClaimCode'
 import styles from './WinNote.module.css'
 
@@ -24,13 +25,23 @@ export default function WinNote() {
         {OFFER_FIGURE} {veiled('Z2lmdCBjYXJkLg==')}
       </h2>
       <p className={styles.body}>
-        {veiled('UmVhY2ggbWUgZGlyZWN0bHkgYXQ=')}{' '}
-        <a href={`mailto:${claim.to}`} className={styles.mail}>
-          {claim.to}
-        </a>{' '}
         {veiled(
-          'LSBvciBqdXN0IHNlbmQgdGhlIGZvcm0gYmVsb3csIHdoaWNoIGNhcnJpZXMgeW91ciBjb2RlIGZvciB5b3Uu'
+          'VGhhbmtzIGZvciBwbGF5aW5nIG15IGdhbWUsIFBhcmNpdmlsLiBSZWFjaCBvdXQgdG8gbWUgZm9yIHlvdXIgcHJpemUg'
         )}
+        {/* The address is the link, never the text — so it is not on the page
+            for anything reading it, only in an href a winner just earned. */}
+        <a href={`mailto:${claim.to}`} className={styles.mail}>
+          {veiled('aGVyZQ==')}
+        </a>
+        {veiled('IG9yIA==')}
+        <a href={X_DM_URL} target="_blank" rel="noopener noreferrer" className={styles.mail}>
+          {veiled('RE0gbWUgb24gWA==')}
+        </a>
+        {veiled('LCA=')}
+        <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className={styles.mail}>
+          {veiled('RE0gbWUgb24gTGlua2VkSW4=')}
+        </a>
+        {veiled('IHdpdGggeW91ciBjbGFpbSBjb2RlLg==')}
       </p>
     </div>
   )
