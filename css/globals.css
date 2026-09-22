@@ -386,8 +386,8 @@ a {
 
 .chip:hover,
 .chip[data-active='true'] {
-  border-color: var(--chip-accent, var(--ink));
-  color: var(--chip-accent, var(--ink));
+  border-color: var(--tag-hue, var(--ink));
+  color: var(--tag-hue, var(--ink));
 }
 
 /*
@@ -399,27 +399,32 @@ a {
  *
  * Seven steps, then it repeats. The unfiltered "All" chip carries no hue on
  * purpose: it is the baseline the colours are read against.
+ *
+ * Set on any element carrying `data-hue`, not just chips, so the same tag comes
+ * up in the same colour wherever it appears — the filter row, the meta beside a
+ * post in the list, and the chips in a post's sidebar. `lib/blog.ts`
+ * (`getTagHues`) is what decides which step a tag gets.
  */
-.chip[data-hue='0'] {
-  --chip-accent: var(--rb-red);
+[data-hue='0'] {
+  --tag-hue: var(--rb-red);
 }
-.chip[data-hue='1'] {
-  --chip-accent: var(--rb-orange);
+[data-hue='1'] {
+  --tag-hue: var(--rb-orange);
 }
-.chip[data-hue='2'] {
-  --chip-accent: var(--rb-yellow);
+[data-hue='2'] {
+  --tag-hue: var(--rb-yellow);
 }
-.chip[data-hue='3'] {
-  --chip-accent: var(--rb-green);
+[data-hue='3'] {
+  --tag-hue: var(--rb-green);
 }
-.chip[data-hue='4'] {
-  --chip-accent: var(--rb-blue);
+[data-hue='4'] {
+  --tag-hue: var(--rb-blue);
 }
-.chip[data-hue='5'] {
-  --chip-accent: var(--rb-indigo);
+[data-hue='5'] {
+  --tag-hue: var(--rb-indigo);
 }
-.chip[data-hue='6'] {
-  --chip-accent: var(--rb-violet);
+[data-hue='6'] {
+  --tag-hue: var(--rb-violet);
 }
 
 .srOnly {

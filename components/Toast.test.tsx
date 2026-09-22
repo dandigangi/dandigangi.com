@@ -64,3 +64,27 @@ describe('Toast', () => {
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('the egg variant', () => {
+  it('says an egg was found, with no prize to claim', () => {
+    render(<Toast variant="egg" onClose={vi.fn()} />)
+    expect(screen.getByText(/You found an easter egg!/)).toBeInTheDocument()
+    // The prize copy and its two links belong to the Pikachu win only.
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
+  /** Nothing to act on, so it behaves like an ordinary notification rather than
+   *  sitting on the page for the full prize half-minute. */
+  it('clears itself well before the prize toast would', () => {
+    const onClose = vi.fn()
+    render(<Toast variant="egg" onClose={onClose} />)
+
+    act(() => void vi.advanceTimersByTime(6000))
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('still announces itself politely', () => {
+    render(<Toast variant="egg" onClose={vi.fn()} />)
+    expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite')
+  })
+})

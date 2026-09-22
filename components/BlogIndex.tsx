@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Post } from '@/lib/blog'
-import { getPublishedPosts, getTagCounts } from '@/lib/blog'
+import { getPublishedPosts, getTagCounts, getTagHues } from '@/lib/blog'
 import { formatTag } from '@/lib/format'
 import PageBand from './PageBand'
 import Pagination from './Pagination'
@@ -51,6 +51,8 @@ export default function BlogIndex({
   const tags = Object.entries(getTagCounts()).sort(
     (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
   )
+  // One ranking for the whole site, so a tag is the same colour everywhere.
+  const hues = getTagHues()
 
   return (
     <>
@@ -70,12 +72,12 @@ export default function BlogIndex({
             <Link href="/blog" className="chip" data-active={!activeTag}>
               All ({allCount})
             </Link>
-            {tags.map(([tag, count], index) => (
+            {tags.map(([tag, count]) => (
               <Link
                 key={tag}
                 href={`/blog/tags/${tag}`}
                 className="chip"
-                data-hue={index % 7}
+                data-hue={hues[tag]}
                 data-active={activeTag === tag}
               >
                 {formatTag(tag)} ({count})
@@ -85,8 +87,12 @@ export default function BlogIndex({
         </div>
 
         <div className="rail">
-          <PostSearch index={searchIndex} scopeNote={activeTag ? formatTag(activeTag) : undefined}>
-            <PostList posts={posts} />
+          <PostSearch
+            index={searchIndex}
+            hues={hues}
+            scopeNote={activeTag ? formatTag(activeTag) : undefined}
+          >
+            <PostList posts={posts} activeTag={activeTag} />
           </PostSearch>
         </div>
 

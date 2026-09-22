@@ -104,3 +104,36 @@
   font-size: clamp(16px, 1.7vw, 17px);
   color: var(--soft);
 }
+
+/*
+ * His yellow, which is already contrast-tuned in both themes — #ffd23f on black,
+ * and taken right down to #8a5a00 in light mode, where the bright value reads at
+ * about 1.2:1. Using the token rather than a literal is what keeps the light
+ * case legible for free.
+ */
+.eggEmpty,
+.eggLabel {
+  color: var(--pika);
+}
+
+.eggEmpty {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  /* A word-space, since flex would otherwise collapse the gaps around the sprite. */
+  gap: 0 6px;
+}
+
+/* Sized to the line rather than to a fixed box, so he sits on the text baseline
+   at any of the clamped body sizes. */
+.eggSprite {
+  height: 1.7em;
+  width: auto;
+  vertical-align: middle;
+}
+
+/* Falls back to the meta's own colour when the tag has no hue — a post whose
+   only tag has since been removed still renders, just uncoloured. */
+.rowTag {
+  color: var(--tag-hue, inherit);
+}

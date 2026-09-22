@@ -56,6 +56,42 @@
   gap: 20px 40px;
 }
 
+/*
+ * Fills whatever is left of the row and pins its content to the right rail.
+ * That makes the alignment the same rule at every width instead of a side
+ * effect of how `space-between` happens to treat a lone item on a wrapped line —
+ * which is what left the tagline floating at an arbitrary offset under the title.
+ */
+.bottomSlot {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+/*
+ * Below this the two stack, explicitly, rather than leaving it to the flex line
+ * wrapping. A wrapped lone item lands wherever `space-between` puts it, and the
+ * exact width it wraps at depends on how long the title and the line happen to
+ * be — which is why About's tagline floated at an offset matching neither rail
+ * while Résumé's, one element deeper, sat hard right.
+ *
+ * A column has no such ambiguity: the slot is full width and starts on the rail,
+ * directly under the title. 1200px is chosen so the widest pairing on the site
+ * (Résumé's title plus its button stack) still fits side by side above it.
+ */
+@media (max-width: 1200px) {
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bottomSlot {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
 .title {
   margin: 0 0 0 -0.05em;
   /* Ceiling is set per page by PageBand from the title's length; the clamp still

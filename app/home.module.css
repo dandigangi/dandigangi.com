@@ -56,7 +56,9 @@
    anything on tall ones. */
 .name {
   margin: 0 0 0 -0.05em;
-  font-size: clamp(56px, min(12vw, 19vh), 158px);
+  /* 10% down on every term, so it shrinks by the same amount at every viewport
+     rather than only where one end of the clamp happens to be binding. */
+  font-size: clamp(50px, min(10.8vw, 17.1vh), 142px);
   font-weight: 700;
   line-height: 0.82;
   letter-spacing: -0.058em;

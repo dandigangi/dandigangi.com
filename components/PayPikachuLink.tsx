@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { PIKACHU_CAUGHT, PIKACHU_OPEN, hasCaught } from '@/lib/pikachu'
+import { useSyncExternalStore } from 'react'
+import { PIKACHU_OPEN, hasCaught, subscribe } from '@/lib/pikachu'
 import styles from './PayPikachuLink.module.css'
 
 /**
@@ -16,15 +16,16 @@ export default function PayPikachuLink({
   /** 'plain' for the band nav, where his yellow reads as a warning. */
   tone?: 'brand' | 'plain'
 }) {
-  // Lazy initialiser, not an effect: the nav copy sits inside page content and
-  // remounts on every client-side navigation, after the event has long fired.
-  const [met, setMet] = useState(() => hasCaught())
-
-  useEffect(() => {
-    const onCaught = () => setMet(true)
-    window.addEventListener(PIKACHU_CAUGHT, onCaught)
-    return () => window.removeEventListener(PIKACHU_CAUGHT, onCaught)
-  }, [])
+  /**
+   * Subscribed, not seeded once. This used to latch on a one-way "caught" event,
+   * which meant it could learn that he had been met but never that the state had
+   * been cleared — so Reset Pikachu left this link sitting in every nav. The
+   * store handles both directions, and still gives the right answer on the
+   * remount that every client-side navigation causes.
+   *
+   * The server snapshot is false: the store only exists on the client.
+   */
+  const met = useSyncExternalStore(subscribe, hasCaught, () => false)
 
   if (!met) return null
 

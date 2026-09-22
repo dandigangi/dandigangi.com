@@ -85,7 +85,10 @@ export default function PageBand({
               </>
             )}
           </h1>
-          {children}
+          {/* Wrapped so the slot, not the content, owns the alignment. A bare
+              child shrink-wraps, and once the row wrapped it sat wherever
+              `space-between` left it rather than on either rail. */}
+          {children && <div className={styles.bottomSlot}>{children}</div>}
         </div>
       </div>
     </section>

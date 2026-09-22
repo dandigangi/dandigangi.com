@@ -25,7 +25,9 @@
 .role {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 40px;
+  /* The column gap is really the logo-to-title distance: the date cell is
+     pushed over with margin-left:auto, so it never sees this value. */
+  gap: 12px 22px;
   max-width: 1040px;
   padding: clamp(24px, 4vw, 34px) 0;
 }
@@ -129,7 +131,15 @@
  * hanging off its left. Whichever of the two is wider sets that edge, so
  * neither ever gets squeezed to match the other.
  */
+/*
+ * `flex: 1 1 auto` is load-bearing. Shrink-wrapped, this column right-aligned
+ * the tagline against the buttons rather than against anything on the page — so
+ * once the band wrapped on a narrow viewport, both sat indented from the rail at
+ * an arbitrary offset. Growing to fill the line means flex-end is always the
+ * rail's own edge, at every width.
+ */
 .bandStack {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -327,5 +337,14 @@
     max-width: none;
     gap: 1.5mm 8mm;
     font-size: 9.5pt;
+  }
+}
+
+/* Matches the band: once the title and this stack are in a column, the stack's
+   own contents align left too, or the buttons sit hard right under a
+   left-aligned title. */
+@media (max-width: 1200px) {
+  .bandStack {
+    align-items: flex-start;
   }
 }

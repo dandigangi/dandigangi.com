@@ -60,3 +60,9 @@
   margin-left: auto;
   text-align: right;
 }
+
+/* Falls back to the meta's own colour when the tag has no hue — a post whose
+   only tag has since been removed still renders, just uncoloured. */
+.rowTag {
+  color: var(--tag-hue, inherit);
+}

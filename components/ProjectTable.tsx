@@ -65,6 +65,14 @@ export default function ProjectTable({ projects }: { projects: Project[] }) {
         {rows.map((project, index) => {
           const number = String(index + 1).padStart(2, '0')
           const domain = projectDomain(project)
+          /*
+           * "Coming soon" and "nowhere to go" are two different things now. A
+           * project can be announced and still have a repo to look at, so the
+           * badge is driven by `status` and the row's interactivity by whether
+           * there is a `url` — conflating them meant giving the AI stack a link
+           * would also have silently dropped its badge.
+           */
+          const inert = !project.url
           // Both ramps ride on the row; the stylesheet picks one per theme,
           // because a light-mode hue cannot be resolved here on the server.
           const hues = {
@@ -76,7 +84,12 @@ export default function ProjectTable({ projects }: { projects: Project[] }) {
             <>
               <span className={styles.number}>{number}</span>
               <span className={styles.main}>
-                <span className={styles.title}>{project.title}</span>
+                <span className={styles.title}>
+                  {project.title}
+                  {project.status === 'soon' && (
+                    <span className={styles.soonBadge}>Coming soon</span>
+                  )}
+                </span>
                 <span className={styles.description}>{project.description}</span>
                 {domain && <span className={styles.domain}>{domain}</span>}
               </span>
@@ -87,8 +100,9 @@ export default function ProjectTable({ projects }: { projects: Project[] }) {
               <span className={styles.metaGroup}>
                 <span className={`${styles.meta} ${styles.type}`}>{project.type}</span>
                 <span className={`${styles.meta} ${styles.year}`}>{project.year}</span>
-                {project.status === 'soon' ? (
-                  <span className={styles.soon}>Coming soon</span>
+                {inert ? (
+                  // Holds the column so the grid does not reflow around it.
+                  <span />
                 ) : (
                   <span className={styles.cta} aria-hidden="true">
                     →
@@ -100,7 +114,7 @@ export default function ProjectTable({ projects }: { projects: Project[] }) {
 
           return (
             <li key={project.slug} id={project.slug} className={styles.item}>
-              {project.status === 'soon' ? (
+              {inert ? (
                 // A div, not a link: there is nowhere to go yet, and a link that
                 // does nothing is worse than an obviously inert row.
                 <div className={`${styles.row} ${styles.rowSoon}`} style={hues}>

@@ -7,6 +7,7 @@ import {
   getPublishedPosts,
   getPostBySlug,
   getAdjacentPosts,
+  getTagHues,
   getRelatedPosts,
   type Post,
 } from '@/lib/blog'
@@ -135,6 +136,8 @@ export default async function PostPage({ params }: Props) {
   if (!post || post.draft) notFound()
 
   const { prev, next } = getAdjacentPosts(post.slug)
+  // Same ranking the index uses, so a tag is the same colour on every page.
+  const hues = getTagHues()
   const related = getRelatedPosts(post.slug)
   const published = getPublishedPosts()
   const shareUrl = `${siteMetadata.siteUrl}${post.permalink}`
@@ -198,8 +201,13 @@ export default async function PostPage({ params }: Props) {
                 <span className="label">Tags</span>
                 <div className={styles.tags}>
                   {post.tags.map((tag) => (
-                    <Link key={tag} href={`/blog/tags/${tag}`} className="chip">
-                      {tag}
+                    <Link
+                      key={tag}
+                      href={`/blog/tags/${tag}`}
+                      className="chip"
+                      data-hue={hues[tag]}
+                    >
+                      {formatTag(tag)}
                     </Link>
                   ))}
                 </div>
@@ -238,9 +246,12 @@ export default async function PostPage({ params }: Props) {
         </div>
 
         <nav className={styles.adjacent}>
+          {/* The link fills the cell rather than wrapping just the words — the
+              whole block is the target, and it tints on hover like every other
+              row on the site. */}
           <div className={styles.adjacentCell}>
             {prev && (
-              <Link href={prev.permalink}>
+              <Link href={prev.permalink} className={styles.adjacentLink}>
                 <span className="label">← Previous</span>
                 <h2 className={styles.adjacentTitle}>{prev.title}</h2>
               </Link>
@@ -248,7 +259,7 @@ export default async function PostPage({ params }: Props) {
           </div>
           <div className={`${styles.adjacentCell} ${styles.adjacentRight}`}>
             {next && (
-              <Link href={next.permalink}>
+              <Link href={next.permalink} className={styles.adjacentLink}>
                 <span className="label">Next →</span>
                 <h2 className={styles.adjacentTitle}>{next.title}</h2>
               </Link>

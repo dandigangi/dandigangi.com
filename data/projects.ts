@@ -11,14 +11,16 @@ export type Project = {
   description: string
   type: ProjectType
   year: number
-  /** Absent while `status` is 'soon' — there is nothing to point at yet. */
+  /** Absent when there is nothing to point at yet; that, not `status`, is what
+   *  decides whether the row is a link. */
   url?: string
   /**
    * What the domain line shows. Derived from `url` for everything except React
    * Loop, where the live archive lives at a subdomain nobody should have to read.
    */
   domain?: string
-  /** 'soon' renders the row as a non-link with a "Coming soon" cell. */
+  /** 'soon' adds a "Coming soon" badge beside the title. Independent of `url`:
+   *  a project can be announced and still have a repo worth opening. */
   status: 'live' | 'soon'
   /** Also surfaced in the home page's projects column. */
   onHome?: boolean
@@ -37,6 +39,9 @@ export const projects: Project[] = [
     description: 'Personal AI setup — agents, skills, and systems for my work.',
     type: 'Open source',
     year: 2026,
+    url: 'https://github.com/dandigangi/ai',
+    // Announced but not finished: the repo is there to look at, so the row is a
+    // real link and the badge beside the title is what says it is not done.
     status: 'soon',
   },
   {
@@ -91,6 +96,16 @@ export const projects: Project[] = [
     // Shown as reactloop.com; the archive at 2019. is what still resolves.
     url: 'https://2019.reactloop.com',
     domain: 'reactloop.com',
+    status: 'live',
+  },
+  {
+    slug: 'canvas-things',
+    title: 'Canvas Things',
+    description:
+      'Took some time to learn Canvas & ThreeJS because it didn’t come up during my career.',
+    type: 'Open source',
+    year: 2026,
+    url: 'https://github.com/dandigangi/canvas-things',
     status: 'live',
   },
 ]

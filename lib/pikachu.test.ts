@@ -117,3 +117,88 @@ describe('resetTab', () => {
     expect(pk.heroEverActive()).toBe(true)
   })
 })
+
+describe('the blog-search egg', () => {
+  it('puts the hero up without touching the tab', async () => {
+    const pk = await load()
+    pk.setSearchEgg(true)
+    expect(pk.heroActive()).toBe(true)
+    // It is a wink, not a catch: nothing is owed and nothing is counted.
+    expect(pk.getTab().amount).toBe(pk.OPENING)
+    expect(pk.getTab().invoices).toBe(0)
+    expect(pk.hasCaught()).toBe(false)
+  })
+
+  it('takes the hero back down when the text is cleared', async () => {
+    const pk = await load()
+    pk.setSearchEgg(true)
+    pk.setSearchEgg(false)
+    expect(pk.heroActive()).toBe(false)
+  })
+
+  it('does not survive a reload, because nothing is persisted', async () => {
+    const first = await load()
+    first.setSearchEgg(true)
+    const second = await load()
+    expect(second.heroActive()).toBe(false)
+  })
+
+  it('leaves an armed tab still driving the hero once it clears', async () => {
+    const pk = await load()
+    pk.raiseTab(600)
+    pk.setSearchEgg(true)
+    pk.setSearchEgg(false)
+    // The catch is what is holding it up now, not the search.
+    expect(pk.heroActive()).toBe(true)
+  })
+
+  it('notifies subscribers, or the hero would never repaint', async () => {
+    const pk = await load()
+    const listener = vi.fn()
+    pk.subscribe(listener)
+    pk.setSearchEgg(true)
+    expect(listener).toHaveBeenCalled()
+  })
+})
+
+describe('resetAll', () => {
+  it('puts everything back to a cold start', async () => {
+    const pk = await load()
+    pk.markCaught()
+    pk.raiseTab(3000)
+    pk.setAlterEgo(true)
+    pk.setSearchEgg(true)
+
+    pk.resetAll()
+
+    expect(pk.getTab()).toEqual({ amount: pk.OPENING, invoices: 0, wonAt: null })
+    expect(pk.hasCaught()).toBe(false)
+    expect(pk.isAlterEgo()).toBe(false)
+    expect(pk.isSearchEgg()).toBe(false)
+    expect(pk.heroActive()).toBe(false)
+    expect(pk.heroEverActive()).toBe(false)
+  })
+
+  /** resetTab deliberately leaves `caught` standing; this is the difference. */
+  it('forgets having met him, which resetTab does not', async () => {
+    const pk = await load()
+    pk.markCaught()
+    pk.resetTab()
+    expect(pk.hasCaught()).toBe(true)
+
+    pk.resetAll()
+    expect(pk.hasCaught()).toBe(false)
+  })
+
+  it('clears storage, so a reload starts the chase over', async () => {
+    const first = await load()
+    first.raiseTab(900)
+    expect(localStorage.getItem('dd:pk')).not.toBeNull()
+
+    first.resetAll()
+    expect(localStorage.getItem('dd:pk')).toBeNull()
+
+    const second = await load()
+    expect(second.getTab().amount).toBe(second.OPENING)
+  })
+})

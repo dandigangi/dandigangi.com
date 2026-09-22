@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from '
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import {
-  PIKACHU_CAUGHT,
   PIKACHU_OPEN,
   getInitialTab,
   getTab,
@@ -15,6 +14,8 @@ import {
   subscribe,
 } from '@/lib/pikachu'
 import PikachuModal from './PikachuModal'
+import EggToast from './EggToast'
+import PokeballThrow from './PokeballThrow'
 import Toast from './Toast'
 import styles from './PikachuCameo.module.css'
 
@@ -126,6 +127,14 @@ export default function PikachuCameo() {
   const { amount, invoices, wonAt } = useSyncExternalStore(subscribe, getTab, getInitialTab)
   const [previous, setPrevious] = useState<number | null>(null)
   const [toast, setToast] = useState(false)
+  /** Where the ball is flying to, in viewport coordinates, or null. */
+  const [throwAt, setThrowAt] = useState<{ x: number; y: number } | null>(null)
+  /**
+   * Rides with the throw, so meeting him is acknowledged the same way the other
+   * eggs on the site are. Latched rather than tied to `throwAt`: the ball is
+   * gone in under a second, and the toast should outlive it.
+   */
+  const [eggToast, setEggToast] = useState(false)
 
   /**
    * Read by `onClose`, which has to keep a stable identity — so the won state
@@ -235,7 +244,31 @@ export default function PikachuCameo() {
     }
   }, [])
 
+  /**
+   * The very first catch gets a ball thrown at him before the invoice lands.
+   * Gated on `invoices === 0`, which is already persisted with the tab — so it
+   * plays once and not on every catch afterwards, and a Reset Pikachu in the dev
+   * dock brings it back, which is also the only sane way to watch it twice.
+   *
+   * The loop is stopped first: its pending timers would otherwise slide him back
+   * out from under the ball mid-flight.
+   */
   const onCatch = () => {
+    if (getTab().invoices === 0 && cameo && throwAt === null) {
+      loop.current?.stop()
+      setEggToast(true)
+      setThrowAt({
+        // The cameo is positioned in page coordinates; the ball is fixed.
+        x: cameo.left - window.scrollX + SIZE / 2,
+        y: cameo.top - window.scrollY + SIZE / 2,
+      })
+      return
+    }
+    settle()
+  }
+
+  /** The catch itself, once anything in front of it has played out. */
+  const settle = () => {
     const tab = getTab()
     // Each shakedown costs more than the last, cents and all — but the opening
     // ask stands on the very first catch, including across visits.
@@ -246,6 +279,11 @@ export default function PikachuCameo() {
       raiseTab(tab.amount)
     }
     show(true)
+  }
+
+  const onThrowDone = () => {
+    setThrowAt(null)
+    settle()
   }
 
   // Not a catch: it changes the figure without raising an invoice, and leaves
@@ -315,6 +353,8 @@ export default function PikachuCameo() {
         />
       )}
       {cameo?.path === pathname && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
+      {throwAt && <PokeballThrow x={throwAt.x} y={throwAt.y} onDone={onThrowDone} />}
+      <EggToast show={eggToast} />
       {toast && <Toast onClose={hideToast} />}
     </>
   )
@@ -343,7 +383,6 @@ function Cameo({ cameo, shown, onCatch }: { cameo: Cameo; shown: boolean; onCatc
         aria-label="Pikachu"
         onClick={() => {
           markCaught()
-          window.dispatchEvent(new CustomEvent(PIKACHU_CAUGHT))
           onCatch()
         }}
       >

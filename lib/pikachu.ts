@@ -3,8 +3,6 @@
  * the root layout and its listeners sit inside server-rendered components, so
  * the two have no common client ancestor to hold a provider.
  */
-export const PIKACHU_CAUGHT = 'pikachu:caught'
-
 /** Reopens the invoice without adding to the tab — clicking him does that. */
 export const PIKACHU_OPEN = 'pikachu:open'
 
@@ -18,6 +16,13 @@ export const PIKACHU_OPEN = 'pikachu:open'
  */
 let caught = false
 let alterEgo = false
+/**
+ * Typing his name into the blog search puts the hero up for as long as that
+ * exact text is in the box. Separate from the tab on purpose: it is a wink, not
+ * a catch, so it costs nothing, earns nothing, and leaves the moment you clear
+ * the field.
+ */
+let searchEgg = false
 /**
  * Sticky. Once the layer has been shown it stays mounted so it can transition
  * out as well as in — an unmounted element cannot animate away. It is still
@@ -82,6 +87,15 @@ export const subscribe = (listener: () => void) => {
 
 export const hasCaught = () => caught
 export const isAlterEgo = () => alterEgo
+export const isSearchEgg = () => searchEgg
+
+/** Driven by the blog search. Transient — never persisted, never counted. */
+export const setSearchEgg = (on: boolean) => {
+  if (searchEgg === on) return
+  const wasActive = heroActive()
+  searchEgg = on
+  changed(wasActive)
+}
 
 /**
  * Meeting him is not enough to take over the page — he has to have escalated
@@ -94,7 +108,7 @@ export const isAlterEgo = () => alterEgo
  * back under the line puts the abstract render back exactly as it puts the
  * modal back to black.
  */
-export const heroActive = () => armed() && getTab().amount >= OVER_TIER
+export const heroActive = () => searchEgg || (armed() && getTab().amount >= OVER_TIER)
 
 /** Derived too, or a reload with an escalated tab stored would never mount the
  *  layer that `heroActive` is about to switch on. */
@@ -250,6 +264,32 @@ export const lapseHero = () => {
 export const resetTab = () => {
   const wasActive = heroActive()
   disarm()
+  tab = OPENING_TAB
+  try {
+    localStorage.removeItem(STORE_KEY)
+  } catch {
+    // Blocked storage. The in-memory reset still stands for this page.
+  }
+  changed(wasActive)
+}
+
+/**
+ * Everything back to a cold start: no tab, no invoices, never met him, no hero.
+ * `resetTab` deliberately leaves `caught` standing, because meeting him is
+ * permanent within a session — that is right for winning, and wrong for a dev
+ * control whose whole job is to get back to what a first-time visitor sees.
+ *
+ * Clears `everActive` too, so the hero layer unmounts rather than sitting there
+ * transparent; the next trigger mounts it fresh and fades in properly.
+ */
+export const resetAll = () => {
+  const wasActive = heroActive()
+  disarm()
+  caught = false
+  alterEgo = false
+  searchEgg = false
+  everActive = false
+  activatedAt = 0
   tab = OPENING_TAB
   try {
     localStorage.removeItem(STORE_KEY)

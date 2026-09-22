@@ -37,6 +37,29 @@ export function getTagCounts(): Record<string, number> {
   return counts
 }
 
+/** How many steps the tag rainbow runs before it repeats. */
+export const TAG_HUES = 7
+
+/**
+ * Which rainbow step each tag gets, keyed by tag.
+ *
+ * Derived from one ranking — most posts first, ties alphabetical — so the chip
+ * on the index, the tag beside a post in the list, and the chips in a post's
+ * sidebar all agree. Working it out from a local array index instead was what
+ * made those disagree the moment any of the three sorted differently.
+ *
+ * Position-based rather than fixed per tag: a tag that climbs the ranking takes
+ * the hue of its new slot, which keeps the run of colour intact as the blog
+ * grows rather than leaving gaps where a tag used to sit.
+ */
+export function getTagHues(): Record<string, number> {
+  return Object.fromEntries(
+    Object.entries(getTagCounts())
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([tag], index) => [tag, index % TAG_HUES])
+  )
+}
+
 /** Published posts carrying `tag`, newest first. Tags are matched exactly — they
  *  are URL segments, so there is only ever one spelling of each. */
 export function getPostsByTag(tag: string): Post[] {

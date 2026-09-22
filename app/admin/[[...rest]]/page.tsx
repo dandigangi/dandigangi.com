@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
+import EggToast from '@/components/EggToast'
 import SiteNav from '@/components/SiteNav'
 import { PIKA_PASS } from '@/lib/pikaPass'
 import siteMetadata from '@/data/siteMetadata'
@@ -66,6 +67,11 @@ export default async function AdminGate({
   return (
     <>
       {pika && <PikaTheme />}
+
+      {/* Same acknowledgement the blog-search egg gets. Rendered here rather
+          than on the gate: the gate navigates away a couple of seconds after
+          the guess lands, which would cut the toast off mid-read. */}
+      <EggToast show={pika} />
 
       {pika && (
         <div className={gate.pikaLayer} aria-hidden="true">

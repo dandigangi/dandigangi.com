@@ -3,6 +3,8 @@
 import { useEffect, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { resetAll } from '@/lib/pikachu'
+import { clearPikaPass } from '@/lib/pikaPass'
 import { toggleTheme } from '@/lib/theme'
 import styles from './LocalTools.module.css'
 
@@ -121,6 +123,19 @@ export default function LocalTools() {
         Write
       </Link>
       <ThemeJump />
+      {/* Every trace of him: the tab, having met him, the alter ego, the hero
+          swap — and the cookie behind the /admin reveal, which is the one bit of
+          this that does not live in the store. */}
+      <button
+        type="button"
+        className={styles.button}
+        onClick={() => {
+          resetAll()
+          clearPikaPass()
+        }}
+      >
+        Reset Pikachu
+      </button>
     </div>
   )
 }

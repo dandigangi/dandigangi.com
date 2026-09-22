@@ -1,9 +1,16 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { formatFullDate, formatTag } from '@/lib/format'
+import { setSearchEgg } from '@/lib/pikachu'
+import EggToast from './EggToast'
 import styles from './PostSearch.module.css'
+
+/** Type his name and the hero above you goes yellow, for exactly as long as it
+ *  stays typed. Matched on the whole query, not a substring — a post about him
+ *  should not put him on the page. */
+const EGG = 'pikachu'
 
 export type SearchEntry = {
   slug: string
@@ -25,10 +32,14 @@ export type SearchEntry = {
  */
 export default function PostSearch({
   index,
+  hues = {},
   scopeNote,
   children,
 }: {
   index: SearchEntry[]
+  /** Rainbow step per tag, from `getTagHues()`. Passed in rather than derived:
+   *  this runs on the client and has no access to the post collection. */
+  hues?: Record<string, number>
   /**
    * The tag whose page this is, when there is one. Search stays global there —
    * a box that can only find the four posts already listed below it is not
@@ -40,6 +51,18 @@ export default function PostSearch({
 }) {
   const [query, setQuery] = useState('')
   const trimmed = query.trim().toLowerCase()
+  const egg = trimmed === EGG
+
+  /**
+   * The hero lives in PageBand, well outside this subtree, so it is told through
+   * the store rather than through props. Cleared on unmount as well as on
+   * change: navigating away with the word still in the box would otherwise
+   * leave every later page yellow.
+   */
+  useEffect(() => {
+    setSearchEgg(egg)
+    return () => setSearchEgg(false)
+  }, [egg])
 
   const results = useMemo(() => {
     if (!trimmed) return []
@@ -48,6 +71,14 @@ export default function PostSearch({
       return trimmed.split(/\s+/).every((term) => haystack.includes(term))
     })
   }, [index, trimmed])
+
+  /**
+   * The egg fired and the index genuinely has nothing — which is the joke, so
+   * the empty state becomes the payoff rather than a dead end. Guarded on the
+   * result count as well as the query: if a post about him ever gets written,
+   * the real results win and this quietly stops appearing.
+   */
+  const caught = egg && results.length === 0
 
   return (
     <>
@@ -65,16 +96,31 @@ export default function PostSearch({
           autoComplete="off"
         />
         {trimmed ? (
-          <span className="label" aria-live="polite">
-            {results.length} {results.length === 1 ? 'result' : 'results'}
-            {scopeNote ? ` across all tags, not just ${scopeNote}` : ''}
+          <span className={`label ${caught ? styles.eggLabel : ''}`} aria-live="polite">
+            {caught ? (
+              '1 Pokémon'
+            ) : (
+              <>
+                {results.length} {results.length === 1 ? 'result' : 'results'}
+                {scopeNote ? ` across all tags, not just ${scopeNote}` : ''}
+              </>
+            )}
           </span>
         ) : null}
       </div>
 
+      <EggToast show={egg} />
+
       {trimmed ? (
         <div className={styles.results}>
-          {results.length === 0 ? (
+          {caught ? (
+            <p className={`${styles.empty} ${styles.eggEmpty}`}>
+              Nothing matches “pikachu” except{' '}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/static/images/pikachu.png" alt="Pikachu" className={styles.eggSprite} />.
+              Try throwing a Pokéball!
+            </p>
+          ) : results.length === 0 ? (
             <p className={styles.empty}>
               Nothing matches “{query.trim()}”. Try a broader term or browse by tag.
             </p>
@@ -87,7 +133,14 @@ export default function PostSearch({
                 </div>
                 <div className={`meta ${styles.rowMeta}`}>
                   {formatFullDate(post.date)}
-                  {post.tags[0] ? ` · ${formatTag(post.tags[0])}` : ''}
+                  {post.tags[0] && (
+                    <>
+                      {' · '}
+                      <span className={styles.rowTag} data-hue={hues[post.tags[0]]}>
+                        {formatTag(post.tags[0])}
+                      </span>
+                    </>
+                  )}
                 </div>
               </Link>
             ))

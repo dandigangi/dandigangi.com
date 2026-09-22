@@ -1,9 +1,20 @@
 import Link from 'next/link'
-import type { Post } from '@/lib/blog'
+import { getTagHues, type Post } from '@/lib/blog'
 import { formatFullDate, formatTag } from '@/lib/format'
 import styles from './PostList.module.css'
 
-export default function PostList({ posts }: { posts: Post[] }) {
+export default function PostList({ posts, activeTag }: { posts: Post[]; activeTag?: string }) {
+  const hues = getTagHues()
+
+  /**
+   * On a tag page the meta shows the tag you are filtering by, not the post's
+   * first one. A post tagged engineering-management and hiring, listed under
+   * hiring, was labelling itself "Engineering Management" — which reads as the
+   * filter having failed. Falls back to the first tag everywhere else.
+   */
+  const shown = (post: Post) =>
+    activeTag && post.tags.includes(activeTag) ? activeTag : post.tags[0]
+
   if (posts.length === 0) {
     return (
       <p className="label" style={{ padding: '48px 0' }}>
@@ -22,7 +33,16 @@ export default function PostList({ posts }: { posts: Post[] }) {
           </div>
           <div className={`meta ${styles.rowMeta}`}>
             {formatFullDate(post.date)}
-            {post.tags[0] ? ` · ${formatTag(post.tags[0])}` : ''}
+            {shown(post) && (
+              <>
+                {' · '}
+                {/* Same hue the tag's chip carries above, so the eye can link
+                    the row to the filter without reading either. */}
+                <span className={styles.rowTag} data-hue={hues[shown(post)]}>
+                  {formatTag(shown(post))}
+                </span>
+              </>
+            )}
           </div>
         </Link>
       ))}

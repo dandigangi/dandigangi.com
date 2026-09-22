@@ -225,10 +225,28 @@
   border-bottom: 1px solid var(--line);
 }
 
+/* The padding moved onto the link inside, so the hit area is the whole cell
+   rather than the two lines of text sitting in the middle of it. */
 .adjacentCell {
   background: var(--bg);
-  padding: clamp(24px, 4vw, 32px) var(--rail);
   min-height: 120px;
+  display: flex;
+}
+
+.adjacentLink {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  /* Pins the label to the top and the title beneath it, so a one-line and a
+     two-line title still start at the same height. */
+  justify-content: flex-start;
+  gap: 12px;
+  padding: clamp(24px, 4vw, 32px) var(--rail);
+  transition: background-color 0.15s ease;
+}
+
+.adjacentLink:hover {
+  background: var(--hover);
 }
 
 .adjacentRight {
@@ -236,7 +254,8 @@
 }
 
 .adjacentTitle {
-  margin: 12px 0 0;
+  /* The link's own gap carries this now. */
+  margin: 0;
   font-size: clamp(21px, 2.4vw, 26px);
   font-weight: 600;
   letter-spacing: -0.025em;
@@ -279,4 +298,15 @@
   line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--ink);
+}
+
+/* A post's own tags are always in their hue, not only on hover: here they are
+   information about the post rather than a filter you might pick. */
+.tags :global(.chip) {
+  border-color: color-mix(in srgb, var(--tag-hue, var(--line)) 42%, transparent);
+  color: var(--tag-hue, var(--soft));
+}
+
+.tags :global(.chip):hover {
+  border-color: var(--tag-hue, var(--ink));
 }

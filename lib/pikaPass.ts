@@ -31,3 +31,13 @@ export const grantPikaPass = () => {
     // Blocked cookies. The `?pika=1` on the redirect still shows him once.
   }
 }
+
+/** Forgets the guess. Only the local dev dock calls this — the pass otherwise
+ *  expires on its own `max-age`. */
+export const clearPikaPass = () => {
+  try {
+    document.cookie = `${PIKA_PASS}=; path=${PATH}; max-age=0; SameSite=Lax`
+  } catch {
+    // Blocked cookies. There was nothing to clear in that case anyway.
+  }
+}

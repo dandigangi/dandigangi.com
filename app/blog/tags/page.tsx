@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getTagCounts } from '@/lib/blog'
+import { getTagCounts, getTagHues } from '@/lib/blog'
 import { formatTag } from '@/lib/format'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
@@ -15,6 +15,7 @@ export default function TagsPage() {
   const tags = Object.entries(getTagCounts()).sort(
     (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
   )
+  const hues = getTagHues()
 
   return (
     <>
@@ -22,8 +23,8 @@ export default function TagsPage() {
 
       <div className="container">
         <div className={`rail ${styles.chips}`}>
-          {tags.map(([tag, count], index) => (
-            <Link key={tag} href={`/blog/tags/${tag}`} className="chip" data-hue={index % 7}>
+          {tags.map(([tag, count]) => (
+            <Link key={tag} href={`/blog/tags/${tag}`} className="chip" data-hue={hues[tag]}>
               {formatTag(tag)} ({count})
             </Link>
           ))}

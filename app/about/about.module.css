@@ -20,16 +20,19 @@
 .name {
   margin: 0 0 14px;
   font-size: clamp(20px, 2.4vw, 28px);
-  /* 500, not 700: at this size the bold weight competed with the lede under it,
-     which is the sentence that actually matters on this page. */
-  font-weight: 500;
+  /* 400: at this size anything heavier competed with the lede under it, which
+     is the sentence that actually matters on this page. The uppercase and the
+     tight tracking carry it without the weight. */
+  font-weight: 400;
   line-height: 1;
   letter-spacing: -0.04em;
   text-transform: uppercase;
 }
 
 .lede {
-  margin: 0 0 28px;
+  /* The extra 10px is for the tagline wheel that follows: at 28px it sat close
+     enough to read as part of the opening sentence rather than as its own beat. */
+  margin: 0 0 38px;
   max-width: 760px;
   font-size: clamp(24px, 3vw, 34px);
   line-height: 1.3;

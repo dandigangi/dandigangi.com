@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useSyncExternalStore } from 'react'
 import Image from 'next/image'
-import { isAlterEgo, setAlterEgo } from '@/lib/pikachu'
+import { isAlterEgo, setAlterEgo, subscribe as isAlterEgoSubscribe } from '@/lib/pikachu'
 import { ArrowRight } from './Icons'
 import styles from './Portrait.module.css'
 
@@ -14,8 +14,9 @@ const ALTER = '/static/images/dan-digangi-alter-ego.jpg'
  * layout around it.
  */
 export default function Portrait() {
-  // Seeded from the store so the photo and the hero agree after navigating away.
-  const [alter, setAlter] = useState(() => isAlterEgo())
+  // Read through the store rather than seeded from it once, so clearing the
+  // state puts the real photo back instead of stranding the alter ego.
+  const alter = useSyncExternalStore(isAlterEgoSubscribe, isAlterEgo, () => false)
 
   return (
     <div className={styles.portrait}>
@@ -30,13 +31,10 @@ export default function Portrait() {
         />
         <button
           type="button"
-          onClick={() => {
-            const next = !alter
-            setAlter(next)
-            // Stored so the photo survives navigating away and back. It goes no
-            // further than this frame — the hero swap is the tab's job alone.
-            setAlterEgo(next)
-          }}
+          // Stored so the photo survives navigating away and back, and read
+          // back out of the store above. It goes no further than this frame —
+          // the hero swap is the tab's job alone.
+          onClick={() => setAlterEgo(!alter)}
           className={styles.toggle}
           aria-pressed={alter}
         >

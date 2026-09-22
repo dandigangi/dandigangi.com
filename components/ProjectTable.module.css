@@ -216,12 +216,22 @@
   opacity: 0.66;
 }
 
-.soon {
+/*
+ * Sits beside the title rather than in the CTA cell. Over there it read as the
+ * row's action — "click here for coming soon" — when it is really a fact about
+ * the project. The explicit letter-spacing overrides the title's -0.03em, which
+ * would otherwise crush it.
+ */
+.soonBadge {
+  display: inline-block;
+  margin-left: 12px;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 10px;
+  font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
   color: var(--soft);
 }
 
@@ -308,8 +318,7 @@
     margin-top: 22px;
   }
 
-  .cta,
-  .soon {
+  .cta {
     grid-column: 3;
     grid-row: 1;
   }
@@ -399,8 +408,7 @@
   }
 
   /* Pushes the arrow — or "Coming soon" — to the far end of the meta line. */
-  .cta,
-  .soon {
+  .cta {
     margin-left: auto;
   }
 

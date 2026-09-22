@@ -111,10 +111,31 @@ describe('ProjectTable', () => {
     )
   })
 
-  it('does not link a coming-soon project', () => {
+  it('does not link a coming-soon project that has nowhere to go', () => {
     render(<ProjectTable projects={projects} />)
     expect(screen.queryByRole('link', { name: /Zebra Project/ })).not.toBeInTheDocument()
     expect(screen.getByText('Coming soon')).toBeInTheDocument()
+  })
+
+  /**
+   * The badge tracks `status`; being a link tracks `url`. Conflating the two
+   * meant giving an announced project a repo would silently drop its badge.
+   */
+  it('still badges a coming-soon project that does have somewhere to go', () => {
+    const announced: Project = {
+      ...projects[0],
+      slug: 'announced',
+      title: 'Announced Thing',
+      url: 'https://github.com/example/announced',
+    }
+    render(<ProjectTable projects={[announced]} />)
+
+    expect(screen.getByRole('link', { name: /Announced Thing/ })).toHaveAttribute(
+      'href',
+      'https://github.com/example/announced'
+    )
+    expect(screen.getByText('Coming soon')).toBeInTheDocument()
+    expect(screen.getByText('github.com/example/announced')).toBeInTheDocument()
   })
 
   it('shows no domain line for a coming-soon project', () => {

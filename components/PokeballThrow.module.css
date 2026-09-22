@@ -1,0 +1,164 @@
+/*
+ * Four nested elements, one transform each. A single element cannot animate two
+ * different transform functions on independent curves, and the whole effect is
+ * exactly that: X travels linearly while Y arcs, and the spin and the scale run
+ * on curves of their own.
+ *
+ * Fixed rather than absolute, because the landing point is measured in viewport
+ * coordinates at the moment of the click.
+ */
+.stage {
+  position: fixed;
+  z-index: 200;
+  width: 0;
+  height: 0;
+  /* It is scenery. Nothing here should ever eat a click meant for the page. */
+  pointer-events: none;
+}
+
+/*
+ * Only the outermost layer offsets. Every layer repeating the -23px centring was
+ * what made the ball spiral: the offsets compounded, so each nested box sat
+ * further off the point and `rotate` swung the ball around a centre that was no
+ * longer its own. The inner layers overlay their parent exactly, which is what
+ * makes the spin happen in place.
+ */
+.flight {
+  position: absolute;
+  /* Half the ball, so the 46px box is centred on the zero-size stage. */
+  left: -23px;
+  top: -23px;
+  width: 46px;
+  height: 46px;
+  animation: flightX var(--flight) linear forwards;
+}
+
+.arc,
+.spin,
+.scale {
+  position: absolute;
+  inset: 0;
+}
+
+.arc {
+  animation: flightY var(--flight) forwards;
+}
+
+.spin {
+  /* Linear on purpose: a thrown ball does not ease out of its spin mid-air. */
+  animation: spin var(--flight) linear forwards;
+}
+
+.scale {
+  animation: approach var(--flight) cubic-bezier(0.3, 0, 0.6, 1) forwards;
+}
+
+@keyframes flightX {
+  from {
+    transform: translateX(var(--dx));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/*
+ * The arc. Rises past the landing point, then falls onto it — the per-keyframe
+ * timing functions are what make it decelerate on the way up and accelerate on
+ * the way down, which is the difference between a lob and a swipe.
+ */
+@keyframes flightY {
+  0% {
+    transform: translateY(var(--dy));
+    animation-timing-function: cubic-bezier(0.2, 0.68, 0.5, 1);
+  }
+  62% {
+    transform: translateY(-74px);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.78, 0.42);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(var(--spin));
+  }
+}
+
+/*
+ * Big leaving your hand, small landing on him — it is travelling away from the
+ * reader, not toward them. This ran the other way round at first, which read as
+ * the ball arriving rather than being thrown.
+ */
+@keyframes approach {
+  from {
+    transform: scale(1.4);
+  }
+  to {
+    transform: scale(0.75);
+  }
+}
+
+/* Connects: a quick squash and out, so the modal is not opening over a ball
+   that is still sitting there. */
+.hit {
+  animation: hit var(--impact) ease-out forwards;
+}
+
+@keyframes hit {
+  /* Picks up where the flight left it, or it jumps back to full size on impact. */
+  0% {
+    transform: scale(0.75);
+    opacity: 1;
+  }
+  35% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(0.45);
+    opacity: 0;
+  }
+}
+
+/*
+ * The ring that reads as the hit landing. His yellow at full strength: this sits
+ * over the page rather than in it, so it does not follow the theme. Centred like
+ * .flight, being a sibling of it rather than a child.
+ */
+.flash {
+  position: absolute;
+  left: -23px;
+  top: -23px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 3px solid #ffd23f;
+  animation: flash var(--impact) ease-out forwards;
+}
+
+@keyframes flash {
+  from {
+    transform: scale(0.5);
+    opacity: 0.95;
+  }
+  to {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+/*
+ * The cameo never appears at all under reduced motion — the whole scheduling
+ * loop returns early — so this can only be reached if that ever changes. Cheap
+ * insurance against the throw becoming the one thing that ignores the setting.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    display: none;
+  }
+}
