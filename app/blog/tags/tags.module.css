@@ -9,7 +9,8 @@
   padding-bottom: 110px;
 }
 
-.chips :global(.chip) {
+.chips :global(.chip),
+.chips :global([class*='revealed']) {
   padding: 20px 32px;
   font-size: 19px;
   letter-spacing: 0.1em;

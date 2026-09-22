@@ -99,7 +99,9 @@ export const setSearchEgg = (on: boolean) => {
 
 /**
  * Meeting him is not enough to take over the page — he has to have escalated
- * first, at the same figure that turns the modal red. The tab is the only way
+ * past the figure that earns an egg, which is higher than the one that turns
+ * the modal red. Repainting every hero on the site is a bigger swing than the
+ * first flash of temper deserves. The tab is the only way
  * in: the alter ego toggle deliberately does not count, because a button on
  * /about that repaints every hero on the site is a bigger swing than a photo
  * swap advertises.
@@ -108,7 +110,7 @@ export const setSearchEgg = (on: boolean) => {
  * back under the line puts the abstract render back exactly as it puts the
  * modal back to black.
  */
-export const heroActive = () => searchEgg || (armed() && getTab().amount >= OVER_TIER)
+export const heroActive = () => searchEgg || (armed() && getTab().amount >= EGG_TIER)
 
 /** Derived too, or a reload with an escalated tab stored would never mount the
  *  layer that `heroActive` is about to switch on. */
@@ -227,7 +229,7 @@ export const raiseTab = (amount: number) => {
   arm()
   tab = { amount, invoices: tab.invoices + 1 }
   persist()
-  // Not emit(): crossing OVER_TIER is what switches the hero on, and only this
+  // Not emit(): crossing EGG_TIER is what switches the hero on, and only this
   // knows whether that just happened.
   changed(wasActive)
 }

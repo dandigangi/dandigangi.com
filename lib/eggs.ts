@@ -9,9 +9,9 @@
  * invoice turning hostile, and the figure he stops at. Finding him once is a
  * different discovery from finding out how far he will take it.
  *
- * Only the eggs that announce themselves are in here. The alter-ego portrait
- * and the Pay Pikachu link are discoveries too, but neither says so, and a
- * counter that moves without telling you is worse than no counter.
+ * Only the eggs that announce themselves are in here. The Pay Pikachu link is a
+ * discovery too, but it never says so, and a counter that moves without telling
+ * you is worse than no counter.
  */
 export const EGGS = [
   'pikachu',
@@ -22,6 +22,7 @@ export const EGGS = [
   'sprite',
   'wheel',
   'hidden',
+  'alterego',
 ] as const
 
 export type Egg = (typeof EGGS)[number]

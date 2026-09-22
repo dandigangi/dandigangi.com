@@ -14,7 +14,9 @@
   width: max-content;
   max-width: min(560px, calc(100vw - 32px));
   padding: 14px 18px;
-  border: 1px solid var(--line);
+  /* Transparent, because the ring below is painted into it. The border still has
+     to be declared so it reserves its 1px — losing it would shift the copy. */
+  border: 1px solid transparent;
   /* The pill shape comes from the radius exceeding half the height, so it
      stays a pill if the copy ever wraps to two lines rather than turning into
      a rounded rectangle with odd corners. */
@@ -34,6 +36,45 @@
     0 28px 64px rgba(0, 0, 0, 0.32);
   transform: translateX(-50%);
   animation: toastIn 240ms ease-out;
+}
+
+/*
+ * A 1px rainbow that travels round the pill.
+ *
+ * Painted with two backgrounds and `background-clip`: the flat one is clipped to
+ * the padding box and the gradient to the border box, so the gradient only shows
+ * where the border sits. A gradient cannot be a `border-color`, and the usual
+ * alternative — a pseudo-element behind a masked parent — cannot follow a
+ * border-radius this large without a second element.
+ *
+ * `--angle` is a registered property (see globals.css) purely so it can be
+ * animated; a plain custom property is a string to the animation system and
+ * would jump from 0deg to 360deg with nothing in between.
+ */
+.toast {
+  background:
+    linear-gradient(var(--bg), var(--bg)) padding-box,
+    conic-gradient(
+        from var(--angle),
+        var(--rb-red),
+        var(--rb-orange),
+        var(--rb-yellow),
+        var(--rb-green),
+        var(--rb-blue),
+        var(--rb-indigo),
+        var(--rb-violet),
+        var(--rb-red)
+      )
+      border-box;
+  animation:
+    toastIn 240ms ease-out,
+    spectrum 6s linear infinite;
+}
+
+@keyframes spectrum {
+  to {
+    --angle: 360deg;
+  }
 }
 
 /*
@@ -105,9 +146,11 @@
 
 /* Reverses the entry rather than inventing a second gesture, so it reads as the
    same object leaving the way it arrived. `forwards` holds the last frame until
-   the component actually unmounts. */
+   the component actually unmounts. The ring keeps turning on the way out. */
 .leaving {
-  animation: toastOut var(--toast-exit, 260ms) ease-in forwards;
+  animation:
+    toastOut var(--toast-exit, 260ms) ease-in forwards,
+    spectrum 6s linear infinite;
 }
 
 @keyframes toastOut {
@@ -122,6 +165,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* The ring stays — it just stops travelling. */
   .toast,
   .leaving {
     animation: none;

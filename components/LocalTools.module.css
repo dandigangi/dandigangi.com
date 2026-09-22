@@ -12,11 +12,11 @@
 }
 
 .button {
-  /* Held just off full strength so the page underneath stays readable through
+  /* Held well off full strength so the page underneath stays readable through
      the dock — it covers the bottom-right corner of whatever is being checked.
      Not applied to .hide or .peek: those are the way back to the dock, and a
      control you have to hunt for is the one bug this dock has already had. */
-  opacity: 0.875;
+  opacity: 0.79;
   /* Both read as one control, so they match rather than sizing to their labels. */
   display: inline-flex;
   align-items: center;
@@ -86,20 +86,6 @@
   border-color: #1d4ed8;
 }
 
-/* Same swap ThemeToggle does, on text rather than icons. Dark is the default,
-   so the "switch to light" label is the one that shows unless light is active. */
-.whenLight {
-  display: none;
-}
-
-:global([data-theme='light']) .whenDark {
-  display: none;
-}
-
-:global([data-theme='light']) .whenLight {
-  display: inline;
-}
-
 /* The dock's old purple, on a readout rather than a control. Deliberately not a
    button: nothing happens when you press it, and a control that does nothing is
    worse than a label. */
@@ -110,7 +96,7 @@
   color: #fff;
   background: #7c3aed;
   border: 1px solid #7c3aed;
-  opacity: 0.875;
+  opacity: 0.79;
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   font-weight: 500;

@@ -27,3 +27,24 @@
   outline: 2px solid var(--ink);
   outline-offset: -4px;
 }
+
+/*
+ * Found. A chip in his yellow — and inert: no pointer, no hover, nothing to
+ * press. Pressing it again would do nothing, and a control that does nothing is
+ * worse than a label.
+ *
+ * --pika is contrast-tuned in both themes (it drops to #8a5a00 on the light
+ * ground, where the bright value reads at about 1.2:1), so this is legible
+ * without a second colour.
+ */
+.revealed {
+  display: inline-block;
+  padding: 11px 18px;
+  border: 1px solid var(--pika);
+  color: var(--pika);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: default;
+}

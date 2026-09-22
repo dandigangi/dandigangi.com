@@ -3,6 +3,7 @@
 import { useState, useSyncExternalStore } from 'react'
 import Image from 'next/image'
 import { isAlterEgo, setAlterEgo, subscribe as isAlterEgoSubscribe } from '@/lib/pikachu'
+import EggToast from './EggToast'
 import { ArrowRight } from './Icons'
 import styles from './Portrait.module.css'
 
@@ -21,6 +22,8 @@ export default function Portrait() {
   // Read through the store rather than seeded from it once, so clearing the
   // state puts the real photo back instead of stranding the alter ego.
   const alter = useSyncExternalStore(isAlterEgoSubscribe, isAlterEgo, () => false)
+  /** Latched on the first press, so the toast outlives the swap that earned it. */
+  const [found, setFound] = useState(false)
   /**
    * Nothing wipes on arrival — only on a press. Without this the star plays on
    * first paint for anyone whose stored state is already the alter ego, which
@@ -60,6 +63,7 @@ export default function Portrait() {
           // the hero swap is the tab's job alone.
           onClick={() => {
             setPressed(true)
+            setFound(true)
             setAlterEgo(!alter)
           }}
           className={styles.toggle}
@@ -69,6 +73,7 @@ export default function Portrait() {
         </button>
       </div>
       <span className="meta">Dan DiGangi · Chicago</span>
+      <EggToast egg="alterego" show={found} />
     </div>
   )
 }

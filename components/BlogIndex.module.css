@@ -15,7 +15,8 @@
 
 /* The filter row is the page's primary navigation, so its chips run a size up
    from the default — which stays where it is for the incidental ones. */
-.chips :global(.chip) {
+.chips :global(.chip),
+.chips :global([class*='revealed']) {
   padding: 11px 18px;
   font-size: 13px;
 }

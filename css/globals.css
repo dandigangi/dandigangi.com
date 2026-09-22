@@ -4,6 +4,17 @@
  * values in particular are contrast-tuned to ~5:1 and must not be lightened.
  */
 
+/*
+ * Registered so it can be animated. A custom property is a string to the
+ * animation system unless its syntax is declared, so an un-registered --angle
+ * would cut from 0deg to 360deg rather than sweeping through.
+ */
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 :root {
   --bg: #000000;
   --ink: #f5f4f1;

@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation'
 import { resetAll } from '@/lib/pikachu'
 import { TOTAL_EGGS, foundEggs, resetEggs, subscribe as eggsSubscribe } from '@/lib/eggs'
 import { clearPikaPass } from '@/lib/pikaPass'
-import { toggleTheme } from '@/lib/theme'
 import styles from './LocalTools.module.css'
 
 /**
@@ -135,7 +134,6 @@ export default function LocalTools() {
       <Link href="/admin/write" className={styles.button}>
         Write
       </Link>
-      <ThemeJump />
       {/* Every trace of him: the tab, having met him, the alter ego, the hero
           swap, the egg tally — and the cookie behind the /admin reveal, which is
           the one bit of this that does not live in a store. */}
@@ -158,23 +156,5 @@ export default function LocalTools() {
         🥚 {eggs}/{TOTAL_EGGS} found
       </span>
     </div>
-  )
-}
-
-/**
- * The site's theme toggle lives in the footer, which is a scroll away on most
- * pages and suppressed entirely on the editor. Checking a change in both themes
- * is the single most common thing this dock is open for, so it gets a control
- * that is always in the same place.
- *
- * Both labels are rendered and swapped by CSS on [data-theme], the same trick
- * ThemeToggle uses — no state, so nothing to mismatch on hydration.
- */
-function ThemeJump() {
-  return (
-    <button type="button" className={styles.button} onClick={() => toggleTheme()}>
-      <span className={styles.whenDark}>Light mode</span>
-      <span className={styles.whenLight}>Dark mode</span>
-    </button>
   )
 }
