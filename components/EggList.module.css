@@ -118,18 +118,20 @@
 }
 
 /* The only green on the site, and it earns it: this is the one control that
-   hands something over. */
+   hands something over, so it is filled rather than outlined — everything else
+   in this dialog is an outline, and the prize should not look like one of them. */
 .claim {
   width: 100%;
   justify-content: center;
   margin-bottom: 10px;
+  background: #3fb950;
   border-color: #3fb950;
-  color: #3fb950;
+  color: #04120a;
 }
 
 .claim:hover {
-  background: #3fb950;
-  border-color: #3fb950;
+  background: #4ecb60;
+  border-color: #4ecb60;
   color: #04120a;
 }
 

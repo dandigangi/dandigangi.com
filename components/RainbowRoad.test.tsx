@@ -20,7 +20,7 @@ describe('RainbowRoad', () => {
     render(<RainbowRoad />)
     expect(flag()).toBe(false)
 
-    await user.keyboard('mario64')
+    await user.keyboard('mariokart')
     expect(isRainbow()).toBe(true)
     expect(flag()).toBe(true)
   })
@@ -30,7 +30,7 @@ describe('RainbowRoad', () => {
     const user = userEvent.setup()
     render(<RainbowRoad />)
 
-    await user.keyboard('mario64')
+    await user.keyboard('mariokart')
     expect(isRainbow()).toBe(true)
 
     await user.keyboard('rainbowroad')
@@ -65,7 +65,7 @@ describe('RainbowRoad', () => {
     )
 
     await user.click(screen.getByLabelText('body'))
-    await user.keyboard('mario64')
+    await user.keyboard('mariokart')
     expect(isRainbow()).toBe(false)
   })
 })

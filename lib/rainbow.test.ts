@@ -15,13 +15,17 @@ const type = (rb: Awaited<ReturnType<typeof load>>, phrase: string) =>
   [...phrase].map((character) => rb.press(character)).some(Boolean)
 
 describe('the phrases', () => {
-  it.each(['rainbowroad', 'rainbow road', 'mario64', 'rainbowtime', 'rainbow time'])(
-    'opens on %s',
-    async (phrase) => {
-      const rb = await load()
-      expect(type(rb, phrase)).toBe(true)
-    }
-  )
+  it.each([
+    'rainbowroad',
+    'rainbow road',
+    'mariokart',
+    'mario kart',
+    'rainbowtime',
+    'rainbow time',
+  ])('opens on %s', async (phrase) => {
+    const rb = await load()
+    expect(type(rb, phrase)).toBe(true)
+  })
 
   it('ignores case', async () => {
     const rb = await load()
@@ -36,20 +40,21 @@ describe('the phrases', () => {
 
   it('opens even with typing before it, since the buffer rolls', async () => {
     const rb = await load()
-    expect(type(rb, 'hello theremario64')).toBe(true)
+    expect(type(rb, 'hello theremariokart')).toBe(true)
   })
 
   it('ignores keys that are not single characters', async () => {
     const rb = await load()
-    'mario6'.split('').forEach((character) => rb.press(character))
+    // All but the last letter, then a modifier that must not break the run.
+    'mariokar'.split('').forEach((character) => rb.press(character))
     expect(rb.press('Shift')).toBe(false)
-    expect(rb.press('4')).toBe(true)
+    expect(rb.press('t')).toBe(true)
   })
 
   /** Or holding the last key down would toggle it over and over. */
   it('clears the buffer on a hit', async () => {
     const rb = await load()
-    expect(type(rb, 'mario64')).toBe(true)
+    expect(type(rb, 'mariokart')).toBe(true)
     expect(rb.press('4')).toBe(false)
   })
 })

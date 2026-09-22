@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
-import { totalEggs, allFound, eggName, foundEggs, foundList, subscribe } from '@/lib/eggs'
+import { EXTRA, totalEggs, allFound, eggName, foundEggs, foundList, subscribe } from '@/lib/eggs'
 import { PIKACHU_PRIZE } from '@/lib/pikachu'
 import styles from './EggList.module.css'
 
@@ -89,8 +89,9 @@ export default function EggList() {
         <ol className={styles.list}>
           {unlocked.map(({ egg, at }) => (
             <li key={egg} className={styles.row}>
+              {/* The secret wears its own mark — it is not one of the nine. */}
               <span className={styles.mark} aria-hidden="true">
-                🐣
+                {egg === EXTRA ? '🌈' : '🐣'}
               </span>
               <span className={styles.name}>{eggName(egg)}</span>
               <span className={styles.at}>{when(at)}</span>

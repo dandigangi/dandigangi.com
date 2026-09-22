@@ -11,7 +11,8 @@ import { veiled } from './copy'
 const TRIGGERS = [
   'cmFpbmJvd3JvYWQ=',
   'cmFpbmJvdyByb2Fk',
-  'bWFyaW82NA==',
+  'bWFyaW9rYXJ0',
+  'bWFyaW8ga2FydA==',
   'cmFpbmJvd3RpbWU=',
   'cmFpbmJvdyB0aW1l',
 ].map(veiled)

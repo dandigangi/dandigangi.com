@@ -3,8 +3,17 @@
   inset: 0;
   z-index: 100;
   display: flex;
-  align-items: center;
+  /*
+   * The overlay scrolls, not the modal. Anything inside a box with
+   * `overflow: auto` is clipped at its padding box, which means no child can
+   * paint over the modal's own border — and the green header has to, to cover
+   * the rainbow beside it. flex-start plus `margin: auto` on the modal centres
+   * it when it fits and lets it scroll from the top when it does not, which
+   * `align-items: center` alone cannot do.
+   */
+  align-items: flex-start;
   justify-content: center;
+  overflow-y: auto;
   padding: clamp(16px, 4vw, 48px);
   background: rgba(0, 0, 0, 0.72);
   animation: fade 180ms ease-out;
@@ -15,8 +24,8 @@
   position: relative;
   z-index: 1;
   width: min(100%, 680px);
-  max-height: 100%;
-  overflow-y: auto;
+  /* Centres within the scrollable overlay; see the note there. */
+  margin: auto;
   /* Always the dark treatment: it is Pikachu shaking you down, not a page. So
      it pins the dark palette locally — otherwise in light mode every label,
      rule and meta line inside inverts to near-black on black. */
@@ -47,6 +56,8 @@
  * single module classes, so specificity does not separate them.
  */
 .ringed {
+  /* Lets the header bleed over the border it is covering. */
+  overflow: visible;
   /* Never follows the theme, so the ring's inside is pinned black. */
   --ring-fill: #000;
   /*
@@ -431,7 +442,13 @@
 
 /* The third state. Deep enough to carry white text on the banner and on the
    button fill — the mint in the confetti palette cannot. */
+/*
+ * Bleeds 1px past the modal on three sides so its green covers the ring there.
+ * The rainbow is for the black part of the dialog; running it up the sides of a
+ * green banner read as a stray line rather than a frame.
+ */
 .headFinal {
+  margin: -1px -1px 0;
   background: #12a150;
   border-bottom-color: #12a150;
 }

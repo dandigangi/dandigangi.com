@@ -157,6 +157,21 @@
 }
 
 /*
+ * The egg list stays plain. `[class*='name']` above otherwise catches its rows
+ * and clips them to a rainbow, and a list of what you have found has to be
+ * readable more than it has to be festive. The marks are emoji — clipping a
+ * background to those erases them entirely.
+ */
+:root[data-rainbow] [class*='EggList'] [class*='name'],
+:root[data-rainbow] [class*='EggList'] [class*='title'],
+:root[data-rainbow] [class*='EggList'] [class*='mark'] {
+  background: none;
+  color: var(--ink);
+  -webkit-text-fill-color: currentcolor;
+  animation: none;
+}
+
+/*
  * The one thing that does not get it: the invisible chip at the end of the tag
  * row. Painting it would hand over an egg for free.
  */

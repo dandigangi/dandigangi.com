@@ -64,7 +64,7 @@ const NAMES: Record<Egg, string> = {
   wheel: 'VHVybmVkIHRoZSB3aG9sZSB0YWdsaW5lIHdoZWVs',
   hidden: 'Rm91bmQgdGhlIGNoaXAgdGhhdCBpcyBub3QgdGhlcmU=',
   alterego: 'TWV0IHRoZSBhbHRlciBlZ28=',
-  rainbow: '8J+MiCBbU0VDUkVUXSBSYWluYm93IFJvYWQ=',
+  rainbow: 'U0VDUkVUIFJBSU5CT1cgUk9BRCEh',
 }
 
 export const eggName = (egg: Egg): string => veiled(NAMES[egg])
