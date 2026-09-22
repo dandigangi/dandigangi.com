@@ -47,6 +47,19 @@ const FLAG = 'data-rainbow'
 let on = false
 let read = false
 
+/**
+ * How many times the mode has actually flipped this page view.
+ *
+ * Kept here rather than in the component that listens for the phrase, because
+ * that is no longer the only thing that flips it — the footer link and the egg
+ * list both do too, and the stars have to fall for all of them. A counter
+ * rather than a boolean: arriving is a moment, and `on` is already true by the
+ * time anything reads it.
+ */
+let toggles = 0
+
+export const rainbowToggles = (): number => toggles
+
 const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((listener) => listener())
 
@@ -93,6 +106,9 @@ export const setRainbow = (next: boolean): void => {
   } catch {
     // Same again; it holds for this page view either way.
   }
+  // Both directions. Leaving Rainbow Road is as much of an event as arriving,
+  // and a send-off costs nothing the arrival did not already pay for.
+  toggles += 1
   paint()
   emit()
 }

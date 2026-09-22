@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
 import { EXTRA, allFound, eggName, foundList, resetEggs, subscribe } from '@/lib/eggs'
 import { useEggCount, useEggTotal } from './useEggs'
-import { setRainbow } from '@/lib/rainbow'
-import { PIKACHU_PRIZE } from '@/lib/pikachu'
+import { isRainbow, setRainbow, subscribe as rainbowSubscribe } from '@/lib/rainbow'
+import { PIKACHU_PRIZE, PRIZE_FIGURE, resetAll } from '@/lib/pikachu'
 import styles from './EggList.module.css'
 
 /**
@@ -42,6 +42,7 @@ export default function EggList() {
   const found = useEggCount()
   const total = useEggTotal()
   const complete = useSyncExternalStore(subscribe, allFound, () => false)
+  const rainbow = useSyncExternalStore(rainbowSubscribe, isRainbow, () => false)
 
   /**
    * Two-step, not a second modal: the first press turns this control into its
@@ -98,6 +99,9 @@ export default function EggList() {
             <p className={styles.score}>
               {found} of {total} found
             </p>
+            <p className={styles.stakes}>
+              If you find all {total}, you will win a ${PRIZE_FIGURE} gift card.
+            </p>
           </div>
           <button type="button" className={styles.x} onClick={close}>
             <span aria-hidden="true">×</span>
@@ -108,11 +112,33 @@ export default function EggList() {
         <ol className={styles.list}>
           {unlocked.map(({ egg, at }) => (
             <li key={egg} className={styles.row}>
-              {/* The secret wears its own mark — it is not one of the nine. */}
-              <span className={styles.mark} aria-hidden="true">
-                {egg === EXTRA ? '🌈' : '🐣'}
-              </span>
-              <span className={`${styles.name} ${egg === EXTRA ? styles.secretName : ''}`}>
+              {/* The secret wears its own mark — it is not one of the nine, and
+                  once it has been found that mark is also the switch. */}
+              {egg === EXTRA ? (
+                <button
+                  type="button"
+                  className={`${styles.mark} ${styles.markButton}`}
+                  onClick={() => setRainbow(!rainbow)}
+                  title={rainbow ? 'Turn off Rainbow Road' : 'Turn on Rainbow Road'}
+                >
+                  <span aria-hidden="true">🌈</span>
+                  <span className="srOnly">
+                    {rainbow ? 'Turn off Rainbow Road' : 'Turn on Rainbow Road'}
+                  </span>
+                </button>
+              ) : (
+                <span className={styles.mark} aria-hidden="true">
+                  🐣
+                </span>
+              )}
+              {/* data-shine, not the class name: the rule in css/rainbow.css that
+                  flattens this dialog's text has to exempt it, and a global
+                  stylesheet can only match a hashed module class by substring —
+                  which breaks the moment the file is renamed. */}
+              <span
+                className={`${styles.name} ${egg === EXTRA ? styles.secretName : ''}`}
+                data-shine={egg === EXTRA ? '' : undefined}
+              >
                 {eggName(egg)}
               </span>
               <span className={styles.at}>{when(at)}</span>
@@ -135,7 +161,7 @@ export default function EggList() {
              tally stays complete, so without this there would be none. */
           <button
             type="button"
-            className={`btn ${styles.claim}`}
+            className={`btn btnPrize ${styles.claim}`}
             onClick={() => {
               close()
               window.dispatchEvent(new CustomEvent(PIKACHU_PRIZE))
@@ -149,22 +175,42 @@ export default function EggList() {
           Close
         </button>
 
-        <button
-          type="button"
-          className={`${styles.reset} ${arming ? styles.arming : ''}`}
-          onClick={() => {
-            if (!arming) {
-              setArming(true)
-              return
-            }
-            resetEggs()
-            setRainbow(false)
-            setArming(false)
-            close()
-          }}
-        >
-          {arming ? 'Press again to clear all of them' : 'Reset eggs'}
-        </button>
+        <div className={styles.tools}>
+          <button
+            type="button"
+            className={`${styles.reset} ${arming ? styles.arming : ''}`}
+            onClick={() => {
+              if (!arming) {
+                setArming(true)
+                return
+              }
+              resetEggs()
+              setRainbow(false)
+              // The tally is not the whole game: the tab, the catch, and the
+              // hero swap all live in the Pikachu store, and clearing only the
+              // eggs left a Pay Pikachu link in the footer of a site that had
+              // supposedly never met him.
+              resetAll()
+              setArming(false)
+              close()
+            }}
+          >
+            {arming ? 'Press again to clear all of them' : 'Reset eggs'}
+          </button>
+
+          {/* No confirmation on this one, deliberately: it is one keystroke to
+              undo, and the two controls should not feel equally heavy. */}
+          {rainbow && (
+            <>
+              <span className={styles.dash} aria-hidden="true">
+                —
+              </span>
+              <button type="button" className={styles.reset} onClick={() => setRainbow(false)}>
+                Turn off Rainbow Mode
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )

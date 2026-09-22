@@ -141,6 +141,30 @@
   animation: flash var(--impact) ease-out forwards;
 }
 
+/*
+ * On Rainbow Road the ring goes with it. Two backgrounds rather than
+ * `border-image`, which ignores border-radius and would square the circle off;
+ * the conic is static because the ring only lives for a fifth of a second and
+ * an animated angle would not turn far enough to be seen.
+ */
+.flashStar {
+  border-color: transparent;
+  background:
+    linear-gradient(transparent, transparent) padding-box,
+    conic-gradient(
+        from 0deg,
+        #ff5c5c,
+        #ff9f45,
+        #ffd23f,
+        #4ade80,
+        #38bdf8,
+        #a5b4fc,
+        #e879f9,
+        #ff5c5c
+      )
+      border-box;
+}
+
 @keyframes flash {
   from {
     transform: scale(0.5);

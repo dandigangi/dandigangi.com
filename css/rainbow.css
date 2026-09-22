@@ -31,19 +31,16 @@
   }
 }
 
-:root[data-rainbow] {
-  --road: linear-gradient(
-    90deg,
-    var(--rb-red),
-    var(--rb-orange),
-    var(--rb-yellow),
-    var(--rb-green),
-    var(--rb-blue),
-    var(--rb-indigo),
-    var(--rb-violet),
-    var(--rb-red)
-  );
-}
+/*
+ * There is deliberately no `--road` custom property holding this gradient.
+ *
+ * `var()` inside a custom property is substituted at the element that declares
+ * it, so a --road on :root bakes in :root's --rb-* values — and overriding
+ * those further down the tree, which is exactly what the dark bands need in
+ * light mode, then changes nothing. The gradient is written out at each rule
+ * instead, where the ramp it reads is the one in scope. Same trap as
+ * --spectrum and --road-ring before it; it has caught this feature four times.
+ */
 
 /* ---------- text ---------- */
 
@@ -58,7 +55,17 @@
 :root[data-rainbow] [class*='tagline'],
 :root[data-rainbow] [class*='name'],
 :root[data-rainbow] [class*='title'] {
-  background: var(--road);
+  background: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-red)
+  );
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -104,6 +111,31 @@
 }
 
 /*
+ * The one button that hands something over keeps its green fill. The rule above
+ * repaints every .btn with the page background, which on black left dark-on-dark
+ * text — the ring turned merrily around an invisible label.
+ */
+:root[data-rainbow] .btnPrize,
+:root[data-rainbow] .btnPrize:hover {
+  background:
+    linear-gradient(#3fb950, #3fb950) padding-box,
+    conic-gradient(
+        from var(--angle),
+        var(--rb-red),
+        var(--rb-orange),
+        var(--rb-yellow),
+        var(--rb-green),
+        var(--rb-blue),
+        var(--rb-indigo),
+        var(--rb-violet),
+        var(--rb-red)
+      )
+      border-box;
+  color: #04120a;
+  -webkit-text-fill-color: #04120a;
+}
+
+/*
  * Hover still has to read as hover. Inverting the fill rather than the border
  * keeps the ring turning underneath while the button clearly changes state.
  */
@@ -138,7 +170,18 @@
 :root[data-rainbow] footer,
 :root[data-rainbow] .hairlineRow + .hairlineRow,
 :root[data-rainbow] [class*='channel'] + [class*='channel'] {
-  border-image: var(--road) 1;
+  border-image: linear-gradient(
+      90deg,
+      var(--rb-red),
+      var(--rb-orange),
+      var(--rb-yellow),
+      var(--rb-green),
+      var(--rb-blue),
+      var(--rb-indigo),
+      var(--rb-violet),
+      var(--rb-red)
+    )
+    1;
 }
 
 /* A strip across the very top, so the mode announces itself before you scroll. */
@@ -150,7 +193,17 @@
   right: 0;
   height: 4px;
   z-index: 300;
-  background: var(--road);
+  background: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-red)
+  );
   background-size: 200% 100%;
   animation: rainbowSlide 2.5s linear infinite;
   pointer-events: none;
@@ -162,7 +215,7 @@
  * readable more than it has to be festive. The marks are emoji — clipping a
  * background to those erases them entirely.
  */
-:root[data-rainbow] [class*='EggList'] [class*='name'],
+:root[data-rainbow] [class*='EggList'] [class*='name']:not([data-shine]),
 :root[data-rainbow] [class*='EggList'] [class*='title'],
 :root[data-rainbow] [class*='EggList'] [class*='mark'] {
   background: none;
@@ -199,22 +252,45 @@
  * The nav sits on the graphic band, where rainbow text on a busy render loses
  * its edges. A flat black plate behind each link gives it something to sit on.
  */
-:root[data-rainbow] .navLink {
-  padding: 4px 9px;
-  background-color: #000;
-  background-clip: text, padding-box;
+:root[data-rainbow] [class*='SiteNav'] .navLink {
+  /* Two layers: the rainbow clipped to the glyphs, a flat black plate behind
+     it. One layer cannot do both, and the band's render otherwise shows through
+     the letters and eats their edges. */
+  background-image:
+    linear-gradient(
+      90deg,
+      var(--rb-red),
+      var(--rb-orange),
+      var(--rb-yellow),
+      var(--rb-green),
+      var(--rb-blue),
+      var(--rb-indigo),
+      var(--rb-violet),
+      var(--rb-red)
+    ),
+    linear-gradient(#000, #000);
+  background-size:
+    200% 100%,
+    auto;
   -webkit-background-clip: text, padding-box;
+  background-clip: text, padding-box;
+  /* A touch more than the ordinary nav carries: the plate is visible here, and
+     at the ordinary padding the letters sat right on its edge. */
+  padding: 10px 13px;
 }
 
 /*
- * Light mode only changes what sits on the page. The band and the nav are on
- * black in both themes, so they keep the dark ramp — the light one exists to be
- * legible on #EDEDEB and is needlessly muddy anywhere else.
+ * Light mode only changes what sits on the page. The band and the header nav
+ * are black in both themes, so they keep the bright ramp — the darkened one
+ * exists to stay legible on #EDEDEB and is needlessly muddy anywhere else.
+ *
+ * The footer is deliberately not in here: it does sit on the page background,
+ * so its hairline and its own nav links want the darkened ramp like everything
+ * else on a light page.
  */
 [data-theme='light']:root[data-rainbow] [class*='PageBand'],
 [data-theme='light']:root[data-rainbow] [class*='hero'],
-[data-theme='light']:root[data-rainbow] .navLink,
-[data-theme='light']:root[data-rainbow] footer {
+[data-theme='light']:root[data-rainbow] [class*='SiteNav'] .navLink {
   --rb-red: #ff5c5c;
   --rb-orange: #ff9f45;
   --rb-yellow: #ffd23f;
@@ -236,5 +312,27 @@
   :root[data-rainbow] body::before {
     /* The colour stays; only the travelling stops. */
     animation: none;
+  }
+}
+
+/*
+ * The same override for anyone whose OS is light and who has never touched the
+ * toggle. globals.css carries every light token twice for exactly this reason —
+ * the attribute is only set once the inline head script or the toggle has run —
+ * and a rule written against [data-theme='light'] alone misses those readers.
+ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']):not([data-theme='light'])[data-rainbow] [class*='PageBand'],
+  :root:not([data-theme='dark']):not([data-theme='light'])[data-rainbow] [class*='hero'],
+  :root:not([data-theme='dark']):not([data-theme='light'])[data-rainbow]
+    [class*='SiteNav']
+    .navLink {
+    --rb-red: #ff5c5c;
+    --rb-orange: #ff9f45;
+    --rb-yellow: #ffd23f;
+    --rb-green: #4ade80;
+    --rb-blue: #38bdf8;
+    --rb-indigo: #a5b4fc;
+    --rb-violet: #e879f9;
   }
 }

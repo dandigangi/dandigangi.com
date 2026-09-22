@@ -1,6 +1,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import { speakingTopics } from '@/data/about'
 import PageBand from '@/components/PageBand'
+import PrizeLink from '@/components/PrizeLink'
 import { genPageMetadata } from 'app/seo'
 import styles from './contact.module.css'
 
@@ -39,6 +40,8 @@ export default function Contact() {
               Open to senior engineering leadership roles, and always happy to talk hiring, teams,
               or developer platforms.
             </p>
+
+            <PrizeLink />
 
             <div className={styles.channels}>
               {channels.map((channel) => {

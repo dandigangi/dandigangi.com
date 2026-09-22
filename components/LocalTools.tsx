@@ -8,7 +8,7 @@ import { EGGS, EXTRA, findEgg, hasEgg, resetEggs, type Egg } from '@/lib/eggs'
 import { useEggCount, useEggTotal } from './useEggs'
 import EggToast from './EggToast'
 import { clearPikaPass } from '@/lib/pikaPass'
-import { setRainbow } from '@/lib/rainbow'
+import { isRainbow, setRainbow } from '@/lib/rainbow'
 import styles from './LocalTools.module.css'
 
 /**
@@ -99,11 +99,15 @@ export default function LocalTools() {
    * and granting it there would move the denominator to ten every time you used
    * the shortcut, which is the one thing that is supposed to stay hidden.
    *
-   * Turns the mode on as well, because that is the state finding it produces.
+   * Turns the mode on as well, because that is the state finding it produces —
+   * and off again on a second press, because a control that can only ever set
+   * a flag true is a trap when the flag is the whole page. Finding it stays
+   * found either way; this switches the mode, not the discovery.
    */
   const grantSecret = () => {
-    setRainbow(true)
-    setGranted(EXTRA)
+    const next = !isRainbow()
+    setRainbow(next)
+    if (next) setGranted(EXTRA)
   }
 
   /**

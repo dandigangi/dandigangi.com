@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { FINAL_TIER, OPENING, OVER_TIER } from '@/lib/pikachu'
+import { FINAL_TIER, OPENING, OVER_TIER, PRIZE_FIGURE } from '@/lib/pikachu'
+import { findEgg, type Egg } from '@/lib/eggs'
 import { LINKEDIN_URL, MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
 import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
@@ -116,8 +117,8 @@ function RollingAmount({ from, to }: { from: number; to: number }) {
   )
 }
 
-/** Appears twice below, so it lives here rather than in both. */
-const FIGURE = 50
+/** The egg list quotes the same figure — see lib/pikachu.ts. */
+const FIGURE = PRIZE_FIGURE
 
 /**
  * Base64, and the names around it are deliberately bland.
@@ -152,6 +153,7 @@ export default function PikachuModal({
   won,
   viaCatch,
   onHug,
+  onEgg,
   onClose,
 }: {
   amount: number
@@ -162,6 +164,8 @@ export default function PikachuModal({
   /** False when reopened from a nav link rather than caught. */
   viaCatch: boolean
   onHug: () => void
+  /** Announced by the cameo, which owns the toast. */
+  onEgg: (egg: Egg) => void
   onClose: () => void
 }) {
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -170,6 +174,25 @@ export default function PikachuModal({
   /** Rails he has already been asked about. None of them settle anything — he
    *  answers in place of the delivery estimate and the invoice stays open. */
   const [poked, setPoked] = useState<string[]>([])
+  /**
+   * Which of the three ways to collect have been tried.
+   *
+   * Its own discovery, and deliberately off the board — it is only reachable
+   * from inside the prize, so counting it toward the prize would make it its
+   * own prerequisite. See OFF_BOARD in lib/eggs.ts.
+   */
+  const [rails, setRails] = useState<string[]>([])
+  const rail = (name: string) => {
+    setRails((names) => {
+      if (names.includes(name)) return names
+      const next = [...names, name]
+      if (next.length === 3) {
+        findEgg('paid')
+        onEgg('paid')
+      }
+      return next
+    })
+  }
   /* `won` alone. This used to also fire on `amount >= FINAL_TIER`, which is
      why the prize modal turned up on reaching a figure — the win moved to the
      egg tally, and this was the half left behind. */
@@ -361,6 +384,7 @@ export default function PikachuModal({
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`btn ${styles.claim}`}
+                  onClick={() => rail('x')}
                 >
                   {T_ACT_X}
                 </a>
@@ -369,10 +393,11 @@ export default function PikachuModal({
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`btn ${styles.claim}`}
+                  onClick={() => rail('in')}
                 >
                   {T_ACT_IN}
                 </a>
-                <a href={MAIL_URL} className={`btn ${styles.claim}`}>
+                <a href={MAIL_URL} className={`btn ${styles.claim}`} onClick={() => rail('mail')}>
                   {T_ACT_MAIL}
                 </a>
               </>

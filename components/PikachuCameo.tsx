@@ -274,18 +274,24 @@ export default function PikachuCameo() {
   }, [])
 
   /**
-   * The very first catch gets a ball thrown at him before the invoice lands.
-   * Gated on `invoices === 0`, which is already persisted with the tab — so it
-   * plays once and not on every catch afterwards, and a Reset Pikachu in the dev
-   * dock brings it back, which is also the only sane way to watch it twice.
+   * Every catch gets a ball thrown at him before the invoice lands. It used to
+   * be the first one only, which meant the best part of the chase played once
+   * and then never again.
+   *
+   * `throwAt === null` is the spam lock, and it is the whole lock needed here:
+   * one ball is in the air at a time, and he is gone the moment it connects.
+   * The sprite in the blog search keeps its own behaviour — throwing at a
+   * Pikachu who is standing still and stays there is the joke there.
    *
    * The loop is stopped first: its pending timers would otherwise slide him back
    * out from under the ball mid-flight.
    */
   const onCatch = () => {
-    if (getTab().invoices === 0 && cameo && throwAt === null) {
+    if (cameo && throwAt === null) {
       loop.current?.stop()
-      setEggToast('pikachu')
+      // Only the first one announces itself — meeting him is the discovery, and
+      // every catch after it is just the tab going up.
+      if (getTab().invoices === 0) setEggToast('pikachu')
       setThrowAt({
         // The cameo is positioned in page coordinates; the ball is fixed.
         x: cameo.left - window.scrollX + SIZE / 2,
@@ -402,6 +408,7 @@ export default function PikachuCameo() {
           won={won}
           viaCatch={byCatch}
           onHug={onHug}
+          onEgg={setEggToast}
           onClose={onClose}
         />
       )}

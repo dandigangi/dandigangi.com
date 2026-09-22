@@ -370,6 +370,11 @@ a {
   letter-spacing: clamp(0.12em, 0.4vw, 0.2em);
   text-transform: uppercase;
   transition: opacity 0.15s ease;
+  /* The text alone was a ~16px-tall target, which is under every guideline and
+     felt it on a phone. The surrounding gaps were reduced to match, so the row
+     looks the same and is simply easier to hit. */
+  display: inline-block;
+  padding: 7px 9px;
 }
 
 .navLink:hover {
@@ -516,4 +521,22 @@ a {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
+}
+
+/*
+ * The one control on the site that hands something over. Defined here rather
+ * than in each module that uses it, because css/rainbow.css has to be able to
+ * exempt it by name — a global stylesheet cannot reliably match a hashed module
+ * class, and matching by substring breaks the moment a file is renamed.
+ */
+.btnPrize {
+  background: #3fb950;
+  border-color: #3fb950;
+  color: #04120a;
+}
+
+.btnPrize:hover {
+  background: #4ecb60;
+  border-color: #4ecb60;
+  color: #04120a;
 }

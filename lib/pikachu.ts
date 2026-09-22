@@ -177,6 +177,15 @@ export const OVER_TIER = 250
 export const FINAL_TIER = 500
 
 /**
+ * What the prize is worth.
+ *
+ * Here rather than in the modal because the egg list quotes it too, and a
+ * figure written out in two components is a figure that will disagree with
+ * itself the first time one of them is edited.
+ */
+export const PRIZE_FIGURE = 50
+
+/**
  * The three crossings worth an egg, in order. Kept here rather than in the
  * cameo so the figures and the ids that depend on them cannot drift apart.
  */

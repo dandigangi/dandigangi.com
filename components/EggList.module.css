@@ -182,22 +182,12 @@
   color: var(--soft);
 }
 
-/* The only green on the site, and it earns it: this is the one control that
-   hands something over, so it is filled rather than outlined — everything else
-   in this dialog is an outline, and the prize should not look like one of them. */
+/* Placement only — the green is .btnPrize in globals.css, shared with the copy
+   of this button on the contact page. */
 .claim {
   width: 100%;
   justify-content: center;
   margin-bottom: 10px;
-  background: #3fb950;
-  border-color: #3fb950;
-  color: #04120a;
-}
-
-.claim:hover {
-  background: #4ecb60;
-  border-color: #4ecb60;
-  color: #04120a;
 }
 
 .close {
@@ -205,14 +195,26 @@
   justify-content: center;
 }
 
+/* Both controls on one line, with the dash between them. */
+.tools {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.dash {
+  color: var(--soft);
+  font-size: 10px;
+}
+
 /*
  * A link, not a button: it sits under the way out and should read as the
  * smaller, rarer thing. It only looks dangerous once it is armed.
  */
 .reset {
-  display: block;
-  width: 100%;
-  margin-top: 14px;
   padding: 6px 0;
   border: 0;
   background: none;
@@ -250,4 +252,28 @@
   to {
     --angle: 360deg;
   }
+}
+
+/* Ordinary body copy, not the mono caption above it — this is the one line in
+   the dialog that says what the game is for, and the small print made it read
+   like a footnote. */
+.stakes {
+  margin: 10px 0 0;
+  max-width: 34ch;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+
+/* The secret's mark doubles as its switch. Styled back to the plain span it
+   replaced, so a row of found eggs still reads as a list rather than a toolbar;
+   only the cursor and the title say it does anything. */
+.markButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  cursor: pointer;
 }

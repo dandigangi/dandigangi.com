@@ -26,18 +26,27 @@ export const EGGS = [
 ] as const
 
 /**
- * The one that is not on the board.
+ * The ones that are not on the board.
  *
- * Deliberately outside EGGS: until it is found there is nothing to say it
- * exists — the count reads out of nine, the list has nine rows, and nothing
- * hints at a tenth. Finding it adds it to both, at the top.
+ * Deliberately outside EGGS: until one of these is found there is nothing to
+ * say it exists — the count reads out of nine, the list has nine rows, and
+ * nothing hints at more. Finding one adds it to both, at the top.
  *
- * Named blandly because the export name survives minification and ships in the
+ * This is also what keeps the prize honest. Winning is finding the nine, and it
+ * has to stay that way: one of these is only reachable from inside the prize
+ * itself, so counting it toward the total up front would make the prize its own
+ * prerequisite. Counted on discovery, the bar never moves — you always have the
+ * off-board ones you are being counted for.
+ *
+ * Named blandly because export names survive minification and ship in the
  * bundle; `SECRET` sitting in there was an invitation to go looking.
  */
+export const OFF_BOARD = ['rainbow', 'paid'] as const
+
+/** The one with a mark of its own in the list. */
 export const EXTRA = 'rainbow' as const
 
-const ALL = [...EGGS, EXTRA] as const
+const ALL = [...EGGS, ...OFF_BOARD] as const
 
 export type Egg = (typeof ALL)[number]
 
@@ -46,7 +55,7 @@ export type Egg = (typeof ALL)[number]
  * because it genuinely changes — every caller reads it through the store, so
  * the denominator updates the moment it is found.
  */
-export const totalEggs = (): number => EGGS.length + (hasEgg(EXTRA) ? 1 : 0)
+export const totalEggs = (): number => EGGS.length + OFF_BOARD.filter((egg) => hasEgg(egg)).length
 
 /**
  * What each one is called once it has been found. Encoded for the reason in
@@ -65,6 +74,7 @@ const NAMES: Record<Egg, string> = {
   hidden: 'Rm91bmQgdGhlIGNoaXAgdGhhdCBpcyBub3QgdGhlcmU=',
   alterego: 'TWV0IHRoZSBhbHRlciBlZ28=',
   rainbow: 'W1NFQ1JFVF0gUkFJTkJPVyBST0FEIERJU0NPVkVSRUQ=',
+  paid: 'VHJpZWQgZXZlcnkgd2F5IHRvIGdldCBwYWlk',
 }
 
 export const eggName = (egg: Egg): string => veiled(NAMES[egg])
@@ -74,10 +84,11 @@ export const foundList = (): { egg: Egg; at: number }[] => {
   if (typeof window === 'undefined') return []
   load()
   const entries = [...found.entries()].map(([egg, at]) => ({ egg, at })).sort((a, b) => a.at - b.at)
-  // The secret goes to the top however late it turned up.
+  // The off-board ones go to the top however late they turned up.
+  const off = (egg: Egg) => (OFF_BOARD as readonly string[]).includes(egg)
   return [
-    ...entries.filter((entry) => entry.egg === EXTRA),
-    ...entries.filter((entry) => entry.egg !== EXTRA),
+    ...entries.filter((entry) => off(entry.egg)),
+    ...entries.filter((entry) => !off(entry.egg)),
   ]
 }
 

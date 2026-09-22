@@ -1,5 +1,6 @@
+/* No padding reset: .navLink supplies it, and this has to keep the same tap
+   target and the same spacing as the real links it sits beside. */
 .pay {
-  padding: 0;
   border: 0;
   background: none;
   cursor: pointer;

@@ -2,7 +2,14 @@
 
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import { EXTRA } from '@/lib/eggs'
-import { isRainbow, press, restoreRainbow, setRainbow, subscribe } from '@/lib/rainbow'
+import {
+  isRainbow,
+  press,
+  rainbowToggles,
+  restoreRainbow,
+  setRainbow,
+  subscribe,
+} from '@/lib/rainbow'
 import EggToast from './EggToast'
 import StarFall from './StarFall'
 
@@ -18,8 +25,12 @@ import StarFall from './StarFall'
  */
 export default function RainbowRoad() {
   const [found, setFound] = useState(false)
-  /** Bumped on every switch-on, which is what drops a fresh set of stars. */
-  const [arrivals, setArrivals] = useState(0)
+  /**
+   * Read from the store rather than counted here, so the stars fall however the
+   * mode was flipped — the phrase, the footer link, or the egg list. Held in
+   * component state it only ever saw the first of those.
+   */
+  const arrivals = useSyncExternalStore(subscribe, rainbowToggles, () => 0)
 
   // Re-paints the stored state onto a freshly loaded document. The attribute
   // lives on <html>, which React does not own, so it has to be put back by hand.
@@ -38,11 +49,8 @@ export default function RainbowRoad() {
       if (event.metaKey || event.ctrlKey || event.altKey) return
 
       if (!press(event.key)) return
-      const next = !isRainbow()
-      setRainbow(next)
+      setRainbow(!isRainbow())
       setFound(true)
-      // Only on the way in. Turning it off is not an arrival.
-      if (next) setArrivals((at) => at + 1)
     }
 
     window.addEventListener('keydown', onPress)

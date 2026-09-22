@@ -81,7 +81,8 @@ export default function Footer() {
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '12px 30px',
+              // See .navLink: its padding now carries most of this.
+              gap: '2px 12px',
               listStyle: 'none',
               margin: 0,
               padding: 0,

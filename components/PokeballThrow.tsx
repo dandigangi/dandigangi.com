@@ -103,7 +103,7 @@ export default function PokeballThrow({
         </div>
       </div>
 
-      {landed && <span className={styles.flash} />}
+      {landed && <span className={`${styles.flash} ${starry ? styles.flashStar : ''}`} />}
     </div>
   )
 }

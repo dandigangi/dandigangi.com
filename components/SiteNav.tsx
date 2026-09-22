@@ -34,29 +34,35 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
         flexWrap: 'wrap',
       }}
     >
-      <Link
-        href="/"
-        aria-label="Dan DiGangi — home"
-        style={{ display: 'inline-flex', alignItems: 'center' }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/static/images/dan-digangi-logo-light.png"
-          alt="Dan DiGangi"
-          height={logoHeight}
-          className={styles.logo}
-          style={{ height: logoHeight, width: 'auto', display: 'block' }}
-        />
-      </Link>
+      {/* One group, not two siblings. The row is space-between, so a star left
+          loose beside the mark got pushed into the middle of the container. */}
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+        <Link
+          href="/"
+          aria-label="Dan DiGangi — home"
+          style={{ display: 'inline-flex', alignItems: 'center' }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/static/images/dan-digangi-logo-light.png"
+            alt="Dan DiGangi"
+            height={logoHeight}
+            className={styles.logo}
+            style={{ height: logoHeight, width: 'auto', display: 'block' }}
+          />
+        </Link>
 
-      <NavStar size={Math.round(logoHeight * 0.85)} />
+        <NavStar size={Math.round(logoHeight * 0.85)} />
+      </span>
 
       <nav aria-label="Main" className={styles.links}>
         <ul
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: 'clamp(10px, 2.6vw, 34px) clamp(12px, 2.6vw, 34px)',
+            // Tighter than it reads: .navLink now carries its own padding for
+            // the sake of the tap target, and that padding is most of the gap.
+            gap: 'clamp(2px, 1.4vw, 16px) clamp(2px, 1.4vw, 16px)',
             listStyle: 'none',
             margin: 0,
             padding: 0,
