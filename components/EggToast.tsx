@@ -1,7 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
-import { totalEggs, findEgg, foundEggs, hasEgg, subscribe, type Egg } from '@/lib/eggs'
+import { findEgg, hasEgg, type Egg } from '@/lib/eggs'
+import { useEggCount, useEggTotal } from './useEggs'
 import Toast from './Toast'
 
 /**
@@ -43,8 +44,9 @@ export default function EggToast({ egg, show }: { egg: Egg; show: boolean }) {
    * the one thing it must never say, and which any count matching the server
    * would have to say.
    */
-  const found = useSyncExternalStore(subscribe, foundEggs, () => null)
+  const found = useEggCount()
+  const total = useEggTotal()
 
   if (!show || dismissed || alreadyKnown) return null
-  return <Toast count={found ?? undefined} total={totalEggs()} onClose={close} />
+  return <Toast count={found} total={total} onClose={close} />
 }

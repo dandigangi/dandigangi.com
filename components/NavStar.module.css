@@ -1,0 +1,8 @@
+/* Pixel art — the browser's smoothing turns a 32px sprite into mush. */
+.star {
+  display: block;
+  flex: none;
+  margin-left: 10px;
+  align-self: center;
+  image-rendering: pixelated;
+}

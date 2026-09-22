@@ -4,6 +4,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react'
 import { EXTRA } from '@/lib/eggs'
 import { isRainbow, press, restoreRainbow, setRainbow, subscribe } from '@/lib/rainbow'
 import EggToast from './EggToast'
+import StarFall from './StarFall'
 
 /**
  * The tenth egg, and the only one nothing on the page hints at.
@@ -17,6 +18,8 @@ import EggToast from './EggToast'
  */
 export default function RainbowRoad() {
   const [found, setFound] = useState(false)
+  /** Bumped on every switch-on, which is what drops a fresh set of stars. */
+  const [arrivals, setArrivals] = useState(0)
 
   // Re-paints the stored state onto a freshly loaded document. The attribute
   // lives on <html>, which React does not own, so it has to be put back by hand.
@@ -35,15 +38,23 @@ export default function RainbowRoad() {
       if (event.metaKey || event.ctrlKey || event.altKey) return
 
       if (!press(event.key)) return
-      setRainbow(!isRainbow())
+      const next = !isRainbow()
+      setRainbow(next)
       setFound(true)
+      // Only on the way in. Turning it off is not an arrival.
+      if (next) setArrivals((at) => at + 1)
     }
 
     window.addEventListener('keydown', onPress)
     return () => window.removeEventListener('keydown', onPress)
   }, [])
 
-  return <EggToast egg={EXTRA} show={found} />
+  return (
+    <>
+      <EggToast egg={EXTRA} show={found} />
+      <StarFall trigger={arrivals} />
+    </>
+  )
 }
 
 /**

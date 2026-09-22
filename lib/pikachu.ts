@@ -1,3 +1,5 @@
+import { expireIfStale, touch } from './stale'
+
 /**
  * Window events rather than shared React state: the cameo lives at the end of
  * the root layout and its listeners sit inside server-rendered components, so
@@ -198,6 +200,7 @@ let read = false
 const persist = () => {
   try {
     localStorage.setItem(STORE_KEY, btoa(JSON.stringify(tab)))
+    touch()
   } catch {
     // Nothing to do — he just forgets you next time.
   }
@@ -206,6 +209,7 @@ const persist = () => {
 const stored = (): Tab | null => {
   try {
     localStorage.removeItem(RETIRED)
+    expireIfStale()
     const raw = localStorage.getItem(STORE_KEY)
     if (!raw) return null
     const saved: unknown = JSON.parse(atob(raw))

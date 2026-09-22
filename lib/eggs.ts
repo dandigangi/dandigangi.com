@@ -83,6 +83,7 @@ export const foundList = (): { egg: Egg; at: number }[] => {
 
 // Opaque on purpose: "dd:eggs" sitting in localStorage is an invitation.
 import { veiled } from './copy'
+import { expireIfStale, touch } from './stale'
 
 /*
  * Bumped Sep 2026. The eggs changed shape enough — tiers moved, one was split
@@ -130,6 +131,8 @@ const load = () => {
      * which was exactly the case the cleanup existed for.
      */
     for (const key of RETIRED) localStorage.removeItem(key)
+    // Before anything is read: a stale hunt is cleared rather than resumed.
+    expireIfStale()
     claimed = localStorage.getItem(CLAIM_KEY) === '1'
 
     const raw = localStorage.getItem(STORE_KEY)
@@ -212,6 +215,7 @@ export const findEgg = (egg: Egg): void => {
   found.set(egg, Date.now())
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify([...found]))
+    touch()
   } catch {
     // It just will not be remembered between visits.
   }

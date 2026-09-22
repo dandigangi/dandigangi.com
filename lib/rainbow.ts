@@ -1,3 +1,5 @@
+import { expireIfStale, touch } from './stale'
+
 /**
  * Rainbow Road.
  *
@@ -60,6 +62,7 @@ const load = () => {
   read = true
   try {
     localStorage.removeItem(RETIRED)
+    expireIfStale()
     on = localStorage.getItem(STORE_KEY) === '1'
   } catch {
     // Private mode. It just will not be remembered between visits.
@@ -86,6 +89,7 @@ export const setRainbow = (next: boolean): void => {
   try {
     if (on) localStorage.setItem(STORE_KEY, '1')
     else localStorage.removeItem(STORE_KEY)
+    touch()
   } catch {
     // Same again; it holds for this page view either way.
   }

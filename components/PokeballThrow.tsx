@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { isRainbow, subscribe as rainbowSubscribe } from '@/lib/rainbow'
 import Pokeball from './Pokeball'
 import styles from './PokeballThrow.module.css'
 
@@ -32,6 +33,8 @@ export default function PokeballThrow({
   onDone: () => void
 }) {
   const [landed, setLanded] = useState(false)
+  /** On Rainbow Road you throw a star. Server snapshot false, as ever. */
+  const starry = useSyncExternalStore(rainbowSubscribe, isRainbow, () => false)
 
   /**
    * Through a ref so the timers below can be armed exactly once. The parent
@@ -83,7 +86,18 @@ export default function PokeballThrow({
         <div className={styles.arc}>
           <div className={styles.spin}>
             <div className={`${styles.scale} ${landed ? styles.hit : ''}`}>
-              <Pokeball />
+              {starry ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src="/static/images/star.gif"
+                  alt=""
+                  width={46}
+                  height={46}
+                  className={styles.star}
+                />
+              ) : (
+                <Pokeball />
+              )}
             </div>
           </div>
         </div>

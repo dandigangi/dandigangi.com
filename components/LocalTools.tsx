@@ -4,17 +4,8 @@ import { useEffect, useState, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { resetAll } from '@/lib/pikachu'
-import {
-  EGGS,
-  EXTRA,
-  totalEggs,
-  findEgg,
-  foundEggs,
-  hasEgg,
-  resetEggs,
-  subscribe as eggsSubscribe,
-  type Egg,
-} from '@/lib/eggs'
+import { EGGS, EXTRA, findEgg, hasEgg, resetEggs, type Egg } from '@/lib/eggs'
+import { useEggCount, useEggTotal } from './useEggs'
 import EggToast from './EggToast'
 import { clearPikaPass } from '@/lib/pikaPass'
 import { setRainbow } from '@/lib/rainbow'
@@ -77,7 +68,8 @@ export default function LocalTools() {
   const hidden = useSyncExternalStore(subscribeDock, readDock, dockOnServer)
   // Server snapshot is 0: the tally is in localStorage, so it cannot be known
   // before hydration, and 0 is what the markup has to say until then.
-  const eggs = useSyncExternalStore(eggsSubscribe, foundEggs, () => 0)
+  const eggs = useEggCount()
+  const total = useEggTotal()
   /** The one the dock just granted, so its toast announces like any other. */
   const [granted, setGranted] = useState<Egg | null>(null)
 
@@ -201,7 +193,7 @@ export default function LocalTools() {
           the dock's old purple so it reads as one of these tools rather than
           something the site would ever show a visitor. */}
       <span className={styles.tally}>
-        🥚 {eggs}/{totalEggs()} found
+        🥚 {eggs}/{total} found
       </span>
 
       <div className={styles.row}>
@@ -209,7 +201,7 @@ export default function LocalTools() {
           type="button"
           className={`${styles.button} ${styles.small}`}
           onClick={grantOne}
-          disabled={eggs >= totalEggs()}
+          disabled={eggs >= total}
         >
           +1 egg
         </button>
@@ -217,7 +209,7 @@ export default function LocalTools() {
           type="button"
           className={`${styles.button} ${styles.small}`}
           onClick={grantAll}
-          disabled={eggs >= totalEggs()}
+          disabled={eggs >= total}
         >
           Find all
         </button>

@@ -162,3 +162,11 @@
     display: none;
   }
 }
+
+/* The star that replaces the ball on Rainbow Road. Pixel art, so no smoothing. */
+.star {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}

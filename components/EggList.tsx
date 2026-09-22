@@ -2,16 +2,8 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
-import {
-  EXTRA,
-  totalEggs,
-  allFound,
-  eggName,
-  foundEggs,
-  foundList,
-  resetEggs,
-  subscribe,
-} from '@/lib/eggs'
+import { EXTRA, allFound, eggName, foundList, resetEggs, subscribe } from '@/lib/eggs'
+import { useEggCount, useEggTotal } from './useEggs'
 import { setRainbow } from '@/lib/rainbow'
 import { PIKACHU_PRIZE } from '@/lib/pikachu'
 import styles from './EggList.module.css'
@@ -47,26 +39,27 @@ const when = (at: number) =>
  */
 export default function EggList() {
   const [open, setOpen] = useState(false)
-  const found = useSyncExternalStore(subscribe, foundEggs, () => 0)
+  const found = useEggCount()
+  const total = useEggTotal()
   const complete = useSyncExternalStore(subscribe, allFound, () => false)
 
-  const close = useCallback(() => setOpen(false), [])
   /**
    * Two-step, not a second modal: the first press turns this control into its
    * own confirmation and the second carries it out. A dialog on top of a dialog
    * to ask about a dialog is worse than the mistake it prevents, and the
    * question belongs where the answer is.
    *
-   * It backs out on its own after a few seconds, so a stray press cannot leave
-   * a primed destructive control sitting there.
+   * It stays armed for as long as the dialog is open — long enough to read what
+   * it is about to do and decide — and disarms on close, so coming back later
+   * always starts from the safe state rather than one press from losing
+   * everything.
    */
   const [arming, setArming] = useState(false)
 
-  useEffect(() => {
-    if (!arming) return
-    const timer = setTimeout(() => setArming(false), 4000)
-    return () => clearTimeout(timer)
-  }, [arming])
+  const close = useCallback(() => {
+    setOpen(false)
+    setArming(false)
+  }, [])
 
   useEffect(() => {
     const show = () => setOpen(true)
@@ -84,7 +77,7 @@ export default function EggList() {
   if (!open) return null
 
   const unlocked = foundList()
-  const remaining = totalEggs() - unlocked.length
+  const remaining = total - unlocked.length
 
   return (
     <div
@@ -103,7 +96,7 @@ export default function EggList() {
               {veiled('RWFzdGVyIGVnZ3M=')}
             </h2>
             <p className={styles.score}>
-              {found} of {totalEggs()} found
+              {found} of {total} found
             </p>
           </div>
           <button type="button" className={styles.x} onClick={close}>
@@ -179,7 +172,8 @@ export default function EggList() {
 
 /** The footer's way in. Absent until there is something to show. */
 export function EggListLink({ className }: { className?: string }) {
-  const found = useSyncExternalStore(subscribe, foundEggs, () => 0)
+  const found = useEggCount()
+  const total = useEggTotal()
   const complete = useSyncExternalStore(subscribe, allFound, () => false)
   if (found === 0) return null
 
@@ -188,7 +182,7 @@ export function EggListLink({ className }: { className?: string }) {
       {/* The egg hatches once the set is complete, and the label goes with it. */}
       <span aria-hidden="true">{complete ? '🐣' : '🥚'}</span>{' '}
       <span className={complete ? styles.linkDone : undefined}>
-        {veiled('RUFTVEVSIEVHR1M=')} {found}/{totalEggs()}
+        {veiled('RUFTVEVSIEVHR1M=')} {found}/{total}
       </span>
     </button>
   )

@@ -3,6 +3,7 @@ import navLinks from '@/data/navLinks'
 import { getPublishedPosts } from '@/lib/blog'
 import { projects } from '@/data/projects'
 import MobileNav from './MobileNav'
+import NavStar from './NavStar'
 import PayPikachuLink from './PayPikachuLink'
 import styles from './SiteNav.module.css'
 
@@ -33,7 +34,11 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
         flexWrap: 'wrap',
       }}
     >
-      <Link href="/" aria-label="Dan DiGangi — home" style={{ display: 'inline-flex' }}>
+      <Link
+        href="/"
+        aria-label="Dan DiGangi — home"
+        style={{ display: 'inline-flex', alignItems: 'center' }}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/static/images/dan-digangi-logo-light.png"
@@ -43,6 +48,8 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
           style={{ height: logoHeight, width: 'auto', display: 'block' }}
         />
       </Link>
+
+      <NavStar size={Math.round(logoHeight * 0.85)} />
 
       <nav aria-label="Main" className={styles.links}>
         <ul

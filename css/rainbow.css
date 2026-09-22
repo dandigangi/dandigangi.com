@@ -175,11 +175,53 @@
  * The one thing that does not get it: the invisible chip at the end of the tag
  * row. Painting it would hand over an egg for free.
  */
-:root[data-rainbow] [class*='TagRowEnd'] {
+:root[data-rainbow] [class*='TagRowEnd'][class*='spacer'] {
   background: none;
   color: transparent;
   -webkit-text-fill-color: transparent;
   animation: none;
+}
+
+/*
+ * Once that chip has been found it is a record of a find, in his yellow, and it
+ * keeps that here — the ring above would otherwise repaint it like any other
+ * chip and lose what it is.
+ */
+:root[data-rainbow] [class*='TagRowEnd'][class*='revealed'] {
+  border: 1px solid var(--pika);
+  background: none;
+  color: var(--pika);
+  -webkit-text-fill-color: var(--pika);
+  animation: none;
+}
+
+/*
+ * The nav sits on the graphic band, where rainbow text on a busy render loses
+ * its edges. A flat black plate behind each link gives it something to sit on.
+ */
+:root[data-rainbow] .navLink {
+  padding: 4px 9px;
+  background-color: #000;
+  background-clip: text, padding-box;
+  -webkit-background-clip: text, padding-box;
+}
+
+/*
+ * Light mode only changes what sits on the page. The band and the nav are on
+ * black in both themes, so they keep the dark ramp — the light one exists to be
+ * legible on #EDEDEB and is needlessly muddy anywhere else.
+ */
+[data-theme='light']:root[data-rainbow] [class*='PageBand'],
+[data-theme='light']:root[data-rainbow] [class*='hero'],
+[data-theme='light']:root[data-rainbow] .navLink,
+[data-theme='light']:root[data-rainbow] footer {
+  --rb-red: #ff5c5c;
+  --rb-orange: #ff9f45;
+  --rb-yellow: #ffd23f;
+  --rb-green: #4ade80;
+  --rb-blue: #38bdf8;
+  --rb-indigo: #a5b4fc;
+  --rb-violet: #e879f9;
 }
 
 @media (prefers-reduced-motion: reduce) {
