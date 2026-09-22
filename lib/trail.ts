@@ -1,3 +1,4 @@
+import { hash } from './hash'
 import { expireIfStale, touch } from './stale'
 
 /**
@@ -23,17 +24,6 @@ const HASHED: [length: number, hashes: number[]][] = [
   [11, [967314927, 3351101760]],
   [12, [221995161, 2910764354]],
 ]
-
-const hash = (value: string): number => {
-  let h = 0x811c9dc5
-  for (let at = 0; at < value.length; at += 1) {
-    h ^= value.charCodeAt(at)
-    // The FNV prime, via shifts: a plain multiply overflows past 2^32 and the
-    // low bits — the only ones that matter here — come out wrong.
-    h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0
-  }
-  return h >>> 0
-}
 
 /** The longest phrase, which is all the buffer ever needs to hold. */
 const BUFFER = Math.max(...HASHED.map(([length]) => length))

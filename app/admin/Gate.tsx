@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { grantPikaPass } from '@/lib/pass'
 import { veiled } from '@/lib/copy'
+import { hash } from '@/lib/hash'
 import styles from '../not-found.module.css'
 import gate from './gate.module.css'
 
@@ -63,7 +64,11 @@ const sessionIp = () => {
  * — it just decorates the refusal. Compared case-insensitively; nothing is
  * stored or sent either way.
  */
-const MAGIC = veiled('cGlrYWNodQ==')
+/* The other instruction on the site, and hashed for the same reason as the
+   search trigger — see components/PostSearch.tsx. This is not authentication:
+   the real check is the POST below, and this only decides whether the joke
+   fires. */
+const MAGIC_HASH = 448630920
 
 /** Long enough to be a plausible rule, and a nudge at the only answer that
  *  changes anything — which happens to be exactly this many letters. */
@@ -180,7 +185,7 @@ export default function Gate() {
     }
 
     knock()
-    start(entered.toLowerCase() === MAGIC)
+    start(hash(entered.toLowerCase()) === MAGIC_HASH)
   }
 
   const start = (magic: boolean) => {

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { formatFullDate, formatTag } from '@/lib/format'
 import { setHinted } from '@/lib/caller'
 import { veiled } from '@/lib/copy'
+import { hash } from '@/lib/hash'
 import Blip from './Blip'
 import Toss from './Toss'
 import styles from './PostSearch.module.css'
@@ -15,11 +16,20 @@ import { T } from '@/lib/ledger'
  * stays typed. Matched on the whole query, not a substring — a post about him
  * should not put him on the page.
  *
- * Encoded along with the copy it unlocks, so the built JS does not simply tell
- * you what to type. See lib/copy.ts.
+ * Hashed, not encoded, and that distinction is the point. The rest of the copy
+ * here ships base64, which keeps it out of a grep and nothing more; this is one
+ * of the two strings on the site that is an instruction rather than a
+ * confirmation, so the word itself never ships. See lib/hash.ts.
  */
-const EGG = veiled('cGlrYWNodQ==')
-const MISS = veiled('Tm90aGluZyBtYXRjaGVzIOKAnHBpa2FjaHXigJ0gZXhjZXB0')
+const EGG_HASH = 448630920
+const isEgg = (value: string) => hash(value) === EGG_HASH
+
+/* Confirmations, not instructions: you only ever read these once you are
+   already there, so base64 is the right weight for them. The miss line is split
+   around the query it quotes, for the same reason the gate's hint is split
+   around its figure. */
+const MISS_OPEN = veiled('Tm90aGluZyBtYXRjaGVzIOKAnA==')
+const MISS_CLOSE = veiled('4oCdIGV4Y2VwdA==')
 const NUDGE = veiled('LiBUcnkgdGhyb3dpbmcgYSBQb2vDqWJhbGwh')
 const THROW_LABEL = veiled('VGhyb3cgYSBQb2vDqWJhbGwgYXQgUGlrYWNodQ==')
 
@@ -65,7 +75,7 @@ export default function PostSearch({
 }) {
   const [query, setQuery] = useState('')
   const trimmed = query.trim().toLowerCase()
-  const egg = trimmed === EGG
+  const egg = isEgg(trimmed)
 
   /**
    * Seeded from ?q= after mount rather than in the initial state.
@@ -83,7 +93,7 @@ export default function PostSearch({
     const initial = new URLSearchParams(window.location.search).get(PARAM)
     // One query is not restored, and it is the one worth typing yourself. A
     // link that hands it over turns a thing you find into a thing you are told.
-    const restorable = initial && initial.trim().toLowerCase() !== EGG
+    const restorable = initial && !isEgg(initial.trim().toLowerCase())
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the rule is right in general; here the whole point is to read a client-only source after hydration rather than during it.
     if (restorable) setQuery(initial)
   }, [])
@@ -221,7 +231,12 @@ export default function PostSearch({
         <div className={styles.results}>
           {caught ? (
             <p className={`${styles.empty} ${styles.miss}`}>
-              {MISS}{' '}
+              {/* Built from what was actually typed, rather than a fixed line
+                  with his name in it — that line was the word all over again,
+                  sitting in the bundle for anyone who did not fancy hashing. */}
+              {MISS_OPEN}
+              {query.trim()}
+              {MISS_CLOSE}{' '}
               <button
                 type="button"
                 ref={sprite}
