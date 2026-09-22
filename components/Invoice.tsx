@@ -132,7 +132,7 @@ const FIGURE = OFFER_FIGURE
 const TEXT = [
   'Q29uZ3JhdHVsYXRpb25z',
   'QSBnaWZ0IGZyb20gUGlrYWNodQ==',
-  'WW914oCZcmUgZGVkaWNhdGlvbiBpcyBpbXByZXNzaXZlLg==',
+  'WW91ciBkZWRpY2F0aW9uIGlzIGltcHJlc3NpdmUu',
   'SeKAmWQgbGlrZSB0byBzZW5kIHlvdSBhIHt9IGdpZnQgY2FyZCBvZiB5b3VyIGNob2ljZS4=',
   '4oCUIFlvdSBQaWNr',
   'RE0gb24gWA==',
