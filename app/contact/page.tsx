@@ -1,5 +1,6 @@
 import siteMetadata from '@/data/siteMetadata'
 import { speakingTopics } from '@/data/about'
+import ContactForm from '@/components/ContactForm'
 import PageBand from '@/components/PageBand'
 import Offer from '@/components/Offer'
 import { genPageMetadata } from 'app/seo'
@@ -60,6 +61,8 @@ export default function Contact() {
                 )
               })}
             </div>
+
+            <ContactForm />
           </div>
 
           <aside className={styles.sidebar}>

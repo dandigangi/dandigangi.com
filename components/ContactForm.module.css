@@ -1,0 +1,92 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 46px;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+}
+
+/* Two up where there is room, stacked where there is not. */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.labelText {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.field input,
+.field textarea {
+  /* Inherited rather than set: the inputs should read as the page's body copy,
+     and a bare input does not inherit the font at all. */
+  font: inherit;
+  color: var(--ink);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 11px 13px;
+  transition: border-color 0.15s ease;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: none;
+  border-color: var(--ink);
+}
+
+/*
+ * Off-screen rather than display:none. A bot reading the DOM sees a normal
+ * field; one that skips hidden inputs would walk straight past a display:none.
+ */
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.error {
+  font-size: 14px;
+  color: #ee3524;
+}
+
+.sent {
+  margin-top: 46px;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--read);
+}
