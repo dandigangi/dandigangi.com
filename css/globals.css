@@ -129,6 +129,25 @@
   color-scheme: light;
 }
 
+/*
+ * A fade down from the very top of the page, laid over whichever scrim the band
+ * or the hero already carries.
+ *
+ * The nav sits on a photograph, and on the lighter stretches of some of them the
+ * white links were genuinely hard to read — the small text-shadow in
+ * SiteNav.module.css was doing all the work and it is not enough on its own.
+ * Theme-independent on purpose: both bands stay dark in light mode, so this does
+ * not belong in either palette block.
+ */
+:root {
+  --top-fade: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.42) 24%,
+    rgba(0, 0, 0, 0) 58%
+  );
+}
+
 /* No-JS fallback: the inline head script normally resolves the theme before paint. */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme='dark']):not([data-theme='light']) {

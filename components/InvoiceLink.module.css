@@ -10,13 +10,3 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-
-/*
- * The band is a dark photograph — his yellow reads as an alert against it, and
- * the underline that marks him out in the footer just made him the odd one out
- * in a row of five nav links.
- */
-.plain {
-  color: #f5f4f1;
-  text-decoration: none;
-}

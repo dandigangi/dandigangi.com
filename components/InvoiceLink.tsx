@@ -9,14 +9,7 @@ import styles from './InvoiceLink.module.css'
  * Only appears once someone has actually met him — until then there is nothing
  * to pay and the link would give the joke away.
  */
-export default function InvoiceLink({
-  fontSize,
-  tone = 'brand',
-}: {
-  fontSize?: number
-  /** 'plain' for the band nav, where his yellow reads as a warning. */
-  tone?: 'brand' | 'plain'
-}) {
+export default function InvoiceLink({ fontSize }: { fontSize?: number }) {
   /**
    * Subscribed, not seeded once. This used to latch on a one-way "caught" event,
    * which meant it could learn that he had been met but never that the state had
@@ -34,7 +27,7 @@ export default function InvoiceLink({
     <li>
       <button
         type="button"
-        className={`navLink ${styles.pay} ${tone === 'plain' ? styles.plain : ''}`}
+        className={`navLink ${styles.pay}`}
         style={fontSize ? { fontSize } : undefined}
         onClick={() => window.dispatchEvent(new CustomEvent(CALLER_OPEN))}
       >

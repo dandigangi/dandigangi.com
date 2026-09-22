@@ -4,7 +4,7 @@ import { getPublishedPosts } from '@/lib/blog'
 import { projects } from '@/data/projects'
 import MobileNav from './MobileNav'
 import NavMark from './NavMark'
-import InvoiceLink from './InvoiceLink'
+import { OfferNavLink } from './Offer'
 import styles from './SiteNav.module.css'
 
 /**
@@ -78,8 +78,10 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
               </Link>
             </li>
           ))}
-          {/* Last, after Contact — he is not part of the site's navigation. */}
-          <InvoiceLink tone="plain" />
+          {/* The prize, and only once it is won. He is not up here any more —
+              the way back to the invoice is the footer's job, which is where a
+              thing that is not part of the site's navigation belongs. */}
+          <OfferNavLink />
         </ul>
       </nav>
 

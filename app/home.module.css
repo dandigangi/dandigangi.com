@@ -52,7 +52,9 @@
 .heroScrim {
   position: absolute;
   inset: 0;
-  background: var(--scrim);
+  /* Same pairing as the page band's: the fade under the nav over the side
+     scrim the name sits on. See --top-fade in css/globals.css. */
+  background: var(--top-fade), var(--scrim);
 }
 
 .heroInner {

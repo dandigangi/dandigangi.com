@@ -25,7 +25,8 @@
 .scrim {
   position: absolute;
   inset: 0;
-  background: var(--scrim);
+  /* Two layers: the fade under the nav, then the side scrim the title sits on. */
+  background: var(--top-fade), var(--scrim);
 }
 
 .inner {
