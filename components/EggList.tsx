@@ -65,7 +65,12 @@ export default function EggList() {
       className={styles.overlay}
       onClick={(event) => event.target === event.currentTarget && close()}
     >
-      <div className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="egg-list">
+      <div
+        className={`spectrumRing ${styles.dialog}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="egg-list"
+      >
         <header className={styles.head}>
           <div>
             <h2 className={styles.title} id="egg-list">

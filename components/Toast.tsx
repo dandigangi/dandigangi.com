@@ -81,9 +81,9 @@ export default function Toast({
 
   return (
     <div
-      className={`${styles.toast} ${variant === 'egg' ? styles.aboveModal : ''} ${
-        leaving ? styles.leaving : ''
-      }`}
+      className={`spectrumRing ${styles.toast} ${
+        variant === 'egg' ? styles.aboveModal : ''
+      } ${leaving ? styles.leaving : ''}`}
       role="status"
       aria-live="polite"
     >

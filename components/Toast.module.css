@@ -14,14 +14,12 @@
   width: max-content;
   max-width: min(560px, calc(100vw - 32px));
   padding: 14px 18px;
-  /* Transparent, because the ring below is painted into it. The border still has
-     to be declared so it reserves its 1px — losing it would shift the copy. */
-  border: 1px solid transparent;
   /* The pill shape comes from the radius exceeding half the height, so it
      stays a pill if the copy ever wraps to two lines rather than turning into
      a rounded rectangle with odd corners. */
   border-radius: 999px;
-  background: var(--bg);
+  /* No `background` here: .spectrumRing paints both layers, and a flat one
+     declared in this rule would win the cascade and bury the ring. */
   /*
    * Three layers rather than one: a tight contact shadow to lift the edge off
    * whatever is behind it, and two wide diffuse ones that fall away to nothing.
@@ -35,7 +33,10 @@
     0 10px 24px rgba(0, 0, 0, 0.26),
     0 28px 64px rgba(0, 0, 0, 0.32);
   transform: translateX(-50%);
-  animation: toastIn 240ms ease-out;
+  /* The ring's paint comes from .spectrumRing; this drives it. */
+  animation:
+    toastIn 240ms ease-out,
+    spectrum 1s linear infinite;
 }
 
 /*
@@ -51,14 +52,6 @@
  * animated; a plain custom property is a string to the animation system and
  * would jump from 0deg to 360deg with nothing in between.
  */
-.toast {
-  background:
-    linear-gradient(var(--bg), var(--bg)) padding-box,
-    var(--spectrum) border-box;
-  animation:
-    toastIn 240ms ease-out,
-    spectrum 2.4s linear infinite;
-}
 
 /*
  * Above the modal's 100, unlike the prize toast, which only ever appears once
@@ -133,7 +126,7 @@
 .leaving {
   animation:
     toastOut var(--toast-exit, 260ms) ease-in forwards,
-    spectrum 2.4s linear infinite;
+    spectrum 1s linear infinite;
 }
 
 @keyframes toastOut {

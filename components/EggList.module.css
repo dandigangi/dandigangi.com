@@ -18,13 +18,7 @@
   max-height: calc(100dvh - 48px);
   overflow-y: auto;
   padding: 28px;
-  /* Transparent, so the ring below paints into it; still declared so it keeps
-     its 1px and the content does not shift. */
-  border: 1px solid transparent;
-  background:
-    linear-gradient(var(--bg), var(--bg)) padding-box,
-    var(--spectrum) border-box;
-  animation: spectrum 2.4s linear infinite;
+  animation: spectrum 1s linear infinite;
 }
 
 /* Title block and the close control on one line, as the invoice modal does. */

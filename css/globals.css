@@ -55,28 +55,6 @@
   --rb-indigo: #a5b4fc;
   --rb-violet: #e879f9;
 
-  /*
-   * The travelling rainbow ring, shared by the toast, the egg list and the
-   * prize modal. Used as the border-box layer of a two-background paint: a
-   * gradient cannot be a border-color, and the usual pseudo-element trick
-   * cannot follow a large border-radius without a second element.
-   *
-   * Each surface declares its own `background` and `animation` rather than
-   * inheriting a utility class, because they all need a different fill and a
-   * different entry animation beside this one.
-   */
-  --spectrum: conic-gradient(
-    from var(--angle),
-    var(--rb-red),
-    var(--rb-orange),
-    var(--rb-yellow),
-    var(--rb-green),
-    var(--rb-blue),
-    var(--rb-indigo),
-    var(--rb-violet),
-    var(--rb-red)
-  );
-
   --par-hero: 0px;
   --par-band: 0px;
 
@@ -87,6 +65,41 @@
   to {
     --angle: 360deg;
   }
+}
+
+/*
+ * The travelling rainbow ring: the toast, the egg list and the prize modal.
+ *
+ * The conic gradient has to be written here, on the element itself, rather than
+ * held in a custom property on :root. `var()` inside a custom property is
+ * substituted at the element that *declares* it, and --angle is registered with
+ * `inherits: false` — so a --spectrum on :root resolves against :root's angle,
+ * which nothing animates, and every surface inherits a frozen gradient. It
+ * looked like the animation had slowed down; it had stopped.
+ *
+ * Only the paint lives here. Each surface keeps its own `animation`, because
+ * all three need an entry animation running alongside `spectrum` and the
+ * shorthand cannot be split between two rules.
+ *
+ * `--ring-fill` is the inside; it defaults to the page but the prize modal
+ * pins black, since it never follows the theme.
+ */
+.spectrumRing {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--ring-fill, var(--bg)), var(--ring-fill, var(--bg))) padding-box,
+    conic-gradient(
+        from var(--angle),
+        var(--rb-red),
+        var(--rb-orange),
+        var(--rb-yellow),
+        var(--rb-green),
+        var(--rb-blue),
+        var(--rb-indigo),
+        var(--rb-violet),
+        var(--rb-red)
+      )
+      border-box;
 }
 
 [data-theme='light'] {
