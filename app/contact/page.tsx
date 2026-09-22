@@ -43,6 +43,8 @@ export default function Contact() {
 
             <ContactForm />
 
+            <span className={`label ${styles.channelsHead}`}>Other ways to get ahold of me</span>
+
             <div className={styles.channels}>
               {channels.map((channel) => {
                 const isMail = channel.href.startsWith('mailto:')

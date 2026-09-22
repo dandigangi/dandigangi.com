@@ -15,6 +15,12 @@
   letter-spacing: -0.02em;
 }
 
+/* Its own section below the form, and far enough down to read as one. */
+.channelsHead {
+  display: block;
+  margin: 64px 0 18px;
+}
+
 .channels {
   display: flex;
   flex-direction: column;
