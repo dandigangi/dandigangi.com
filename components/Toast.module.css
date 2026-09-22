@@ -36,7 +36,7 @@
   /* The ring's paint comes from .spectrumRing; this drives it. */
   animation:
     toastIn 240ms ease-out,
-    spectrum 1s linear infinite;
+    spectrum 1.25s linear infinite;
 }
 
 /*
@@ -126,7 +126,7 @@
 .leaving {
   animation:
     toastOut var(--toast-exit, 260ms) ease-in forwards,
-    spectrum 1s linear infinite;
+    spectrum 1.25s linear infinite;
 }
 
 @keyframes toastOut {

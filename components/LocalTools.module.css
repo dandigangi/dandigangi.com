@@ -104,3 +104,29 @@
   text-transform: uppercase;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
+
+/* The egg shortcuts read as one strip of small controls, distinct from the
+   full-width buttons above them. */
+.row {
+  display: flex;
+  gap: 6px;
+}
+
+.small {
+  min-width: 0;
+  padding: 9px 12px;
+  background: #7c3aed;
+  border-color: #7c3aed;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.small:hover:not(:disabled) {
+  background: #6d28d9;
+  border-color: #6d28d9;
+}
+
+.small:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

@@ -1,10 +1,20 @@
 'use client'
 
-import { useEffect, useSyncExternalStore } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { resetAll } from '@/lib/pikachu'
-import { TOTAL_EGGS, foundEggs, resetEggs, subscribe as eggsSubscribe } from '@/lib/eggs'
+import {
+  EGGS,
+  TOTAL_EGGS,
+  findEgg,
+  foundEggs,
+  hasEgg,
+  resetEggs,
+  subscribe as eggsSubscribe,
+  type Egg,
+} from '@/lib/eggs'
+import EggToast from './EggToast'
 import { clearPikaPass } from '@/lib/pikaPass'
 import styles from './LocalTools.module.css'
 
@@ -66,6 +76,28 @@ export default function LocalTools() {
   // Server snapshot is 0: the tally is in localStorage, so it cannot be known
   // before hydration, and 0 is what the markup has to say until then.
   const eggs = useSyncExternalStore(eggsSubscribe, foundEggs, () => 0)
+  /** The one the dock just granted, so its toast announces like any other. */
+  const [granted, setGranted] = useState<Egg | null>(null)
+
+  /**
+   * Finding these for real means a blog search, a password, a wheel, and
+   * waiting for him to wander past — several minutes to reach a state worth
+   * looking at. These drive the same store the real triggers do, so what they
+   * set up is what the site would have arrived at on its own.
+   *
+   * The toast is left to EggToast rather than recorded here first: it only
+   * announces a find that was new when it mounted, so granting the egg before
+   * mounting it would be silent.
+   */
+  const grantOne = () => {
+    const next = EGGS.find((egg) => !hasEgg(egg))
+    if (next) setGranted(next)
+  }
+
+  const grantAll = () => {
+    setGranted(null)
+    for (const egg of EGGS) findEgg(egg)
+  }
 
   /**
    * Ctrl+` toggles the dock from anywhere. The visible handle is the ordinary
@@ -155,6 +187,29 @@ export default function LocalTools() {
       <span className={styles.tally}>
         🥚 {eggs}/{TOTAL_EGGS} found
       </span>
+
+      <div className={styles.row}>
+        <button
+          type="button"
+          className={`${styles.button} ${styles.small}`}
+          onClick={grantOne}
+          disabled={eggs >= TOTAL_EGGS}
+        >
+          +1 egg
+        </button>
+        <button
+          type="button"
+          className={`${styles.button} ${styles.small}`}
+          onClick={grantAll}
+          disabled={eggs >= TOTAL_EGGS}
+        >
+          Find all
+        </button>
+      </div>
+
+      {/* Keyed, so granting a second one replaces a toast already on screen
+          rather than reusing one that has been dismissed. */}
+      {granted && <EggToast key={granted} egg={granted} show />}
     </div>
   )
 }
