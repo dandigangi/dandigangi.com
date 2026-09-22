@@ -61,14 +61,12 @@
   color-scheme: dark;
 }
 
-@keyframes spectrum {
-  to {
-    --angle: 360deg;
-  }
-}
-
 /*
  * The travelling rainbow ring: the toast, the egg list and the prize modal.
+ *
+ * Paint only. The `@keyframes spectrum` that drives it lives in each module
+ * that uses it, because CSS Modules scopes animation names and cannot reach a
+ * globally-defined keyframes block.
  *
  * The conic gradient has to be written here, on the element itself, rather than
  * held in a custom property on :root. `var()` inside a custom property is

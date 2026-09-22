@@ -137,3 +137,21 @@
   width: 100%;
   justify-content: center;
 }
+
+/*
+ * Declared here rather than once in globals.css, and it has to be.
+ *
+ * CSS Modules scopes `@keyframes` names, and it scopes the name in an
+ * `animation` shorthand to match — so a module referencing a keyframes block
+ * defined globally compiles to a name that does not exist, and the animation
+ * silently never runs. That is exactly what happened twice: the ring looked
+ * like it had slowed down when it had simply stopped.
+ *
+ * The paint stays shared on the global `.spectrumRing`; only this three-line
+ * block is duplicated, because it is the part that cannot be.
+ */
+@keyframes spectrum {
+  to {
+    --angle: 360deg;
+  }
+}

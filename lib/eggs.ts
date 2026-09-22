@@ -5,9 +5,9 @@
  * array's length, so a new egg that skips this list silently makes the count
  * wrong for everybody who has already found the others.
  *
- * Four of them are the Pikachu chase: meeting him, and each of the three
- * figures he passes on the way up. Finding him once is a different discovery
- * from finding out how far he will take it.
+ * Three of them are the Pikachu chase: meeting him, and each of the two figures
+ * he passes on the way up. Finding him once is a different discovery from
+ * finding out how far he will take it.
  *
  * Only the eggs that announce themselves are in here. The Pay Pikachu link is a
  * discovery too, but it never says so, and a counter that moves without telling
@@ -16,7 +16,6 @@
 export const EGGS = [
   'pikachu',
   'angry',
-  'over',
   'final',
   'search',
   'admin',
@@ -38,9 +37,8 @@ export const TOTAL_EGGS = EGGS.length
  */
 const NAMES: Record<Egg, string> = {
   pikachu: 'TWV0IFBpa2FjaHU=',
-  angry: 'UHVzaGVkIGhpbSBwYXN0ICQ1MDA=',
-  over: 'UHVzaGVkIGhpbSBwYXN0ICQxLDAwMA==',
-  final: 'UHVzaGVkIGhpbSBwYXN0ICQxLDUwMA==',
+  angry: 'UHVzaGVkIGhpbSBwYXN0ICQyNTA=',
+  final: 'UHVzaGVkIGhpbSBwYXN0ICQ1MDA=',
   search: 'U2VhcmNoZWQgdGhlIGJsb2cgZm9yIGhpbQ==',
   admin: 'R3Vlc3NlZCB0aGUgYWRtaW4gcGFzc3dvcmQ=',
   sprite: 'VGhyZXcgYSBQb2tlYmFsbCBhdCBoaW0=',

@@ -22,14 +22,14 @@ describe('hero arming', () => {
   it('stays off over the tier until he is caught', async () => {
     const pk = await load()
     // Storage says they are well over, as a returning visitor's would.
-    localStorage.setItem('dd:pk', btoa(JSON.stringify({ amount: 1400, invoices: 4 })))
-    expect(pk.getTab().amount).toBe(1400)
+    localStorage.setItem('dd:pk', btoa(JSON.stringify({ amount: 700, invoices: 4 })))
+    expect(pk.getTab().amount).toBe(700)
     expect(pk.heroActive()).toBe(false)
   })
 
   it('comes on when a catch crosses the tier', async () => {
     const pk = await load()
-    pk.raiseTab(1200)
+    pk.raiseTab(700)
     expect(pk.heroActive()).toBe(true)
   })
 
@@ -43,7 +43,7 @@ describe('hero arming', () => {
     const pk = await load()
     const listener = vi.fn()
     pk.subscribe(listener)
-    pk.raiseTab(1200)
+    pk.raiseTab(700)
     listener.mockClear()
 
     vi.advanceTimersByTime(ARM_MS - 1)
@@ -58,22 +58,22 @@ describe('hero arming', () => {
 
   it('re-arms on a later catch, tab intact', async () => {
     const pk = await load()
-    pk.raiseTab(1200)
+    pk.raiseTab(700)
     vi.advanceTimersByTime(ARM_MS)
     expect(pk.heroActive()).toBe(false)
 
     pk.raiseTab(pk.getTab().amount)
     expect(pk.heroActive()).toBe(true)
-    expect(pk.getTab().amount).toBe(1200)
+    expect(pk.getTab().amount).toBe(700)
   })
 
   it('is off again after a reload, and a catch brings it back', async () => {
     const first = await load()
-    first.raiseTab(1200)
+    first.raiseTab(700)
     expect(first.heroActive()).toBe(true)
 
     const reloaded = await load()
-    expect(reloaded.getTab().amount).toBe(1200)
+    expect(reloaded.getTab().amount).toBe(700)
     expect(reloaded.heroActive()).toBe(false)
 
     reloaded.raiseTab(reloaded.getTab().amount)
@@ -82,7 +82,7 @@ describe('hero arming', () => {
 
   it('goes off when a hug drops him back under the tier', async () => {
     const pk = await load()
-    pk.raiseTab(1020)
+    pk.raiseTab(520)
     expect(pk.heroActive()).toBe(true)
     pk.softenTab(50)
     expect(pk.heroActive()).toBe(false)
@@ -90,7 +90,7 @@ describe('hero arming', () => {
 
   it('is not armed by the alter ego toggle', async () => {
     const pk = await load()
-    pk.raiseTab(1200)
+    pk.raiseTab(700)
     vi.advanceTimersByTime(ARM_MS)
     pk.setAlterEgo(true)
     expect(pk.heroActive()).toBe(false)
@@ -111,7 +111,7 @@ describe('resetTab', () => {
 
   it('leaves the layer mounted so it can fade out', async () => {
     const pk = await load()
-    pk.raiseTab(1200)
+    pk.raiseTab(700)
     pk.resetTab()
     expect(pk.heroEverActive()).toBe(true)
   })
@@ -144,7 +144,7 @@ describe('the blog-search egg', () => {
 
   it('leaves an armed tab still driving the hero once it clears', async () => {
     const pk = await load()
-    pk.raiseTab(1200)
+    pk.raiseTab(700)
     pk.setSearchEgg(true)
     pk.setSearchEgg(false)
     // The catch is what is holding it up now, not the search.
@@ -191,7 +191,7 @@ describe('resetAll', () => {
 
   it('clears storage, so a reload starts the chase over', async () => {
     const first = await load()
-    first.raiseTab(1400)
+    first.raiseTab(700)
     expect(localStorage.getItem('dd:pk')).not.toBeNull()
 
     first.resetAll()
@@ -222,16 +222,26 @@ describe('the tab past the old finish line', () => {
     expect(pk.getTab()).toEqual({ amount: 3000, invoices: 9 })
   })
 
-  /** The red/angry treatment stays at 500; the hero and the egg both moved up. */
-  it('keeps the visual tier below the tier that swaps the hero', async () => {
+  /** Angry first, hero second — the two figures are deliberately not the same. */
+  it('turns him angry before it repaints the hero', async () => {
     const pk = await load()
-    expect(pk.OVER_TIER).toBeLessThan(pk.EGG_TIER)
+    expect(pk.OVER_TIER).toBeLessThan(pk.FINAL_TIER)
 
-    // Angry, but not yet worth repainting every hero on the site.
-    pk.raiseTab(600)
+    // Over the red line, but not yet worth repainting every hero on the site.
+    pk.raiseTab(pk.OVER_TIER)
     expect(pk.heroActive()).toBe(false)
 
-    pk.raiseTab(pk.EGG_TIER)
+    pk.raiseTab(pk.FINAL_TIER)
     expect(pk.heroActive()).toBe(true)
+  })
+
+  /** Each figure earns one, and there is nothing between them any more. */
+  it('has an egg for every money tier and no orphans', async () => {
+    const pk = await load()
+    const eggs = await import('./eggs')
+    for (const tier of pk.MONEY_TIERS) {
+      expect(eggs.EGGS).toContain(tier.egg)
+    }
+    expect(pk.MONEY_TIERS.map((tier) => tier.at)).toEqual([pk.OVER_TIER, pk.FINAL_TIER])
   })
 })

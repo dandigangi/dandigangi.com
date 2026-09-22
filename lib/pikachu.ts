@@ -113,7 +113,7 @@ export const setSearchEgg = (on: boolean) => {
  * back under the line puts the abstract render back exactly as it puts the
  * modal back to black.
  */
-export const heroActive = () => searchEgg || (armed() && getTab().amount >= EGG_TIER)
+export const heroActive = () => searchEgg || (armed() && getTab().amount >= FINAL_TIER)
 
 /** Derived too, or a reload with an escalated tab stored would never mount the
  *  layer that `heroActive` is about to switch on. */
@@ -162,19 +162,17 @@ export type Tab = {
 export const OPENING = 100
 
 /** Where he stops being polite, and where the hero swap earns its keep. */
-export const OVER_TIER = 500
-
-/**
- * The figure that swaps the hero. Deliberately above OVER_TIER: repainting every
- * hero on the site is a bigger swing than the first flash of temper deserves.
- */
-export const EGG_TIER = 1000
+export const OVER_TIER = 250
 
 /**
  * The last milestone, not a finish line. The tab keeps climbing past it — the
  * prize hangs on finding every easter egg, not on reaching a figure.
+ *
+ * It is also where the hero swaps. That used to be a tier of its own, sitting
+ * between this and OVER_TIER; with the chase this short there is no room for a
+ * third figure, and the top of it is the right place for the biggest effect.
  */
-export const FINAL_TIER = 1500
+export const FINAL_TIER = 500
 
 /**
  * The three crossings worth an egg, in order. Kept here rather than in the
@@ -182,7 +180,6 @@ export const FINAL_TIER = 1500
  */
 export const MONEY_TIERS = [
   { at: OVER_TIER, egg: 'angry' },
-  { at: EGG_TIER, egg: 'over' },
   { at: FINAL_TIER, egg: 'final' },
 ] as const
 
@@ -240,7 +237,7 @@ export const raiseTab = (amount: number) => {
   arm()
   tab = { amount, invoices: tab.invoices + 1 }
   persist()
-  // Not emit(): crossing EGG_TIER is what switches the hero on, and only this
+  // Not emit(): crossing FINAL_TIER is what switches the hero on, and only this
   // knows whether that just happened.
   changed(wasActive)
 }
