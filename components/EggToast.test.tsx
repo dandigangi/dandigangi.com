@@ -43,9 +43,7 @@ describe('the egg count', () => {
     findEgg('admin')
     render(<EggToast egg="search" show />)
     // Two found: the one already recorded, plus this one.
-    expect(
-      await screen.findByText(`You found an easter egg! (2/${TOTAL_EGGS})`)
-    ).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: `(2/${TOTAL_EGGS})` })).toBeInTheDocument()
   })
 
   /** The whole point of the counter is that it climbs, so walk it. */
@@ -56,7 +54,7 @@ describe('the egg count', () => {
     for (const [index, egg] of EGGS.entries()) {
       const view = render(<EggToast egg={egg} show />)
       expect(
-        await screen.findByText(`You found an easter egg! (${index + 1}/${TOTAL_EGGS})`)
+        await screen.findByRole('button', { name: `(${index + 1}/${TOTAL_EGGS})` })
       ).toBeInTheDocument()
       view.unmount()
     }
@@ -65,7 +63,7 @@ describe('the egg count', () => {
   it('says nothing the second time the same egg is triggered', async () => {
     const { TOTAL_EGGS } = await import('@/lib/eggs')
     const first = render(<EggToast egg="search" show />)
-    expect(await screen.findByText(`(1/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: `(1/${TOTAL_EGGS})` })).toBeInTheDocument()
     first.unmount()
 
     // Re-triggering something already in the tally is not a discovery.
@@ -84,6 +82,6 @@ describe('the egg count', () => {
     expect(foundEggs()).toBe(0)
 
     render(<EggToast egg="pikachu" show />)
-    expect(await screen.findByText(`(1/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: `(1/${TOTAL_EGGS})` })).toBeInTheDocument()
   })
 })

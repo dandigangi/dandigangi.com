@@ -162,18 +162,26 @@ export const OPENING = 100
 export const OVER_TIER = 500
 
 /**
- * Where he stops being polite *to look at* — red, angry, hero swapped. Separate
- * from the figure that earns an easter egg, which is now higher: at £500 he has
- * only just started, and rewarding it undersold how far he is willing to go.
+ * The figure that swaps the hero. Deliberately above OVER_TIER: repainting every
+ * hero on the site is a bigger swing than the first flash of temper deserves.
  */
 export const EGG_TIER = 1000
 
 /**
- * A milestone, not a finish line. It used to end the game — the tab stopped
- * here and the prize modal opened — but the prize now hangs on finding every
- * easter egg, and he simply keeps adding to the tab past this.
+ * The last milestone, not a finish line. The tab keeps climbing past it — the
+ * prize hangs on finding every easter egg, not on reaching a figure.
  */
-export const FINAL_TIER = 2500
+export const FINAL_TIER = 1500
+
+/**
+ * The three crossings worth an egg, in order. Kept here rather than in the
+ * cameo so the figures and the ids that depend on them cannot drift apart.
+ */
+export const MONEY_TIERS = [
+  { at: OVER_TIER, egg: 'angry' },
+  { at: EGG_TIER, egg: 'over' },
+  { at: FINAL_TIER, egg: 'final' },
+] as const
 
 const STORE_KEY = 'dd:pk'
 

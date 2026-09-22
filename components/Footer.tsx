@@ -5,6 +5,8 @@ import PayPikachuLink from './PayPikachuLink'
 import ThemeToggle from './ThemeToggle'
 import { LinkedInIcon, XIcon, GitHubIcon, MailIcon } from './Icons'
 import AdminLink from './AdminLink'
+import { EggListLink } from './EggList'
+import footer from './Footer.module.css'
 
 const socials = [
   { href: siteMetadata.linkedin, label: 'LinkedIn', Icon: LinkedInIcon },
@@ -63,8 +65,13 @@ export default function Footer() {
           ) : null}
 
           {/* Its own line under the stamp, and fainter still — findable rather
-              than advertised. */}
-          <AdminLink />
+              than advertised. The egg count sits beside it and is not hidden at
+              all: by the time it exists you have already found something, so
+              there is nothing left to keep quiet about. */}
+          <span className={footer.adminRow}>
+            <AdminLink />
+            <EggListLink className={footer.eggs} />
+          </span>
         </div>
 
         <nav aria-label="Elsewhere">

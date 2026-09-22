@@ -117,7 +117,7 @@ function RollingAmount({ from, to }: { from: number; to: number }) {
 }
 
 /** Appears twice below, so it lives here rather than in both. */
-const FIGURE = 25
+const FIGURE = 50
 
 /**
  * Base64, and the names around it are deliberately bland.
@@ -169,7 +169,10 @@ export default function PikachuModal({
   /** Rails he has already been asked about. None of them settle anything — he
    *  answers in place of the delivery estimate and the invoice stays open. */
   const [poked, setPoked] = useState<string[]>([])
-  const final = won || amount >= FINAL_TIER
+  /* `won` alone. This used to also fire on `amount >= FINAL_TIER`, which is
+     why the prize modal turned up on reaching a figure — the win moved to the
+     egg tally, and this was the half left behind. */
+  const final = won
   const hugLimit = viaCatch ? HUGS_PER_CATCH : HUGS_PER_RE_READ
   /** Out of hugs — one after catching him, three when only re-reading. */
   const spent = hugs >= hugLimit

@@ -8,6 +8,7 @@ import { Analytics as VercelAnalytics } from '@vercel/analytics/react'
 import siteMetadata from '@/data/siteMetadata'
 import ThemeScript from '@/components/ThemeScript'
 import Footer from '@/components/Footer'
+import EggList from '@/components/EggList'
 import PikachuCameo from '@/components/PikachuCameo'
 import SiteChrome from '@/components/SiteChrome'
 import LocalTools from '@/components/LocalTools'
@@ -131,6 +132,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteChrome>
           <Footer />
           <PikachuCameo />
+          <EggList />
           <LocalTools />
         </SiteChrome>
         <VercelAnalytics />

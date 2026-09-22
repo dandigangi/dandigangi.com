@@ -97,7 +97,7 @@ describe('the egg variant', () => {
     const onClose = vi.fn()
     render(<Toast variant="egg" onClose={onClose} />)
 
-    act(() => void vi.advanceTimersByTime(6000))
+    act(() => void vi.advanceTimersByTime(9500))
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 

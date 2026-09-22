@@ -5,9 +5,9 @@
  * array's length, so a new egg that skips this list silently makes the count
  * wrong for everybody who has already found the others.
  *
- * Three of them are the Pikachu chase at its three moments: meeting him, the
- * invoice turning hostile, and the figure he stops at. Finding him once is a
- * different discovery from finding out how far he will take it.
+ * Four of them are the Pikachu chase: meeting him, and each of the three
+ * figures he passes on the way up. Finding him once is a different discovery
+ * from finding out how far he will take it.
  *
  * Only the eggs that announce themselves are in here. The Pay Pikachu link is a
  * discovery too, but it never says so, and a counter that moves without telling
@@ -15,6 +15,7 @@
  */
 export const EGGS = [
   'pikachu',
+  'angry',
   'over',
   'final',
   'search',
@@ -29,7 +30,37 @@ export type Egg = (typeof EGGS)[number]
 
 export const TOTAL_EGGS = EGGS.length
 
+/**
+ * What each one is called once it has been found. Encoded for the reason in
+ * lib/copy.ts — decoded together these are a walkthrough, which is the one
+ * thing the bundle must not hand over. Only ever rendered for eggs already in
+ * the tally; the rest show as blanks.
+ */
+const NAMES: Record<Egg, string> = {
+  pikachu: 'TWV0IFBpa2FjaHU=',
+  angry: 'UHVzaGVkIGhpbSBwYXN0ICQ1MDA=',
+  over: 'UHVzaGVkIGhpbSBwYXN0ICQxLDAwMA==',
+  final: 'UHVzaGVkIGhpbSBwYXN0ICQxLDUwMA==',
+  search: 'U2VhcmNoZWQgdGhlIGJsb2cgZm9yIGhpbQ==',
+  admin: 'R3Vlc3NlZCB0aGUgYWRtaW4gcGFzc3dvcmQ=',
+  sprite: 'VGhyZXcgYSBQb2tlYmFsbCBhdCBoaW0=',
+  wheel: 'VHVybmVkIHRoZSB3aG9sZSB0YWdsaW5lIHdoZWVs',
+  hidden: 'Rm91bmQgdGhlIGNoaXAgdGhhdCBpcyBub3QgdGhlcmU=',
+  alterego: 'TWV0IHRoZSBhbHRlciBlZ28=',
+}
+
+export const eggName = (egg: Egg): string => veiled(NAMES[egg])
+
+/** The found ones, in registry order, for listing. */
+export const foundList = (): Egg[] => {
+  if (typeof window === 'undefined') return []
+  load()
+  return EGGS.filter((egg) => found.has(egg))
+}
+
 // Opaque on purpose: "dd:eggs" sitting in localStorage is an invitation.
+import { veiled } from './copy'
+
 const STORE_KEY = 'dd:x1'
 const CLAIM_KEY = 'dd:x2'
 

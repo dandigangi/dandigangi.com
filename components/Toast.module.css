@@ -178,3 +178,16 @@
     border-radius: 18px;
   }
 }
+
+/* A control inside the sentence, so it has to read as pressable without
+   becoming a second thing to look at. */
+.count {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pika);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

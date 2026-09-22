@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
 import { veiled } from '@/lib/copy'
+import { openEggList } from './EggList'
 import styles from './Toast.module.css'
 
 /**
@@ -14,11 +15,12 @@ export type ToastVariant = 'prize' | 'egg'
 
 /**
  * The prize toast has to outlast reading it *and* acting on one of its links —
- * a short toast with links in it is a tease. The egg toast has nothing to act
- * on, so it behaves like an ordinary notification. The × is on both for anyone
+ * a short toast with links in it is a tease. The egg toast is shorter, but not
+ * by as much as it looks: the count in it is a control now, so it has to be
+ * readable, understood as pressable, and pressed. The × is on both for anyone
  * who would rather not wait either out.
  */
-const DISMISS_MS: Record<ToastVariant, number> = { prize: 30000, egg: 6000 }
+const DISMISS_MS: Record<ToastVariant, number> = { prize: 30000, egg: 9500 }
 
 /** Both toasts' copy, encoded for the reason in lib/copy.ts. Decode before editing. */
 const FOUND = veiled('WW91IGZvdW5kIGFuIGVhc3RlciBlZ2ch')
@@ -75,7 +77,7 @@ export default function Toast({
   // Owns only the hand-dismiss timer; the two above clean up on their own.
   useEffect(() => () => void (exit.current && clearTimeout(exit.current)), [])
 
-  const progress = count !== undefined && total !== undefined ? ` (${count}/${total})` : ''
+  const hasProgress = count !== undefined && total !== undefined
 
   return (
     <div
@@ -90,7 +92,16 @@ export default function Toast({
       </span>
       <p className={styles.text}>
         {variant === 'egg' ? (
-          `${FOUND}${progress}`
+          <>
+            {FOUND}{' '}
+            {hasProgress && (
+              /* The count is the way into the list — the toast is the only place
+                 it is guaranteed to be on screen at the moment one is found. */
+              <button type="button" className={styles.count} onClick={openEggList}>
+                ({count}/{total})
+              </button>
+            )}
+          </>
         ) : (
           <>
             {PRIZE_LEAD}

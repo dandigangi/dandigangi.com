@@ -4,8 +4,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from '
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import {
-  EGG_TIER,
-  FINAL_TIER,
+  MONEY_TIERS,
   PIKACHU_OPEN,
   getInitialTab,
   getTab,
@@ -311,18 +310,17 @@ export default function PikachuCameo() {
     }
 
     /*
-     * The two tiers are their own discoveries: one for the invoice turning
-     * hostile, one for the figure he stops at. Checked as crossings rather than
-     * "is over" so a hug that drops back under and a later catch that climbs
-     * past again do not announce the same thing twice — findEgg is idempotent
-     * either way, but the toast is not.
+     * Each figure he passes is its own discovery. Checked as crossings rather
+     * than "is over", so a hug that drops back under and a later catch that
+     * climbs past again do not announce the same thing twice — findEgg is
+     * idempotent either way, but the toast is not.
      *
-     * Final wins the tie: catching both in one jump is one moment, and it is
-     * the bigger one.
+     * Highest first, and only one: clearing two in a single jump is one moment,
+     * and it should be reported as the bigger of them.
      */
     const after = getTab().amount
-    if (before < FINAL_TIER && after >= FINAL_TIER) setEggToast('final')
-    else if (before < EGG_TIER && after >= EGG_TIER) setEggToast('over')
+    const crossed = [...MONEY_TIERS].reverse().find((tier) => before < tier.at && after >= tier.at)
+    if (crossed) setEggToast(crossed.egg)
 
     show(true)
   }
