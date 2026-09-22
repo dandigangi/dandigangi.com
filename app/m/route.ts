@@ -51,6 +51,9 @@ export async function POST(request: Request) {
   const name = clean(body.name, LIMITS.name)
   const email = clean(body.email, LIMITS.email)
   const message = clean(body.message, LIMITS.message)
+  /* Present only for someone who has won. Capped like everything else, and
+     never trusted — it is checked against the secret, not believed. */
+  const code = clean(body.code, 64)
 
   // Deliberately loose. A regex that rejects a valid address is worse than one
   // that accepts an invalid one — the reply just bounces, and nobody is
@@ -59,7 +62,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'incomplete' }, { status: 400 })
   }
 
-  const text = [`📬 New message from ${name} <${email}>`, '', message].join('\n')
+  const text = [
+    `📬 New message from ${name} <${email}>`,
+    code ? `🐣 Claim code: ${code}` : '',
+    '',
+    message,
+  ]
+    .filter((line, at) => line !== '' || at > 1)
+    .join('\n')
 
   try {
     const sent = await fetch(WEBHOOK, {

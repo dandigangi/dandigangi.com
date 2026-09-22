@@ -15,23 +15,12 @@ const X_RECIPIENT_ID = '192625645'
 
 export const X_DM_URL = `https://x.com/messages/compose?recipient_id=${X_RECIPIENT_ID}`
 
-/**
- * Base64 for the same reason the modal's copy is: skimming the repo or grepping
- * the built JS shouldn't hand someone the surprise. Decode before editing.
+/*
+ * There was a mailto here, pre-filled with the subject and the claim code. The
+ * third way out of the prize is the contact page now, which carries the code on
+ * its own form — so the address is reached the same way everyone else reaches
+ * it, and there is no second copy of the subject line to drift.
  */
-const SUBJECT = new TextDecoder().decode(
-  Uint8Array.from(atob('RWFzdGVyIEVnZyBHaWZ0Y2FyZCE='), (character) => character.charCodeAt(0))
-)
-
-/**
- * Pre-filled so one of these is recognisable in the inbox without opening it,
- * and carrying the claim code so it arrives with something checkable — see
- * app/c/route.ts and scripts/verify-claim.mjs.
- */
-export const mailUrl = (code: string | null) =>
-  `mailto:${siteMetadata.email}?subject=${encodeURIComponent(SUBJECT)}${
-    code ? `&body=${encodeURIComponent(`Code: ${code}`)}` : ''
-  }`
 
 /**
  * LinkedIn has no compose deep link that works for someone who is not already a

@@ -6,7 +6,8 @@ import { EXTRA, allTokens, tokenList, clearTokens, subscribe } from '@/lib/ledge
 import { useLabels } from './useLabels'
 import { useTokenCount, useTokenTotal } from './useLedger'
 import { isTrail, setTrail, subscribe as rainbowSubscribe } from '@/lib/trail'
-import { CALLER_OFFER, OFFER_FIGURE, resetAll } from '@/lib/caller'
+import Link from 'next/link'
+import { OFFER_FIGURE, resetAll } from '@/lib/caller'
 import styles from './Ledger.module.css'
 
 /**
@@ -179,16 +180,12 @@ export default function Ledger() {
         {complete && (
           /* A way back to the prize once the modal has been dismissed — the
              tally stays complete, so without this there would be none. */
-          <button
-            type="button"
-            className={`btn btnPrize btnTone ${styles.claim}`}
-            onClick={() => {
-              close()
-              window.dispatchEvent(new CustomEvent(CALLER_OFFER))
-            }}
-          >
+          /* To the contact page rather than back into the invoice: that is
+             where the code and the form to send it with now live, and a prize
+             that reopens the thing you just closed is a loop, not a way out. */
+          <Link href="/contact" className={`btn btnPrize btnTone ${styles.claim}`} onClick={close}>
             {veiled('Q2xhaW0gWW91ciBQcml6ZQ==')}
-          </button>
+          </Link>
         )}
 
         <button type="button" className={`btn ${styles.close}`} onClick={close}>

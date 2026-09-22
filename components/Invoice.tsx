@@ -5,7 +5,10 @@ import Image from 'next/image'
 import { FINAL_TIER, OPENING, OVER_TIER, OFFER_FIGURE } from '@/lib/caller'
 import { veiled } from '@/lib/copy'
 import { T, tokenList, type Token } from '@/lib/ledger'
-import { LINKEDIN_URL, mailUrl, X_DM_URL } from '@/lib/callerLinks'
+import Link from 'next/link'
+import { LINKEDIN_URL, X_DM_URL } from '@/lib/callerLinks'
+import ClaimCode from './ClaimCode'
+import { useClaimCode } from './useClaimCode'
 import Confetti from './Confetti'
 import { ArrowRight } from './Icons'
 import styles from './Invoice.module.css'
@@ -142,7 +145,7 @@ const TEXT = [
   new TextDecoder().decode(Uint8Array.from(atob(line), (character) => character.charCodeAt(0)))
 )
 
-const [T_HEAD, T_LABEL, T_LINE_1, T_LINE_2, T_ASIDE, T_ACT_X, T_ACT_IN, T_ACT_MAIL] = TEXT
+const [T_HEAD, T_LABEL, T_LINE_1, T_LINE_2, T_ASIDE, T_ACT_X, T_ACT_IN] = TEXT
 
 const AVATAR = '/static/images/face-a.jpg'
 const ANGRY_AVATAR = '/static/images/face-b.jpg'
@@ -182,7 +185,6 @@ export default function Invoice({
    * from inside the prize, so counting it toward the prize would make it its
    * own prerequisite. See ASIDE in lib/eggs.ts.
    */
-  const [copied, setCopied] = useState(false)
   const [rails, setRails] = useState<string[]>([])
   /**
    * Two things had to be got right here and both were wrong first time.
@@ -207,34 +209,7 @@ export default function Invoice({
      egg tally, and this was the half left behind. */
   const final = won
 
-  /**
-   * The claim code, asked for once the prize is on screen.
-   *
-   * It goes in the message so a claim arrives with something checkable against
-   * the secret — see app/c/route.ts, which is also candid about the limit: it
-   * proves the code came from the site, not that the holder earned it.
-   */
-  const [code, setCode] = useState<string | null>(null)
-  useEffect(() => {
-    if (!final || code) return
-    let live = true
-    fetch('/c', {
-      method: 'POST',
-      cache: 'no-store',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ t: tokenList().map((entry) => entry.egg) }),
-    })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((body: { code?: string } | null) => {
-        if (live && body?.code) setCode(body.code)
-      })
-      // Offline, or the secret is not configured. The prize still shows; the
-      // message simply arrives without a code, as it always used to.
-      .catch(() => {})
-    return () => {
-      live = false
-    }
-  }, [final, code])
+  const code = useClaimCode()
   const hugLimit = viaCatch ? HUGS_PER_CATCH : HUGS_PER_RE_READ
   /** Out of hugs — one after catching him, three when only re-reading. */
   const spent = hugs >= hugLimit
@@ -418,35 +393,8 @@ export default function Invoice({
               </>
             )}
 
-            {/* The code, where the person who earned it can see it. Two of the
-                three ways out of here are a DM, and neither can be pre-filled —
-                so without this the code only ever reached anyone who picked
-                email, and a claim by DM arrived with nothing to check. */}
-            {final && code && (
-              <div className={styles.codeBox}>
-                <span className="label">{veiled('WW91ciBjbGFpbSBjb2Rl')}</span>
-                <div className={styles.codeRow}>
-                  <code className={styles.code}>{code}</code>
-                  <button
-                    type="button"
-                    className={styles.copy}
-                    onClick={() => {
-                      navigator.clipboard?.writeText(code).then(
-                        () => setCopied(true),
-                        () => setCopied(false)
-                      )
-                    }}
-                  >
-                    {copied ? 'Copied' : 'Copy'}
-                  </button>
-                </div>
-                <p className={styles.codeNote}>
-                  {veiled(
-                    'U2VuZCB0aGlzIGNsYWltIGNvZGUgd2l0aCB5b3VyIG1lc3NhZ2UsIGhvd2V2ZXIgeW91IHJlYWNoIG91dCAtLSBJIGNhbm5vdCB2ZXJpZnkgYSB3aW4gd2l0aG91dCBpdC4='
-                  )}
-                </p>
-              </div>
-            )}
+            {/* Shared with the contact form — one component, one code. */}
+            {final && <ClaimCode code={code} label={veiled('WW91ciBjbGFpbSBjb2Rl')} />}
 
             {final ? (
               <>
@@ -468,13 +416,16 @@ export default function Invoice({
                 >
                   {T_ACT_IN}
                 </a>
-                <a
-                  href={mailUrl(code)}
+                <Link
+                  href="/contact"
                   className={`btn btnTone ${styles.claim}`}
-                  onClick={() => rail('mail')}
+                  onClick={() => {
+                    rail('contact')
+                    onClose()
+                  }}
                 >
-                  {T_ACT_MAIL}
-                </a>
+                  {veiled('Q29udGFjdA==')}
+                </Link>
               </>
             ) : (
               <button

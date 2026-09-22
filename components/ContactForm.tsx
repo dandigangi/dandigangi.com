@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { veiled } from '@/lib/copy'
+import ClaimCode from './ClaimCode'
+import { useClaimCode } from './useClaimCode'
 import styles from './ContactForm.module.css'
 
 type State = 'idle' | 'sending' | 'sent' | 'invalid' | 'error'
@@ -25,6 +28,7 @@ const MESSAGES: Record<'invalid' | 'error', string> = {
  */
 export default function ContactForm() {
   const [state, setState] = useState<State>('idle')
+  const code = useClaimCode()
   /**
    * When this form became interactive. The server rejects anything filled in
    * faster than a person can type — see MIN_FILL_MS in app/m/route.ts.
@@ -52,6 +56,7 @@ export default function ContactForm() {
           name: data.get('name'),
           email: data.get('email'),
           message: data.get('message'),
+          code,
           website: data.get('website'),
           t: opened.current,
         }),
@@ -91,6 +96,11 @@ export default function ContactForm() {
         <span className={styles.labelText}>Message</span>
         <textarea name="message" required rows={5} maxLength={4000} />
       </label>
+
+      {/* Only for whoever has won. It rides along with the submission on its
+          own, so nobody has to copy it — the copy is for the two claim routes
+          that are a DM and cannot carry anything. */}
+      <ClaimCode code={code} label={veiled('RWFzdGVyIEVnZyBXaW4gQ2xhaW0gQ29kZQ==')} />
 
       {/* The honeypot. Hidden from sight and from screen readers, and skipped by
           the tab order — a person cannot reach it, so anything in it is a bot. */}
