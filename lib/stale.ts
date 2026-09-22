@@ -9,12 +9,12 @@
  * Measured from the last write, not the first: anyone still playing keeps
  * pushing the deadline out in front of them.
  */
-const KEY = 'dd:e4'
+const KEY = 'dd:f4'
 
 export const STALE_MS = 14 * 24 * 60 * 60 * 1000
 
 /** Every key the hunt writes. Listed here so expiry clears all of it at once. */
-const KEYS = ['dd:e1', 'dd:e2', 'dd:e3', 'dd:pk2', KEY]
+const KEYS = ['dd:f1', 'dd:f2', 'dd:f3', 'dd:pk3', KEY]
 
 /**
  * Clears everything if the last write is older than the window, and reports

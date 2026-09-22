@@ -20,6 +20,38 @@ import { TOKENS, type Token } from '@/lib/ledger'
  */
 const SECRET = process.env.EGG_SECRET
 
+/**
+ * Optional. Any endpoint that accepts a JSON POST — a Slack or Discord incoming
+ * webhook, a Zapier or Make catch hook, a Pipedream URL.
+ *
+ * Deliberately generic rather than wired to one service: this needs to be a URL
+ * in an env var and nothing else, so changing where the pings go never means
+ * changing this file. Unset, it simply does not fire.
+ */
+const WEBHOOK = process.env.WIN_WEBHOOK_URL
+
+/**
+ * Fire and forget, and never allowed to affect the response. Someone who just
+ * won should get their code whether or not the ping lands, and a webhook that
+ * is slow or down must not turn the last moment of the hunt into a spinner.
+ */
+const ping = (code: string, request: Request) => {
+  if (!WEBHOOK) return
+  const where = request.headers.get('referer') ?? 'unknown page'
+  void fetch(WEBHOOK, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    // `text` is what Slack renders; `content` is what Discord renders. Sending
+    // both means one payload works for either without a setting to get wrong.
+    body: JSON.stringify({
+      text: `🐣 Someone just won the easter egg hunt. Code: ${code} (from ${where})`,
+      content: `🐣 Someone just won the easter egg hunt. Code: ${code} (from ${where})`,
+    }),
+  }).catch(() => {
+    // Down, blocked, or a bad URL. The claim stands regardless.
+  })
+}
+
 /** Six characters of MAC. Short enough to read down a phone, and it only has to
  *  beat guessing by someone who does not have the secret. */
 const MAC_LENGTH = 6
@@ -59,6 +91,7 @@ export async function POST(request: Request) {
   const nonce = randomBytes(5).toString('hex')
   const code = `DDG-${nonce}-${mac(nonce, SECRET)}`
   console.log(`[claim] issued ${code}`)
+  ping(code, request)
 
   return NextResponse.json({ code }, { headers: { 'Cache-Control': 'no-store' } })
 }

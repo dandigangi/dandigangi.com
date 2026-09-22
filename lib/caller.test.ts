@@ -20,7 +20,7 @@ describe('hero arming', () => {
   it('stays off over the tier until he is caught', async () => {
     const pk = await load()
     // Storage says they are well over, as a returning visitor's would.
-    localStorage.setItem('dd:pk2', btoa(JSON.stringify({ amount: 700, invoices: 4 })))
+    localStorage.setItem('dd:pk3', btoa(JSON.stringify({ amount: 700, invoices: 4 })))
     expect(pk.getTab().amount).toBe(700)
     expect(pk.layerActive()).toBe(false)
   })
@@ -113,7 +113,7 @@ describe('resetTab', () => {
     pk.resetTab()
     expect(pk.getTab()).toEqual({ amount: pk.OPENING, invoices: 0 })
     expect(pk.layerActive()).toBe(false)
-    expect(localStorage.getItem('dd:pk2')).toBeNull()
+    expect(localStorage.getItem('dd:pk3')).toBeNull()
   })
 
   it('leaves the layer mounted so it can fade out', async () => {
@@ -199,10 +199,10 @@ describe('resetAll', () => {
   it('clears storage, so a reload starts the chase over', async () => {
     const first = await load()
     first.raiseTab(700)
-    expect(localStorage.getItem('dd:pk2')).not.toBeNull()
+    expect(localStorage.getItem('dd:pk3')).not.toBeNull()
 
     first.resetAll()
-    expect(localStorage.getItem('dd:pk2')).toBeNull()
+    expect(localStorage.getItem('dd:pk3')).toBeNull()
 
     const second = await load()
     expect(second.getTab().amount).toBe(second.OPENING)
@@ -222,7 +222,7 @@ describe('the tab past the old finish line', () => {
 
   it('drops a wonAt left over from the old stored shape', async () => {
     localStorage.setItem(
-      'dd:pk2',
+      'dd:pk3',
       btoa(JSON.stringify({ amount: 3000, invoices: 9, wonAt: Date.now() }))
     )
     const pk = await load()

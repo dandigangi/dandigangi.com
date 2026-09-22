@@ -48,8 +48,8 @@ const HASHED = [
 const SHORTEST = 8
 const BUFFER = 14
 
-const STORE_KEY = 'dd:e3'
-const RETIRED = 'dd:x3'
+const STORE_KEY = 'dd:f3'
+const RETIRED = ['dd:x3', 'dd:e3']
 
 /** Set on <html>, which is what every rule in css/trail.css hangs off. */
 const FLAG = 'data-trail'
@@ -84,7 +84,7 @@ const load = () => {
   if (read) return
   read = true
   try {
-    localStorage.removeItem(RETIRED)
+    for (const key of RETIRED) localStorage.removeItem(key)
     expireIfStale()
     on = localStorage.getItem(STORE_KEY) === '1'
   } catch {

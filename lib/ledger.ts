@@ -126,9 +126,9 @@ import { expireIfStale, touch } from './stale'
  *
  * The retired keys are removed on first read rather than left to rot.
  */
-const STORE_KEY = 'dd:e1'
-const CLAIM_KEY = 'dd:e2'
-const RETIRED = ['dd:x1', 'dd:x2']
+const STORE_KEY = 'dd:f1'
+const CLAIM_KEY = 'dd:f2'
+const RETIRED = ['dd:x1', 'dd:x2', 'dd:e1', 'dd:e2']
 
 /**
  * Module state over an event, for the same reason the Pikachu tab is: anything

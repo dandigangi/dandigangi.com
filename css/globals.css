@@ -375,6 +375,16 @@ a {
      looks the same and is simply easier to hit. */
   display: inline-block;
   padding: 7px 9px;
+  /*
+   * Explicit, and it has to be. One of these is a <button> — Pay Pikachu — and
+   * a button takes the UA's `line-height: normal` instead of inheriting the
+   * body's, so its box came out a different height from the anchors beside it.
+   * That read as a taller plate in rainbow mode and a dropped baseline
+   * everywhere else.
+   *
+   * 1.2 rather than 1: the acute on RÉSUMÉ needs the room, and a flat 1 clips it.
+   */
+  line-height: 1.2;
 }
 
 .navLink:hover {

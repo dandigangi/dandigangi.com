@@ -18,22 +18,22 @@ describe('the fourteen-day window', () => {
 
   it('leaves a recent hunt alone', async () => {
     const stale = await load()
-    localStorage.setItem('dd:e4', String(Date.now() - 13 * DAY))
-    localStorage.setItem('dd:e1', 'something')
+    localStorage.setItem('dd:f4', String(Date.now() - 13 * DAY))
+    localStorage.setItem('dd:f1', 'something')
 
     expect(stale.expireIfStale()).toBe(false)
-    expect(localStorage.getItem('dd:e1')).toBe('something')
+    expect(localStorage.getItem('dd:f1')).toBe('something')
   })
 
   it('clears everything once it is past the window', async () => {
     const stale = await load()
-    localStorage.setItem('dd:e4', String(Date.now() - 15 * DAY))
-    for (const key of ['dd:e1', 'dd:e2', 'dd:e3', 'dd:pk2']) {
+    localStorage.setItem('dd:f4', String(Date.now() - 15 * DAY))
+    for (const key of ['dd:f1', 'dd:f2', 'dd:f3', 'dd:pk3']) {
       localStorage.setItem(key, 'something')
     }
 
     expect(stale.expireIfStale()).toBe(true)
-    for (const key of ['dd:e1', 'dd:e2', 'dd:e3', 'dd:pk2', 'dd:e4']) {
+    for (const key of ['dd:f1', 'dd:f2', 'dd:f3', 'dd:pk3', 'dd:f4']) {
       expect(localStorage.getItem(key)).toBeNull()
     }
   })
@@ -41,7 +41,7 @@ describe('the fourteen-day window', () => {
   /** Measured from the last write, so anyone still playing never expires. */
   it('moves the deadline on every touch', async () => {
     const stale = await load()
-    localStorage.setItem('dd:e4', String(Date.now() - 13 * DAY))
+    localStorage.setItem('dd:f4', String(Date.now() - 13 * DAY))
 
     stale.touch()
     vi.useFakeTimers()
@@ -57,7 +57,7 @@ describe('the fourteen-day window', () => {
     expect(eggs.tokenCount()).toBe(1)
 
     // Wind the clock back on the last write, then reload as a returning visitor.
-    localStorage.setItem('dd:e4', String(Date.now() - 20 * DAY))
+    localStorage.setItem('dd:f4', String(Date.now() - 20 * DAY))
     vi.resetModules()
     const fresh = await import('./ledger')
     expect(fresh.tokenCount()).toBe(0)

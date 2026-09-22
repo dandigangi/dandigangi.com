@@ -59,6 +59,9 @@ export default function SiteNav({ logoHeight = 36 }: { logoHeight?: number }) {
         <ul
           style={{
             display: 'flex',
+            // Centred rather than stretched, so a button and an anchor sit on
+            // the same line rather than each on its own intrinsic baseline.
+            alignItems: 'center',
             flexWrap: 'wrap',
             // Tighter than it reads: .navLink now carries its own padding for
             // the sake of the tap target, and that padding is most of the gap.

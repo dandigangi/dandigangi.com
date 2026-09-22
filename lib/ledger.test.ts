@@ -43,13 +43,13 @@ describe('the egg tally', () => {
    * egg that has since been removed would push the count past the total.
    */
   it('ignores a stored name that is no longer an egg', async () => {
-    localStorage.setItem('dd:e1', JSON.stringify([T.probe, 'retired-egg']))
+    localStorage.setItem('dd:f1', JSON.stringify([T.probe, 'retired-egg']))
     const eggs = await load()
     expect(eggs.tokenCount()).toBe(1)
   })
 
   it('shrugs off a corrupt value rather than throwing', async () => {
-    localStorage.setItem('dd:e1', 'not json')
+    localStorage.setItem('dd:f1', 'not json')
     const eggs = await load()
     expect(eggs.tokenCount()).toBe(0)
   })
@@ -79,7 +79,7 @@ describe('the egg tally', () => {
     first.clearTokens()
 
     expect(first.tokenCount()).toBe(0)
-    expect(localStorage.getItem('dd:e1')).toBeNull()
+    expect(localStorage.getItem('dd:f1')).toBeNull()
 
     const second = await load()
     expect(second.tokenCount()).toBe(0)
@@ -148,7 +148,7 @@ describe('when each was found', () => {
    * the worse trade.
    */
   it('keeps finds written in the older id-only shape', async () => {
-    localStorage.setItem('dd:e1', JSON.stringify([T.probe, T.gate]))
+    localStorage.setItem('dd:f1', JSON.stringify([T.probe, T.gate]))
     const eggs = await load()
     expect(eggs.tokenCount()).toBe(2)
     expect(eggs.tokenList().every((entry) => entry.at === 0)).toBe(true)

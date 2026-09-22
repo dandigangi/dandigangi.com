@@ -1,8 +1,9 @@
 'use client'
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { addToken, hasToken, type Token } from '@/lib/ledger'
 import { useTokenCount, useTokenTotal } from './useLedger'
+import { useLabels } from './useLabels'
 import Toast from './Toast'
 
 /**
@@ -35,6 +36,25 @@ export default function Blip({ egg, show }: { egg: Token; show: boolean }) {
   useEffect(() => {
     if (show) addToken(egg)
   }, [show, egg])
+
+  /**
+   * A line in the console for anyone who has one open, with the same name the
+   * list uses.
+   *
+   * Gated on this being a new find, like the toast is — reopening a page you
+   * solved last week should not announce it again. The name is fetched rather
+   * than shipped (see app/l/route.ts), so this waits for it rather than logging
+   * an id nobody can read.
+   */
+  const name = useLabels(show && !alreadyKnown ? [egg] : []).get(egg)
+  // A ref rather than state: this guards a side effect and must not itself
+  // cause a render, which is also what react-hooks/purity is there to catch.
+  const logged = useRef(false)
+  useEffect(() => {
+    if (!show || alreadyKnown || logged.current || !name) return
+    logged.current = true
+    console.log(`🐣 easter egg found - ${name}`)
+  }, [show, alreadyKnown, name])
 
   /**
    * `null` on the server, and therefore also through hydration, because the

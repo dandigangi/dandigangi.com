@@ -80,6 +80,7 @@ export default function Footer() {
           <ul
             style={{
               display: 'flex',
+              alignItems: 'center',
               flexWrap: 'wrap',
               // See .navLink: its padding now carries most of this.
               gap: '2px 12px',
