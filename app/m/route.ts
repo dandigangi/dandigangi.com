@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server'
  * URL in the bundle is a URL anyone can post to directly, and the form's own
  * checks below would be the first thing they skipped.
  */
-const WEBHOOK = process.env.CONTACT_WEBHOOK_URL
+const WEBHOOK = process.env.WEBHOOKS_CONTACT_URL
 
 /** Caps, so a single submission cannot be used to flood a channel. */
 const LIMITS = { name: 120, email: 200, message: 4000 }

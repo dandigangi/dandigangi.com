@@ -28,7 +28,7 @@ const SECRET = process.env.EGG_SECRET
  * in an env var and nothing else, so changing where the pings go never means
  * changing this file. Unset, it simply does not fire.
  */
-const WEBHOOK = process.env.WIN_WEBHOOK_URL
+const WEBHOOK = process.env.WEBHOOKS_EGGSWIN_URL
 
 /**
  * Fire and forget, and never allowed to affect the response. Someone who just
