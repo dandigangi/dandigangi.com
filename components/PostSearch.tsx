@@ -1,16 +1,26 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { formatFullDate, formatTag } from '@/lib/format'
 import { setSearchEgg } from '@/lib/pikachu'
+import { veiled } from '@/lib/copy'
 import EggToast from './EggToast'
+import PokeballThrow from './PokeballThrow'
 import styles from './PostSearch.module.css'
 
-/** Type his name and the hero above you goes yellow, for exactly as long as it
- *  stays typed. Matched on the whole query, not a substring — a post about him
- *  should not put him on the page. */
-const EGG = 'pikachu'
+/**
+ * Type his name and the hero above you goes yellow, for exactly as long as it
+ * stays typed. Matched on the whole query, not a substring — a post about him
+ * should not put him on the page.
+ *
+ * Encoded along with the copy it unlocks, so the built JS does not simply tell
+ * you what to type. See lib/copy.ts.
+ */
+const EGG = veiled('cGlrYWNodQ==')
+const MISS = veiled('Tm90aGluZyBtYXRjaGVzIOKAnHBpa2FjaHXigJ0gZXhjZXB0')
+const NUDGE = veiled('LiBUcnkgdGhyb3dpbmcgYSBQb2vDqWJhbGwh')
+const THROW_LABEL = veiled('VGhyb3cgYSBQb2vDqWJhbGwgYXQgUGlrYWNodQ==')
 
 export type SearchEntry = {
   slug: string
@@ -80,6 +90,30 @@ export default function PostSearch({
    */
   const caught = egg && results.length === 0
 
+  /**
+   * Balls in flight. A list rather than one at a time on purpose — the line
+   * invites you to throw one, and the only right answer to someone spamming it
+   * is more Pokéballs, not a queue.
+   */
+  const [balls, setBalls] = useState<{ id: number; x: number; y: number }[]>([])
+  const nextBall = useRef(0)
+  const sprite = useRef<HTMLButtonElement>(null)
+  /** Latched on the first throw; the toast outlives the ball that earned it. */
+  const [spriteEgg, setSpriteEgg] = useState(false)
+
+  const throwBall = () => {
+    const rect = sprite.current?.getBoundingClientRect()
+    if (!rect) return
+    setSpriteEgg(true)
+    nextBall.current += 1
+    setBalls((flying) => [
+      ...flying,
+      { id: nextBall.current, x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
+    ])
+  }
+
+  const landed = (id: number) => setBalls((flying) => flying.filter((ball) => ball.id !== id))
+
   return (
     <>
       <div className={styles.field}>
@@ -109,16 +143,34 @@ export default function PostSearch({
         ) : null}
       </div>
 
-      <EggToast egg="search" show={egg} />
+      {/* One at a time: both are fixed to the same spot, and the sprite egg is
+          the later discovery, so it takes over once it has been found. */}
+      {spriteEgg ? (
+        <EggToast key="sprite" egg="sprite" show />
+      ) : (
+        <EggToast egg="search" show={egg} />
+      )}
+
+      {balls.map((ball) => (
+        <PokeballThrow key={ball.id} x={ball.x} y={ball.y} onDone={() => landed(ball.id)} />
+      ))}
 
       {trimmed ? (
         <div className={styles.results}>
           {caught ? (
             <p className={`${styles.empty} ${styles.eggEmpty}`}>
-              Nothing matches “pikachu” except{' '}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/static/images/pikachu.png" alt="Pikachu" className={styles.eggSprite} />.
-              Try throwing a Pokéball!
+              {MISS}{' '}
+              <button
+                type="button"
+                ref={sprite}
+                className={styles.eggSprite}
+                onClick={throwBall}
+                aria-label={THROW_LABEL}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/static/images/pikachu.png" alt="" />
+              </button>
+              {NUDGE}
             </p>
           ) : results.length === 0 ? (
             <p className={styles.empty}>

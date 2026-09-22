@@ -48,7 +48,10 @@ describe('PostSearch', () => {
       const { user } = setup()
       await user.type(screen.getByRole('searchbox'), 'pikachu')
       expect(screen.getByText(/Try throwing a Pokéball!/)).toBeInTheDocument()
-      expect(screen.getByRole('img', { name: 'Pikachu' })).toBeInTheDocument()
+      // He is a button now, not decoration — the line invites you to throw at him.
+      expect(
+        screen.getByRole('button', { name: /Throw a Pokéball at Pikachu/ })
+      ).toBeInTheDocument()
       expect(screen.queryByText(/Try a broader term/)).not.toBeInTheDocument()
     })
 
@@ -73,5 +76,31 @@ describe('PostSearch', () => {
       expect(screen.getByText('server list')).toBeInTheDocument()
       expect(screen.queryByText(/Try throwing a Pokéball!/)).not.toBeInTheDocument()
     })
+  })
+})
+
+describe('throwing at the sprite', () => {
+  it('launches a ball on click, and one per click after that', async () => {
+    const { user } = setup()
+    await user.type(screen.getByRole('searchbox'), 'pikachu')
+    const pika = screen.getByRole('button', { name: /Throw a Pokéball at Pikachu/ })
+
+    await user.click(pika)
+    expect(document.querySelectorAll('svg').length).toBe(1)
+
+    // Spamming it is the point: they stack rather than queue.
+    await user.click(pika)
+    await user.click(pika)
+    expect(document.querySelectorAll('svg').length).toBe(3)
+  })
+
+  it('counts the first throw as its own egg', async () => {
+    const { user } = setup()
+    await user.type(screen.getByRole('searchbox'), 'pikachu')
+    await user.click(screen.getByRole('button', { name: /Throw a Pokéball at Pikachu/ }))
+
+    const { TOTAL_EGGS } = await import('@/lib/eggs')
+    // The search egg fired on typing; this is the second.
+    expect(await screen.findByText(`(2/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
   })
 })

@@ -106,6 +106,14 @@ const nextConfig = {
         destination: '/blog/tags/engineering-management',
         permanent: true,
       },
+      // Renamed Sep 2026 for clarity. Both were live, indexed URLs, so they
+      // point at their new spelling rather than 404.
+      {
+        source: '/blog/tags/feedback',
+        destination: '/blog/tags/giving-feedback',
+        permanent: true,
+      },
+      { source: '/blog/tags/resume', destination: '/blog/tags/resumes', permanent: true },
     ]
   },
   async headers() {

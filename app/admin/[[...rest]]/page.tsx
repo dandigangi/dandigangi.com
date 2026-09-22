@@ -111,11 +111,8 @@ function Lulz() {
         <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
           Hire Me
         </a>
-        <Link href="/" className="btn">
-          Home
-        </Link>
         <Link href="/blog" className="btn">
-          Read the blog
+          Read the Blog
         </Link>
       </div>
     </>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { grantPikaPass } from '@/lib/pikaPass'
+import { veiled } from '@/lib/copy'
 import styles from '../not-found.module.css'
 import gate from './gate.module.css'
 
@@ -62,7 +63,7 @@ const sessionIp = () => {
  * — it just decorates the refusal. Compared case-insensitively; nothing is
  * stored or sent either way.
  */
-const MAGIC = 'pikachu'
+const MAGIC = veiled('cGlrYWNodQ==')
 
 /** Long enough to be a plausible rule, and a nudge at the only answer that
  *  changes anything — which happens to be exactly this many letters. */
@@ -125,7 +126,7 @@ const knock = () => {
         redirect_uri: '/admin',
         code_challenge_method: 'S256',
         nonce: nonce(),
-        pikachu: true,
+        prompt: 'consent',
         client: {
           tz: timezone(),
           viewport: viewport(),

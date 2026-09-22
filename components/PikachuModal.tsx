@@ -117,7 +117,7 @@ function RollingAmount({ from, to }: { from: number; to: number }) {
 }
 
 /** Appears twice below, so it lives here rather than in both. */
-const FIGURE = 10
+const FIGURE = 25
 
 /**
  * Base64, and the names around it are deliberately bland.

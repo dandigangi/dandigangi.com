@@ -19,7 +19,7 @@
  */
 .name {
   margin: 0 0 14px;
-  font-size: clamp(20px, 2.4vw, 28px);
+  font-size: clamp(18px, 2.1vw, 25px);
   /* 300 — the lightest Archivo the site loads. At this size anything heavier
      competed with the lede under it, which is the sentence that actually
      matters on this page; the uppercase and the tight tracking carry the name

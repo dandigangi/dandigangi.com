@@ -1,6 +1,6 @@
 import Link from 'next/link'
+import GoBack from '@/components/GoBack'
 import SiteNav from '@/components/SiteNav'
-import siteMetadata from '@/data/siteMetadata'
 import styles from './not-found.module.css'
 
 export default function NotFound() {
@@ -19,16 +19,13 @@ export default function NotFound() {
           This page isn&rsquo;t here anymore, or never was. I&rsquo;ll pretend to check the error
           logs.
         </p>
+        {/* Both ways out of a dead end, and nothing else: where you just were,
+            or the front door. /admin/lulz has its own pair — that page is a
+            punchline rather than a mistake, so it sells instead. */}
         <div className={styles.actions}>
-          {/* First, as on /admin/lulz — the two pages share this row. */}
-          <a href={siteMetadata.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
-            Hire Me
-          </a>
+          <GoBack />
           <Link href="/" className="btn">
             Home
-          </Link>
-          <Link href="/blog" className="btn">
-            Read the blog
           </Link>
         </div>
       </div>

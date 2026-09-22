@@ -36,6 +36,15 @@
   animation: toastIn 240ms ease-out;
 }
 
+/*
+ * Above the modal's 100, unlike the prize toast, which only ever appears once
+ * the modal has closed. The tier eggs fire on the catch that crosses them, with
+ * the invoice still open — at z-index 90 they landed behind its scrim.
+ */
+.aboveModal {
+  z-index: 110;
+}
+
 /* Emoji render at the font's own metrics and sit high in the line box; this
    pulls them back onto the text's baseline. */
 .mark {

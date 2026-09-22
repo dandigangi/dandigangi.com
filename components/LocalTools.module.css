@@ -99,3 +99,22 @@
 :global([data-theme='light']) .whenLight {
   display: inline;
 }
+
+/* The dock's old purple, on a readout rather than a control. Deliberately not a
+   button: nothing happens when you press it, and a control that does nothing is
+   worse than a label. */
+.tally {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 12px;
+  color: #fff;
+  background: #7c3aed;
+  border: 1px solid #7c3aed;
+  opacity: 0.875;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}

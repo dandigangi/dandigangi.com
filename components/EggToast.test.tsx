@@ -31,11 +31,13 @@ describe('EggToast', () => {
 
 describe('the egg count', () => {
   it('shows progress through the eggs', async () => {
-    const { findEgg } = await import('@/lib/eggs')
+    const { findEgg, TOTAL_EGGS } = await import('@/lib/eggs')
     findEgg('admin')
     render(<EggToast egg="search" show />)
-    // Two of three: the one already recorded, plus this one.
-    expect(await screen.findByText(/You found an easter egg! \(2\/3\)/)).toBeInTheDocument()
+    // Two found: the one already recorded, plus this one.
+    expect(
+      await screen.findByText(`You found an easter egg! (2/${TOTAL_EGGS})`)
+    ).toBeInTheDocument()
   })
 
   /** The whole point of the counter is that it climbs, so walk it. */
@@ -43,10 +45,13 @@ describe('the egg count', () => {
     const { resetEggs } = await import('@/lib/eggs')
     resetEggs()
 
-    for (const [index, egg] of (['pikachu', 'search', 'admin'] as const).entries()) {
+    // Driven off the real registry, so adding a sixth egg fails here rather
+    // than quietly leaving the assertion behind.
+    const { EGGS, TOTAL_EGGS } = await import('@/lib/eggs')
+    for (const [index, egg] of EGGS.entries()) {
       const view = render(<EggToast egg={egg} show />)
       expect(
-        await screen.findByText(`You found an easter egg! (${index + 1}/3)`)
+        await screen.findByText(`You found an easter egg! (${index + 1}/${TOTAL_EGGS})`)
       ).toBeInTheDocument()
       view.unmount()
     }
@@ -56,17 +61,18 @@ describe('the egg count', () => {
     const { resetEggs } = await import('@/lib/eggs')
     resetEggs()
 
+    const { TOTAL_EGGS } = await import('@/lib/eggs')
     const first = render(<EggToast egg="search" show />)
-    expect(await screen.findByText(/\(1\/3\)/)).toBeInTheDocument()
+    expect(await screen.findByText(`(1/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
     first.unmount()
 
     render(<EggToast egg="search" show />)
-    expect(await screen.findByText(/\(1\/3\)/)).toBeInTheDocument()
+    expect(await screen.findByText(`(1/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
   })
 
   /** Reset Pikachu clears the tally too, or the count is stuck forever. */
   it('starts over after a reset', async () => {
-    const { findEgg, resetEggs, foundEggs } = await import('@/lib/eggs')
+    const { findEgg, resetEggs, foundEggs, TOTAL_EGGS } = await import('@/lib/eggs')
     findEgg('search')
     findEgg('admin')
     expect(foundEggs()).toBe(2)
@@ -75,6 +81,6 @@ describe('the egg count', () => {
     expect(foundEggs()).toBe(0)
 
     render(<EggToast egg="pikachu" show />)
-    expect(await screen.findByText(/\(1\/3\)/)).toBeInTheDocument()
+    expect(await screen.findByText(`(1/${TOTAL_EGGS})`, { exact: false })).toBeInTheDocument()
   })
 })

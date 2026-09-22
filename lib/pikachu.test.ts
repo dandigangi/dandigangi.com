@@ -22,7 +22,7 @@ describe('hero arming', () => {
   it('stays off over the tier until he is caught', async () => {
     const pk = await load()
     // Storage says they are well over, as a returning visitor's would.
-    localStorage.setItem('dd:pk', btoa(JSON.stringify({ amount: 900, invoices: 4, wonAt: null })))
+    localStorage.setItem('dd:pk', btoa(JSON.stringify({ amount: 900, invoices: 4 })))
     expect(pk.getTab().amount).toBe(900)
     expect(pk.heroActive()).toBe(false)
   })
@@ -101,11 +101,10 @@ describe('resetTab', () => {
   it('puts the tab back to the opening ask and clears storage', async () => {
     const pk = await load()
     pk.raiseTab(2600)
-    expect(pk.getTab().wonAt).not.toBeNull()
     expect(pk.heroActive()).toBe(true)
 
     pk.resetTab()
-    expect(pk.getTab()).toEqual({ amount: pk.OPENING, invoices: 0, wonAt: null })
+    expect(pk.getTab()).toEqual({ amount: pk.OPENING, invoices: 0 })
     expect(pk.heroActive()).toBe(false)
     expect(localStorage.getItem('dd:pk')).toBeNull()
   })
@@ -171,7 +170,7 @@ describe('resetAll', () => {
 
     pk.resetAll()
 
-    expect(pk.getTab()).toEqual({ amount: pk.OPENING, invoices: 0, wonAt: null })
+    expect(pk.getTab()).toEqual({ amount: pk.OPENING, invoices: 0 })
     expect(pk.hasCaught()).toBe(false)
     expect(pk.isAlterEgo()).toBe(false)
     expect(pk.isSearchEgg()).toBe(false)
@@ -200,5 +199,34 @@ describe('resetAll', () => {
 
     const second = await load()
     expect(second.getTab().amount).toBe(second.OPENING)
+  })
+})
+
+describe('the tab past the old finish line', () => {
+  /** It used to stop here and hand over a prize; now it just keeps going. */
+  it('keeps climbing past FINAL_TIER', async () => {
+    const pk = await load()
+    pk.raiseTab(pk.FINAL_TIER + 500)
+    expect(pk.getTab().amount).toBe(pk.FINAL_TIER + 500)
+
+    pk.raiseTab(pk.FINAL_TIER + 900)
+    expect(pk.getTab().amount).toBe(pk.FINAL_TIER + 900)
+  })
+
+  it('drops a wonAt left over from the old stored shape', async () => {
+    localStorage.setItem(
+      'dd:pk',
+      btoa(JSON.stringify({ amount: 3000, invoices: 9, wonAt: Date.now() }))
+    )
+    const pk = await load()
+    expect(pk.getTab()).toEqual({ amount: 3000, invoices: 9 })
+  })
+
+  /** The red/angry treatment stays where it was; only the egg moved up. */
+  it('keeps the visual tier below the tier that earns an egg', async () => {
+    const pk = await load()
+    expect(pk.OVER_TIER).toBeLessThan(pk.EGG_TIER)
+    pk.raiseTab(600)
+    expect(pk.heroActive()).toBe(true)
   })
 })

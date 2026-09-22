@@ -98,9 +98,12 @@
   text-align: right;
 }
 
+/* The extra 20px at the bottom is deliberate: with only the symmetric padding
+   the line sat hard against the rule under it, whether it was the ordinary miss
+   or the Pikachu one. */
 .empty {
   margin: 0;
-  padding: 26px 0;
+  padding: 26px 0 46px;
   font-size: clamp(16px, 1.7vw, 17px);
   color: var(--soft);
 }
@@ -127,9 +130,42 @@
 /* Sized to the line rather than to a fixed box, so he sits on the text baseline
    at any of the clamped body sizes. */
 .eggSprite {
-  height: 1.7em;
-  width: auto;
+  display: inline-flex;
+  align-items: center;
+  height: 1.51em;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
   vertical-align: middle;
+  transition: transform 0.12s ease;
+}
+
+.eggSprite img {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+
+/* He flinches. The line tells you to throw something at him, so the target has
+   to read as a target. */
+.eggSprite:hover {
+  transform: translateY(-2px) scale(1.08);
+}
+
+.eggSprite:active {
+  transform: translateY(1px) scale(0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eggSprite {
+    transition: none;
+  }
+
+  .eggSprite:hover,
+  .eggSprite:active {
+    transform: none;
+  }
 }
 
 /* Falls back to the meta's own colour when the tag has no hue — a post whose

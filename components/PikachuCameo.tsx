@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from '
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import {
+  EGG_TIER,
+  FINAL_TIER,
   PIKACHU_OPEN,
   getInitialTab,
   getTab,
@@ -14,6 +16,7 @@ import {
   subscribe,
 } from '@/lib/pikachu'
 import PikachuModal from './PikachuModal'
+import { allFound, claimPrize, hasClaimed, subscribe as eggsSubscribe, type Egg } from '@/lib/eggs'
 import EggToast from './EggToast'
 import PokeballThrow from './PokeballThrow'
 import Toast from './Toast'
@@ -124,8 +127,17 @@ export default function PikachuCameo() {
   const pathname = usePathname()
   // The tab lives in the module store so it survives both a client-side
   // navigation and the browser tab closing.
-  const { amount, invoices, wonAt } = useSyncExternalStore(subscribe, getTab, getInitialTab)
-  const [previous, setPrevious] = useState<number | null>(null)
+  const { amount, invoices } = useSyncExternalStore(subscribe, getTab, getInitialTab)
+  /**
+   * The figure to strike through, and the invoice it belongs to.
+   *
+   * Stamped with the invoice number because this is component state describing
+   * store state: a reset — whether the dev dock's or the one after the prize —
+   * puts the tab back without this knowing, and the struck-through number then
+   * outlived the run it came from. It showed up as "$100 $100" on a fresh
+   * catch, which is what sent me looking.
+   */
+  const [previous, setPrevious] = useState<{ amount: number; at: number } | null>(null)
   const [toast, setToast] = useState(false)
   /** Where the ball is flying to, in viewport coordinates, or null. */
   const [throwAt, setThrowAt] = useState<{ x: number; y: number } | null>(null)
@@ -134,13 +146,30 @@ export default function PikachuCameo() {
    * eggs on the site are. Latched rather than tied to `throwAt`: the ball is
    * gone in under a second, and the toast should outlive it.
    */
-  const [eggToast, setEggToast] = useState(false)
+  /** Which egg the toast is currently announcing, or null. */
+  const [eggToast, setEggToast] = useState<Egg | null>(null)
+
+  /**
+   * The prize is now the reward for finding every easter egg, not for reaching a
+   * figure on the tab — he simply keeps adding to that forever. Derived rather
+   * than held in state, so the modal appears the instant the last egg lands
+   * without an effect having to notice and push it open.
+   *
+   * `hasClaimed` is what stops it reappearing on every load afterwards: the set
+   * stays complete once it is complete, so completeness alone cannot be the
+   * condition.
+   */
+  const prize = useSyncExternalStore(
+    eggsSubscribe,
+    () => allFound() && !hasClaimed(),
+    () => false
+  )
 
   /**
    * Read by `onClose`, which has to keep a stable identity — so the won state
    * reaches it through a ref rather than through its dependency list.
    */
-  const won = wonAt !== null
+  const won = prize
   const wonRef = useRef(won)
   useEffect(() => {
     wonRef.current = won
@@ -256,7 +285,7 @@ export default function PikachuCameo() {
   const onCatch = () => {
     if (getTab().invoices === 0 && cameo && throwAt === null) {
       loop.current?.stop()
-      setEggToast(true)
+      setEggToast('pikachu')
       setThrowAt({
         // The cameo is positioned in page coordinates; the ball is fixed.
         x: cameo.left - window.scrollX + SIZE / 2,
@@ -270,14 +299,31 @@ export default function PikachuCameo() {
   /** The catch itself, once anything in front of it has played out. */
   const settle = () => {
     const tab = getTab()
+    const before = tab.amount
     // Each shakedown costs more than the last, cents and all — but the opening
     // ask stands on the very first catch, including across visits.
     if (tab.invoices > 0) {
-      setPrevious(tab.amount)
+      // `at` is the invoice this raise produces, not the one it came from.
+      setPrevious({ amount: tab.amount, at: tab.invoices + 1 })
       raiseTab(Math.round((tab.amount + rand(RAISE[0], RAISE[1])) * 100) / 100)
     } else {
       raiseTab(tab.amount)
     }
+
+    /*
+     * The two tiers are their own discoveries: one for the invoice turning
+     * hostile, one for the figure he stops at. Checked as crossings rather than
+     * "is over" so a hug that drops back under and a later catch that climbs
+     * past again do not announce the same thing twice — findEgg is idempotent
+     * either way, but the toast is not.
+     *
+     * Final wins the tie: catching both in one jump is one moment, and it is
+     * the bigger one.
+     */
+    const after = getTab().amount
+    if (before < FINAL_TIER && after >= FINAL_TIER) setEggToast('final')
+    else if (before < EGG_TIER && after >= EGG_TIER) setEggToast('over')
+
     show(true)
   }
 
@@ -290,7 +336,8 @@ export default function PikachuCameo() {
   // the modal open so the number can be seen rolling back down.
   const onHug = () => {
     const before = getTab().amount
-    if (softenTab(HUG_RELIEF)) setPrevious(before)
+    // A hug does not raise an invoice, so it belongs to the current one.
+    if (softenTab(HUG_RELIEF)) setPrevious({ amount: before, at: getTab().invoices })
   }
 
   useEffect(() => {
@@ -328,6 +375,9 @@ export default function PikachuCameo() {
     // goes back to the opening ask and the hero stands down, and the toast is
     // the only thing left carrying the payout.
     if (wonRef.current) {
+      // Marked collected before the reset, or `prize` stays true and the modal
+      // reopens on the very next render.
+      claimPrize()
       resetTab()
       setToast(true)
     }
@@ -341,10 +391,12 @@ export default function PikachuCameo() {
 
   return (
     <>
-      {open && (
+      {(open || prize) && (
         <PikachuModal
           amount={amount}
-          previous={previous}
+          // Only when it still describes the invoice on screen. Anything else
+          // is a leftover from a run that has since been reset.
+          previous={previous?.at === invoices ? previous.amount : null}
           invoices={invoices}
           won={won}
           viaCatch={byCatch}
@@ -354,7 +406,9 @@ export default function PikachuCameo() {
       )}
       {cameo?.path === pathname && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
       {throwAt && <PokeballThrow x={throwAt.x} y={throwAt.y} onDone={onThrowDone} />}
-      <EggToast egg="pikachu" show={eggToast} />
+      {/* Keyed, so a second milestone replaces the first outright rather than
+          reusing a toast that has already been dismissed. */}
+      {eggToast && <EggToast key={eggToast} egg={eggToast} show />}
       {toast && <Toast onClose={hideToast} />}
     </>
   )

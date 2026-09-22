@@ -151,8 +151,6 @@ export const setAlterEgo = (on: boolean) => {
 export type Tab = {
   amount: number
   invoices: number
-  /** When the last state was reached, or null. Expires — see WON_MS. */
-  wonAt: number | null
 }
 
 /** His opening ask, and the floor a hug cannot take him below. */
@@ -161,20 +159,23 @@ export const OPENING = 100
 /** Where he stops being polite, and where the hero swap earns its keep. */
 export const OVER_TIER = 500
 
-/** Where the last state takes over. Lives here rather than in the modal so the
- *  store can stamp `wonAt` at the moment it is crossed. */
-export const FINAL_TIER = 2500
+/**
+ * Where he stops being polite *to look at* — red, angry, hero swapped. Separate
+ * from the figure that earns an easter egg, which is now higher: at £500 he has
+ * only just started, and rewarding it undersold how far he is willing to go.
+ */
+export const EGG_TIER = 1000
 
 /**
- * A backstop, not the usual path out: dismissing the last state resets the tab
- * outright (see resetTab). This only catches the person who closed the browser
- * with that modal still open, so their stored win does not sit there forever.
+ * A milestone, not a finish line. It used to end the game — the tab stopped
+ * here and the prize modal opened — but the prize now hangs on finding every
+ * easter egg, and he simply keeps adding to the tab past this.
  */
-const WON_MS = 24 * 60 * 60 * 1000
+export const FINAL_TIER = 2500
 
 const STORE_KEY = 'dd:pk'
 
-const OPENING_TAB: Tab = { amount: OPENING, invoices: 0, wonAt: null }
+const OPENING_TAB: Tab = { amount: OPENING, invoices: 0 }
 
 let tab: Tab = OPENING_TAB
 /** Constant identity: what the server renders, and what hydration matches. */
@@ -195,17 +196,12 @@ const stored = (): Tab | null => {
     if (!raw) return null
     const saved: unknown = JSON.parse(atob(raw))
     if (typeof saved !== 'object' || saved === null) return null
-    const { amount, invoices, wonAt } = saved as Partial<Tab>
+    const { amount, invoices } = saved as Partial<Tab>
     if (typeof amount !== 'number' || typeof invoices !== 'number') return null
     if (!Number.isFinite(amount) || amount < OPENING || invoices < 0) return null
-    const won = typeof wonAt === 'number' && Number.isFinite(wonAt) ? wonAt : null
-    // Evaluated once per page load rather than on every read, so the modal
-    // cannot change state under someone who is looking at it.
-    if (won !== null && Date.now() - won >= WON_MS) {
-      localStorage.removeItem(STORE_KEY)
-      return null
-    }
-    return { amount, invoices, wonAt: won }
+    // A `wonAt` from the old shape is simply dropped: the prize no longer hangs
+    // on the tab, so there is nothing for it to mean.
+    return { amount, invoices }
   } catch {
     // Private mode, blocked storage, or a value written by an older shape.
     return null
@@ -229,12 +225,7 @@ export const raiseTab = (amount: number) => {
   // Before the figure moves, so `changed` below sees the armed state that this
   // catch has just established rather than the one it is replacing.
   arm()
-  tab = {
-    amount,
-    invoices: tab.invoices + 1,
-    // Stamped once. A hug can take the figure back down; it cannot un-win.
-    wonAt: tab.wonAt ?? (amount >= FINAL_TIER ? Date.now() : null),
-  }
+  tab = { amount, invoices: tab.invoices + 1 }
   persist()
   // Not emit(): crossing OVER_TIER is what switches the hero on, and only this
   // knows whether that just happened.

@@ -4,7 +4,7 @@ import { useEffect, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { resetAll } from '@/lib/pikachu'
-import { resetEggs } from '@/lib/eggs'
+import { TOTAL_EGGS, foundEggs, resetEggs, subscribe as eggsSubscribe } from '@/lib/eggs'
 import { clearPikaPass } from '@/lib/pikaPass'
 import { toggleTheme } from '@/lib/theme'
 import styles from './LocalTools.module.css'
@@ -61,6 +61,9 @@ const setDock = (hidden: boolean) => {
 export default function LocalTools() {
   const pathname = usePathname()
   const hidden = useSyncExternalStore(subscribeDock, readDock, dockOnServer)
+  // Server snapshot is 0: the tally is in localStorage, so it cannot be known
+  // before hydration, and 0 is what the markup has to say until then.
+  const eggs = useSyncExternalStore(eggsSubscribe, foundEggs, () => 0)
 
   /**
    * Ctrl+` toggles the dock from anywhere. The visible handle is the ordinary
@@ -125,8 +128,8 @@ export default function LocalTools() {
       </Link>
       <ThemeJump />
       {/* Every trace of him: the tab, having met him, the alter ego, the hero
-          swap — and the cookie behind the /admin reveal, which is the one bit of
-          this that does not live in the store. */}
+          swap, the egg tally — and the cookie behind the /admin reveal, which is
+          the one bit of this that does not live in a store. */}
       <button
         type="button"
         className={styles.button}
@@ -138,6 +141,13 @@ export default function LocalTools() {
       >
         Reset Pikachu
       </button>
+
+      {/* A readout, not a control — the button above is what clears it. Kept in
+          the dock's old purple so it reads as one of these tools rather than
+          something the site would ever show a visitor. */}
+      <span className={styles.tally}>
+        🥚 {eggs}/{TOTAL_EGGS} found
+      </span>
     </div>
   )
 }

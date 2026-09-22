@@ -1,0 +1,15 @@
+/*
+ * A chip's footprint drawn in nothing. `visibility: hidden` and `display: none`
+ * both remove it from hit testing, which would take the cursor with it —
+ * transparent is the only way to keep the target while losing the target.
+ *
+ * Sized rather than filled, because any text in here would ship in the HTML.
+ */
+.spacer {
+  display: inline-block;
+  width: 96px;
+  height: 39px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}

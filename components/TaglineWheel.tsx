@@ -1,7 +1,8 @@
 'use client'
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { TAGLINES } from '@/lib/taglines'
+import EggToast from './EggToast'
 import styles from './TaglineWheel.module.css'
 
 /** How long a line sits centred before the wheel turns. Shorter than the hero
@@ -45,17 +46,41 @@ export default function TaglineWheel() {
   const [animate, setAnimate] = useState(true)
   const [held, setHeld] = useState(false)
 
+  /**
+   * Which lines have been reached *by pressing*, so sitting and watching the
+   * timer walk the whole wheel earns nothing. A Set of indices rather than a
+   * counter: pressing the same line ten times is one line, not ten.
+   *
+   * A ref, not state — nothing renders from it until it is complete, and making
+   * it state would re-render the wheel on every press for no visible reason.
+   * The timer pauses on hover, so a run of presses walks the lines in order;
+   * that is the whole trick, and it needs no coordination with the timer.
+   */
+  const pressed = useRef(new Set<number>())
+  const [wheelEgg, setWheelEgg] = useState(false)
+
   const current = TAGLINES[position % TAGLINES.length]
 
   const turn = useCallback(() => {
-    setPosition((at) => at + 1)
+    setPosition((at) => {
+      const next = at + 1
+      pressed.current.add(next % TAGLINES.length)
+      if (pressed.current.size === TAGLINES.length) setWheelEgg(true)
+      return next
+    })
   }, [])
+
+  /**
+   * The timer turns the wheel too, and it must not count. It calls `advance`,
+   * which does nothing but move; only the button calls `turn`.
+   */
+  const advance = useCallback(() => setPosition((at) => at + 1), [])
 
   useEffect(() => {
     if (reduced || held) return
-    const timer = setTimeout(turn, HOLD_MS)
+    const timer = setTimeout(advance, HOLD_MS)
     return () => clearTimeout(timer)
-  }, [reduced, held, position, turn])
+  }, [reduced, held, position, advance])
 
   /**
    * Once the window has climbed out of the middle copy, drop it back by one
@@ -125,6 +150,8 @@ export default function TaglineWheel() {
       >
         <span className="srOnly">{current} — show another</span>
       </button>
+
+      <EggToast egg="wheel" show={wheelEgg} />
     </div>
   )
 }

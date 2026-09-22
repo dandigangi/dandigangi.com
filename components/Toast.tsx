@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
+import { veiled } from '@/lib/copy'
 import styles from './Toast.module.css'
 
 /**
@@ -18,6 +19,13 @@ export type ToastVariant = 'prize' | 'egg'
  * who would rather not wait either out.
  */
 const DISMISS_MS: Record<ToastVariant, number> = { prize: 30000, egg: 6000 }
+
+/** Both toasts' copy, encoded for the reason in lib/copy.ts. Decode before editing. */
+const FOUND = veiled('WW91IGZvdW5kIGFuIGVhc3RlciBlZ2ch')
+const PRIZE_LEAD = veiled('WW91IGZvdW5kIG15IGVhc3RlciBlZ2chIE1ha2Ugc3VyZSB0byA=')
+const PRIZE_MAIL = veiled('ZW1haWw=')
+const PRIZE_OR = veiled('IG9yIA==')
+const PRIZE_DM = veiled('RE0gbWUgb24gWA==')
 
 /**
  * How long the outro runs. Subtracted from the dismiss time rather than added
@@ -71,7 +79,9 @@ export default function Toast({
 
   return (
     <div
-      className={`${styles.toast} ${leaving ? styles.leaving : ''}`}
+      className={`${styles.toast} ${variant === 'egg' ? styles.aboveModal : ''} ${
+        leaving ? styles.leaving : ''
+      }`}
       role="status"
       aria-live="polite"
     >
@@ -80,16 +90,16 @@ export default function Toast({
       </span>
       <p className={styles.text}>
         {variant === 'egg' ? (
-          `You found an easter egg!${progress}`
+          `${FOUND}${progress}`
         ) : (
           <>
-            You found my easter egg! Make sure to{' '}
+            {PRIZE_LEAD}
             <a href={MAIL_URL} className={styles.link}>
-              email
-            </a>{' '}
-            or{' '}
+              {PRIZE_MAIL}
+            </a>
+            {PRIZE_OR}
             <a href={X_DM_URL} target="_blank" rel="noopener noreferrer" className={styles.link}>
-              DM me on X
+              {PRIZE_DM}
             </a>
             .
           </>
