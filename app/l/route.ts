@@ -19,6 +19,26 @@ import { T, type Token } from '@/lib/ledger'
  * deliberate, obvious effort instead of arriving with one `atob`. That is the
  * whole claim; see lib/copy.ts.
  */
+/**
+ * Copy that names a secret, keyed the same opaque way the tokens are.
+ *
+ * Everything else on the site that needs hiding ships base64 through veiled(),
+ * which is a speed bump and nothing more: decoding every literal in the bundle
+ * is one pass, and it printed "Turn on Rainbow Road" and the gate's hint in
+ * plain English. Those two are the only strings left that name a secret rather
+ * than describe something you are already looking at, so they come from here.
+ *
+ * The rest — the toast, the Pokéball line, the invoice copy — deliberately
+ * stays in the bundle. It is read at the moment you trigger the thing, and
+ * putting a network round trip in front of that beat costs more than it buys.
+ */
+const COPY: Record<string, string> = {
+  c1: 'Turn on Rainbow Road',
+  c2: 'Turn off Rainbow Road',
+  c3: ' characters and possibly a Pokemon.',
+  c4: 'Turn off Rainbow Mode',
+}
+
 const NAMES: Record<Token, string> = {
   [T.met]: 'Met Pikachu',
   [T.tier1]: 'Pushed him past $250',
@@ -33,7 +53,9 @@ const NAMES: Record<Token, string> = {
   [T.rails]: 'Tried every way to get paid',
 }
 
-const known = (id: string): id is Token => id in NAMES
+const TABLE: Record<string, string> = { ...NAMES, ...COPY }
+
+const known = (id: string) => id in TABLE
 
 export function GET(request: Request) {
   const asked = new URL(request.url).searchParams.get('i')?.split(',') ?? []
@@ -43,7 +65,7 @@ export function GET(request: Request) {
     asked
       .slice(0, 16)
       .filter(known)
-      .map((id) => [id, NAMES[id]])
+      .map((id) => [id, TABLE[id]])
   )
   return NextResponse.json(found, {
     // Per-visitor and cheap to recompute; caching it at the edge would put the

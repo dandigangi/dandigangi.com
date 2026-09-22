@@ -18,8 +18,10 @@ export const LEDGER_OPEN = 'dd:lo'
 
 /* Split out because they are read in two places each, and a base64 blob inline
    in a ternary is unreadable even by the standards of this file. */
-const OFF_ROAD = 'VHVybiBvZmYgUmFpbmJvdyBSb2Fk'
-const ON_ROAD = 'VHVybiBvbiBSYWluYm93IFJvYWQ='
+/* Not in the bundle — these two name the secret outright. See app/l/route.ts. */
+const ON_ROAD = 'c1'
+const OFF_ROAD = 'c2'
+const OFF_MODE = 'c4'
 
 export const openLedger = () => window.dispatchEvent(new CustomEvent(LEDGER_OPEN))
 
@@ -89,7 +91,11 @@ export default function Ledger() {
   const unlocked = open ? tokenList() : []
   // Names are fetched, not shipped — see app/l/route.ts. Until they land the
   // row is still a row: its mark, and when it was found.
-  const names = useLabels(unlocked.map((entry) => entry.egg))
+  const names = useLabels([
+    ...unlocked.map((entry) => entry.egg),
+    // Only once the secret is out; asking for them sooner would be the tell.
+    ...(unlocked.some((entry) => entry.egg === EXTRA) ? [ON_ROAD, OFF_ROAD, OFF_MODE] : []),
+  ])
 
   if (!open) return null
 
@@ -135,10 +141,10 @@ export default function Ledger() {
                   type="button"
                   className={`${styles.mark} ${styles.markButton}`}
                   onClick={() => setTrail(!rainbow)}
-                  title={veiled(rainbow ? OFF_ROAD : ON_ROAD)}
+                  title={names.get(rainbow ? OFF_ROAD : ON_ROAD) ?? ''}
                 >
                   <span aria-hidden="true">🌈</span>
-                  <span className="srOnly">{veiled(rainbow ? OFF_ROAD : ON_ROAD)}</span>
+                  <span className="srOnly">{names.get(rainbow ? OFF_ROAD : ON_ROAD) ?? ''}</span>
                 </button>
               ) : (
                 <span className={styles.mark} aria-hidden="true">
@@ -220,7 +226,7 @@ export default function Ledger() {
                 —
               </span>
               <button type="button" className={styles.reset} onClick={() => setTrail(false)}>
-                {veiled('VHVybiBvZmYgUmFpbmJvdyBNb2Rl')}
+                {names.get(OFF_MODE) ?? ''}
               </button>
             </>
           )}

@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { grantPikaPass } from '@/lib/pass'
 import { veiled } from '@/lib/copy'
-import { hash } from '@/lib/hash'
+import { ROUNDS, hash } from '@/lib/hash'
+import { useLabels } from '@/components/useLabels'
 import styles from '../not-found.module.css'
 import gate from './gate.module.css'
 
@@ -68,7 +69,7 @@ const sessionIp = () => {
    search trigger — see components/PostSearch.tsx. This is not authentication:
    the real check is the POST below, and this only decides whether the joke
    fires. */
-const MAGIC_HASH = 448630920
+const MAGIC_HASH = 'q7e0oz.bcg31z'
 
 /** Long enough to be a plausible rule, and a nudge at the only answer that
  *  changes anything — which happens to be exactly this many letters. */
@@ -159,6 +160,9 @@ export default function Gate() {
   const [phase, setPhase] = useState<Phase>('idle')
   const [value, setValue] = useState('')
   const [error, setError] = useState<string | null>(null)
+  /* Prefetched on mount so the message is instant when it is needed — it is an
+     error under an input, not somewhere to show a spinner. */
+  const hint = useLabels(['c3']).get('c3') ?? '.'
   const [ip, setIp] = useState('')
   const timers = useRef<ReturnType<typeof setTimeout>[]>([])
 
@@ -177,15 +181,14 @@ export default function Gate() {
       return
     }
     if (entered.length < MIN_LENGTH) {
-      // Split around the figure so it cannot drift from MIN_LENGTH.
-      setError(
-        `${veiled('TWluaW11bSA=')}${MIN_LENGTH}${veiled('IGNoYXJhY3RlcnMgYW5kIHBvc3NpYmx5IGEgUG9rZW1vbi4=')}`
-      )
+      // The tail is fetched, not shipped: "possibly a Pokemon" turned a hashed
+      // password into a one-guess problem for anything reading the bundle.
+      setError(`${veiled('TWluaW11bSA=')}${MIN_LENGTH}${hint}`)
       return
     }
 
     knock()
-    start(hash(entered.toLowerCase()) === MAGIC_HASH)
+    start(hash(entered.toLowerCase(), ROUNDS) === MAGIC_HASH)
   }
 
   const start = (magic: boolean) => {

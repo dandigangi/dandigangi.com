@@ -5,6 +5,7 @@ import { veiled } from '@/lib/copy'
 import { EXTRA } from '@/lib/ledger'
 import { isTrail, press, trailToggles, restoreTrail, setTrail, subscribe } from '@/lib/trail'
 import Blip from './Blip'
+import { useLabels } from './useLabels'
 import Drift from './Drift'
 
 /**
@@ -66,17 +67,15 @@ export default function Trail() {
  */
 export function TrailOffLink({ className }: { className?: string }) {
   const on = useSyncExternalStore(subscribe, isTrail, () => false)
+  // Asked for only while it is on, which is only ever after it was found.
+  const names = useLabels(on ? ['c2'] : [])
+  const label = names.get('c2') ?? ''
   if (!on) return null
 
   return (
-    <button
-      type="button"
-      className={className}
-      onClick={() => setTrail(false)}
-      title={veiled('VHVybiBvZmYgUmFpbmJvdyBSb2Fk')}
-    >
+    <button type="button" className={className} onClick={() => setTrail(false)} title={label}>
       <span aria-hidden="true">🌈</span>
-      <span className="srOnly">{veiled('VHVybiBvZmYgUmFpbmJvdyBSb2Fk')}</span>
+      <span className="srOnly">{label}</span>
     </button>
   )
 }

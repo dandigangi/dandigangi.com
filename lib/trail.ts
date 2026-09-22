@@ -1,4 +1,4 @@
-import { hash } from './hash'
+import { ROUNDS, hash } from './hash'
 import { expireIfStale, touch } from './stale'
 
 /**
@@ -24,15 +24,29 @@ import { expireIfStale, touch } from './stale'
  * happen somewhere the visitor cannot read, and none of this is worth a server
  * round trip.
  */
-const HASHED: [length: number, hashes: number[]][] = [
-  [9, [3322859397]],
-  [10, [1417010091]],
-  [11, [967314927, 3351101760]],
-  [12, [221995161, 2910764354]],
+const HASHED = [
+  '2otf83.jmugoh',
+  'x0cw1x.1tq2evv',
+  'knjpiz.1c26jn1',
+  '1fkbi9e.1kybxhu',
+  'qkb16h.s5z0ld',
+  'vu9pz.qz76ix',
 ]
 
-/** The longest phrase, which is all the buffer ever needs to hold. */
-const BUFFER = Math.max(...HASHED.map(([length]) => length))
+/**
+ * The range of suffix lengths checked, and the buffer that feeds them.
+ *
+ * The hashes used to be bucketed by phrase length, which handed an attacker the
+ * exact lengths to generate candidates at — and that is most of what made a
+ * dictionary sweep cheap. They are a flat list now and every length in this
+ * window is tried, so the lengths cannot be read off the table. The window is
+ * deliberately wider than the phrases need.
+ *
+ * This is the minor half of the change; ROUNDS in lib/hash.ts is the half that
+ * does the work.
+ */
+const SHORTEST = 8
+const BUFFER = 14
 
 const STORE_KEY = 'dd:e3'
 const RETIRED = 'dd:x3'
@@ -128,10 +142,10 @@ export const press = (key: string): boolean => {
   // shift the window and break a phrase mid-word.
   if (key.length !== 1) return false
   buffer = (buffer + key.toLowerCase()).slice(-BUFFER)
-  // Only the suffixes that could match: one per distinct phrase length.
-  const hit = HASHED.some(
-    ([length, hashes]) => buffer.length >= length && hashes.includes(hash(buffer.slice(-length)))
-  )
+  let hit = false
+  for (let length = SHORTEST; length <= BUFFER && !hit; length += 1) {
+    if (buffer.length >= length) hit = HASHED.includes(hash(buffer.slice(-length), ROUNDS))
+  }
   // Cleared on a hit, so holding the last letter down does not toggle repeatedly.
   if (hit) buffer = ''
   return hit

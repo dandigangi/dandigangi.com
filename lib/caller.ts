@@ -161,7 +161,7 @@ export const FINAL_TIER = 500
  * figure written out in two components is a figure that will disagree with
  * itself the first time one of them is edited.
  */
-export const OFFER_FIGURE = 50
+export const OFFER_FIGURE = 100
 
 /**
  * The three crossings worth an egg, in order. Kept here rather than in the

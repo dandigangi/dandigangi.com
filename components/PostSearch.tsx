@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { formatFullDate, formatTag } from '@/lib/format'
 import { setHinted } from '@/lib/caller'
 import { veiled } from '@/lib/copy'
-import { hash } from '@/lib/hash'
+import { ROUNDS, hash } from '@/lib/hash'
 import Blip from './Blip'
 import Toss from './Toss'
 import styles from './PostSearch.module.css'
@@ -21,8 +21,8 @@ import { T } from '@/lib/ledger'
  * of the two strings on the site that is an instruction rather than a
  * confirmation, so the word itself never ships. See lib/hash.ts.
  */
-const EGG_HASH = 448630920
-const isEgg = (value: string) => hash(value) === EGG_HASH
+const EGG_HASH = 'q7e0oz.bcg31z'
+const isEgg = (value: string) => hash(value, ROUNDS) === EGG_HASH
 
 /* Confirmations, not instructions: you only ever read these once you are
    already there, so base64 is the right weight for them. The miss line is split
