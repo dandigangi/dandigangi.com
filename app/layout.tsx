@@ -12,6 +12,7 @@ import Footer from '@/components/Footer'
 import Ledger from '@/components/Ledger'
 import Trail from '@/components/Trail'
 import Caller from '@/components/Caller'
+import Watch from '@/components/Watch'
 import SiteChrome from '@/components/SiteChrome'
 import LocalTools from '@/components/LocalTools'
 import Parallax from '@/components/Parallax'
@@ -134,6 +135,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteChrome>
           <Footer />
           <Caller />
+          <Watch />
           <Ledger />
           <Trail />
           <LocalTools />
