@@ -109,7 +109,7 @@ export default function PostSearch({
         ) : null}
       </div>
 
-      <EggToast show={egg} />
+      <EggToast egg="search" show={egg} />
 
       {trimmed ? (
         <div className={styles.results}>

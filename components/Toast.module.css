@@ -84,8 +84,27 @@
   }
 }
 
+/* Reverses the entry rather than inventing a second gesture, so it reads as the
+   same object leaving the way it arrived. `forwards` holds the last frame until
+   the component actually unmounts. */
+.leaving {
+  animation: toastOut var(--toast-exit, 260ms) ease-in forwards;
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .toast {
+  .toast,
+  .leaving {
     animation: none;
   }
 }

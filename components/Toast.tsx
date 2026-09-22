@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { MAIL_URL, X_DM_URL } from '@/lib/pikachuLinks'
 import styles from './Toast.module.css'
 
@@ -20,6 +20,13 @@ export type ToastVariant = 'prize' | 'egg'
 const DISMISS_MS: Record<ToastVariant, number> = { prize: 30000, egg: 6000 }
 
 /**
+ * How long the outro runs. Subtracted from the dismiss time rather than added
+ * to it, so the toast is still gone exactly when it always was — it just stops
+ * vanishing between one frame and the next.
+ */
+export const EXIT_MS = 260
+
+/**
  * The send-off after the last state is dismissed. It outlives the modal that
  * triggered it, so it is rendered by the cameo rather than inside the dialog.
  *
@@ -30,23 +37,50 @@ const DISMISS_MS: Record<ToastVariant, number> = { prize: 30000, egg: 6000 }
 export default function Toast({
   onClose,
   variant = 'prize',
+  count,
+  total,
 }: {
   onClose: () => void
   variant?: ToastVariant
+  /** Progress through the eggs, shown only when both are given. */
+  count?: number
+  total?: number
 }) {
+  const [leaving, setLeaving] = useState(false)
+  const exit = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   useEffect(() => {
-    const timer = setTimeout(onClose, DISMISS_MS[variant])
-    return () => clearTimeout(timer)
+    const out = setTimeout(() => setLeaving(true), DISMISS_MS[variant] - EXIT_MS)
+    const gone = setTimeout(onClose, DISMISS_MS[variant])
+    return () => {
+      clearTimeout(out)
+      clearTimeout(gone)
+    }
   }, [onClose, variant])
 
+  /** Dismissing by hand plays the same outro rather than cutting it. */
+  const dismiss = useCallback(() => {
+    setLeaving(true)
+    exit.current = setTimeout(onClose, EXIT_MS)
+  }, [onClose])
+
+  // Owns only the hand-dismiss timer; the two above clean up on their own.
+  useEffect(() => () => void (exit.current && clearTimeout(exit.current)), [])
+
+  const progress = count !== undefined && total !== undefined ? ` (${count}/${total})` : ''
+
   return (
-    <div className={styles.toast} role="status" aria-live="polite">
+    <div
+      className={`${styles.toast} ${leaving ? styles.leaving : ''}`}
+      role="status"
+      aria-live="polite"
+    >
       <span className={styles.mark} aria-hidden="true">
         {variant === 'egg' ? '🐣' : '🎉👏'}
       </span>
       <p className={styles.text}>
         {variant === 'egg' ? (
-          'You found an easter egg!'
+          `You found an easter egg!${progress}`
         ) : (
           <>
             You found my easter egg! Make sure to{' '}
@@ -61,7 +95,7 @@ export default function Toast({
           </>
         )}
       </p>
-      <button type="button" className={styles.close} onClick={onClose}>
+      <button type="button" className={styles.close} onClick={dismiss}>
         <span aria-hidden="true">×</span>
         <span className="srOnly">Dismiss</span>
       </button>

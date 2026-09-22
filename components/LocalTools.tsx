@@ -4,6 +4,7 @@ import { useEffect, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { resetAll } from '@/lib/pikachu'
+import { resetEggs } from '@/lib/eggs'
 import { clearPikaPass } from '@/lib/pikaPass'
 import { toggleTheme } from '@/lib/theme'
 import styles from './LocalTools.module.css'
@@ -132,6 +133,7 @@ export default function LocalTools() {
         onClick={() => {
           resetAll()
           clearPikaPass()
+          resetEggs()
         }}
       >
         Reset Pikachu

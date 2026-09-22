@@ -49,3 +49,72 @@
   color: #000;
   border-color: #f5f4f1;
 }
+
+/*
+ * The two photos share one cell. The outgoing one sits underneath so the star
+ * has something to reveal over; the incoming one is clipped down to a speck and
+ * opens outward.
+ */
+.under {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+}
+
+.top {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+/*
+ * A five-pointed star grown from nothing. Both keyframes are polygons with the
+ * same ten vertices, which is what lets the browser interpolate between them —
+ * scaling a clip-path is not otherwise animatable.
+ *
+ * The end state overshoots the frame on purpose: a star's inner radius is only
+ * ~38% of its outer, so to cover a square completely the outer points have to
+ * reach well past the edges or the corners stay clipped.
+ */
+.wipe {
+  animation: starWipe 560ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+@keyframes starWipe {
+  from {
+    clip-path: polygon(
+      50% 44%,
+      51.4% 48.1%,
+      55.7% 48.1%,
+      52.2% 50.7%,
+      53.5% 54.9%,
+      50% 52.3%,
+      46.5% 54.9%,
+      47.8% 50.7%,
+      44.3% 48.1%,
+      48.6% 48.1%
+    );
+  }
+  to {
+    clip-path: polygon(
+      50% -150%,
+      94.9% -11.8%,
+      240.2% -11.8%,
+      122.7% 73.6%,
+      167.6% 211.8%,
+      50% 126.4%,
+      -67.6% 211.8%,
+      -22.7% 73.6%,
+      -140.2% -11.8%,
+      5.1% -11.8%
+    );
+  }
+}
+
+/* The swap still happens; it just happens at once. */
+@media (prefers-reduced-motion: reduce) {
+  .wipe {
+    animation: none;
+  }
+}

@@ -2,7 +2,7 @@ import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import siteMetadata from '@/data/siteMetadata'
-import Toast from './Toast'
+import Toast, { EXIT_MS } from './Toast'
 
 const DISMISS_MS = 30000
 
@@ -42,12 +42,30 @@ describe('Toast', () => {
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
-  it('can be dismissed by hand', async () => {
+  it('can be dismissed by hand, and still plays its outro', async () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
     const onClose = vi.fn()
     render(<Toast onClose={onClose} />)
 
     await user.click(screen.getByRole('button', { name: 'Dismiss' }))
+    // Not torn out from under the animation — the same exit the timer gets.
+    expect(onClose).not.toHaveBeenCalled()
+
+    act(() => void vi.advanceTimersByTime(EXIT_MS))
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('starts leaving before it is removed, so the outro has time to run', () => {
+    const onClose = vi.fn()
+    const { container } = render(<Toast onClose={onClose} />)
+    const toast = container.firstElementChild as HTMLElement
+    const before = toast.className
+
+    act(() => void vi.advanceTimersByTime(DISMISS_MS - EXIT_MS))
+    expect(toast.className).not.toBe(before)
+    expect(onClose).not.toHaveBeenCalled()
+
+    act(() => void vi.advanceTimersByTime(EXIT_MS))
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 

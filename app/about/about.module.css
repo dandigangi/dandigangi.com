@@ -20,10 +20,11 @@
 .name {
   margin: 0 0 14px;
   font-size: clamp(20px, 2.4vw, 28px);
-  /* 400: at this size anything heavier competed with the lede under it, which
-     is the sentence that actually matters on this page. The uppercase and the
-     tight tracking carry it without the weight. */
-  font-weight: 400;
+  /* 300 — the lightest Archivo the site loads. At this size anything heavier
+     competed with the lede under it, which is the sentence that actually
+     matters on this page; the uppercase and the tight tracking carry the name
+     without needing weight as well. */
+  font-weight: 300;
   line-height: 1;
   letter-spacing: -0.04em;
   text-transform: uppercase;

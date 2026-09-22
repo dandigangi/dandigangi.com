@@ -354,7 +354,7 @@ export default function PikachuCameo() {
       )}
       {cameo?.path === pathname && <Cameo cameo={cameo} shown={shown} onCatch={onCatch} />}
       {throwAt && <PokeballThrow x={throwAt.x} y={throwAt.y} onDone={onThrowDone} />}
-      <EggToast show={eggToast} />
+      <EggToast egg="pikachu" show={eggToast} />
       {toast && <Toast onClose={hideToast} />}
     </>
   )
