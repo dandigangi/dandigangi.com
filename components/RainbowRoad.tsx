@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import { EXTRA } from '@/lib/eggs'
-import { isRainbow, press, restoreRainbow, setRainbow } from '@/lib/rainbow'
+import { isRainbow, press, restoreRainbow, setRainbow, subscribe } from '@/lib/rainbow'
 import EggToast from './EggToast'
 
 /**
@@ -44,4 +44,26 @@ export default function RainbowRoad() {
   }, [])
 
   return <EggToast egg={EXTRA} show={found} />
+}
+
+/**
+ * The way out, for anyone who turned it on and does not fancy retyping the
+ * phrase to stop. Absent while it is off — there is nothing to turn off, and a
+ * rainbow sitting in the footer of an ordinary page is a clue nobody asked for.
+ */
+export function RainbowOffLink({ className }: { className?: string }) {
+  const on = useSyncExternalStore(subscribe, isRainbow, () => false)
+  if (!on) return null
+
+  return (
+    <button
+      type="button"
+      className={className}
+      onClick={() => setRainbow(false)}
+      title="Turn off Rainbow Road"
+    >
+      <span aria-hidden="true">🌈</span>
+      <span className="srOnly">Turn off Rainbow Road</span>
+    </button>
+  )
 }

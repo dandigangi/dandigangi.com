@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { resetAll } from '@/lib/pikachu'
 import {
   EGGS,
+  EXTRA,
   totalEggs,
   findEgg,
   foundEggs,
@@ -16,6 +17,7 @@ import {
 } from '@/lib/eggs'
 import EggToast from './EggToast'
 import { clearPikaPass } from '@/lib/pikaPass'
+import { setRainbow } from '@/lib/rainbow'
 import styles from './LocalTools.module.css'
 
 /**
@@ -94,9 +96,22 @@ export default function LocalTools() {
     if (next) setGranted(next)
   }
 
+  /** The nine on the board. The secret is not one of them — see below. */
   const grantAll = () => {
     setGranted(null)
     for (const egg of EGGS) findEgg(egg)
+  }
+
+  /**
+   * The secret, which "Find all" deliberately leaves alone: it is outside EGGS,
+   * and granting it there would move the denominator to ten every time you used
+   * the shortcut, which is the one thing that is supposed to stay hidden.
+   *
+   * Turns the mode on as well, because that is the state finding it produces.
+   */
+  const grantSecret = () => {
+    setRainbow(true)
+    setGranted(EXTRA)
   }
 
   /**
@@ -166,9 +181,9 @@ export default function LocalTools() {
       <Link href="/admin/write" className={styles.button}>
         Write
       </Link>
-      {/* Every trace of him: the tab, having met him, the alter ego, the hero
-          swap, the egg tally — and the cookie behind the /admin reveal, which is
-          the one bit of this that does not live in a store. */}
+      {/* Every trace of all of it: the tab, having met him, the alter ego, the
+          hero swap, the egg tally, Rainbow Road — and the cookie behind the
+          /admin reveal, which is the one bit that does not live in a store. */}
       <button
         type="button"
         className={styles.button}
@@ -176,9 +191,10 @@ export default function LocalTools() {
           resetAll()
           clearPikaPass()
           resetEggs()
+          setRainbow(false)
         }}
       >
-        Reset Pikachu
+        Reset Eggs
       </button>
 
       {/* A readout, not a control — the button above is what clears it. Kept in
@@ -204,6 +220,9 @@ export default function LocalTools() {
           disabled={eggs >= totalEggs()}
         >
           Find all
+        </button>
+        <button type="button" className={`${styles.button} ${styles.small}`} onClick={grantSecret}>
+          🌈
         </button>
       </div>
 

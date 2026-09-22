@@ -6,6 +6,7 @@ import ThemeToggle from './ThemeToggle'
 import { LinkedInIcon, XIcon, GitHubIcon, MailIcon } from './Icons'
 import AdminLink from './AdminLink'
 import { EggListLink } from './EggList'
+import { RainbowOffLink } from './RainbowRoad'
 import footer from './Footer.module.css'
 
 const socials = [
@@ -71,6 +72,7 @@ export default function Footer() {
           <span className={footer.adminRow}>
             <AdminLink />
             <EggListLink className={footer.eggs} />
+            <RainbowOffLink className={footer.eggs} />
           </span>
         </div>
 

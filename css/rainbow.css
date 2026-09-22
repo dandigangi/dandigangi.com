@@ -43,17 +43,6 @@
     var(--rb-violet),
     var(--rb-red)
   );
-  --road-ring: conic-gradient(
-    from var(--angle),
-    var(--rb-red),
-    var(--rb-orange),
-    var(--rb-yellow),
-    var(--rb-green),
-    var(--rb-blue),
-    var(--rb-indigo),
-    var(--rb-violet),
-    var(--rb-red)
-  );
 }
 
 /* ---------- text ---------- */
@@ -87,12 +76,30 @@
 
 /* ---------- borders ---------- */
 
+/*
+ * The conic is written out here rather than held in a custom property, and it
+ * has to be. `var()` inside a custom property is substituted at the element
+ * that declares it — a --road-ring on :root resolves against :root's angle,
+ * which nothing animates, and every button inherits a frozen gradient. The ring
+ * appears but never turns. Same trap as --spectrum; see css/globals.css.
+ */
 :root[data-rainbow] .btn,
 :root[data-rainbow] .chip {
   border: 1px solid transparent;
   background:
     linear-gradient(var(--bg), var(--bg)) padding-box,
-    var(--road-ring) border-box;
+    conic-gradient(
+        from var(--angle),
+        var(--rb-red),
+        var(--rb-orange),
+        var(--rb-yellow),
+        var(--rb-green),
+        var(--rb-blue),
+        var(--rb-indigo),
+        var(--rb-violet),
+        var(--rb-red)
+      )
+      border-box;
   animation: rainbowSpin 1.25s linear infinite;
 }
 
@@ -103,7 +110,18 @@
 :root[data-rainbow] .btn:hover {
   background:
     linear-gradient(var(--ink), var(--ink)) padding-box,
-    var(--road-ring) border-box;
+    conic-gradient(
+        from var(--angle),
+        var(--rb-red),
+        var(--rb-orange),
+        var(--rb-yellow),
+        var(--rb-green),
+        var(--rb-blue),
+        var(--rb-indigo),
+        var(--rb-violet),
+        var(--rb-red)
+      )
+      border-box;
   color: var(--bg);
   -webkit-text-fill-color: var(--bg);
 }
@@ -118,7 +136,8 @@
  */
 :root[data-rainbow] hr,
 :root[data-rainbow] footer,
-:root[data-rainbow] .hairlineRow + .hairlineRow {
+:root[data-rainbow] .hairlineRow + .hairlineRow,
+:root[data-rainbow] [class*='channel'] + [class*='channel'] {
   border-image: var(--road) 1;
 }
 
