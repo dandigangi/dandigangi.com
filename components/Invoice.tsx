@@ -332,7 +332,7 @@ export default function Invoice({
                 {claim?.claimed ? (
                   <>
                     {veiled('WW91ciBkZWRpY2F0aW9uIGlzIGltcHJlc3NpdmUgYnV0Li4u')}{' '}
-                    {veiled('c29tZW9uZSBlbHNlIGFscmVhZHkgd29uLg==')}
+                    {veiled('c29tZW9uZSBhbHJlYWR5IHdvbiB0aGUgRWFzdGVyIEVnZyBIdW50IENvbnRlc3Qu')}
                   </>
                 ) : (
                   <>
