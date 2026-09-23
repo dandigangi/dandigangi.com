@@ -193,6 +193,13 @@ export default async function PostPage({ params }: Props) {
         <div className={`rail split ${styles.bodySplit}`}>
           <div className={`splitMain ${styles.body}`} data-cameo>
             <MDXContent code={post.body} />
+            <Image
+              src="/static/images/dd-signature.png"
+              alt="DD signature"
+              width={190}
+              height={102}
+              className={styles.signature}
+            />
           </div>
 
           <aside className={`splitAside ${styles.aside}`} data-cameo>

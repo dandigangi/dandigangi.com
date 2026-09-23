@@ -116,6 +116,26 @@
   color: var(--read);
 }
 
+/* The PNG is white on transparent, so light mode inverts it to dark ink. */
+.signature {
+  display: block;
+  width: 48px;
+  height: auto;
+  margin-top: 54px;
+  margin-left: 12px;
+  opacity: 0.8;
+}
+
+:global([data-theme='light']) .signature {
+  filter: invert(1);
+}
+
+@media (prefers-color-scheme: light) {
+  :global(:root:not([data-theme='dark']):not([data-theme='light'])) .signature {
+    filter: invert(1);
+  }
+}
+
 .body :global(h2) {
   margin: 48px 0 20px;
   font-size: clamp(26px, 3.2vw, 32px);
