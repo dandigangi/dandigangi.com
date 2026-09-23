@@ -1,0 +1,43 @@
+.anchor {
+  position: relative;
+  display: inline-block;
+}
+
+/* Anchored to the trigger's left edge rather than centred on it, so a long
+   message can't run off the left of a phone screen. */
+.tip {
+  position: absolute;
+  /* 10px clears the 6px tail, leaving 4px between its point and the trigger. */
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 1;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 9px 12px;
+  background: #f5f4f1;
+  color: #000;
+  border-radius: 9px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-transform: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 18px;
+  border: 6px solid transparent;
+  border-top-color: #f5f4f1;
+}
+
+.anchor:hover .tip,
+.anchor:focus-within .tip {
+  opacity: 1;
+}

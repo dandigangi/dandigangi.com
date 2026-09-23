@@ -13,9 +13,14 @@
   margin: 0;
 }
 
-.summaryMeta a {
+.summaryMeta a,
+.historyNote a {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.historyNote {
+  margin: 12px 0 0;
 }
 
 /* Wrapping flex rather than a two-track grid so the date drops below the role
@@ -46,6 +51,8 @@
   flex: 0 0 30px;
   width: 30px;
   height: 30px;
+  /* Drops the mark from the line box's top to the title's cap height. */
+  margin-top: 2px;
   overflow: hidden;
 }
 
@@ -82,7 +89,7 @@
   font-size: 17px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--soft);
+  color: var(--read);
 }
 
 .company a:hover {
@@ -121,6 +128,13 @@
   justify-content: center;
   gap: 16px;
   padding: clamp(48px, 7vw, 76px) var(--rail) clamp(64px, 10vw, 110px);
+}
+
+/* Full-width so it wraps onto its own row under the buttons. */
+.ctaNote {
+  flex-basis: 100%;
+  margin: 8px 0 0;
+  text-align: center;
 }
 
 /*
@@ -205,64 +219,74 @@
 }
 
 /**
- * Print scale. The screen sizes are clamp()ed against a viewport and are far
- * too large on a page — none of them inherit from the root font size, so each
- * one has to be restated in points.
+ * Paper scale, under the same print-mode hook as css/print.css. The screen
+ * sizes are clamp()ed against a viewport and are far too large on a page —
+ * none of them inherit from the root font size, so each one has to be
+ * restated in points.
  */
-@media print {
-  .printHeader {
+:global(:root:has([data-print-mode])) {
+  & .printHeader {
     margin-bottom: 6mm;
     padding-bottom: 3.5mm;
   }
 
-  .printName {
+  & .printName {
     font-size: 27pt;
   }
 
-  .printRole {
+  & .printRole {
     margin-top: 2mm;
-    font-size: 8.5pt;
+    font-size: 9.5pt;
+    font-weight: 600;
   }
 
-  .printContact {
+  & .printContact {
     margin-top: 1.5mm;
     font-size: 8pt;
   }
 
-  .lede {
+  & .lede {
     max-width: none;
     margin-bottom: 2.5mm;
     font-size: 10.5pt;
     line-height: 1.35;
   }
 
-  .summaryMeta {
+  & .summaryMeta {
     gap: 1mm 4mm;
   }
 
   /* display:contents on .roleMain promotes its children into this grid, which
      is what lets the date sit beside the company rather than out at the far
      right of the row. */
-  .role {
+  & .role {
     display: grid;
-    grid-template-columns: 30px minmax(0, 1fr) auto;
+    grid-template-columns: 21px minmax(0, 1fr) auto;
     grid-template-areas:
       'logo title title'
       'logo company dates'
       'logo bullets bullets';
-    column-gap: 5.5mm;
+    column-gap: 4mm;
     row-gap: 0;
     max-width: none;
-    padding: 4.5mm 0;
+    /* 3.5mm, not the 4.5mm it was: with seven roles, that is what keeps the
+       résumé to two pages. */
+    padding: 3.5mm 0;
   }
 
-  .roleMain {
+  /* Restated: nesting lifts .role above the base .role:first-child, which
+     would otherwise lose its padding-top: 0 here. */
+  & .role:first-child {
+    padding-top: 0;
+  }
+
+  & .roleMain {
     display: contents;
   }
 
   /* Education carries no mark, so it drops the logo track entirely rather than
      reserving an empty one — otherwise it starts further right than Other. */
-  .roleNoLogo {
+  & .roleNoLogo {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       'title title'
@@ -270,25 +294,27 @@
       'bullets bullets';
   }
 
-  .logo {
+  & .logo {
     grid-area: logo;
+    width: 21px;
+    height: 21px;
   }
 
-  .roleTitle {
+  & .roleTitle {
     grid-area: title;
   }
 
-  .company {
+  & .company {
     grid-area: company;
   }
 
   /* Both sit on the baseline of the row rather than one riding high above the
      other — they are different sizes, so centring them looked misaligned. */
-  .company {
+  & .company {
     align-self: end;
   }
 
-  .dates {
+  & .dates {
     grid-area: dates;
     margin-left: 0;
     justify-self: end;
@@ -296,18 +322,18 @@
     text-align: right;
   }
 
-  .achievements {
+  & .achievements {
     grid-area: bullets;
     margin-top: 1.9mm;
   }
 
-  .roleTitle {
+  & .roleTitle {
     margin-bottom: 0.8mm;
     font-size: 12pt;
     line-height: 1.15;
   }
 
-  .company {
+  & .company {
     margin-bottom: 0;
     font-size: 8pt;
     letter-spacing: 0.08em;
@@ -317,23 +343,28 @@
     color: #4a2a6b;
   }
 
-  .achievements {
+  & .achievements {
     max-width: none;
     padding-left: 4.5mm;
     font-size: 9pt;
     line-height: 1.38;
   }
 
-  .achievements li {
+  & .achievements li {
     margin-bottom: 1mm;
   }
 
-  .dates {
+  /* The school stays neutral; the purple marks employers. */
+  & .roleNoLogo .company {
+    color: var(--soft);
+  }
+
+  & .dates {
     font-size: 6pt;
     color: rgba(17, 17, 17, 0.5);
   }
 
-  .other {
+  & .other {
     max-width: none;
     gap: 1.5mm 8mm;
     font-size: 9.5pt;

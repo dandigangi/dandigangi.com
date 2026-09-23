@@ -2,6 +2,8 @@ export type ResumeRole = {
   title: string
   company: string
   url?: string
+  /** Plain-text aside after the company name, outside its link. */
+  note?: string
   dates: string
   achievements: string[]
   /** Square company mark, 40x40 or larger. Renders an empty slot until set. */
@@ -21,16 +23,29 @@ export const resumeSummary =
 export const resumeExperience: ResumeRole[] = [
   {
     title: 'Senior Software Engineering Manager',
-    company: 'Postmark / ActiveCampaign',
+    company: 'Postmark',
+    note: 'Layoff',
     logo: '/static/images/logos/postmark.jpg',
     url: 'https://postmarkapp.com',
-    dates: 'May 2023 — Sep 2026 (Layoff)',
+    dates: 'Apr 2024 — Sep 2026',
     achievements: [
       'Scaled email throughput from 2B to 3B+ emails/month in 10 months, maintaining ~200ms per message processing performance through MTA expansion and infrastructure growth.',
       'Prevented $1.5M+ in fraud by architecting a multi-layer security platform spanning AI content moderation, fraud detection, WAF/firewall edge protection, and eHawk traffic analysis.',
       'Grew the engineering organization from 6 to 11 FTE and hired 6 contractors, expanding delivery capacity across .NET backend, web, platform/SRE, and security/compliance functions.',
       'Led cross-functional initiatives including pricing redesign, high-traffic legacy Windows service migration, ZenDesk migration, SOC2 compliance, and large-scale billing platform migration.',
-      'ActiveCampaign 2023 (Layoff) - Led and hired the Velocity team (3 reports) delivering special projects, features, and applications supporting the BTS org across finance, growth, and internal services.',
+    ],
+  },
+  {
+    title: 'Senior Software Engineering Manager',
+    company: 'ActiveCampaign — Velocity',
+    note: 'Layoff',
+    logo: '/static/images/logos/activecampaign.jpg',
+    url: 'https://www.activecampaign.com',
+    dates: 'May 2023 — Sep 2023',
+    achievements: [
+      'Led and hired the Velocity team (3 reports) delivering special projects, features, and applications supporting the BTS org across finance, growth, and internal services.',
+      'Redesigned agile/SDLC processes from ideation to delivery, adopted across all BTS teams, reducing defect rates (~16%) through new testing requirements and reintroduction of Playwright E2E testing suites.',
+      'Coached engineers across BTS growing their technical, product, and business skill sets while collaborating with cross-functional partners to develop org-wide roadmaps.',
     ],
   },
   {
@@ -67,6 +82,32 @@ export const resumeExperience: ResumeRole[] = [
       'Promoted from Lead Frontend Engineer to Engineering Manager, growing to lead 3 product engineering teams across 12 engineers, 2 contractors, and 1 manager spanning React, Node, Java, and Python.',
       'Led integration of DRIVIN engineering through the OpenLane/KAR acquisition, built a redefined cross-functional SDLC, and scaled delivery capacity through internal and 3rd party recruiting.',
       'Delivered complex financial and analytics products using TensorFlow pricing models, established front end standards of practice, increased testing coverage (~42%), reduced defects (~21%), and stabilized release processes.',
+    ],
+  },
+  {
+    title: 'UX Software Engineer',
+    company: 'ClearStory Data',
+    url: 'https://www.alteryx.com',
+    note: 'Acquired',
+    logo: '/static/images/logos/clearstory-data.jpg',
+    dates: 'Sep 2014 — Aug 2015',
+    achievements: [
+      'Collaborated with the Chief UX Architect using LucidChart and Sketch to design wireframes and custom visualizations for complex enterprise data interaction flows.',
+      'Delivered a large-scale data ingestion, management, and BI tool using React, Backbone, and D3 serving enterprise customers including APIs, CSV, SQL/PSQL databases, and Aurora/Snowflake warehouses.',
+      'Tested with Mocha, Jasmine, Casper, and Selenium including visual regression testing.',
+    ],
+  },
+  {
+    title: 'Lead Frontend Software Engineer',
+    company: 'Apartments.com',
+    logo: '/static/images/logos/apartments.jpg',
+    url: 'https://www.apartments.com',
+    dates: 'Oct 2012 — Sep 2014',
+    achievements: [
+      'Led 3 front end developers building a content management, advertising, and MLS product replacing a custom Knockout implementation with Angular 1.',
+      'Developed and delivered a PPC advertising platform generating $7MM ARR for marketing with a site-wide API for engineers using Javascript and Google Ads.',
+      'Maintained and sunset legacy applications post Angular release, testing with customers over 4.5 months, and trained engineers on Javascript architecture, patterns, and best practices.',
+      'Technical speaker for internal company conference on Javascript, Angular, and building front-end systems.',
     ],
   },
 ]

@@ -443,14 +443,16 @@ a {
    because the band does not follow the theme. */
 .btnBand {
   padding: 15px 24px;
+  /* Filled by default: an outline alone gets lost over the band's artwork. */
+  background: #f5f4f1;
   border-color: #f5f4f1;
-  color: #f5f4f1;
+  color: #000;
 }
 
 .btnBand:hover {
-  background: #f5f4f1;
+  background: rgba(245, 244, 241, 0.82);
   color: #000;
-  border-color: #f5f4f1;
+  border-color: rgba(245, 244, 241, 0.82);
 }
 
 .chip {

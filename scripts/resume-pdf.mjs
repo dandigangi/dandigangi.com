@@ -1,5 +1,5 @@
 /**
- * Prints /resume to PDF using the Chrome that is already installed.
+ * Prints /resume/download to PDF using the Chrome that is already installed.
  *
  * No Puppeteer or Playwright: both ship their own ~150MB browser to do exactly
  * this, and the only thing needed here is Chrome's own --print-to-pdf. It also
@@ -39,9 +39,9 @@ const fail = (message) => {
 const chrome = CHROME_CANDIDATES.find((path) => existsSync(path))
 if (!chrome) fail(`No Chrome found. Looked in:\n  ${CHROME_CANDIDATES.join('\n  ')}`)
 
-const res = await fetch(`${BASE}/resume`).catch(() => null)
+const res = await fetch(`${BASE}/resume/download`).catch(() => null)
 if (!res?.ok) {
-  fail(`${BASE}/resume did not respond — is \`yarn serve\` running on ${BASE}?`)
+  fail(`${BASE}/resume/download did not respond — is \`yarn serve\` running on ${BASE}?`)
 }
 
 mkdirSync(dirname(OUT), { recursive: true })
@@ -55,7 +55,9 @@ execFileSync(
     // Chrome will otherwise print before webfonts and images have settled.
     '--virtual-time-budget=6000',
     `--print-to-pdf=${OUT}`,
-    `${BASE}/resume`,
+    // The paper view carries its print marker in the markup; /resume only gets
+    // it from a beforeprint listener, which headless printing isn't promised to fire.
+    `${BASE}/resume/download`,
   ],
   { stdio: 'inherit' }
 )
@@ -64,4 +66,4 @@ if (!existsSync(OUT)) fail('Chrome exited without writing a PDF.')
 
 const kb = Math.round(statSync(OUT).size / 1024)
 console.log(`\n✓ ${OUT.replace(process.cwd() + '/', '')} — ${kb}KB`)
-console.log('  Source: data/resume.ts via /resume. Re-run after editing either.')
+console.log('  Source: data/resume.ts via /resume/download. Re-run after editing either.')

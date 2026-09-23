@@ -5,6 +5,11 @@
  * than overriding component styles one by one — the reason the old site's
  * "!important everything" approach was so painful. Everything below is either a
  * token value, a page-level box, or a break rule.
+ *
+ * Keyed on a [data-print-mode] element rather than @media print, so the same
+ * rules serve two ways in: /resume/download carries the marker in its markup and
+ * renders as paper on screen, and /resume gets it from <PrintMode> only while
+ * the browser is printing. A media query can't be switched on from a page.
  */
 
 /* Shown only on paper. Screen keeps the band, which carries the same content. */
@@ -12,50 +17,65 @@ html [data-print='only'] {
   display: none;
 }
 
-@media print {
-  :root,
-  :root[data-theme='dark'],
-  :root[data-theme='light'] {
-    /* Paper white rather than the light theme's #ededeb: a full-bleed tint
-       wastes ink and reads as a scan artefact. */
-    --bg: #ffffff;
-    --ink: #111111;
-    --soft: rgba(17, 17, 17, 0.7);
-    --line: rgba(17, 17, 17, 0.16);
-    --hover: transparent;
-    --read: rgba(17, 17, 17, 0.88);
-    --rail: 0px;
-    --gutter: 0px;
-    color-scheme: light;
-  }
+@page {
+  margin: 13mm 14mm;
 
-  @page {
-    margin: 13mm 14mm;
-  }
+  /* Chrome draws its date/title/URL/page-number header and footer in these
+     slots unless the page claims them. Empty boxes claim them, so the margins
+     stay and the browser chrome goes — no need to untick the dialog's box. */
 
-  html,
-  body {
+  @top-left {
+    content: '';
+  }
+  @top-center {
+    content: '';
+  }
+  @top-right {
+    content: '';
+  }
+  @bottom-left {
+    content: '';
+  }
+  @bottom-center {
+    content: '';
+  }
+  @bottom-right {
+    content: '';
+  }
+}
+
+:root:has([data-print-mode]) {
+  /* Paper white rather than the light theme's #ededeb: a full-bleed tint
+     wastes ink and reads as a scan artefact. */
+  --bg: #ffffff;
+  --ink: #111111;
+  --soft: rgba(17, 17, 17, 0.7);
+  --line: rgba(17, 17, 17, 0.16);
+  --hover: transparent;
+  --read: rgba(17, 17, 17, 0.88);
+  --rail: 0px;
+  --gutter: 0px;
+  color-scheme: light;
+
+  &,
+  & body {
     background: #ffffff;
     /* Chrome prints a shorter measure than the screen; the design's clamps are
        tuned for a viewport, not an A4 column. */
     font-size: 10.5pt;
   }
 
-  html [data-print='hide'] {
-    display: none;
-  }
-
-  html [data-print='only'] {
+  & [data-print='only'] {
     display: block;
   }
 
-  .container {
+  & .container {
     max-width: none;
   }
 
   /* The rail stays, narrower than on screen: full-width sections read as a
      wall of text, and the label gives the eye somewhere to land. */
-  .railSection {
+  & .railSection {
     display: flex;
     /* The base rule wraps, which is right on screen and wrong here: Experience
        is wide enough to push itself below its own label, while the shorter
@@ -65,23 +85,23 @@ html [data-print='only'] {
     padding-top: 5mm;
   }
 
-  .railSection > :first-child {
+  & .railSection > :first-child {
     flex: 0 0 26mm;
   }
 
-  .railSection > :last-child {
+  & .railSection > :last-child {
     flex: 1 1 auto;
     min-width: 0;
   }
 
-  .label,
-  .meta {
+  & .label,
+  & .meta {
     font-size: 7.5pt;
     letter-spacing: 0.14em;
   }
 
   /* Nothing on paper should be a hover target or a coloured link. */
-  a {
+  & a {
     color: inherit;
     text-decoration: none;
   }
@@ -90,25 +110,59 @@ html [data-print='only'] {
      but .role is a grid and Chrome's fragmentation inside grid containers does
      not honour it — a role was still being cut across the fold. This costs
      some space at the foot of a page and is the only reliable option. */
-  [data-print-keep] {
+  & [data-print-keep] {
     break-inside: avoid;
   }
 
   /* What actually matters is that a heading never ends a page alone, and that
      a single bullet is not cut in half. */
-  h1,
-  h2,
-  h3 {
+  & h1,
+  & h2,
+  & h3 {
     break-after: avoid;
   }
 
-  li {
+  & li {
     break-inside: avoid;
   }
 
-  p,
-  li {
+  & p,
+  & li {
     orphans: 2;
     widows: 2;
+  }
+
+  /* !important because hidden elements also carry layout classes — .railSection,
+     .role — whose print display rules tie on specificity, and the module ones
+     load after this file. Hiding has to win regardless of order. */
+  & [data-print='hide'] {
+    display: none !important;
+  }
+}
+
+/* /resume/download on screen: an A4 sheet with @page's margins, so what you see is
+   what Save as PDF produces. Print drops this and lets @page do the work. The
+   sheet is a wrapper, not <body>, so the page's black bar can run full width. */
+@media screen {
+  :root:has([data-print-mode]) {
+    &,
+    & body {
+      /* A step up from the bar's black, so the bar still reads as its own band. */
+      background: #141414;
+    }
+
+    & [data-print-sheet] {
+      box-sizing: border-box;
+      width: 210mm;
+      max-width: 100%;
+      min-height: 297mm;
+      margin: 24px auto 58px;
+      padding: 13mm 14mm;
+      background: #ffffff;
+      /* Heavy on purpose: a shadow barely registers against a near-black backdrop. */
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.7),
+        0 16px 48px rgba(0, 0, 0, 0.9);
+    }
   }
 }

@@ -1,0 +1,63 @@
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #000;
+  color: #f5f4f1;
+}
+
+/* Fixed padding rather than var(--rail): print mode zeroes the rail on this
+   page, since the sheet below carries its own margins. */
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 21px clamp(16px, 4vw, 56px);
+}
+
+.mark {
+  display: inline-flex;
+}
+
+.mark img {
+  display: block;
+  width: auto;
+  height: 30px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 1.4vw, 16px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Separator only; navLink supplies the matching type so it sits on the line. */
+.dash {
+  /* navLink's tap-target padding plus the row gap left ~34px either side;
+     nothing here is a target, so drop the padding and eat half the gap. */
+  margin: 0 -8px;
+  padding-left: 0;
+  padding-right: 0;
+  opacity: 0.5;
+}
+
+/* A button that has to read as one of the links beside it. */
+.print {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+@media print {
+  .bar {
+    display: none;
+  }
+}
