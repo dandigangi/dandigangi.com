@@ -5,6 +5,7 @@ import { veiled } from '@/lib/copy'
 import { EXTRA, allTokens, tokenList, clearTokens, subscribe } from '@/lib/ledger'
 import { useLabels } from './useLabels'
 import { useTokenCount, useTokenTotal } from './useLedger'
+import { usePrizeLabel } from './useClaimCode'
 import { isTrail, setTrail, subscribe as rainbowSubscribe } from '@/lib/trail'
 import Link from 'next/link'
 import { OFFER_FIGURE, resetAll } from '@/lib/caller'
@@ -52,6 +53,7 @@ export default function Ledger() {
   const total = useTokenTotal()
   const complete = useSyncExternalStore(subscribe, allTokens, () => false)
   const rainbow = useSyncExternalStore(rainbowSubscribe, isTrail, () => false)
+  const prizeLabel = usePrizeLabel()
 
   /**
    * Two-step, not a second modal: the first press turns this control into its
@@ -184,7 +186,7 @@ export default function Ledger() {
              where the code and the form to send it with now live, and a prize
              that reopens the thing you just closed is a loop, not a way out. */
           <Link href="/contact" className={`btn btnPrize btnTone ${styles.claim}`} onClick={close}>
-            {veiled('Q2xhaW0gWW91ciBQcml6ZQ==')}
+            {prizeLabel}
           </Link>
         )}
 

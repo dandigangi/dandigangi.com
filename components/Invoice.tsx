@@ -7,6 +7,7 @@ import { veiled } from '@/lib/copy'
 import { T, tokenList, type Token } from '@/lib/ledger'
 import Link from 'next/link'
 import { LINKEDIN_URL, X_DM_URL } from '@/lib/callerLinks'
+import siteMetadata from '@/data/siteMetadata'
 import ClaimCode from './ClaimCode'
 import { useClaimCode } from './useClaimCode'
 import Confetti from './Confetti'
@@ -147,6 +148,18 @@ const TEXT = [
 
 const [T_HEAD, T_LABEL, T_LINE_1, T_LINE_2, T_ASIDE, T_ACT_X, T_ACT_IN] = TEXT
 
+const POST_LINK = `${siteMetadata.siteUrl}/blog/easter-egg-hunt-gift-card-prize`
+
+/** X's web intent, prefilled; the finisher still has to press Post. */
+const postUrl = (code: string) =>
+  `https://x.com/intent/tweet?${new URLSearchParams({
+    text:
+      veiled(
+        'SSBmb3VuZCBldmVyeSBlYXN0ZXIgZWdnIG9uIEBkYW5kaWdhbmdpJ3Mgc2l0ZSBhbmQgc29tZW9uZSBzdGlsbCBiZWF0IG1lIHRvIHRoZSBwcml6ZS4gTXkgY29uc29sYXRpb24gY29kZTog'
+      ) + code,
+    url: POST_LINK,
+  })}`
+
 const AVATAR = '/static/images/face-a.jpg'
 const ANGRY_AVATAR = '/static/images/face-b.jpg'
 
@@ -186,6 +199,10 @@ export default function Invoice({
    * own prerequisite. See ASIDE in lib/eggs.ts.
    */
   const [rails, setRails] = useState<string[]>([])
+  const claim = useClaimCode()
+  /* Once the prize is gone there is nothing to DM about: X becomes a public
+     post and LinkedIn goes, so the rails egg needs every rail shown, not three. */
+  const gone = claim?.claimed === true
   /**
    * Two things had to be got right here and both were wrong first time.
    *
@@ -202,14 +219,13 @@ export default function Invoice({
     if (rails.includes(name)) return
     const next = [...rails, name]
     setRails(next)
-    if (next.length === 3) onEgg(T.rails)
+    if (next.length === (gone ? 2 : 3)) onEgg(T.rails)
   }
   /* `won` alone. This used to also fire on `amount >= FINAL_TIER`, which is
      why the prize modal turned up on reaching a figure — the win moved to the
      egg tally, and this was the half left behind. */
   const final = won
 
-  const claim = useClaimCode()
   const hugLimit = viaCatch ? HUGS_PER_CATCH : HUGS_PER_RE_READ
   /** Out of hugs — one after catching him, three when only re-reading. */
   const spent = hugs >= hugLimit
@@ -317,10 +333,6 @@ export default function Invoice({
                   <>
                     {veiled('WW91ciBkZWRpY2F0aW9uIGlzIGltcHJlc3NpdmUgYnV0Li4u')}{' '}
                     {veiled('c29tZW9uZSBlbHNlIGFscmVhZHkgd29uLg==')}
-                    <br />
-                    {veiled(
-                      'TGV0IG1lIGtub3cgc3RpbGwgYW5kIG1heWJlIEkgY2FuIHNlbmQgeW91IHNvbWV0aGluZyBlbHNlLg=='
-                    )}
                   </>
                 ) : (
                   <>
@@ -412,30 +424,32 @@ export default function Invoice({
             {final && (
               <ClaimCode
                 code={claim?.code ?? null}
-                label={veiled(claim?.claimed ? 'QWxyZWFkeSBjbGFpbWVk' : 'WW91ciBjbGFpbSBjb2Rl')}
+                label={veiled(gone ? 'QWxyZWFkeSBjbGFpbWVk' : 'WW91ciBjbGFpbSBjb2Rl')}
               />
             )}
 
             {final ? (
               <>
                 <a
-                  href={X_DM_URL}
+                  href={gone ? postUrl(claim?.code ?? '') : X_DM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`btn btnTone ${styles.claim}`}
                   onClick={() => rail('x')}
                 >
-                  {T_ACT_X}
+                  {gone ? veiled('UG9zdCBvbiBY') : T_ACT_X}
                 </a>
-                <a
-                  href={LINKEDIN_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`btn btnTone ${styles.claim}`}
-                  onClick={() => rail('in')}
-                >
-                  {T_ACT_IN}
-                </a>
+                {!gone && (
+                  <a
+                    href={LINKEDIN_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`btn btnTone ${styles.claim}`}
+                    onClick={() => rail('in')}
+                  >
+                    {T_ACT_IN}
+                  </a>
+                )}
                 <Link
                   href="/contact"
                   className={`btn btnTone ${styles.claim}`}

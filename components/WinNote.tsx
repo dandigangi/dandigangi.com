@@ -34,17 +34,21 @@ export default function WinNote() {
         )}
       </h2>
       <p className={styles.body}>
-        {veiled(
-          'VGhhbmtzIGZvciBwbGF5aW5nIG15IGdhbWUsIFBhcnppdmFsLiBSZWFjaCBvdXQgdG8gbWUgYmVsb3cgb3IgRE0gbWUgb24g'
-        )}
+        {claim.claimed
+          ? veiled(
+              'VGhhbmtzIGZvciBwbGF5aW5nIG15IGdhbWUsIFBhcnppdmFsLiBZb3UgY2FuIHN0aWxsIGxldCBtZSBrbm93IHlvdSB3b24gYmVsb3csIA=='
+            )
+          : veiled(
+              'VGhhbmtzIGZvciBwbGF5aW5nIG15IGdhbWUsIFBhcnppdmFsLiBSZWFjaCBvdXQgdG8gbWUgYmVsb3cgb3IgRE0gbWUgb24g'
+            )}
         <a href={X_DM_URL} target="_blank" rel="noopener noreferrer" className={styles.mail}>
           {veiled('WA==')}
         </a>
-        {veiled('LCA=')}
+        {claim.claimed ? veiled('LCBvciA=') : veiled('LCA=')}
         <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className={styles.mail}>
           {veiled('TGlua2VkSW4=')}
         </a>
-        {veiled('IHcvIHlvdXIgY2xhaW0gY29kZS4=')}
+        {claim.claimed ? veiled('Lg==') : veiled('IHcvIHlvdXIgY2xhaW0gY29kZS4=')}
       </p>
     </div>
   )

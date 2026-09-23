@@ -15,7 +15,15 @@ import styles from './ClaimCode.module.css'
  *
  * Renders nothing without a code. The claim works without one and always has.
  */
-export default function ClaimCode({ code, label }: { code: string | null; label: string }) {
+export default function ClaimCode({
+  code,
+  label,
+  note,
+}: {
+  code: string | null
+  label: string
+  note?: string
+}) {
   const [copied, setCopied] = useState(false)
   if (!code) return null
 
@@ -45,11 +53,7 @@ export default function ClaimCode({ code, label }: { code: string | null; label:
           {copied ? veiled('Q29waWVk') : veiled('Q29weQ==')}
         </button>
       </div>
-      <p className={styles.note}>
-        {veiled(
-          'U2VuZCB0aGlzIGNsYWltIGNvZGUgd2l0aCB5b3VyIG1lc3NhZ2UsIGhvd2V2ZXIgeW91IHJlYWNoIG91dCAtLSBJIGNhbm5vdCB2ZXJpZnkgYSB3aW4gd2l0aG91dCBpdC4='
-        )}
-      </p>
+      {note && <p className={styles.note}>{note}</p>}
     </div>
   )
 }

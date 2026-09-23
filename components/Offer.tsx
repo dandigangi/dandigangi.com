@@ -1,10 +1,10 @@
 'use client'
 
 import { useSyncExternalStore } from 'react'
-import { veiled } from '@/lib/copy'
 import { allTokens, subscribe } from '@/lib/ledger'
 import { CALLER_OFFER } from '@/lib/caller'
 import styles from './Offer.module.css'
+import { usePrizeLabel } from './useClaimCode'
 
 /**
  * The same offer, sized for the band nav, and only ever there once it is won.
@@ -16,6 +16,7 @@ import styles from './Offer.module.css'
  */
 export function OfferNavLink() {
   const complete = useSyncExternalStore(subscribe, allTokens, () => false)
+  const label = usePrizeLabel()
   if (!complete) return null
 
   return (
@@ -26,7 +27,7 @@ export function OfferNavLink() {
         onClick={() => window.dispatchEvent(new CustomEvent(CALLER_OFFER))}
         data-print="hide"
       >
-        {veiled('Q2xhaW0gWW91ciBQcml6ZQ==')}
+        {label}
       </button>
     </li>
   )

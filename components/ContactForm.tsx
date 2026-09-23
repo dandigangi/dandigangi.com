@@ -101,6 +101,13 @@ export default function ContactForm() {
       <ClaimCode
         code={claim?.code ?? null}
         label={veiled('RWFzdGVyIEVnZyBXaW4gQ2xhaW0gQ29kZQ==')}
+        note={
+          claim?.claimed
+            ? veiled('WW91IGNhbiBzdGlsbCBsZXQgbWUga25vdyB5b3Ugd29uIQ==')
+            : veiled(
+                'U2VuZCB0aGlzIGNsYWltIGNvZGUgd2l0aCB5b3VyIG1lc3NhZ2UsIGhvd2V2ZXIgeW91IHJlYWNoIG91dCAtLSBJIGNhbm5vdCB2ZXJpZnkgYSB3aW4gd2l0aG91dCBpdC4='
+              )
+        }
       />
 
       {/* The honeypot. Hidden from sight and from screen readers, and skipped by

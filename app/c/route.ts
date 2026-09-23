@@ -35,7 +35,7 @@ const CLAIMED = process.env.PRIZE_CLAIMED === '1'
 
 /** What the losers get, and it is not a real code — it verifies against
  *  nothing, which is the point: it cannot be mistaken for a winning claim. */
-const CONSOLATION = 'HOW-DID-I-LOSE'
+const CONSOLATION = 'AW-MAN-I-WANTED-A-PRIZE'
 
 /**
  * Optional. Any endpoint that accepts a JSON POST — a Slack or Discord incoming

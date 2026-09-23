@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useSyncExternalStore } from 'react'
+import { veiled } from '@/lib/copy'
 import { allTokens, subscribe, tokenList } from '@/lib/ledger'
 
 /**
@@ -100,4 +101,13 @@ export function useClaimCode(): Claim | null {
   }, [complete, code])
 
   return code
+}
+
+/** The label on every button that leads to the prize, which stops promising
+ *  one once the server says it has been handed over. */
+export function usePrizeLabel(): string {
+  const claim = useClaimCode()
+  return claim?.claimed
+    ? veiled('UHJpemUgQWxyZWFkeSBDbGFpbWVk')
+    : veiled('Q2xhaW0gWW91ciBQcml6ZQ==')
 }
