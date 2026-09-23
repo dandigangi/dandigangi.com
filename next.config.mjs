@@ -1,4 +1,5 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
+import { PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -121,4 +122,16 @@ const nextConfig = {
   },
 }
 
-export default withBundleAnalyzer(nextConfig)
+/*
+ * Under `next dev`, velite watches data/ and rebuilds posts on save; before, the
+ * server only ever saw them as they were at startup. The env flag stops Next's
+ * child processes, which load this file again, starting watchers of their own.
+ */
+export default async function config(phase) {
+  if (phase === PHASE_DEVELOPMENT_SERVER && !process.env.VELITE_STARTED) {
+    process.env.VELITE_STARTED = '1'
+    const { build } = await import('velite')
+    await build({ watch: true })
+  }
+  return withBundleAnalyzer(nextConfig)
+}

@@ -8,7 +8,7 @@
     "node": "24.x"
   },
   "scripts": {
-    "dev": "node ./scripts/prebuild-env.mjs && velite && next dev --hostname 127.0.0.1",
+    "dev": "node ./scripts/prebuild-env.mjs && next dev --hostname 127.0.0.1",
     "dev:content": "velite --watch",
     "build": "node ./scripts/prebuild-env.mjs && velite --clean && next build && node ./scripts/postbuild.mjs",
     "serve": "next start",

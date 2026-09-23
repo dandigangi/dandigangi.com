@@ -94,7 +94,7 @@ const setup = (initialPost: PostContent | null = null) => ({
 })
 
 /** The picker is a combobox, not one of the plain labelled inputs above. */
-const tagInput = () => screen.getByRole('combobox')
+const tagInput = () => screen.getByRole('combobox', { name: /tags/i })
 
 const field = (name: string) =>
   screen
@@ -333,5 +333,17 @@ describe('the summary counter', () => {
     await user.type(field('Summary'), 'x'.repeat(161))
     expect(screen.getByText(/161\/160/)).toBeInTheDocument()
     expect(screen.getByText(/search results will cut it off/i)).toBeInTheDocument()
+  })
+})
+
+describe('inserting a component', () => {
+  it('drops the chosen component into the body at the cursor', async () => {
+    const { user } = setup(localDraft)
+    const body = screen.getByTestId('body') as HTMLTextAreaElement
+    body.setSelectionRange(body.value.length, body.value.length)
+
+    await user.selectOptions(screen.getByLabelText('Insert component'), 'Invisible text')
+
+    expect(body.value).toBe('Some body.\n\n<Invisible text="" />')
   })
 })

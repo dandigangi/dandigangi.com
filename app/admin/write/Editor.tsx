@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState, useTransition } from 'react'
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import {
@@ -14,6 +14,7 @@ import {
   type PostSummary,
 } from './actions'
 import TagPicker, { type TagOption } from './TagPicker'
+import { SNIPPETS, insertSnippet } from './snippets'
 import ThemeToggle from '@/components/ThemeToggle'
 import type { ManagedFields } from '@/lib/frontmatter'
 import styles from './Editor.module.css'
@@ -142,6 +143,19 @@ export default function Editor({
 
   const set = <K extends keyof PostContent>(key: K, value: PostContent[K]) =>
     setPost((current) => ({ ...current, [key]: value }))
+
+  const bodyRef = useRef<HTMLTextAreaElement>(null)
+  const insert = (text: string) => {
+    const area = bodyRef.current
+    if (!text || !area) return
+    const next = insertSnippet(post.body, area.selectionStart, area.selectionEnd, text)
+    set('body', next.body)
+    // After React has written the new value, or the caret lands in the old one.
+    requestAnimationFrame(() => {
+      area.focus()
+      area.setSelectionRange(next.caret, next.caret)
+    })
+  }
 
   const dirty = snapshot(post, tags) !== saved
 
@@ -504,6 +518,7 @@ export default function Editor({
 
         <div className={styles.split}>
           <textarea
+            ref={bodyRef}
             data-testid="body"
             className={styles.write}
             value={post.body}
@@ -523,6 +538,20 @@ export default function Editor({
           {note && <span className={note.kind === 'ok' ? styles.ok : styles.bad}>{note.text}</span>}
 
           <div className={styles.actions}>
+            <select
+              aria-label="Insert component"
+              className={styles.secondary}
+              value=""
+              onChange={(event) => insert(event.target.value)}
+            >
+              <option value="">Insert component…</option>
+              {SNIPPETS.map((snippet) => (
+                <option key={snippet.label} value={snippet.text}>
+                  {snippet.label}
+                </option>
+              ))}
+            </select>
+
             {liveUrl && mode === 'editing' && (
               <a className={styles.secondary} href={liveUrl} target="_blank" rel="noreferrer">
                 View post ↗
