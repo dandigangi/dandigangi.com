@@ -106,12 +106,12 @@
   flex: 0 1 340px;
 }
 
-/* Both larger and wider than the handoff (19px / 760px): long-form reading is
-   what this page is for, and the title above runs much further. 880px is ~70
-   characters at 24px — still a comfortable measure. */
+/* Larger and wider than the handoff (19px / 760px): long-form reading is what
+   this page is for. Was 24px, which read as too big; 880px is ~80 characters
+   at 21px, the top of a comfortable measure. */
 .body {
   max-width: 880px;
-  font-size: clamp(18px, 2.2vw, 24px);
+  font-size: clamp(17px, 2vw, 21px);
   line-height: 1.65;
   color: var(--read);
 }
@@ -143,7 +143,7 @@
   margin: 32px 0;
   padding: 22px 28px;
   border-left: 2px solid var(--ink);
-  font-size: clamp(20px, 2.4vw, 24px);
+  font-size: clamp(19px, 2.2vw, 22px);
   line-height: 1.45;
   color: var(--ink);
 }
@@ -152,7 +152,7 @@
   height: auto;
 }
 
-/* Scaled with the body type — 15px against 24px prose read as a footnote. */
+/* Scaled with the body type — too small against the prose reads as a footnote. */
 .body :global(pre) {
   margin: 32px 0;
   padding: 24px 28px;
@@ -160,7 +160,7 @@
   background: #0a0a0c;
   overflow-x: auto;
   font-family: var(--font-mono), monospace;
-  font-size: clamp(15px, 1.5vw, 18px);
+  font-size: clamp(14px, 1.4vw, 16px);
   line-height: 1.65;
   color: #f5f4f1;
 }
