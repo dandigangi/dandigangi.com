@@ -7,7 +7,10 @@ vi.mock('@/lib/blog', async (original) => ({
   ...(await original<typeof import('@/lib/blog')>()),
   // Fixed, so the assertions below are about which tag is shown rather than
   // about how the live vocabulary happens to rank today.
-  getTagHues: () => ({ hiring: 3, 'engineering-management': 0 }),
+  getTagHues: () => ({
+    hiring: { '--tag-hue-dark': '#000003', '--tag-hue-light': '#300000' },
+    'engineering-management': { '--tag-hue-dark': '#000000', '--tag-hue-light': '#000000' },
+  }),
 }))
 
 const post = (tags: string[]): Post =>
@@ -40,7 +43,8 @@ describe('PostList', () => {
     const { container } = render(
       <PostList posts={[post(['engineering-management', 'hiring'])]} activeTag="hiring" />
     )
-    expect(container.querySelector('[data-hue]')).toHaveAttribute('data-hue', '3')
+    const tag = container.querySelector<HTMLElement>('[data-hue]')
+    expect(tag?.style.getPropertyValue('--tag-hue-dark')).toBe('#000003')
   })
 
   it('falls back to the first tag when the active one is not on the post', () => {

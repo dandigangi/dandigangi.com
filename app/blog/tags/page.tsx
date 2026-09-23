@@ -5,6 +5,7 @@ import ChipTail from '@/components/ChipTail'
 import PageBand from '@/components/PageBand'
 import { genPageMetadata } from 'app/seo'
 import styles from './tags.module.css'
+import { tagHueProps } from '@/lib/ramp'
 
 export const metadata = genPageMetadata({
   title: 'Tags',
@@ -25,7 +26,7 @@ export default function TagsPage() {
       <div className="container">
         <div className={`rail ${styles.chips}`}>
           {tags.map(([tag, count]) => (
-            <Link key={tag} href={`/blog/tags/${tag}`} className="chip" data-hue={hues[tag]}>
+            <Link key={tag} href={`/blog/tags/${tag}`} className="chip" {...tagHueProps(hues[tag])}>
               {formatTag(tag)} ({count})
             </Link>
           ))}

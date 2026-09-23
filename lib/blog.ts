@@ -1,4 +1,5 @@
 import { posts, type Post } from '@/content'
+import { tagHue, type TagHue } from './ramp'
 
 /** Fields that are expensive to ship to list views. */
 type ListPost = Omit<Post, 'body' | 'raw' | 'toc'>
@@ -37,9 +38,6 @@ export function getTagCounts(): Record<string, number> {
   return counts
 }
 
-/** How many steps the tag rainbow runs before it repeats. */
-export const TAG_HUES = 7
-
 /**
  * Which rainbow step each tag gets, keyed by tag.
  *
@@ -51,13 +49,16 @@ export const TAG_HUES = 7
  * Position-based rather than fixed per tag: a tag that climbs the ranking takes
  * the hue of its new slot, which keeps the run of colour intact as the blog
  * grows rather than leaving gaps where a tag used to sit.
+ *
+ * Spread across the whole ramp rather than cycling seven steps: with more tags
+ * than steps the rainbow started over, and two tags on one post could share a
+ * colour. Now every tag gets its own, however many there are.
  */
-export function getTagHues(): Record<string, number> {
-  return Object.fromEntries(
-    Object.entries(getTagCounts())
-      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-      .map(([tag], index) => [tag, index % TAG_HUES])
+export function getTagHues(): Record<string, TagHue> {
+  const ranked = Object.entries(getTagCounts()).sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
   )
+  return Object.fromEntries(ranked.map(([tag], index) => [tag, tagHue(index, ranked.length)]))
 }
 
 /** Published posts carrying `tag`, newest first. Tags are matched exactly — they

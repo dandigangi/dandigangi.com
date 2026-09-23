@@ -14,7 +14,7 @@ const KEY = 'dd:f4'
 export const STALE_MS = 14 * 24 * 60 * 60 * 1000
 
 /** Every key the hunt writes. Listed here so expiry clears all of it at once. */
-const KEYS = ['dd:f1', 'dd:f2', 'dd:f3', 'dd:f5', 'dd:pk3', KEY]
+const KEYS = ['dd:f1', 'dd:f2', 'dd:f3', 'dd:f5', 'dd:f6', 'dd:pk3', KEY]
 
 /**
  * Clears everything if the last write is older than the window, and reports

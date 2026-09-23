@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { FINAL_TIER, OPENING, OVER_TIER, OFFER_FIGURE } from '@/lib/caller'
+import { FINAL_TIER, OVER_TIER, OFFER_FIGURE } from '@/lib/caller'
 import { veiled } from '@/lib/copy'
-import { T, tokenList, type Token } from '@/lib/ledger'
+import { T, tokenList, tryMethod, type Token } from '@/lib/ledger'
 import Link from 'next/link'
 import { LINKEDIN_URL, X_DM_URL } from '@/lib/callerLinks'
 import siteMetadata from '@/data/siteMetadata'
@@ -191,36 +191,10 @@ export default function Invoice({
   /** Rails he has already been asked about. None of them settle anything — he
    *  answers in place of the delivery estimate and the invoice stays open. */
   const [poked, setPoked] = useState<string[]>([])
-  /**
-   * Which of the three ways to collect have been tried.
-   *
-   * Its own discovery, and deliberately off the board — it is only reachable
-   * from inside the prize, so counting it toward the prize would make it its
-   * own prerequisite. See ASIDE in lib/eggs.ts.
-   */
-  const [rails, setRails] = useState<string[]>([])
   const claim = useClaimCode()
   /* Once the prize is gone there is nothing to DM about: X becomes a public
-     post and LinkedIn goes, so the rails egg needs every rail shown, not three. */
+     post and LinkedIn goes. */
   const gone = claim?.claimed === true
-  /**
-   * Two things had to be got right here and both were wrong first time.
-   *
-   * The work is outside the updater. Updaters run during render, so calling the
-   * parent's setState from inside one is updating another component mid-render
-   * — React's own warning — and the toast never arrived.
-   *
-   * And it does not record the find itself. Blip captures whether the egg was
-   * already known when it mounts, so an egg recorded a moment before the toast
-   * is one the toast will decline to announce. Handing it the id and letting it
-   * do the recording is the same contract every other egg here uses.
-   */
-  const rail = (name: string) => {
-    if (rails.includes(name)) return
-    const next = [...rails, name]
-    setRails(next)
-    if (next.length === (gone ? 2 : 3)) onEgg(T.rails)
-  }
   /* `won` alone. This used to also fire on `amount >= FINAL_TIER`, which is
      why the prize modal turned up on reaching a figure — the win moved to the
      egg tally, and this was the half left behind. */
@@ -362,16 +336,20 @@ export default function Invoice({
 
         {!final && (
           <div className={styles.methods}>
-            {METHODS.map((method) => (
+            {METHODS.map((method, index) => (
               <button
                 key={method.name}
                 type="button"
                 className={styles.method}
-                onClick={() =>
+                onClick={() => {
                   setPoked((names) =>
                     names.includes(method.name) ? names : [...names, method.name]
                   )
-                }
+                  /* Outside the updater, and handed to the toast rather than
+                     recorded here: updaters run during render, and Blip will not
+                     announce an egg that was already known when it mounted. */
+                  if (tryMethod(index, METHODS.length)) onEgg(T.rails)
+                }}
               >
                 <span
                   className={styles.badge}
@@ -402,7 +380,7 @@ export default function Invoice({
                   className={`btn ${styles.hug}`}
                   // Nothing to negotiate at the opening ask — a hug there floors
                   // at the same figure and would animate nothing.
-                  disabled={spent || amount <= OPENING}
+                  disabled={spent || amount <= 0}
                   onClick={() => {
                     setHugs((count) => count + 1)
                     onHug()
@@ -435,7 +413,6 @@ export default function Invoice({
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`btn btnTone ${styles.claim}`}
-                  onClick={() => rail('x')}
                 >
                   {gone ? veiled('UG9zdCBvbiBY') : T_ACT_X}
                 </a>
@@ -445,19 +422,11 @@ export default function Invoice({
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`btn btnTone ${styles.claim}`}
-                    onClick={() => rail('in')}
                   >
                     {T_ACT_IN}
                   </a>
                 )}
-                <Link
-                  href="/contact"
-                  className={`btn btnTone ${styles.claim}`}
-                  onClick={() => {
-                    rail('contact')
-                    onClose()
-                  }}
-                >
+                <Link href="/contact" className={`btn btnTone ${styles.claim}`} onClick={onClose}>
                   {veiled('Q29udGFjdA==')}
                 </Link>
               </>

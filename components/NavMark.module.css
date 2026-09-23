@@ -10,22 +10,6 @@
   cursor: pointer;
 }
 
-/* Pixel art — the browser's smoothing turns a 32px sprite into mush. */
 .star {
   display: block;
-  image-rendering: pixelated;
-  transition:
-    opacity 0.15s ease,
-    filter 0.15s ease;
-}
-
-/* Off, but found: still there, visibly asleep, so it reads as a switch. */
-.star[data-off] {
-  opacity: 0.45;
-  filter: grayscale(1);
-}
-
-.toggle:hover .star[data-off],
-.toggle:focus-visible .star[data-off] {
-  opacity: 0.8;
 }

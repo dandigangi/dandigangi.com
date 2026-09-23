@@ -100,7 +100,7 @@ export async function POST(request: Request) {
     // No body, or not JSON.
   }
 
-  // The nine on the board. The off-board two are not required to win and are
+  // The twelve on the board. The off-board secret is not required to win and is
   // not required here either.
   const complete = TOKENS.every((token: Token) => held.includes(token))
   if (!complete) return NextResponse.json({ error: 'incomplete' }, { status: 403 })

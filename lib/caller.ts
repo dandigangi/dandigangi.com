@@ -1,5 +1,5 @@
 import { expireIfStale, touch } from './stale'
-import { T } from '@/lib/ledger'
+import { T, hasToken, type Token } from '@/lib/ledger'
 
 /**
  * Window events rather than shared React state: the cameo lives at the end of
@@ -138,7 +138,7 @@ export type Tab = {
   invoices: number
 }
 
-/** His opening ask, and the floor a hug cannot take him below. */
+/** His opening ask. Hugs can take him below it, all the way to $0 — see softenTab. */
 export const OPENING = 100
 
 /** Where he stops being polite, and where the hero swap earns its keep. */
@@ -203,7 +203,7 @@ const stored = (): Tab | null => {
     if (typeof saved !== 'object' || saved === null) return null
     const { amount, invoices } = saved as Partial<Tab>
     if (typeof amount !== 'number' || typeof invoices !== 'number') return null
-    if (!Number.isFinite(amount) || amount < OPENING || invoices < 0) return null
+    if (!Number.isFinite(amount) || amount < 0 || invoices < 0) return null
     // A `wonAt` from the old shape is simply dropped: the prize no longer hangs
     // on the tab, so there is nothing for it to mean.
     return { amount, invoices }
@@ -294,9 +294,20 @@ export const resetAll = () => {
   changed(wasActive)
 }
 
-/** A hug is worth something. Never below the opening ask. */
+/**
+ * The egg a hug that just landed has earned, if any. One per hug, so zero wins
+ * when both would — which a first hug cannot do anyway: the first catch raises
+ * him well past what one hug takes off.
+ */
+export const hugEgg = (): Token | null =>
+  tab.amount === 0 ? T.zero : hasToken(T.hug) ? null : T.hug
+
+/**
+ * A hug is worth something. Floored at $0 rather than the opening ask: hugging
+ * him all the way down is an egg of its own, so it has to be reachable.
+ */
 export const softenTab = (by: number): boolean => {
-  const next = Math.max(OPENING, Math.round((tab.amount - by) * 100) / 100)
+  const next = Math.max(0, Math.round((tab.amount - by) * 100) / 100)
   if (next === tab.amount) return false
   const wasActive = layerActive()
   tab = { ...tab, amount: next }

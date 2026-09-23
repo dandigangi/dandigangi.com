@@ -11,6 +11,7 @@ import {
   getTab,
   lapseLayer,
   markMet,
+  hugEgg,
   raiseTab,
   resetTab,
   softenTab,
@@ -350,7 +351,10 @@ export default function Caller() {
   const onHug = () => {
     const before = getTab().amount
     // A hug does not raise an invoice, so it belongs to the current one.
-    if (softenTab(HUG_RELIEF)) setPrevious({ amount: before, at: getTab().invoices })
+    if (!softenTab(HUG_RELIEF)) return
+    setPrevious({ amount: before, at: getTab().invoices })
+    const egg = hugEgg()
+    if (egg) setEggToast(egg)
   }
 
   useEffect(() => {

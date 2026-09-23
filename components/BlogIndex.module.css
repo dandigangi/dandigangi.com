@@ -18,7 +18,7 @@
 .chips :global(.chip),
 .chips :global([class*='revealed']) {
   padding: 11px 18px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 /* The bottom gap before the footer lives here, not on .pagination — a tag page

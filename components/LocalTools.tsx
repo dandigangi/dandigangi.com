@@ -88,7 +88,7 @@ export default function LocalTools() {
     if (next) setGranted(next)
   }
 
-  /** The nine on the board. The secret is not one of them — see below. */
+  /** The twelve on the board. The secret is not one of them — see below. */
   const grantAll = () => {
     setGranted(null)
     for (const egg of TOKENS) addToken(egg)

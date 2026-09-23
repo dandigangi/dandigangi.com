@@ -477,40 +477,25 @@ a {
 }
 
 /*
- * The tag rows run a rainbow down their length: not a gradient inside any one
- * chip, but each chip taking the next hue, so hovering along the row walks the
- * spectrum. Applied by position rather than by tag name — the order is whatever
- * the list happens to be, and a tag that moves simply takes the hue of its new
- * slot.
+ * Tag colour. Every tag gets its own hue on the projects' red → violet path,
+ * ranked most-used first (`getTagHues` in lib/blog.ts), so the same tag is the
+ * same colour wherever it appears — the filter row, the meta beside a post in
+ * the list, and the chips in a post's sidebar. The unfiltered "All" chip
+ * carries no hue on purpose: it is the baseline the colours are read against.
  *
- * Seven steps, then it repeats. The unfiltered "All" chip carries no hue on
- * purpose: it is the baseline the colours are read against.
- *
- * Set on any element carrying `data-hue`, not just chips, so the same tag comes
- * up in the same colour wherever it appears — the filter row, the meta beside a
- * post in the list, and the chips in a post's sidebar. `lib/blog.ts`
- * (`getTagHues`) is what decides which step a tag gets.
+ * Both themes' values ride on the element as inline custom properties, because
+ * the theme is not known on the server; these rules pick one.
  */
-[data-hue='0'] {
-  --tag-hue: var(--rb-red);
+[data-hue] {
+  --tag-hue: var(--tag-hue-dark);
 }
-[data-hue='1'] {
-  --tag-hue: var(--rb-orange);
+[data-theme='light'] [data-hue] {
+  --tag-hue: var(--tag-hue-light);
 }
-[data-hue='2'] {
-  --tag-hue: var(--rb-yellow);
-}
-[data-hue='3'] {
-  --tag-hue: var(--rb-green);
-}
-[data-hue='4'] {
-  --tag-hue: var(--rb-blue);
-}
-[data-hue='5'] {
-  --tag-hue: var(--rb-indigo);
-}
-[data-hue='6'] {
-  --tag-hue: var(--rb-violet);
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']):not([data-theme='light']) [data-hue] {
+    --tag-hue: var(--tag-hue-light);
+  }
 }
 
 .srOnly {

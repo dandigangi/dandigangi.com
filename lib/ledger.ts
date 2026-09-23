@@ -32,7 +32,9 @@
  *   tail  — the chip at the end of the tag row that is not there
  *   twin  — the alter ego
  *   arc   — the secret, typed
- *   rails — trying every way to collect the prize
+ *   rails — trying all three ways to pay him, on any invoice, over any number of visits
+ *   hug   — hugging him for the first time
+ *   zero  — hugging the tab all the way down to $0
  */
 export const T = {
   met: 'q1',
@@ -46,6 +48,8 @@ export const T = {
   twin: 'q9',
   arc: 'qa',
   rails: 'qb',
+  hug: 'qc',
+  zero: 'qd',
 } as const
 
 export const TOKENS = [
@@ -58,25 +62,26 @@ export const TOKENS = [
   T.dial,
   T.tail,
   T.twin,
+  T.rails,
+  T.hug,
+  T.zero,
 ] as const
 
 /**
  * The ones that are not on the board.
  *
  * Deliberately outside TOKENS: until one of these is found there is nothing to
- * say it exists — the count reads out of nine, the list has nine rows, and
+ * say it exists — the count reads out of twelve, the list has twelve rows, and
  * nothing hints at more. Finding one adds it to both, at the top.
  *
- * This is also what keeps the prize honest. Winning is finding the nine, and it
- * has to stay that way: one of these is only reachable from inside the prize
- * itself, so counting it toward the total up front would make the prize its own
- * prerequisite. Counted on discovery, the bar never moves — you always have the
- * off-board ones you are being counted for.
+ * Rails used to live here too, when it was earned inside the prize and so could
+ * not count toward it. It is earned on the ordinary invoice now, so it is on
+ * the board like any other.
  *
  * Named blandly because export names survive minification and ship in the
  * bundle; `SECRET` sitting in there was an invitation to go looking.
  */
-export const ASIDE = [T.arc, T.rails] as const
+export const ASIDE = [T.arc] as const
 
 /** The one with a mark of its own in the list. */
 export const EXTRA = T.arc
@@ -86,7 +91,7 @@ const ALL = [...TOKENS, ...ASIDE] as const
 export type Token = (typeof ALL)[number]
 
 /**
- * Nine, or ten once the secret is out. A function rather than a constant
+ * Twelve, or thirteen once the secret is out. A function rather than a constant
  * because it genuinely changes — every caller reads it through the store, so
  * the denominator updates the moment it is found.
  */
@@ -208,6 +213,13 @@ export const hasToken = (egg: Token): boolean => {
 export const allTokens = (): boolean => tokenCount() === tokenTotal()
 
 /**
+ * Whether this visitor has won, ever. The set being complete now, or the prize
+ * already collected — the board has grown since some people won, and a
+ * winner does not stop being one when new eggs appear.
+ */
+export const hasWon = (): boolean => allTokens() || offerSettled()
+
+/**
  * Whether the prize has already been collected. Persisted, or the modal would
  * reopen on every load for anyone who has finished — the set stays complete
  * afterwards, so completeness alone cannot be the condition.
@@ -265,8 +277,32 @@ export const clearTokens = (): void => {
     localStorage.removeItem(CLAIM_KEY)
     // The minted code goes with the tally that earned it.
     localStorage.removeItem('dd:f5')
+    localStorage.removeItem(TRIED_KEY)
   } catch {
     // The in-memory reset still stands for this page.
   }
   emit()
+}
+
+/**
+ * The payment methods tried so far, by position on the invoice. Persisted
+ * rather than held per invoice: the rails egg is all three at some point, not
+ * all three in one sitting.
+ */
+const TRIED_KEY = 'dd:f6'
+
+/** Records a method as tried; true once all `of` of them have been. */
+export const tryMethod = (index: number, of: number): boolean => {
+  if (typeof window === 'undefined') return false
+  try {
+    const raw: unknown = JSON.parse(localStorage.getItem(TRIED_KEY) ?? '[]')
+    const tried = new Set(Array.isArray(raw) ? raw.filter((n) => typeof n === 'number') : [])
+    tried.add(index)
+    localStorage.setItem(TRIED_KEY, JSON.stringify([...tried]))
+    touch()
+    return tried.size >= of
+  } catch {
+    // Blocked storage: nothing persists, so this visit's clicks are all there is.
+    return false
+  }
 }

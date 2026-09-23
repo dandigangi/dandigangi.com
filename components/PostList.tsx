@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { getTagHues, type Post } from '@/lib/blog'
 import { formatFullDate, formatTag } from '@/lib/format'
 import styles from './PostList.module.css'
+import { tagHueProps } from '@/lib/ramp'
 
 export default function PostList({ posts, activeTag }: { posts: Post[]; activeTag?: string }) {
   const hues = getTagHues()
@@ -38,7 +39,7 @@ export default function PostList({ posts, activeTag }: { posts: Post[]; activeTa
                 {' · '}
                 {/* Same hue the tag's chip carries above, so the eye can link
                     the row to the filter without reading either. */}
-                <span className={styles.rowTag} data-hue={hues[shown(post)]}>
+                <span className={styles.rowTag} {...tagHueProps(hues[shown(post)])}>
                   {formatTag(shown(post))}
                 </span>
               </>

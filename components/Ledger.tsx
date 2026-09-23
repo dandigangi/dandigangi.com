@@ -2,13 +2,14 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { veiled } from '@/lib/copy'
-import { EXTRA, allTokens, tokenList, clearTokens, subscribe } from '@/lib/ledger'
+import { EXTRA, allTokens, hasWon, tokenList, clearTokens, subscribe } from '@/lib/ledger'
 import { useLabels } from './useLabels'
 import { useTokenCount, useTokenTotal } from './useLedger'
 import { usePrizeLabel } from './useClaimCode'
 import { isTrail, setTrail, subscribe as rainbowSubscribe } from '@/lib/trail'
 import Link from 'next/link'
 import { OFFER_FIGURE, resetAll } from '@/lib/caller'
+import Glint from './Glint'
 import styles from './Ledger.module.css'
 
 /**
@@ -137,7 +138,7 @@ export default function Ledger() {
         <ol className={styles.list}>
           {unlocked.map(({ egg, at }) => (
             <li key={egg} className={styles.row}>
-              {/* The secret wears its own mark — it is not one of the nine, and
+              {/* The secret wears its own mark — it is not one of the twelve, and
                   once it has been found that mark is also the switch. */}
               {egg === EXTRA ? (
                 <button
@@ -146,7 +147,7 @@ export default function Ledger() {
                   onClick={() => setTrail(!rainbow)}
                   title={names.get(rainbow ? OFF_ROAD : ON_ROAD) ?? ''}
                 >
-                  <span aria-hidden="true">🌈</span>
+                  <Glint size={18} off={!rainbow} />
                   <span className="srOnly">{names.get(rainbow ? OFF_ROAD : ON_ROAD) ?? ''}</span>
                 </button>
               ) : (
@@ -239,13 +240,14 @@ export default function Ledger() {
 export function LedgerLink({ className }: { className?: string }) {
   const found = useTokenCount()
   const total = useTokenTotal()
-  const complete = useSyncExternalStore(subscribe, allTokens, () => false)
+  const won = useSyncExternalStore(subscribe, hasWon, () => false)
   if (found === 0) return null
 
   return (
     <button type="button" className={className} onClick={openLedger}>
-      {/* The egg hatches once the set is complete, and the label goes with it. */}
-      <span aria-hidden="true">{complete ? '🐣' : '🥚'}</span>{' '}
+      {/* The egg hatches once they have won, and stays hatched if the board
+          later grows past what they found. */}
+      <span aria-hidden="true">{won ? '🐣' : '🥚'}</span>{' '}
       {/* Always the gradient, whether or not the mode is on and whether or not
           the set is complete. It is the one thing in the footer worth a look. */}
       <span className={styles.linkDone}>

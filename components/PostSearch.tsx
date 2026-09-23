@@ -10,6 +10,7 @@ import Blip from './Blip'
 import Toss from './Toss'
 import styles from './PostSearch.module.css'
 import { T } from '@/lib/ledger'
+import { tagHueProps, type TagHue } from '@/lib/ramp'
 
 /**
  * Type his name and the hero above you goes yellow, for exactly as long as it
@@ -63,7 +64,7 @@ export default function PostSearch({
   index: SearchEntry[]
   /** Rainbow step per tag, from `getTagHues()`. Passed in rather than derived:
    *  this runs on the client and has no access to the post collection. */
-  hues?: Record<string, number>
+  hues?: Record<string, TagHue>
   /**
    * The tag whose page this is, when there is one. Search stays global there —
    * a box that can only find the four posts already listed below it is not
@@ -265,7 +266,7 @@ export default function PostSearch({
                   {post.tags[0] && (
                     <>
                       {' · '}
-                      <span className={styles.rowTag} data-hue={hues[post.tags[0]]}>
+                      <span className={styles.rowTag} {...tagHueProps(hues[post.tags[0]])}>
                         {formatTag(post.tags[0])}
                       </span>
                     </>

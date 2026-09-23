@@ -5,8 +5,9 @@ import { veiled } from '@/lib/copy'
 import { EXTRA } from '@/lib/ledger'
 import { isTrail, press, trailToggles, restoreTrail, setTrail, subscribe } from '@/lib/trail'
 import Blip from './Blip'
-import { useLabels } from './useLabels'
 import Drift from './Drift'
+import Glint from './Glint'
+import { useTrailMark } from './useTrailMark'
 
 /**
  * The tenth egg, and the only one nothing on the page hints at.
@@ -61,20 +62,16 @@ export default function Trail() {
 }
 
 /**
- * The way out, for anyone who turned it on and does not fancy retyping the
- * phrase to stop. Absent while it is off — there is nothing to turn off, and a
- * rainbow sitting in the footer of an ordinary page is a clue nobody asked for.
+ * The footer's copy of the nav star — same rules (useTrailMark): there once
+ * the mode is found or the hunt won, greyed out while off, one click to flip.
  */
-export function TrailOffLink({ className }: { className?: string }) {
-  const on = useSyncExternalStore(subscribe, isTrail, () => false)
-  // Asked for only while it is on, which is only ever after it was found.
-  const names = useLabels(on ? ['c2'] : [])
-  const label = names.get('c2') ?? ''
-  if (!on) return null
+export function TrailToggleLink({ className }: { className?: string }) {
+  const { on, shown, label, toggle } = useTrailMark()
+  if (!shown) return null
 
   return (
-    <button type="button" className={className} onClick={() => setTrail(false)} title={label}>
-      <span aria-hidden="true">🌈</span>
+    <button type="button" className={className} onClick={toggle} aria-pressed={on} title={label}>
+      <Glint size={16} off={!on} />
       <span className="srOnly">{label}</span>
     </button>
   )

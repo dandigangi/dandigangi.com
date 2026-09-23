@@ -6,7 +6,7 @@ import ThemeToggle from './ThemeToggle'
 import { LinkedInIcon, XIcon, GitHubIcon, MailIcon } from './Icons'
 import AdminLink from './AdminLink'
 import { LedgerLink } from './Ledger'
-import { TrailOffLink } from './Trail'
+import { TrailToggleLink } from './Trail'
 import footer from './Footer.module.css'
 
 const socials = [
@@ -71,7 +71,7 @@ export default function Footer() {
           <span className={footer.adminRow}>
             <AdminLink />
             <LedgerLink className={footer.aside} />
-            <TrailOffLink className={footer.aside} />
+            <TrailToggleLink className={footer.aside} />
           </span>
         </div>
 

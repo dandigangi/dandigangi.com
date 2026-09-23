@@ -58,3 +58,16 @@ export const rowHueLight = (index: number, count: number): string =>
  */
 export const menuHue = (index: number, count: number): string =>
   sample(DARK_STOPS, count <= 1 ? 0.2 : 0.2 + (0.8 * index) / (count - 1))
+
+/** One tag's colour, both themes; the stylesheet picks per theme (see [data-hue]). */
+export type TagHue = Record<'--tag-hue-dark' | '--tag-hue-light', string>
+
+/** The tag at rank `index` of `count`, on the same red → violet path as the projects. */
+export const tagHue = (index: number, count: number): TagHue => ({
+  '--tag-hue-dark': rowHue(index, count),
+  '--tag-hue-light': rowHueLight(index, count),
+})
+
+/** Spread onto a tag element. Nothing for a tag with no hue, so it stays uncoloured. */
+export const tagHueProps = (hue?: TagHue) =>
+  hue ? { 'data-hue': '', style: hue as React.CSSProperties } : {}

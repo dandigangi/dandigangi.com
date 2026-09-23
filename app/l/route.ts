@@ -51,6 +51,8 @@ const NAMES: Record<Token, string> = {
   [T.twin]: 'Met the alter ego',
   [T.arc]: '[SECRET] RAINBOW ROAD DISCOVERED',
   [T.rails]: 'Tried every way to get paid',
+  [T.hug]: 'Hugged Pikachu',
+  [T.zero]: 'Hugged him down to $0',
 }
 
 const TABLE: Record<string, string> = { ...NAMES, ...COPY }

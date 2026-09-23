@@ -1,0 +1,16 @@
+.glint {
+  transition:
+    opacity 0.15s ease,
+    filter 0.15s ease;
+}
+
+/* Off, but found: still there, visibly asleep, so it reads as a switch. */
+.glint[data-off] {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+:is(button, a):hover > .glint[data-off],
+:is(button, a):focus-visible > .glint[data-off] {
+  opacity: 0.8;
+}

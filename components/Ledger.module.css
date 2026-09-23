@@ -16,7 +16,11 @@
 .dialog {
   width: min(460px, 100%);
   max-height: calc(100dvh - 48px);
-  overflow-y: auto;
+  /* A column whose only scrolling part is the egg list: the header, the prize
+     and the controls stay put however long the list grows. */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   padding: 28px;
   animation: spectrum 1.25s linear infinite;
 }
@@ -72,6 +76,11 @@
 }
 
 .list {
+  flex: 1 1 auto;
+  /* Without this a flex child never shrinks below its content, and nothing scrolls. */
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   margin: 0 0 26px;
   padding: 0;
   list-style: none;

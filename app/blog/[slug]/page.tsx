@@ -16,6 +16,7 @@ import MDXContent from '@/components/MDXContent'
 import SiteNav from '@/components/SiteNav'
 import { XIcon, LinkedInIcon, MailIcon } from '@/components/Icons'
 import styles from './post.module.css'
+import { tagHueProps } from '@/lib/ramp'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -212,7 +213,7 @@ export default async function PostPage({ params }: Props) {
                       key={tag}
                       href={`/blog/tags/${tag}`}
                       className="chip"
-                      data-hue={hues[tag]}
+                      {...tagHueProps(hues[tag])}
                     >
                       {formatTag(tag)}
                     </Link>

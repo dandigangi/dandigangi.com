@@ -8,6 +8,7 @@ import PostList from './PostList'
 import PostSearch, { type SearchEntry } from './PostSearch'
 import ChipTail from './ChipTail'
 import styles from './BlogIndex.module.css'
+import { tagHueProps } from '@/lib/ramp'
 
 export default function BlogIndex({
   posts,
@@ -78,7 +79,7 @@ export default function BlogIndex({
                 key={tag}
                 href={`/blog/tags/${tag}`}
                 className="chip"
-                data-hue={hues[tag]}
+                {...tagHueProps(hues[tag])}
                 data-active={activeTag === tag}
               >
                 {formatTag(tag)} ({count})
