@@ -379,3 +379,19 @@
     align-items: flex-start;
   }
 }
+
+/* Download PDF: the paper view on wide screens, the Drive file on phones. Same
+   breakpoint as MobileNav. `a.` so these beat .btn's display:inline-flex. */
+a.phoneOnly {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  a.wideOnly {
+    display: none;
+  }
+
+  a.phoneOnly {
+    display: inline-flex;
+  }
+}

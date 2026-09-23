@@ -5,9 +5,11 @@ import {
   resumeEducation,
   resumeOther,
   RESUME_PDF_ENABLED,
+  RESUME_PDF_URL,
 } from '@/data/resume'
 import Image from 'next/image'
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import PageBand from '@/components/PageBand'
 import Tagline from '@/components/Tagline'
 import Tooltip from '@/components/Tooltip'
@@ -31,6 +33,29 @@ function RoleLogo({ src, name }: { src?: string; name: string }) {
  */
 const contactEmail = process.env.RESUME_EMAIL || siteMetadata.email
 
+/**
+ * Both links are rendered and CSS picks one: the A4 paper view is no use on a
+ * phone, so there it goes straight to the Drive PDF. CSS rather than a width
+ * check in script, so the right one is there from first paint.
+ */
+function DownloadPdf({ className, children }: { className: string; children: ReactNode }) {
+  return (
+    <>
+      <Link href="/resume/download" className={`${className} ${styles.wideOnly}`}>
+        {children}
+      </Link>
+      <a
+        href={RESUME_PDF_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${className} ${styles.phoneOnly}`}
+      >
+        {children}
+      </a>
+    </>
+  )
+}
+
 /** The résumé body, shared by /resume and its paper view at /resume/download. */
 export default function ResumeDocument() {
   return (
@@ -49,11 +74,7 @@ export default function ResumeDocument() {
             >
               LinkedIn
             </a>
-            {RESUME_PDF_ENABLED && (
-              <Link href="/resume/download" className="btn btnBand">
-                Download PDF
-              </Link>
-            )}
+            {RESUME_PDF_ENABLED && <DownloadPdf className="btn btnBand">Download PDF</DownloadPdf>}
           </div>
         </div>
       </PageBand>
@@ -167,9 +188,9 @@ export default function ResumeDocument() {
             LinkedIn <ArrowRight size={14} />
           </a>
           {RESUME_PDF_ENABLED && (
-            <Link href="/resume/download" className="btn">
+            <DownloadPdf className="btn">
               Download PDF <ArrowRight size={14} />
-            </Link>
+            </DownloadPdf>
           )}
           <p className={`meta ${styles.ctaNote}`}>
             Full work history and experience available on LinkedIn
