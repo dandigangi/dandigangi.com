@@ -152,6 +152,16 @@
   height: auto;
 }
 
+/* Markdown `---`. Unstyled, the browser drew an inset rule in near-white with
+   0.5em either side, which read as a seam rather than a section break. */
+.body :global(hr) {
+  margin: 2em 0;
+  border: 0;
+  /* Between --line (too faint) and --soft (too loud); mixed from --soft so it
+     follows the theme. */
+  border-top: 1px solid color-mix(in srgb, var(--soft) 60%, transparent);
+}
+
 /* Scaled with the body type — too small against the prose reads as a footnote. */
 .body :global(pre) {
   margin: 32px 0;
