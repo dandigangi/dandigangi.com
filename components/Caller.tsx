@@ -6,7 +6,6 @@ import Image from 'next/image'
 import {
   MONEY_TIERS,
   CALLER_OPEN,
-  CALLER_OFFER,
   getInitialTab,
   getTab,
   lapseLayer,
@@ -171,14 +170,11 @@ export default function Caller() {
     () => allTokens() && !offerSettled(),
     () => false
   )
-  /** Asked for again from the egg list, after it has already been collected. */
-  const [reopened, setReopened] = useState(false)
-
   /**
    * Read by `onClose`, which has to keep a stable identity — so the won state
    * reaches it through a ref rather than through its dependency list.
    */
-  const won = prize || reopened
+  const won = prize
   const wonRef = useRef(won)
   useEffect(() => {
     wonRef.current = won
@@ -383,12 +379,6 @@ export default function Caller() {
     return () => window.removeEventListener(CALLER_OPEN, onOpen)
   }, [])
 
-  useEffect(() => {
-    const onPrize = () => setReopened(true)
-    window.addEventListener(CALLER_OFFER, onPrize)
-    return () => window.removeEventListener(CALLER_OFFER, onPrize)
-  }, [])
-
   /**
    * Stable, and it has to be: the modal focuses its close button and arms the
    * hug's exit timer off this identity. A fresh function each render would
@@ -400,7 +390,6 @@ export default function Caller() {
     // Winning ends the game rather than becoming a state to live in: the tab
     // goes back to the opening ask and the hero stands down, and the toast is
     // the only thing left carrying the payout.
-    setReopened(false)
     if (wonRef.current) {
       // Marked collected before the reset, or `prize` stays true and the modal
       // reopens on the very next render.
@@ -413,7 +402,7 @@ export default function Caller() {
 
   return (
     <>
-      {(open || prize || reopened) && (
+      {(open || prize) && (
         <Invoice
           amount={amount}
           // Only when it still describes the invoice on screen. Anything else

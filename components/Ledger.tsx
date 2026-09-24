@@ -125,8 +125,17 @@ export default function Ledger() {
               {found} of {total} found
             </p>
             <p className={styles.stakes}>
-              {veiled('SWYgeW91IGZpbmQgYWxs')} {total}, {veiled('eW91IHdpbGwgd2luIGE=')} $
-              {OFFER_FIGURE} {veiled('Z2lmdCBjYXJkLg==')}
+              {veiled('SWYgeW91IGZpbmQgYWxs')} {total}, {veiled('eW91IHdpbGwgd2lu')}{' '}
+              {/* Struck rather than removed: the prize went, and saying so is
+                  more honest than pretending there never was one. */}
+              <del>
+                a ${OFFER_FIGURE} {veiled('Z2lmdCBjYXJk')}
+              </del>
+              . The{' '}
+              <Link href="/blog/easter-egg-hunt-gift-card-prize" onClick={close}>
+                contest
+              </Link>{' '}
+              is over.
             </p>
           </div>
           <button type="button" className={styles.x} onClick={close}>
