@@ -39,27 +39,84 @@ export function getTagCounts(): Record<string, number> {
 }
 
 /**
- * Which rainbow step each tag gets, keyed by tag.
+ * Which colour each tag gets, keyed by tag.
  *
- * Derived from one ranking — most posts first, ties alphabetical — so the chip
- * on the index, the tag beside a post in the list, and the chips in a post's
- * sidebar all agree. Working it out from a local array index instead was what
- * made those disagree the moment any of the three sorted differently.
+ * One answer for the whole build, so the chip on the index, the tag beside a
+ * post in the list, and the chips in a post's sidebar all agree. That is also
+ * why it is not Math.random(): each page works this out on its own, and a
+ * random pick would give one tag a different colour on every page.
  *
- * Position-based rather than fixed per tag: a tag that climbs the ranking takes
- * the hue of its new slot, which keeps the run of colour intact as the blog
- * grows rather than leaving gaps where a tag used to sit.
- *
- * Spread across the whole ramp rather than cycling seven steps: with more tags
- * than steps the rainbow started over, and two tags on one post could share a
- * colour. Now every tag gets its own, however many there are.
+ * Every tag gets its own step on the ramp, but not in ranking order — in order,
+ * neighbours in the ranking were neighbours in colour, and a post tagged with
+ * two of them showed two near-identical chips. So the steps start scattered
+ * (a golden-ratio stride over the ramp) and are then swapped, pair by pair,
+ * while doing so pushes tags that share a post further apart. Deterministic
+ * throughout: the same tags on the same posts always give the same colours.
  */
 export function getTagHues(): Record<string, TagHue> {
-  const ranked = Object.entries(getTagCounts()).sort(
-    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
-  )
-  return Object.fromEntries(ranked.map(([tag], index) => [tag, tagHue(index, ranked.length)]))
+  tagHues ??= spreadTagHues()
+  return tagHues
 }
+
+let tagHues: Record<string, TagHue> | undefined
+
+function spreadTagHues(): Record<string, TagHue> {
+  const tags = Object.entries(getTagCounts())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([tag]) => tag)
+  const count = tags.length
+
+  const scattered = [...Array(count).keys()].sort((a, b) => ((a * GOLDEN) % 1) - ((b * GOLDEN) % 1))
+  const step = new Map(tags.map((tag, index) => [tag, scattered[index]]))
+
+  // How often each pair of tags shares a post; those are the pairs to separate.
+  const shared = new Map<string, { a: string; b: string; posts: number }>()
+  for (const post of getPublishedPosts()) {
+    for (let i = 0; i < post.tags.length; i += 1) {
+      for (let j = i + 1; j < post.tags.length; j += 1) {
+        const [a, b] = [post.tags[i], post.tags[j]].sort()
+        const pair = shared.get(`${a}|${b}`) ?? { a, b, posts: 0 }
+        pair.posts += 1
+        shared.set(`${a}|${b}`, pair)
+      }
+    }
+  }
+  // Inverse-square, so one pair a step apart outweighs several comfortably spread.
+  const clash = () => {
+    let total = 0
+    for (const { a, b, posts } of shared.values()) {
+      total += posts / (step.get(a)! - step.get(b)!) ** 2
+    }
+    return total
+  }
+
+  const swap = (a: string, b: string) => {
+    const held = step.get(a)!
+    step.set(a, step.get(b)!)
+    step.set(b, held)
+  }
+
+  let current = clash()
+  for (let improved = true; improved;) {
+    improved = false
+    for (let i = 0; i < count; i += 1) {
+      for (let j = i + 1; j < count; j += 1) {
+        swap(tags[i], tags[j])
+        const next = clash()
+        if (next < current) {
+          current = next
+          improved = true
+        } else {
+          swap(tags[i], tags[j])
+        }
+      }
+    }
+  }
+
+  return Object.fromEntries(tags.map((tag) => [tag, tagHue(step.get(tag)!, count)]))
+}
+
+const GOLDEN = 0.618034
 
 /** Published posts carrying `tag`, newest first. Tags are matched exactly — they
  *  are URL segments, so there is only ever one spelling of each. */
