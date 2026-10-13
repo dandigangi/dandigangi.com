@@ -1,0 +1,12 @@
+.sprite {
+  position: fixed;
+  right: clamp(12px, 3vw, 32px);
+  /* The GIF is cropped so his feet are its bottom row and stand on the edge. */
+  bottom: 0;
+  /* Above the local dev dock, which shares this corner and z-index 60. */
+  z-index: 61;
+  width: 42px;
+  height: auto;
+  image-rendering: pixelated;
+  pointer-events: none;
+}

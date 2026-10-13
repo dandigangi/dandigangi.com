@@ -7,6 +7,7 @@ import { isTrail, press, trailToggles, restoreTrail, setTrail, subscribe } from 
 import Blip from './Blip'
 import Drift from './Drift'
 import Glint from './Glint'
+import Wave from './Wave'
 import { useTrailMark } from './useTrailMark'
 
 /**
@@ -57,17 +58,17 @@ export default function Trail() {
     <>
       <Blip egg={EXTRA} show={found} />
       <Drift trigger={arrivals} />
+      <Wave />
     </>
   )
 }
 
 /**
- * The footer's copy of the nav star — same rules (useTrailMark): there once
- * the mode is found or the hunt won, greyed out while off, one click to flip.
+ * The footer's copy of the nav star — same rules (useTrailMark): greyed out
+ * while off, one click to flip.
  */
 export function TrailToggleLink({ className }: { className?: string }) {
-  const { on, shown, label, toggle } = useTrailMark()
-  if (!shown) return null
+  const { on, label, toggle } = useTrailMark()
 
   return (
     <button type="button" className={className} onClick={toggle} aria-pressed={on} title={label}>
