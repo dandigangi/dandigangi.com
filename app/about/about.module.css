@@ -152,3 +152,17 @@
 .section {
   padding-left: 0;
 }
+
+.socials {
+  display: flex;
+  gap: 22px;
+}
+
+.socials a {
+  display: inline-flex;
+  transition: opacity 0.15s ease;
+}
+
+.socials a:hover {
+  opacity: 0.6;
+}

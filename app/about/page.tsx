@@ -1,11 +1,11 @@
 import Link from 'next/link'
+import { XIcon, LinkedInIcon, GitHubIcon, MailIcon } from '@/components/Icons'
 import PageBand from '@/components/PageBand'
 import Portrait from '@/components/Portrait'
 import TaglineStatic from '@/components/TaglineStatic'
 import TaglineWheel from '@/components/TaglineWheel'
 import { genPageMetadata } from 'app/seo'
 import siteMetadata from '@/data/siteMetadata'
-import { RESUME_PDF_URL } from '@/data/resume'
 import {
   aboutOverview,
   aboutExperience,
@@ -21,6 +21,13 @@ export const metadata = genPageMetadata({
     'Dan DiGangi — senior software engineering manager in Chicago building diverse, high performance teams.',
   alternates: { canonical: '/about' },
 })
+
+const socials = [
+  { href: siteMetadata.twitter, label: 'X', Icon: XIcon },
+  { href: siteMetadata.linkedin, label: 'LinkedIn', Icon: LinkedInIcon },
+  { href: siteMetadata.github, label: 'GitHub', Icon: GitHubIcon },
+  { href: `mailto:${siteMetadata.email}`, label: 'Email', Icon: MailIcon },
+]
 
 const elsewhere = [
   { href: '/resume', title: 'Résumé' },
@@ -132,17 +139,22 @@ export default function About() {
 
           <aside className={styles.aside} data-cameo>
             <Portrait />
-            <a
-              href={siteMetadata.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn"
-            >
-              LinkedIn
-            </a>
-            <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer" className="btn">
-              Download PDF
-            </a>
+            <div className={styles.socials}>
+              {socials.map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon size={23} />
+                </a>
+              ))}
+            </div>
+            <Link href="/resume" className="btn">
+              Résumé
+            </Link>
             <div>
               <span className="label">Currently</span>
               <p className={styles.asideItem}>{aboutOverview.currently}</p>

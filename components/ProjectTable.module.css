@@ -98,9 +98,9 @@
 .row {
   margin: 0 -20px;
   padding: 26px 20px;
-  /* 2px and in the row's own hue — it is the page's only colour and has to
-     survive being scanned at speed rather than hovered. */
-  border-bottom: 2px solid var(--hue);
+  /* In the row's own hue — it is the page's only colour and has to survive
+     being scanned at speed rather than hovered. */
+  border-bottom: 1px solid var(--hue);
   transition: background-color 0.15s ease;
 
   /*

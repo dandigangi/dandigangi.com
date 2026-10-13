@@ -232,7 +232,7 @@ export default async function PostPage({ params }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Icon size={19} />
+                    <Icon size={23} />
                   </a>
                 ))}
               </div>
