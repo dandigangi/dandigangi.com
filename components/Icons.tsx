@@ -80,6 +80,20 @@ export const PlayIcon = ({ size = 14, className }: IconProps) => (
   </svg>
 )
 
+export const PauseIcon = ({ size = 14, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 12 14"
+    fill="currentColor"
+    aria-hidden="true"
+    focusable="false"
+    className={className}
+  >
+    <path d="M0 0h4v14H0zM8 0h4v14H8z" />
+  </svg>
+)
+
 export const ArrowRight = ({ size = 14, className }: IconProps) => (
   <svg
     width={size}

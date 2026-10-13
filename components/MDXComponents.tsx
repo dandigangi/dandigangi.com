@@ -1,4 +1,5 @@
 import type { MDXComponents } from 'mdx/types'
+import AudioPlayer from './AudioPlayer'
 import Image from './Image'
 import Invisible from './Invisible'
 import PostImage from './PostImage'
@@ -11,6 +12,7 @@ export const components: MDXComponents = {
   a: CustomLink,
   // Every markdown image in every post goes through here.
   img: PostImage,
+  AudioPlayer,
   Image,
   Invisible,
   Spacer,
