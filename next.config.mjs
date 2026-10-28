@@ -15,8 +15,9 @@ const withBundleAnalyzer = bundleAnalyzer({
  * allowance is scoped to the dev server rather than shipped.
  *
  * img-src and media-src are 'self' because next/image proxies every remote
- * image through /_next/image on this origin, and nothing renders a raw <audio>
- * or <video> — the podcast and talk embeds are iframes, governed by frame-src.
+ * image through /_next/image on this origin, and the one raw <audio> (AudioPlayer)
+ * plays files served from public/. Other podcast and talk embeds are iframes,
+ * governed by frame-src.
  *
  * connect-src is enumerated rather than '*'. Embeds (YouTube, Spotify) make
  * their own requests from inside their iframe, which this policy does not govern
