@@ -101,7 +101,20 @@
   /* In the row's own hue — it is the page's only colour and has to survive
      being scanned at speed rather than hovered. */
   border-bottom: 1px solid var(--hue);
-  transition: background-color 0.15s ease;
+  /*
+   * The hover tint rises from the row's own rule rather than snapping on: a
+   * gradient layer anchored to the bottom, grown from 0 to full height. 8% of
+   * the hue via color-mix keeps one source of truth rather than shipping a
+   * second rgba() per row from the server.
+   */
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--hue) 8%, transparent),
+    color-mix(in srgb, var(--hue) 8%, transparent)
+  );
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100% 0%;
+  transition: background-size 0.18s ease-out;
 
   /*
    * One ramp per theme. The hues are computed on the server, where the theme is
@@ -124,9 +137,13 @@
 .row:hover:not(.rowSoon),
 .row:focus-visible:not(.rowSoon),
 .row:active:not(.rowSoon) {
-  /* 8% of the row's own hue. color-mix keeps one source of truth for the hue
-     rather than shipping a second rgba() per row from the server. */
-  background: color-mix(in srgb, var(--hue) 8%, transparent);
+  background-size: 100% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
 }
 
 /*
