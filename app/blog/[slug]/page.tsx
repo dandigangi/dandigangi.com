@@ -11,7 +11,7 @@ import {
   getRelatedPosts,
   type Post,
 } from '@/lib/blog'
-import { formatMonthYear, formatTag } from '@/lib/format'
+import { formatFullDate, formatMonthYear, formatTag } from '@/lib/format'
 import MDXContent from '@/components/MDXContent'
 import SiteNav from '@/components/SiteNav'
 import { XIcon, LinkedInIcon, MailIcon } from '@/components/Icons'
@@ -183,7 +183,7 @@ export default async function PostPage({ params }: Props) {
           </Link>
           <h1 className={styles.title}>{post.title}</h1>
           <div className="meta">
-            {formatMonthYear(post.date)}
+            <time dateTime={post.date}>{formatFullDate(post.date)}</time>
             {post.tags[0] ? ` · ${formatTag(post.tags[0])}` : ''}
             {` · ${readingTime} min read`}
           </div>
