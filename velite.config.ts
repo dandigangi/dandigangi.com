@@ -91,6 +91,14 @@ const posts = defineCollection({
           description: data.summary,
           image,
           url,
+          // Same name, url and sameAs as the Person on the home page, so search
+          // engines resolve every post to that one entity.
+          author: {
+            '@type': 'Person',
+            name: siteMetadata.author,
+            url: siteMetadata.siteUrl,
+            sameAs: [siteMetadata.linkedin, siteMetadata.twitter, siteMetadata.github],
+          },
         },
       }
     }),

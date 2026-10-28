@@ -99,7 +99,7 @@
 .bodySplit {
   max-width: 1320px;
   justify-content: space-between;
-  padding-bottom: clamp(40px, 6vw, 64px);
+  padding-bottom: clamp(62px, 9.1vw, 98px);
 }
 
 .bodySplit .aside {
@@ -119,10 +119,10 @@
 /* The PNG is white on transparent, so light mode inverts it to dark ink. */
 .signature {
   display: block;
-  width: 48px;
+  width: 46.3px;
   height: auto;
-  margin-top: 54px;
-  margin-left: 12px;
+  margin-top: 44px;
+  margin-left: 10.5px;
   opacity: 0.8;
 }
 
